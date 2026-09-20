@@ -1,0 +1,13 @@
+METHOD MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder Create(Boolean)
+ 0000: call method:MegaCrit.Sts2.Core.Assets.PreloadManager.MegaCrit.Sts2.Core.Assets.AssetCache get_Cache()
+ 0005: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.System.String get_ScenePath()
+ 0010: callvirt method:MegaCrit.Sts2.Core.Assets.AssetCache.Godot.PackedScene GetScene(System.String)
+ 0015: ldc.i4.0 
+ 0016: conv.i8 
+ 0017: callvirt method:Godot.PackedScene.MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder Instantiate[NPotionHolder](GenEditState)
+ 0022: stloc.0 
+ 0023: ldloc.0 
+ 0024: ldarg.0 
+ 0025: stfld field:Boolean _isUsable
+ 0030: ldloc.0 
+ 0031: ret 

@@ -129,7 +129,8 @@ public static partial class McpMod
                     {
                         var screen = NMapScreen.Instance!;
                         var points = FindAll<NMapPoint>(screen)
-                            .Where(p => p.State == MegaCrit.Sts2.Core.Map.MapPointState.Travelable && p.Point != null && IsReadableCanvas(p))
+                            .Where(p => p.State == MegaCrit.Sts2.Core.Map.MapPointState.Travelable && p.Point != null
+                                && DecisionInputReady(state, IsReadableCanvas(p)))
                             .OrderBy(p => p.Point!.coord.col).ToList();
                         for (int i = 0; i < points.Count; i++)
                         {
@@ -156,7 +157,7 @@ public static partial class McpMod
                             if (state["waiting"] is false && (!_bridgeSession.Pending
                                 || selection?.Lease is { } rewardLease && (_combatExit?.OwnsDecision(rewardLease.Selector) == true
                                     || _eventOperation?.OwnsScreen(rewardLease.Selector) == true || _treasureOperation?.OwnsDecision(rewardLease.Selector) == true)))
-                                AddPotionActions(player, root, NPlayerHand.Instance?.IsInCardSelection == true
+                                AddPotionActions(state, player, root, NPlayerHand.Instance?.IsInCardSelection == true
                                     || overlay is MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.ICardSelector, actions);
                         }
                     }
@@ -196,10 +197,17 @@ public static partial class McpMod
         return new(foreground, lease, stop);
     }
 
+    // Visibility is readiness, not permission to prune a native-legal alternative.
+    private static bool DecisionInputReady(Dictionary<string, object?> state, bool ready)
+    {
+        if (!ready) state["waiting"] = true;
+        return ready;
+    }
+
     private static Observation FinishObservation(Dictionary<string, object?> state, List<LegalAction> actions, string identity)
     {
-        // An incomplete required action invalidates the entire choice set, including earlier entries.
-        if (state.ContainsKey("halt_reason")) actions.Clear();
+        // Incomplete input withholds every sibling, including executable callbacks used by POST.
+        if (state.ContainsKey("halt_reason") || state.GetValueOrDefault("waiting") is true) actions.Clear();
         // Keep nulls during validation: HTTP's WhenWritingNull must not hide a missing rule.
         BridgeProtocol.ValidateRulesText(JsonSerializer.SerializeToElement(state));
         state["legal_actions_complete"] = !state.ContainsKey("halt_reason")

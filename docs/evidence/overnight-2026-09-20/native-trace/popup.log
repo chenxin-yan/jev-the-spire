@@ -1,0 +1,470 @@
+METHOD Void _Ready()
+ 0000: ldarg.0 
+ 0001: ldarg.0 
+ 0002: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder _holder
+ 0007: callvirt method:Godot.Control.Godot.Vector2 get_GlobalPosition()
+ 0012: call method:Godot.Vector2.Godot.Vector2 get_Down()
+ 0017: ldarg.0 
+ 0018: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder _holder
+ 0023: callvirt method:Godot.Control.Godot.Vector2 get_Size()
+ 0028: ldfld field:Single Y
+ 0033: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Single)
+ 0038: ldc.r4 1.5
+ 0043: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Single)
+ 0048: call method:Godot.Vector2.Godot.Vector2 op_Addition(Godot.Vector2, Godot.Vector2)
+ 0053: call method:Godot.Vector2.Godot.Vector2 get_Right()
+ 0058: ldarg.0 
+ 0059: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder _holder
+ 0064: callvirt method:Godot.Control.Godot.Vector2 get_Size()
+ 0069: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Godot.Vector2)
+ 0074: ldc.r4 0.5
+ 0079: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Single)
+ 0084: call method:Godot.Vector2.Godot.Vector2 op_Addition(Godot.Vector2, Godot.Vector2)
+ 0089: call method:Godot.Vector2.Godot.Vector2 get_Left()
+ 0094: ldarg.0 
+ 0095: call method:Godot.Control.Godot.Vector2 get_Size()
+ 0100: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Godot.Vector2)
+ 0105: ldc.r4 0.5
+ 0110: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Single)
+ 0115: call method:Godot.Vector2.Godot.Vector2 op_Addition(Godot.Vector2, Godot.Vector2)
+ 0120: call method:Godot.Control.Void set_GlobalPosition(Godot.Vector2)
+ 0125: ldarg.0 
+ 0126: ldarg.0 
+ 0127: ldstr str:%HoverTipBounds
+ 0132: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0137: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0142: stfld field:Godot.Control _hoverTipBounds
+ 0147: ldarg.0 
+ 0148: ldfld field:Godot.Control _hoverTipBounds
+ 0153: ldarg.0 
+ 0154: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder _holder
+ 0159: callvirt method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.MegaCrit.Sts2.Core.Nodes.Potions.NPotion get_Potion()
+ 0164: callvirt method:MegaCrit.Sts2.Core.Nodes.Potions.NPotion.MegaCrit.Sts2.Core.Models.PotionModel get_Model()
+ 0169: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.HoverTips.IHoverTip] get_HoverTips()
+ 0174: ldc.i4.2 
+ 0175: call method:MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet.MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet CreateAndShow(Godot.Control, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.HoverTips.IHoverTip], MegaCrit.Sts2.Core.HoverTips.HoverTipAlignment)
+ 0180: pop 
+ 0181: ldc.i4.1 
+ 0182: stsfld field:Boolean shouldBlockHoverTips
+ 0187: ldarg.0 
+ 0188: ldarg.0 
+ 0189: ldstr str:%Container
+ 0194: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0199: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0204: stfld field:Godot.Control _popupContainer
+ 0209: ldarg.0 
+ 0210: ldarg.0 
+ 0211: ldstr str:%UseButton
+ 0216: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0221: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton GetNode[NPotionPopupButton](Godot.NodePath)
+ 0226: stfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0231: ldarg.0 
+ 0232: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0237: ldsfld field:Godot.StringName Released
+ 0242: ldarg.0 
+ 0243: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnUseButtonPressed(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0249: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0254: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0259: ldc.i4.0 
+ 0260: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0265: pop 
+ 0266: ldarg.0 
+ 0267: ldarg.0 
+ 0268: ldstr str:%DiscardButton
+ 0273: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0278: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton GetNode[NPotionPopupButton](Godot.NodePath)
+ 0283: stfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0288: ldarg.0 
+ 0289: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0294: ldstr str:POTION_POPUP.discard
+ 0299: callvirt method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton.Void SetLocKey(System.String)
+ 0304: ldarg.0 
+ 0305: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0310: ldsfld field:Godot.StringName Released
+ 0315: ldarg.0 
+ 0316: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnDiscardButtonPressed(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0322: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0327: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0332: ldc.i4.0 
+ 0333: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0338: pop 
+ 0339: ldarg.0 
+ 0340: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0345: ldarg.0 
+ 0346: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0351: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0356: callvirt method:Godot.Control.Void set_FocusNeighborLeft(Godot.NodePath)
+ 0361: ldarg.0 
+ 0362: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0367: ldarg.0 
+ 0368: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0373: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0378: callvirt method:Godot.Control.Void set_FocusNeighborRight(Godot.NodePath)
+ 0383: ldarg.0 
+ 0384: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0389: ldarg.0 
+ 0390: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0395: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0400: callvirt method:Godot.Control.Void set_FocusNeighborTop(Godot.NodePath)
+ 0405: ldarg.0 
+ 0406: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0411: ldarg.0 
+ 0412: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0417: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0422: callvirt method:Godot.Control.Void set_FocusNeighborBottom(Godot.NodePath)
+ 0427: ldarg.0 
+ 0428: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0433: ldarg.0 
+ 0434: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0439: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0444: callvirt method:Godot.Control.Void set_FocusNeighborLeft(Godot.NodePath)
+ 0449: ldarg.0 
+ 0450: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0455: ldarg.0 
+ 0456: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0461: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0466: callvirt method:Godot.Control.Void set_FocusNeighborRight(Godot.NodePath)
+ 0471: ldarg.0 
+ 0472: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0477: ldarg.0 
+ 0478: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0483: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0488: callvirt method:Godot.Control.Void set_FocusNeighborTop(Godot.NodePath)
+ 0493: ldarg.0 
+ 0494: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0499: ldarg.0 
+ 0500: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0505: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0510: callvirt method:Godot.Control.Void set_FocusNeighborBottom(Godot.NodePath)
+ 0515: ldarg.0 
+ 0516: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0521: brfalse.s 559
+ 0523: ldarg.0 
+ 0524: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0529: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.Boolean get_IsQueued()
+ 0534: brtrue.s 559
+ 0536: ldarg.0 
+ 0537: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0542: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0547: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0552: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 0557: brfalse.s 586
+ 0559: ldarg.0 
+ 0560: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0565: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0570: ldarg.0 
+ 0571: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0576: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0581: br 1020
+ 0586: ldarg.0 
+ 0587: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0592: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Potions.PotionUsage get_Usage()
+ 0597: stloc.1 
+ 0598: ldloc.1 
+ 0599: switch switch 4
+ 0620: br 847
+ 0625: ldstr str:No potions should have 'None' usage.
+ 0630: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0635: throw 
+ 0636: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0641: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatStateTracker get_StateTracker()
+ 0646: ldarg.0 
+ 0647: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnCombatStateChanged(MegaCrit.Sts2.Core.Combat.CombatState)
+ 0653: newobj method:System.Action`1[MegaCrit.Sts2.Core.Combat.CombatState].Void .ctor(System.Object, IntPtr)
+ 0658: callvirt method:MegaCrit.Sts2.Core.Combat.CombatStateTracker.Void add_CombatStateChanged(System.Action`1[MegaCrit.Sts2.Core.Combat.CombatState])
+ 0663: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0668: ldarg.0 
+ 0669: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnTurnStarted(MegaCrit.Sts2.Core.Combat.CombatState)
+ 0675: newobj method:System.Action`1[MegaCrit.Sts2.Core.Combat.CombatState].Void .ctor(System.Object, IntPtr)
+ 0680: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Void add_TurnStarted(System.Action`1[MegaCrit.Sts2.Core.Combat.CombatState])
+ 0685: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0690: ldarg.0 
+ 0691: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnPlayerEndTurnStatusChanged(MegaCrit.Sts2.Core.Entities.Players.Player, Boolean)
+ 0697: newobj method:System.Action`2[MegaCrit.Sts2.Core.Entities.Players.Player,System.Boolean].Void .ctor(System.Object, IntPtr)
+ 0702: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Void add_PlayerEndedTurn(System.Action`2[MegaCrit.Sts2.Core.Entities.Players.Player,System.Boolean])
+ 0707: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0712: ldarg.0 
+ 0713: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void OnPlayerEndTurnStatusChanged(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0719: newobj method:System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player].Void .ctor(System.Object, IntPtr)
+ 0724: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Void add_PlayerUnendedTurn(System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+ 0729: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack get_Instance()
+ 0734: brfalse.s 760
+ 0736: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack get_Instance()
+ 0741: ldarg.0 
+ 0742: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void Remove()
+ 0748: newobj method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack+ChangedEventHandler.Void .ctor(System.Object, IntPtr)
+ 0753: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.Void add_Changed(ChangedEventHandler)
+ 0758: br.s 771
+ 0760: ldstr str:NOverlayStack.Instance was null when creating potion popup
+ 0765: ldc.i4.2 
+ 0766: call method:MegaCrit.Sts2.Core.Logging.Log.Void Warn(System.String, Int32)
+ 0771: call method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer get_Instance()
+ 0776: brfalse.s 802
+ 0778: call method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer get_Instance()
+ 0783: ldarg.0 
+ 0784: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void Remove()
+ 0790: newobj method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer+ChangedEventHandler.Void .ctor(System.Object, IntPtr)
+ 0795: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.Void add_Changed(ChangedEventHandler)
+ 0800: br.s 813
+ 0802: ldstr str:NCapstoneContainer.Instance was null when creating potion popup
+ 0807: ldc.i4.2 
+ 0808: call method:MegaCrit.Sts2.Core.Logging.Log.Void Warn(System.String, Int32)
+ 0813: ldarg.0 
+ 0814: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void RefreshButtons()
+ 0819: br.s 858
+ 0821: ldarg.0 
+ 0822: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0827: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0832: br.s 858
+ 0834: ldarg.0 
+ 0835: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0840: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0845: br.s 858
+ 0847: ldstr str:Usage
+ 0852: newobj method:System.ArgumentOutOfRangeException.Void .ctor(System.String)
+ 0857: throw 
+ 0858: ldarg.0 
+ 0859: ldarg.0 
+ 0860: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0865: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0870: stfld field:MegaCrit.Sts2.Core.Entities.Players.Player _subscribedPlayer
+ 0875: ldarg.0 
+ 0876: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player _subscribedPlayer
+ 0881: ldarg.0 
+ 0882: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Void RefreshButtons()
+ 0888: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0893: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.Void add_CanUseOrRemovePotionsChanged(System.Action)
+ 0898: ldarg.0 
+ 0899: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0904: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0909: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.Boolean get_CanUseOrRemovePotions()
+ 0914: brtrue.s 938
+ 0916: ldarg.0 
+ 0917: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0922: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0927: ldarg.0 
+ 0928: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0933: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0938: ldarg.0 
+ 0939: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0944: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.Boolean get_PassesCustomUsabilityCheck()
+ 0949: brtrue.s 962
+ 0951: ldarg.0 
+ 0952: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0957: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0962: ldarg.0 
+ 0963: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0968: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Boolean get_IsEnabled()
+ 0973: brfalse.s 988
+ 0975: ldarg.0 
+ 0976: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0981: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 0986: br.s 1020
+ 0988: ldarg.0 
+ 0989: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0994: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Boolean get_IsEnabled()
+ 0999: brfalse.s 1014
+ 1001: ldarg.0 
+ 1002: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 1007: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 1012: br.s 1020
+ 1014: ldarg.0 
+ 1015: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 1020: ldarg.0 
+ 1021: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 1026: brtrue.s 1036
+ 1028: ldstr str:POTION_POPUP.drink
+ 1033: stloc.0 
+ 1034: br.s 1099
+ 1036: ldarg.0 
+ 1037: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 1042: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 1047: stloc.3 
+ 1048: ldloc.3 
+ 1049: ldc.i4.2 
+ 1050: sub 
+ 1051: ldc.i4.1 
+ 1052: ble.un.s 1058
+ 1054: ldloc.3 
+ 1055: ldc.i4.8 
+ 1056: bne.un.s 1063
+ 1058: ldc.i4.1 
+ 1059: stloc.s 4
+ 1061: br.s 1066
+ 1063: ldc.i4.0 
+ 1064: stloc.s 4
+ 1066: ldloc.s 4
+ 1068: stloc.2 
+ 1069: ldloc.2 
+ 1070: brtrue.s 1085
+ 1072: ldarg.0 
+ 1073: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 1078: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.Boolean CanThrowAtAlly()
+ 1083: brfalse.s 1093
+ 1085: ldstr str:POTION_POPUP.throw
+ 1090: stloc.0 
+ 1091: br.s 1099
+ 1093: ldstr str:POTION_POPUP.drink
+ 1098: stloc.0 
+ 1099: ldarg.0 
+ 1100: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 1105: ldloc.0 
+ 1106: callvirt method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton.Void SetLocKey(System.String)
+ 1111: ldarg.0 
+ 1112: ldfld field:Godot.Tween _tween
+ 1117: dup 
+ 1118: brtrue.s 1123
+ 1120: pop 
+ 1121: br.s 1128
+ 1123: call method:Godot.Tween.Void Kill()
+ 1128: ldarg.0 
+ 1129: call method:Godot.Colors.Godot.Color get_Transparent()
+ 1134: call method:Godot.CanvasItem.Void set_Modulate(Godot.Color)
+ 1139: ldarg.0 
+ 1140: ldfld field:Godot.Control _popupContainer
+ 1145: dup 
+ 1146: callvirt method:Godot.Control.Godot.Vector2 get_Position()
+ 1151: call method:Godot.Vector2.Godot.Vector2 get_Up()
+ 1156: ldc.r4 25
+ 1161: call method:Godot.Vector2.Godot.Vector2 op_Multiply(Godot.Vector2, Single)
+ 1166: call method:Godot.Vector2.Godot.Vector2 op_Addition(Godot.Vector2, Godot.Vector2)
+ 1171: callvirt method:Godot.Control.Void set_Position(Godot.Vector2)
+ 1176: ldarg.0 
+ 1177: ldarg.0 
+ 1178: call method:Godot.Node.Godot.Tween CreateTween()
+ 1183: ldc.i4.1 
+ 1184: callvirt method:Godot.Tween.Godot.Tween SetParallel(Boolean)
+ 1189: stfld field:Godot.Tween _tween
+ 1194: ldarg.0 
+ 1195: ldfld field:Godot.Tween _tween
+ 1200: ldarg.0 
+ 1201: ldstr str:modulate
+ 1206: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 1211: call method:Godot.Colors.Godot.Color get_White()
+ 1216: call method:Godot.Variant.Godot.Variant op_Implicit(Godot.Color)
+ 1221: ldc.r8 0.10000000149011612
+ 1230: callvirt method:Godot.Tween.Godot.PropertyTweener TweenProperty(Godot.GodotObject, Godot.NodePath, Godot.Variant, Double)
+ 1235: ldc.i4.1 
+ 1236: conv.i8 
+ 1237: callvirt method:Godot.PropertyTweener.Godot.PropertyTweener SetTrans(TransitionType)
+ 1242: pop 
+ 1243: ldarg.0 
+ 1244: ldfld field:Godot.Tween _tween
+ 1249: ldarg.0 
+ 1250: ldfld field:Godot.Control _popupContainer
+ 1255: ldstr str:position:y
+ 1260: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 1265: ldarg.0 
+ 1266: ldfld field:Godot.Control _popupContainer
+ 1271: callvirt method:Godot.Control.Godot.Vector2 get_Position()
+ 1276: ldfld field:Single Y
+ 1281: ldc.r4 25
+ 1286: add 
+ 1287: call method:Godot.Variant.Godot.Variant op_Implicit(Single)
+ 1292: ldc.r8 0.15000000596046448
+ 1301: callvirt method:Godot.Tween.Godot.PropertyTweener TweenProperty(Godot.GodotObject, Godot.NodePath, Godot.Variant, Double)
+ 1306: ldc.i4.0 
+ 1307: conv.i8 
+ 1308: callvirt method:Godot.PropertyTweener.Godot.PropertyTweener SetEase(EaseType)
+ 1313: ldc.i4.1 
+ 1314: conv.i8 
+ 1315: callvirt method:Godot.PropertyTweener.Godot.PropertyTweener SetTrans(TransitionType)
+ 1320: pop 
+ 1321: ret 
+METHOD Void RefreshButtons()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Boolean get_IsMarkedForRemoval()
+ 0006: brfalse.s 9
+ 0008: ret 
+ 0009: ldarg.0 
+ 0010: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0015: dup 
+ 0016: brtrue.s 22
+ 0018: pop 
+ 0019: ldnull 
+ 0020: br.s 32
+ 0022: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0027: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0032: stloc.0 
+ 0033: ldarg.0 
+ 0034: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0039: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0044: ldarg.0 
+ 0045: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0050: dup 
+ 0051: brtrue.s 57
+ 0053: pop 
+ 0054: ldc.i4.0 
+ 0055: br.s 65
+ 0057: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Potions.PotionUsage get_Usage()
+ 0062: ldc.i4.2 
+ 0063: ceq 
+ 0065: brfalse.s 80
+ 0067: ldarg.0 
+ 0068: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0073: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0078: br.s 206
+ 0080: ldloc.0 
+ 0081: brfalse.s 195
+ 0083: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0088: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_IsInProgress()
+ 0093: brfalse.s 195
+ 0095: ldloc.0 
+ 0096: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.ICombatState get_CombatState()
+ 0101: dup 
+ 0102: brtrue.s 116
+ 0104: pop 
+ 0105: ldloca.s 3
+ 0107: initobj type:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatSide]
+ 0113: ldloc.3 
+ 0114: br.s 126
+ 0116: callvirt method:MegaCrit.Sts2.Core.Combat.ICombatState.MegaCrit.Sts2.Core.Combat.CombatSide get_CurrentSide()
+ 0121: newobj method:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatSide].Void .ctor(MegaCrit.Sts2.Core.Combat.CombatSide)
+ 0126: stloc.1 
+ 0127: ldloc.0 
+ 0128: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0133: stloc.2 
+ 0134: ldloca.s 1
+ 0136: call method:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatSide].MegaCrit.Sts2.Core.Combat.CombatSide GetValueOrDefault()
+ 0141: ldloc.2 
+ 0142: ceq 
+ 0144: ldloca.s 1
+ 0146: call method:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatSide].Boolean get_HasValue()
+ 0151: and 
+ 0152: brfalse.s 195
+ 0154: ldloc.0 
+ 0155: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsAlive()
+ 0160: brfalse.s 195
+ 0162: ldarg.0 
+ 0163: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.Boolean get_InACardSelectScreen()
+ 0168: brtrue.s 195
+ 0170: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0175: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_PlayerActionsDisabled()
+ 0180: brtrue.s 195
+ 0182: ldarg.0 
+ 0183: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0188: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0193: br.s 206
+ 0195: ldarg.0 
+ 0196: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0201: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0206: ldarg.0 
+ 0207: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopup.MegaCrit.Sts2.Core.Models.PotionModel get_Potion()
+ 0212: stloc.s 4
+ 0214: ldloc.s 4
+ 0216: brfalse.s 262
+ 0218: ldloc.s 4
+ 0220: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0225: stloc.s 5
+ 0227: ldloc.s 5
+ 0229: brfalse.s 262
+ 0231: ldloc.s 5
+ 0233: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.Boolean get_CanUseOrRemovePotions()
+ 0238: brtrue.s 262
+ 0240: ldarg.0 
+ 0241: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _useButton
+ 0246: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0251: ldarg.0 
+ 0252: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionPopupButton _discardButton
+ 0257: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0262: ret 

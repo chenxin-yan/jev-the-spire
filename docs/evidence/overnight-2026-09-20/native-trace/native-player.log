@@ -1,0 +1,142 @@
+METHOD Void .ctor(MegaCrit.Sts2.Core.Models.CharacterModel, UInt64, Int32, Int32, Int32, Int32, Int32, Int32, MegaCrit.Sts2.Core.Runs.RelicGrabBag, MegaCrit.Sts2.Core.Unlocks.UnlockState, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId], System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId], System.Collections.Generic.List`1[System.String], System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId], System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId])
+ 0000: ldarg.0 
+ 0001: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.RelicModel].Void .ctor()
+ 0006: stfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.RelicModel] _relics
+ 0011: ldarg.0 
+ 0012: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.PotionModel].Void .ctor()
+ 0017: stfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.PotionModel] _potionSlots
+ 0022: ldarg.0 
+ 0023: call method:MegaCrit.Sts2.Core.Runs.NullRunState.MegaCrit.Sts2.Core.Runs.NullRunState get_Instance()
+ 0028: stfld field:MegaCrit.Sts2.Core.Runs.IRunState _runState
+ 0033: ldarg.0 
+ 0034: newobj method:MegaCrit.Sts2.Core.Entities.Players.ExtraPlayerFields.Void .ctor()
+ 0039: stfld field:MegaCrit.Sts2.Core.Entities.Players.ExtraPlayerFields <ExtraFields>k__BackingField
+ 0044: ldarg.0 
+ 0045: ldc.i4.1 
+ 0046: stfld field:Boolean _canUseOrRemovePotions
+ 0051: ldarg.0 
+ 0052: ldc.i4.6 
+ 0053: newobj method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.Void .ctor(MegaCrit.Sts2.Core.Entities.Cards.PileType)
+ 0058: stfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile <Deck>k__BackingField
+ 0063: ldarg.0 
+ 0064: call method:System.Object.Void .ctor()
+ 0069: ldarg.0 
+ 0070: call method:MegaCrit.Sts2.Core.Runs.NullRunState.MegaCrit.Sts2.Core.Runs.NullRunState get_Instance()
+ 0075: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_RunState(MegaCrit.Sts2.Core.Runs.IRunState)
+ 0080: ldarg.0 
+ 0081: ldarg.1 
+ 0082: stfld field:MegaCrit.Sts2.Core.Models.CharacterModel <Character>k__BackingField
+ 0087: ldarg.0 
+ 0088: ldarg.2 
+ 0089: stfld field:UInt64 <NetId>k__BackingField
+ 0094: ldarg.0 
+ 0095: ldarg.0 
+ 0096: ldarg.3 
+ 0097: ldarg.s 4
+ 0099: newobj method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Void .ctor(MegaCrit.Sts2.Core.Entities.Players.Player, Int32, Int32)
+ 0104: stfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <Creature>k__BackingField
+ 0109: ldarg.0 
+ 0110: ldarg.s 5
+ 0112: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_MaxEnergy(Int32)
+ 0117: ldarg.0 
+ 0118: ldarg.s 6
+ 0120: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_Gold(Int32)
+ 0125: ldarg.0 
+ 0126: ldarg.s 7
+ 0128: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void SetMaxPotionCountInternal(Int32)
+ 0133: ldarg.0 
+ 0134: ldarg.s 8
+ 0136: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_BaseOrbSlotCount(Int32)
+ 0141: ldarg.0 
+ 0142: ldarg.s 9
+ 0144: stfld field:MegaCrit.Sts2.Core.Runs.RelicGrabBag <RelicGrabBag>k__BackingField
+ 0149: ldarg.0 
+ 0150: ldarg.s 10
+ 0152: stfld field:MegaCrit.Sts2.Core.Unlocks.UnlockState <UnlockState>k__BackingField
+ 0157: ldarg.0 
+ 0158: ldc.i4.0 
+ 0159: conv.i8 
+ 0160: newobj method:MegaCrit.Sts2.Core.Random.PlayerRngSet.Void .ctor(UInt64)
+ 0165: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_PlayerRng(MegaCrit.Sts2.Core.Random.PlayerRngSet)
+ 0170: ldarg.0 
+ 0171: ldarg.0 
+ 0172: call method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Random.PlayerRngSet get_PlayerRng()
+ 0177: newobj method:MegaCrit.Sts2.Core.Odds.PlayerOddsSet.Void .ctor(MegaCrit.Sts2.Core.Random.PlayerRngSet)
+ 0182: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_PlayerOdds(MegaCrit.Sts2.Core.Odds.PlayerOddsSet)
+ 0187: ldarg.0 
+ 0188: ldarg.s 11
+ 0190: dup 
+ 0191: brtrue.s 199
+ 0193: pop 
+ 0194: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId].Void .ctor()
+ 0199: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_DiscoveredCards(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId])
+ 0204: ldarg.0 
+ 0205: ldarg.s 12
+ 0207: dup 
+ 0208: brtrue.s 216
+ 0210: pop 
+ 0211: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId].Void .ctor()
+ 0216: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_DiscoveredEnemies(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId])
+ 0221: ldarg.0 
+ 0222: ldarg.s 13
+ 0224: dup 
+ 0225: brtrue.s 233
+ 0227: pop 
+ 0228: newobj method:System.Collections.Generic.List`1[System.String].Void .ctor()
+ 0233: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_DiscoveredEpochs(System.Collections.Generic.List`1[System.String])
+ 0238: ldarg.0 
+ 0239: ldarg.s 14
+ 0241: dup 
+ 0242: brtrue.s 250
+ 0244: pop 
+ 0245: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId].Void .ctor()
+ 0250: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_DiscoveredPotions(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId])
+ 0255: ldarg.0 
+ 0256: ldarg.s 15
+ 0258: dup 
+ 0259: brtrue.s 267
+ 0261: pop 
+ 0262: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId].Void .ctor()
+ 0267: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_DiscoveredRelics(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId])
+ 0272: ldarg.0 
+ 0273: ldarg.0 
+ 0274: call method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0279: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsAlive()
+ 0284: call method:MegaCrit.Sts2.Core.Entities.Players.Player.Void set_IsActiveForHooks(Boolean)
+ 0289: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.SaveManager get_Instance()
+ 0294: dup 
+ 0295: brtrue.s 301
+ 0297: pop 
+ 0298: ldnull 
+ 0299: br.s 322
+ 0301: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.ProgressState get_Progress()
+ 0306: ldarg.0 
+ 0307: call method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Models.CharacterModel get_Character()
+ 0312: callvirt method:MegaCrit.Sts2.Core.Models.AbstractModel.MegaCrit.Sts2.Core.Models.ModelId get_Id()
+ 0317: callvirt method:MegaCrit.Sts2.Core.Saves.ProgressState.MegaCrit.Sts2.Core.Saves.CharacterStats GetStatsForCharacter(MegaCrit.Sts2.Core.Models.ModelId)
+ 0322: stloc.0 
+ 0323: ldarg.0 
+ 0324: ldloc.0 
+ 0325: brtrue.s 330
+ 0327: ldc.i4.0 
+ 0328: br.s 336
+ 0330: ldloc.0 
+ 0331: call method:MegaCrit.Sts2.Core.Saves.CharacterStats.Int32 get_MaxAscension()
+ 0336: stfld field:Int32 <MaxAscensionWhenRunStarted>k__BackingField
+ 0341: ret 
+METHOD Boolean get_CanUseOrRemovePotions()
+ 0000: ldarg.0 
+ 0001: ldfld field:Boolean _canUseOrRemovePotions
+ 0006: ret 
+METHOD Void set_CanUseOrRemovePotions(Boolean)
+ 0000: ldarg.0 
+ 0001: ldarg.1 
+ 0002: stfld field:Boolean _canUseOrRemovePotions
+ 0007: ldarg.0 
+ 0008: ldfld field:System.Action CanUseOrRemovePotionsChanged
+ 0013: dup 
+ 0014: brtrue.s 18
+ 0016: pop 
+ 0017: ret 
+ 0018: callvirt method:System.Action.Void Invoke()
+ 0023: ret 

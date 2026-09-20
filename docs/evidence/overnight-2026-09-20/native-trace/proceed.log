@@ -1,0 +1,10 @@
+METHOD System.Threading.Tasks.Task Proceed()
+ 0000: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen get_Instance()
+ 0005: ldc.i4.1 
+ 0006: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.Void SetTravelEnabled(Boolean)
+ 0011: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen get_Instance()
+ 0016: ldc.i4.0 
+ 0017: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen Open(Boolean)
+ 0022: pop 
+ 0023: call method:System.Threading.Tasks.Task.System.Threading.Tasks.Task get_CompletedTask()
+ 0028: ret 

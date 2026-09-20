@@ -1,0 +1,6 @@
+Player._canUseOrRemovePotions <- MegaCrit.Sts2.Core.Entities.Players.Player.set_CanUseOrRemovePotions IL0002
+Player._canUseOrRemovePotions <- MegaCrit.Sts2.Core.Entities.Players.Player..ctor IL0046
+NPotionHolder._isUsable <- MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.Create IL0025
+NPotionHolder._isUsable <- MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.SetGodotClassPropertyValue IL0182
+NPotionHolder._isUsable <- MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.RestoreGodotObjectData IL0198
+PropertyName._isUsable <- MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder+PropertyName..cctor IL0130

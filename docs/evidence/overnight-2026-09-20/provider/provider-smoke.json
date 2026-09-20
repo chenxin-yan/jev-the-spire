@@ -1,0 +1,28 @@
+{
+  "command": [
+    "mise",
+    "exec",
+    "--",
+    "bun",
+    "run",
+    "/tmp/jev-overnight-2026-09-20/provider-smoke.ts"
+  ],
+  "exit": 1,
+  "external_timeout": false,
+  "seconds": 0.633,
+  "result": {
+    "ok": false,
+    "application_evaluations": 1,
+    "duration_ms": 486,
+    "invalid_answer": false,
+    "diagnostics": {
+      "authentication": false,
+      "payment": true,
+      "probability": false,
+      "deadline": false,
+      "policy": false
+    },
+    "error_payload": "omitted"
+  },
+  "stderr_bytes_omitted": 0
+}

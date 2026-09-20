@@ -302,7 +302,7 @@ public static partial class McpMod
         => potion != null && player.PotionSlots.Any(p => p == null)
             && Hook.ShouldProcurePotion(player.RunState, player.Creature.CombatState, potion, player);
 
-    private static void AddPotionActions(Player player, Node root, bool selecting, List<LegalAction> actions)
+    private static void AddPotionActions(Dictionary<string, object?> state, Player player, Node root, bool selecting, List<LegalAction> actions)
     {
         if (!player.Creature.IsAlive || !player.CanUseOrRemovePotions) return;
         var holders = FindAll<NPotionHolder>(root);
@@ -315,7 +315,7 @@ public static partial class McpMod
             if (holder == null) throw new NotSupportedException("potion_ui_holder_unavailable");
             if (GetInstanceFieldValue(holder, "_isUsable") is not bool usable)
                 throw new NotSupportedException("potion_ui_usability_unavailable");
-            if (!usable || !IsNodeVisible(holder)) continue;
+            if (!usable || !DecisionInputReady(state, IsNodeVisible(holder))) continue;
             string name = SafeGetText(() => potion.Title) ?? "potion";
             actions.Add(new($"discard_potion:{i}", $"Discard slot[{i}] {name}",
                 () => DispatchOwnedTask(() => PotionCmd.Discard(potion)), $"potion:{RuntimeHelpers.GetHashCode(potion)}"));
@@ -334,7 +334,8 @@ public static partial class McpMod
             };
             int slotIndex = i;
             foreach (var target in targets)
-                if (potion.IsValidTarget(target) && (target == null || target == player.Creature || visible.Contains(target)))
+                if (potion.IsValidTarget(target)
+                    && DecisionInputReady(state, target == null || target == player.Creature || visible.Contains(target)))
                     actions.Add(new($"use_potion:{i}:{target?.CombatId.ToString() ?? "none"}",
                         $"Use slot[{i}] {name}" + (target == null ? "" : $" on {SafeGetText(() => target.Monster?.Title) ?? "player"} ({target.CombatId})"),
                         () => DispatchPotion(potion, slotIndex, target), $"potion:{RuntimeHelpers.GetHashCode(potion)}:{target?.CombatId}"));

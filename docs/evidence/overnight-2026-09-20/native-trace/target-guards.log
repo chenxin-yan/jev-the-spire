@@ -1,0 +1,83 @@
+METHOD Boolean AllowedToTargetNode(Godot.Node)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Func`2[Godot.Node,System.Boolean] _nodeFilter
+ 0006: brfalse.s 24
+ 0008: ldarg.0 
+ 0009: ldfld field:System.Func`2[Godot.Node,System.Boolean] _nodeFilter
+ 0014: ldarg.1 
+ 0015: callvirt method:System.Func`2[Godot.Node,System.Boolean].Boolean Invoke(Godot.Node)
+ 0020: brtrue.s 24
+ 0022: ldc.i4.0 
+ 0023: ret 
+ 0024: ldarg.1 
+ 0025: isinst type:MegaCrit.Sts2.Core.Nodes.Combat.NCreature
+ 0030: stloc.0 
+ 0031: ldloc.0 
+ 0032: brfalse.s 47
+ 0034: ldarg.0 
+ 0035: ldloc.0 
+ 0036: callvirt method:MegaCrit.Sts2.Core.Nodes.Combat.NCreature.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Entity()
+ 0041: call method:MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager.Boolean AllowedToTargetCreature(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0046: ret 
+ 0047: ldarg.1 
+ 0048: isinst type:MegaCrit.Sts2.Core.Nodes.Multiplayer.NMultiplayerPlayerState
+ 0053: stloc.1 
+ 0054: ldloc.1 
+ 0055: brfalse.s 75
+ 0057: ldarg.0 
+ 0058: ldloc.1 
+ 0059: callvirt method:MegaCrit.Sts2.Core.Nodes.Multiplayer.NMultiplayerPlayerState.MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+ 0064: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0069: call method:MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager.Boolean AllowedToTargetCreature(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0074: ret 
+ 0075: ldc.i4.1 
+ 0076: ret 
+METHOD Boolean AllowedToTargetCreature(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.TargetType _validTargetsType
+ 0006: stloc.0 
+ 0007: ldloc.0 
+ 0008: ldc.i4.2 
+ 0009: sub 
+ 0010: switch switch 5
+ 0035: br.s 107
+ 0037: ldarg.1 
+ 0038: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0043: ldc.i4.2 
+ 0044: bne.un.s 54
+ 0046: ldarg.1 
+ 0047: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 0052: brfalse.s 130
+ 0054: ldc.i4.0 
+ 0055: ret 
+ 0056: ldarg.1 
+ 0057: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsPlayer()
+ 0062: brfalse.s 72
+ 0064: ldarg.1 
+ 0065: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 0070: brfalse.s 130
+ 0072: ldc.i4.0 
+ 0073: ret 
+ 0074: ldarg.1 
+ 0075: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsPlayer()
+ 0080: brfalse.s 90
+ 0082: ldarg.1 
+ 0083: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 0088: brfalse.s 92
+ 0090: ldc.i4.0 
+ 0091: ret 
+ 0092: ldarg.1 
+ 0093: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+ 0098: call method:MegaCrit.Sts2.Core.Context.LocalContext.Boolean IsMe(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0103: brfalse.s 130
+ 0105: ldc.i4.0 
+ 0106: ret 
+ 0107: ldstr str:_validTargetsType
+ 0112: ldarg.0 
+ 0113: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.TargetType _validTargetsType
+ 0118: box type:MegaCrit.Sts2.Core.Entities.Cards.TargetType
+ 0123: ldnull 
+ 0124: newobj method:System.ArgumentOutOfRangeException.Void .ctor(System.String, System.Object, System.String)
+ 0129: throw 
+ 0130: ldc.i4.1 
+ 0131: ret 

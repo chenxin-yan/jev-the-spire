@@ -1,0 +1,270 @@
+METHOD Void OnMapPointSelectedLocally(MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint)
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0006: call method:MegaCrit.Sts2.Core.Context.LocalContext.MegaCrit.Sts2.Core.Entities.Players.Player GetMe(MegaCrit.Sts2.Core.Runs.IPlayerCollection)
+ 0011: stloc.0 
+ 0012: ldarg.0 
+ 0013: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Players.Player,System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord]] get_PlayerVoteDictionary()
+ 0018: ldloc.0 
+ 0019: ldloca.s 1
+ 0021: callvirt method:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Players.Player,System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord]].Boolean TryGetValue(MegaCrit.Sts2.Core.Entities.Players.Player, System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord] ByRef)
+ 0026: brfalse.s 72
+ 0028: ldloc.1 
+ 0029: stloc.2 
+ 0030: ldarg.1 
+ 0031: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0036: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0041: stloc.3 
+ 0042: ldloca.s 2
+ 0044: call method:System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord].Boolean get_HasValue()
+ 0049: brtrue.s 54
+ 0051: ldc.i4.1 
+ 0052: br.s 67
+ 0054: ldloca.s 2
+ 0056: call method:System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord].MegaCrit.Sts2.Core.Map.MapCoord GetValueOrDefault()
+ 0061: ldloc.3 
+ 0062: call method:MegaCrit.Sts2.Core.Map.MapCoord.Boolean op_Inequality(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Map.MapCoord)
+ 0067: brfalse 276
+ 0072: ldarg.0 
+ 0073: ldloc.0 
+ 0074: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0079: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer get_MapSelectionSynchronizer()
+ 0084: ldloc.0 
+ 0085: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer.System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Game.MapVote] GetVote(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0090: stloc.s 7
+ 0092: ldloca.s 7
+ 0094: dup 
+ 0095: call method:System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Game.MapVote].Boolean get_HasValue()
+ 0100: brtrue.s 114
+ 0102: pop 
+ 0103: ldloca.s 2
+ 0105: initobj type:System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord]
+ 0111: ldloc.2 
+ 0112: br.s 129
+ 0114: call method:System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Game.MapVote].MegaCrit.Sts2.Core.Multiplayer.Game.MapVote GetValueOrDefault()
+ 0119: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0124: newobj method:System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord].Void .ctor(MegaCrit.Sts2.Core.Map.MapCoord)
+ 0129: ldarg.1 
+ 0130: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0135: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0140: newobj method:System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord].Void .ctor(MegaCrit.Sts2.Core.Map.MapCoord)
+ 0145: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.Void OnPlayerVoteChangedInternal(MegaCrit.Sts2.Core.Entities.Players.Player, System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord], System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord])
+ 0150: ldloca.s 4
+ 0152: ldarg.0 
+ 0153: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0158: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord] get_CurrentMapCoord()
+ 0163: ldarg.0 
+ 0164: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0169: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.Int32 get_CurrentActIndex()
+ 0174: call method:MegaCrit.Sts2.Core.Runs.MapLocation.Void .ctor(System.Nullable`1[MegaCrit.Sts2.Core.Map.MapCoord], Int32)
+ 0179: ldloca.s 8
+ 0181: initobj type:MegaCrit.Sts2.Core.Multiplayer.Game.MapVote
+ 0187: ldloca.s 8
+ 0189: ldarg.1 
+ 0190: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0195: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0200: stfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0205: ldloca.s 8
+ 0207: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0212: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer get_MapSelectionSynchronizer()
+ 0217: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer.Int32 get_MapGenerationCount()
+ 0222: stfld field:Int32 mapGenerationCount
+ 0227: ldloc.s 8
+ 0229: stloc.s 5
+ 0231: ldarg.0 
+ 0232: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0237: call method:MegaCrit.Sts2.Core.Context.LocalContext.MegaCrit.Sts2.Core.Entities.Players.Player GetMe(MegaCrit.Sts2.Core.Runs.IPlayerCollection)
+ 0242: ldloc.s 4
+ 0244: ldloc.s 5
+ 0246: newobj method:System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Game.MapVote].Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.MapVote)
+ 0251: newobj method:MegaCrit.Sts2.Core.GameActions.VoteForMapCoordAction.Void .ctor(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Runs.MapLocation, System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Game.MapVote])
+ 0256: stloc.s 6
+ 0258: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0263: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0268: ldloc.s 6
+ 0270: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.Void RequestEnqueue(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0275: ret 
+ 0276: ldarg.0 
+ 0277: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0282: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0287: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Entities.Players.Player].Int32 get_Count()
+ 0292: ldc.i4.1 
+ 0293: bgt.s 296
+ 0295: ret 
+ 0296: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0301: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer get_FlavorSynchronizer()
+ 0306: ldarg.1 
+ 0307: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0312: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0317: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer.Void SendMapPing(MegaCrit.Sts2.Core.Map.MapCoord)
+ 0322: ret 
+METHOD Void RecalculateTravelability()
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0006: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Map.MapCoord] get_VisitedMapCoords()
+ 0011: call method:System.Linq.Enumerable.Boolean Any[MapCoord](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Map.MapCoord])
+ 0016: brfalse 489
+ 0021: ldarg.0 
+ 0022: ldfld field:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint] _mapPointDictionary
+ 0027: callvirt method:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].ValueCollection get_Values()
+ 0032: callvirt method:System.Collections.Generic.Dictionary`2+ValueCollection[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].Enumerator GetEnumerator()
+ 0037: stloc.3 
+ 0038: br.s 57
+ 0040: ldloca.s 3
+ 0042: call method:System.Collections.Generic.Dictionary`2+ValueCollection+Enumerator[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint get_Current()
+ 0047: stloc.s 4
+ 0049: ldloc.s 4
+ 0051: ldc.i4.3 
+ 0052: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0057: ldloca.s 3
+ 0059: call method:System.Collections.Generic.Dictionary`2+ValueCollection+Enumerator[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].Boolean MoveNext()
+ 0064: brtrue.s 40
+ 0066: leave.s 82
+ 0068: ldloca.s 3
+ 0070: constrained. type:System.Collections.Generic.Dictionary`2+ValueCollection+Enumerator[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint]
+ 0076: callvirt method:System.IDisposable.Void Dispose()
+ 0081: endfinally 
+ 0082: ldarg.0 
+ 0083: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0088: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Map.MapCoord] get_VisitedMapCoords()
+ 0093: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Map.MapCoord].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Map.MapCoord] GetEnumerator()
+ 0098: stloc.s 5
+ 0100: br.s 194
+ 0102: ldloc.s 5
+ 0104: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Map.MapCoord].MegaCrit.Sts2.Core.Map.MapCoord get_Current()
+ 0109: stloc.s 6
+ 0111: ldarg.0 
+ 0112: ldfld field:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint] _mapPointDictionary
+ 0117: ldloc.s 6
+ 0119: ldloca.s 7
+ 0121: callvirt method:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].Boolean TryGetValue(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint ByRef)
+ 0126: brfalse.s 138
+ 0128: ldloc.s 7
+ 0130: ldc.i4.2 
+ 0131: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0136: br.s 194
+ 0138: ldc.i4.s 81
+ 0140: ldc.i4.1 
+ 0141: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0146: stloc.s 8
+ 0148: ldloca.s 8
+ 0150: ldstr str:VisitedMapCoord 
+ 0155: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0160: ldloca.s 8
+ 0162: ldloc.s 6
+ 0164: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[MapCoord](MegaCrit.Sts2.Core.Map.MapCoord)
+ 0169: ldloca.s 8
+ 0171: ldstr str: not found in map point dictionary, map may have been regenerated
+ 0176: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0181: ldloca.s 8
+ 0183: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0188: ldc.i4.2 
+ 0189: call method:MegaCrit.Sts2.Core.Logging.Log.Void Error(System.String, Int32)
+ 0194: ldloc.s 5
+ 0196: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0201: brtrue.s 102
+ 0203: leave.s 217
+ 0205: ldloc.s 5
+ 0207: brfalse.s 216
+ 0209: ldloc.s 5
+ 0211: callvirt method:System.IDisposable.Void Dispose()
+ 0216: endfinally 
+ 0217: ldarg.0 
+ 0218: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0223: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Map.MapCoord] get_VisitedMapCoords()
+ 0228: dup 
+ 0229: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Map.MapCoord].Int32 get_Count()
+ 0234: ldc.i4.1 
+ 0235: sub 
+ 0236: callvirt method:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Map.MapCoord].MegaCrit.Sts2.Core.Map.MapCoord get_Item(Int32)
+ 0241: stloc.0 
+ 0242: ldarg.0 
+ 0243: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint _secondBossPointNode
+ 0248: brfalse.s 287
+ 0250: ldloc.0 
+ 0251: ldarg.0 
+ 0252: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint _bossPointNode
+ 0257: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0262: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0267: call method:MegaCrit.Sts2.Core.Map.MapCoord.Boolean op_Equality(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Map.MapCoord)
+ 0272: brfalse.s 287
+ 0274: ldarg.0 
+ 0275: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint _secondBossPointNode
+ 0280: ldc.i4.1 
+ 0281: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0286: ret 
+ 0287: ldloc.0 
+ 0288: ldfld field:Int32 row
+ 0293: ldarg.0 
+ 0294: ldfld field:MegaCrit.Sts2.Core.Map.ActMap _map
+ 0299: callvirt method:MegaCrit.Sts2.Core.Map.ActMap.Int32 GetRowCount()
+ 0304: ldc.i4.1 
+ 0305: sub 
+ 0306: bne.un.s 321
+ 0308: ldarg.0 
+ 0309: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint _bossPointNode
+ 0314: ldc.i4.1 
+ 0315: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0320: ret 
+ 0321: ldarg.0 
+ 0322: ldfld field:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint] _mapPointDictionary
+ 0327: ldloc.0 
+ 0328: ldloca.s 1
+ 0330: callvirt method:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].Boolean TryGetValue(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint ByRef)
+ 0335: brtrue.s 405
+ 0337: ldloca.s 8
+ 0339: ldc.i4.s 68
+ 0341: ldc.i4.1 
+ 0342: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0347: ldloca.s 8
+ 0349: ldstr str:Last visited coord 
+ 0354: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0359: ldloca.s 8
+ 0361: ldloc.0 
+ 0362: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[MapCoord](MegaCrit.Sts2.Core.Map.MapCoord)
+ 0367: ldloca.s 8
+ 0369: ldstr str: not found in map, falling back to starting point
+ 0374: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0379: ldloca.s 8
+ 0381: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0386: ldc.i4.2 
+ 0387: call method:MegaCrit.Sts2.Core.Logging.Log.Void Error(System.String, Int32)
+ 0392: ldarg.0 
+ 0393: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint _startingPointNode
+ 0398: ldc.i4.1 
+ 0399: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0404: ret 
+ 0405: ldarg.0 
+ 0406: ldfld field:MegaCrit.Sts2.Core.Runs.RunState _runState
+ 0411: ldloc.1 
+ 0412: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.MegaCrit.Sts2.Core.Map.MapPoint get_Point()
+ 0417: call method:MegaCrit.Sts2.Core.Map.MapTravel.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Map.MapPoint] GetTravelablePointsFrom(MegaCrit.Sts2.Core.Runs.IRunState, MegaCrit.Sts2.Core.Map.MapPoint)
+ 0422: stloc.2 
+ 0423: ldloc.2 
+ 0424: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Map.MapPoint].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Map.MapPoint] GetEnumerator()
+ 0429: stloc.s 9
+ 0431: br.s 466
+ 0433: ldloc.s 9
+ 0435: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Map.MapPoint].MegaCrit.Sts2.Core.Map.MapPoint get_Current()
+ 0440: stloc.s 10
+ 0442: ldarg.0 
+ 0443: ldfld field:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint] _mapPointDictionary
+ 0448: ldloc.s 10
+ 0450: ldfld field:MegaCrit.Sts2.Core.Map.MapCoord coord
+ 0455: callvirt method:System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Map.MapCoord,MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint].MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint get_Item(MegaCrit.Sts2.Core.Map.MapCoord)
+ 0460: ldc.i4.1 
+ 0461: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0466: ldloc.s 9
+ 0468: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0473: brtrue.s 433
+ 0475: leave.s 501
+ 0477: ldloc.s 9
+ 0479: brfalse.s 488
+ 0481: ldloc.s 9
+ 0483: callvirt method:System.IDisposable.Void Dispose()
+ 0488: endfinally 
+ 0489: ldarg.0 
+ 0490: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint _startingPointNode
+ 0495: ldc.i4.1 
+ 0496: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapPoint.Void set_State(MegaCrit.Sts2.Core.Map.MapPointState)
+ 0501: ret 

@@ -1,0 +1,112 @@
+METHOD Void GrowPotionHolders(Int32)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder] _holders
+ 0006: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder].Int32 get_Count()
+ 0011: stloc.0 
+ 0012: br 220
+ 0017: newobj method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer+<>c__DisplayClass16_0.Void .ctor()
+ 0022: stloc.1 
+ 0023: ldloc.1 
+ 0024: ldarg.0 
+ 0025: stfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer <>4__this
+ 0030: ldloc.1 
+ 0031: ldc.i4.1 
+ 0032: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder.MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder Create(Boolean)
+ 0037: stfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0042: ldarg.0 
+ 0043: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder] _holders
+ 0048: ldloc.1 
+ 0049: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0054: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder].Void Add(MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder)
+ 0059: ldarg.0 
+ 0060: ldfld field:Godot.Control _potionHolders
+ 0065: ldloc.1 
+ 0066: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0071: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0076: ldloc.1 
+ 0077: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0082: ldsfld field:Godot.StringName FocusEntered
+ 0087: ldloc.1 
+ 0088: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer+<>c__DisplayClass16_0.Void <GrowPotionHolders>b__0()
+ 0094: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0099: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0104: ldc.i4.0 
+ 0105: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0110: pop 
+ 0111: ldloc.1 
+ 0112: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0117: ldsfld field:Godot.StringName FocusExited
+ 0122: ldloc.1 
+ 0123: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer+<>c__DisplayClass16_0.Void <GrowPotionHolders>b__1()
+ 0129: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0134: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0139: ldc.i4.0 
+ 0140: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0145: pop 
+ 0146: ldloc.1 
+ 0147: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0152: ldsfld field:Godot.StringName MouseEntered
+ 0157: ldloc.1 
+ 0158: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer+<>c__DisplayClass16_0.Void <GrowPotionHolders>b__2()
+ 0164: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0169: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0174: ldc.i4.0 
+ 0175: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0180: pop 
+ 0181: ldloc.1 
+ 0182: ldfld field:MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder node
+ 0187: ldsfld field:Godot.StringName MouseExited
+ 0192: ldloc.1 
+ 0193: ldftn method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer+<>c__DisplayClass16_0.Void <GrowPotionHolders>b__3()
+ 0199: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0204: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0209: ldc.i4.0 
+ 0210: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0215: pop 
+ 0216: ldloc.0 
+ 0217: ldc.i4.1 
+ 0218: add 
+ 0219: stloc.0 
+ 0220: ldloc.0 
+ 0221: ldarg.1 
+ 0222: blt 17
+ 0227: ldarg.0 
+ 0228: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer.Void UpdateNavigation()
+ 0233: ret 
+METHOD Void Initialize(MegaCrit.Sts2.Core.Runs.IRunState)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer.Void DisconnectPlayerEvents()
+ 0006: ldarg.0 
+ 0007: ldarg.1 
+ 0008: call method:MegaCrit.Sts2.Core.Context.LocalContext.MegaCrit.Sts2.Core.Entities.Players.Player GetMe(MegaCrit.Sts2.Core.Runs.IPlayerCollection)
+ 0013: stfld field:MegaCrit.Sts2.Core.Entities.Players.Player _player
+ 0018: ldarg.0 
+ 0019: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer.Void ConnectPlayerEvents()
+ 0024: ldarg.0 
+ 0025: ldarg.0 
+ 0026: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player _player
+ 0031: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.Int32 get_MaxPotionCount()
+ 0036: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer.Void GrowPotionHolders(Int32)
+ 0041: ldarg.0 
+ 0042: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player _player
+ 0047: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.PotionModel] get_Potions()
+ 0052: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.PotionModel].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.PotionModel] GetEnumerator()
+ 0057: stloc.0 
+ 0058: br.s 75
+ 0060: ldloc.0 
+ 0061: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.PotionModel].MegaCrit.Sts2.Core.Models.PotionModel get_Current()
+ 0066: stloc.1 
+ 0067: ldarg.0 
+ 0068: ldloc.1 
+ 0069: ldc.i4.1 
+ 0070: call method:MegaCrit.Sts2.Core.Nodes.Potions.NPotionContainer.Void Add(MegaCrit.Sts2.Core.Models.PotionModel, Boolean)
+ 0075: ldloc.0 
+ 0076: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0081: brtrue.s 60
+ 0083: leave.s 95
+ 0085: ldloc.0 
+ 0086: brfalse.s 94
+ 0088: ldloc.0 
+ 0089: callvirt method:System.IDisposable.Void Dispose()
+ 0094: endfinally 
+ 0095: ret 

@@ -1,0 +1,6 @@
+METHOD MegaCrit.Sts2.Core.Entities.Potions.PotionUsage get_Usage()
+ 0000: ldc.i4.1 
+ 0001: ret 
+METHOD MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0000: ldc.i4.2 
+ 0001: ret 

@@ -1,0 +1,12 @@
+METHOD Void Pause()
+ 0000: call method:MegaCrit.Sts2.Core.Helpers.NonInteractiveMode.Boolean get_IsActive()
+ 0005: brfalse.s 8
+ 0007: ret 
+ 0008: ldarg.0 
+ 0009: call method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_IsInProgress()
+ 0014: brtrue.s 17
+ 0016: ret 
+ 0017: ldarg.0 
+ 0018: ldc.i4.1 
+ 0019: call method:MegaCrit.Sts2.Core.Combat.CombatManager.Void set_IsPaused(Boolean)
+ 0024: ret 

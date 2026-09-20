@@ -1198,6 +1198,61 @@ if (args.Length > 1)
     var legalType = bridge.GetNestedType("LegalAction", BindingFlags.NonPublic)!;
     var mapActions = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(legalType))!;
     var legalCtor = legalType.GetConstructors(flags).Single(c => c.GetParameters().Length == 4);
+    // Waiting must remove executable siblings too: DispatchLabel consumes Observation.Actions, not the completeness flag.
+    var partialActions = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(legalType))!;
+    partialActions.Add(legalCtor.Invoke(new object[] { "discard_potion:0", "Discard potion", (Func<bool>)(() => throw new Exception("observation dispatched")), "potion" }));
+    var partialState = new Dictionary<string, object?> { ["state_type"] = "map", ["waiting"] = true };
+    var partialObservation = Call(bridge, null, "FinishObservation", partialState, partialActions, "waiting map with potion")!;
+    Check(partialState["legal_actions_complete"] is false && partialActions.Count == 0,
+        "waiting map must withhold the potion sibling from both wire and executable action sets");
+    // Production gate + finalizer + session acceptance; booleans stand for native reads, not Godot nodes.
+    // Exercise earlier AND later siblings, and a ready input after an unreadable one (must not heal the decision).
+    foreach (var (name, inputs, siblings) in new (string, bool[], string[])[] {
+        ("map fade with discard", new[] { false, false, false }, new[] { "discard_potion:0" }),
+        ("partial map with usable potion", new[] { true, false, true }, new[] { "discard_potion:0", "use_potion:0:none" }),
+        ("hidden usable potion holder", new[] { false, true }, new[] { "choose_map_node:0", "discard_potion:1" }),
+        ("valid unreadable potion target", new[] { true, false, true }, new[] { "end_turn", "discard_potion:0" }),
+        ("ready map and potion", new[] { true, true, true }, new[] { "discard_potion:0", "use_potion:0:none" }),
+        ("no eligible inputs", Array.Empty<bool>(), new[] { "discard_potion:0" }) })
+    {
+        var decisionState = new Dictionary<string, object?> { ["state_type"] = "map", ["waiting"] = false };
+        var decisionActions = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(legalType))!;
+        int callbackCount = 0;
+        void AddDecisionAction(string label) => decisionActions.Add(legalCtor.Invoke(new object[] { label, label,
+            (Func<bool>)(() => { callbackCount++; return true; }), label }));
+        AddDecisionAction(siblings[0]);
+        for (int i = 0; i < inputs.Length; i++)
+            if ((bool)Call(bridge, null, "DecisionInputReady", decisionState, inputs[i])!) AddDecisionAction("choice:" + i);
+        foreach (var label in siblings.Skip(1)) AddDecisionAction(label);
+        int offered = decisionActions.Count;
+        var decisionObservation = Call(bridge, null, "FinishObservation", decisionState, decisionActions, name)!;
+        bool ready = inputs.All(x => x);
+        var decisionLabels = decisionActions.Cast<object>().Select(a => (string)legalType.GetProperty("Label")!.GetValue(a)!).ToArray();
+        Check((decisionState["waiting"] is true) == !ready && (decisionState["legal_actions_complete"] is true) == ready
+            && decisionActions.Count == (ready ? offered : 0) && callbackCount == 0,
+            "whole decision readiness, never sibling pruning: " + name);
+        Check(ReferenceEquals(decisionObservation.GetType().GetProperty("Actions")!.GetValue(decisionObservation), decisionActions)
+            && ReferenceEquals(decisionState["legal_actions"], decisionActions), "wire and POST use the same withheld set: " + name);
+        var decisionSession = Activator.CreateInstance(sessionType, true)!;
+        string decisionVersion = (string)Call(sessionType, decisionSession, "Observe", (string)decisionState["state_version"]!)!;
+        Check(((int)Call(sessionType, decisionSession, "Accept", decisionVersion, siblings[0], decisionLabels)! == 0) == ready,
+            "POST cannot consume a sibling from an unreadable current decision: " + name);
+        object decisionOwner = new(); var decisionRoot = new TaskCompletionSource();
+        var childSession = OwnedSession(decisionOwner, Task.CompletedTask, Task.CompletedTask, () => decisionRoot.Task);
+        string decisionChildVersion = (string)Call(sessionType, childSession, "Observe", name)!;
+        Check(((int)Call(sessionType, childSession, "AcceptChild", decisionChildVersion, siblings[0], decisionLabels, decisionOwner)! == 0) == ready
+            && Pending(childSession), "same whole-set gate applies to an owned child without releasing its parent: " + name);
+        if (!ready)
+        {
+            var withheldVersion = (string)decisionState["state_version"]!;
+            // A new observation, not elapsed time or a cosmetic completion receipt, re-exposes the complete set.
+            var nextState = new Dictionary<string, object?> { ["state_type"] = "map", ["waiting"] = false };
+            foreach (var label in siblings.Concat(Enumerable.Range(0, inputs.Length).Select(i => "choice:" + i))) AddDecisionAction(label);
+            Call(bridge, null, "FinishObservation", nextState, decisionActions, name);
+            Check(nextState["legal_actions_complete"] is true && decisionActions.Count == siblings.Length + inputs.Length
+                && !Equals(nextState["state_version"], withheldVersion), "all alternatives return together with a fresh version: " + name);
+        }
+    }
     // R2: exercise the actual screen binder, session/selection gate and whole-set finalizer.
     // The old ABI fallback lets this safety regression demonstrate the old DLL's unsafe permission.
     void BindTutorialScreen(object flow, object set, object screen, bool seenAtEntry)
@@ -1600,6 +1655,37 @@ if (args.Length > 1)
         "compiled context read evaluates run presence eagerly and the network service only through the ordered helper's deferred read");
     Check(CalledMethods("AddNonCombatActions").Any(m => m.Name == "RewardCardsInputDisabled" && m.DeclaringType == protocol),
         "card-reward observation branch is wired to the production readiness helper");
+    // Actual compiled map predicate and both potion visibility sites must route into the same whole-decision gate.
+    var mapPredicate = bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags))
+        .Single(m => m.Name.StartsWith("<CaptureObservationCore>") && CalledBy(m).Any(c => c.Name == "IsReadableCanvas"));
+    var mapPredicateCalls = CalledBy(mapPredicate);
+    Check(mapPredicateCalls.Any(m => m.Name == "get_State") && mapPredicateCalls.Any(m => m.Name == "get_Point")
+        && mapPredicateCalls.Any(m => m.Name == "DecisionInputReady" && m.DeclaringType == bridge),
+        "real travelable-point enumeration cannot silently filter an unreadable point");
+    var potionCalls = CalledMethods("AddPotionActions");
+    Check(potionCalls.Count(m => m.Name == "DecisionInputReady" && m.DeclaringType == bridge) == 2
+        && potionCalls.Any(m => m.Name == "IsNodeVisible") && potionCalls.Any(m => m.Name == "IsValidTarget")
+        && potionCalls.Any(m => m.Name == "get_CanUseOrRemovePotions") && potionCalls.Any(m => m.Name == "get_IsQueued")
+        && potionCalls.Any(m => m.Name == "get_PassesCustomUsabilityCheck")
+        && Operands(bridge.GetMethod("AddPotionActions", flags)!).OfType<string>().Contains("_isUsable"),
+        "real potion holder and valid-target filters mark whole-decision waiting without removing native eligibility guards");
+    Check(bridge.GetMethod("AddPotionActions", flags)!.GetParameters()[0].ParameterType == typeof(Dictionary<string, object?>)
+        && CalledMethods("CaptureObservationCore").Any(m => m.Name == "AddPotionActions"),
+        "potion readiness receives the observation dictionary from the actual observation path");
+    Check(CalledMethods("DispatchLabel").Any(m => m.Name == "CaptureObservation")
+        && CalledMethods("CaptureObservationCore").Any(m => m.Name == "FinishObservation"),
+        "POST re-captures through the same readiness and whole-set finalizer");
+    // Pinned native map fade does not disable potion eligibility. Metadata only, never invoke native UI.
+    var nativeMap = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen", true)!;
+    var nativeHolder = game.GetType("MegaCrit.Sts2.Core.Nodes.Potions.NPotionHolder", true)!;
+    var nativePotion = game.GetType("MegaCrit.Sts2.Core.Models.PotionModel", true)!;
+    Check(CalledBy(nativeMap.GetMethod("Open", flags)!).Any(m => m.Name == "set_Modulate")
+        && CalledBy(nativeMap.GetMethod("Open", flags)!).Any(m => m.Name == "RecalculateTravelability")
+        && !CalledBy(nativeMap.GetMethod("Open", flags)!).Any(m => m.Name == "set_CanUseOrRemovePotions"),
+        "pinned map Open fades points and recalculates native travelability independently of potion permission");
+    Check(!CalledBy(nativeHolder.GetMethod("OpenPotionPopup", flags)!).Any(m => m.DeclaringType == nativeMap)
+        && !CalledBy(nativePotion.GetMethod("IsValidTarget", flags)!).Any(m => m.Name is "get_Modulate" or "get_Visible" or "IsVisibleInTree"),
+        "native potion popup/target validity supplies no map-fade or target-alpha exclusion");
     // Owned old-room teardown receipts come from the existing registration/dispatch callbacks, not from test helpers.
     var registrationCallbacks = CalledInClosures("RegisterCombatExit");
     Check(registrationCallbacks.Any(m => m.Name == "TravelExecuting" && m.DeclaringType == exitType) && registrationCallbacks.Any(m => m.Name == "DebugOnlyGetState")

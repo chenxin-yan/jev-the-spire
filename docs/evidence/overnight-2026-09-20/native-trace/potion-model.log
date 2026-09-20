@@ -1,0 +1,110 @@
+METHOD Boolean IsValidTarget(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0000: ldarg.1 
+ 0001: brtrue.s 29
+ 0003: ldarg.0 
+ 0004: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0009: ldc.i4.8 
+ 0010: bne.un.s 14
+ 0012: ldc.i4.1 
+ 0013: ret 
+ 0014: ldarg.0 
+ 0015: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0020: call method:MegaCrit.Sts2.Core.Entities.Cards.ActionTargetExtensions.Boolean IsSingleTarget(MegaCrit.Sts2.Core.Entities.Cards.TargetType)
+ 0025: ldc.i4.0 
+ 0026: ceq 
+ 0028: ret 
+ 0029: ldarg.1 
+ 0030: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsAlive()
+ 0035: brtrue.s 39
+ 0037: ldc.i4.0 
+ 0038: ret 
+ 0039: ldarg.0 
+ 0040: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0045: ldc.i4.2 
+ 0046: bne.un.s 76
+ 0048: ldarg.1 
+ 0049: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0054: ldarg.0 
+ 0055: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0060: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0065: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0070: ceq 
+ 0072: ldc.i4.0 
+ 0073: ceq 
+ 0075: ret 
+ 0076: ldarg.0 
+ 0077: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0082: ldc.i4.6 
+ 0083: bne.un.s 129
+ 0085: ldarg.1 
+ 0086: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0091: ldarg.0 
+ 0092: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0097: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0102: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.CombatSide get_Side()
+ 0107: bne.un.s 127
+ 0109: ldarg.1 
+ 0110: ldarg.0 
+ 0111: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0116: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0121: ceq 
+ 0123: ldc.i4.0 
+ 0124: ceq 
+ 0126: ret 
+ 0127: ldc.i4.0 
+ 0128: ret 
+ 0129: ldarg.0 
+ 0130: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0135: ldc.i4.5 
+ 0136: bne.un.s 145
+ 0138: ldarg.1 
+ 0139: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsPlayer()
+ 0144: ret 
+ 0145: ldarg.0 
+ 0146: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0151: ldc.i4.1 
+ 0152: bne.un.s 169
+ 0154: ldarg.1 
+ 0155: ldarg.0 
+ 0156: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0161: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0166: ceq 
+ 0168: ret 
+ 0169: ldc.i4.0 
+ 0170: ret 
+METHOD Void EnqueueManualUse(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Models.AbstractModel.Void AssertMutable()
+ 0006: ldarg.0 
+ 0007: ldfld field:System.Action BeforeUse
+ 0012: dup 
+ 0013: brtrue.s 18
+ 0015: pop 
+ 0016: br.s 23
+ 0018: callvirt method:System.Action.Void Invoke()
+ 0023: ldarg.1 
+ 0024: brtrue.s 58
+ 0026: ldarg.0 
+ 0027: ldarg.0 
+ 0028: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0033: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0038: call method:MegaCrit.Sts2.Core.Models.PotionModel.Boolean IsValidTarget(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0043: brfalse.s 58
+ 0045: ldarg.0 
+ 0046: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0051: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0056: starg.s 1
+ 0058: ldarg.0 
+ 0059: ldarg.1 
+ 0060: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0065: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_IsInProgress()
+ 0070: newobj method:MegaCrit.Sts2.Core.GameActions.UsePotionAction.Void .ctor(MegaCrit.Sts2.Core.Models.PotionModel, MegaCrit.Sts2.Core.Entities.Creatures.Creature, Boolean)
+ 0075: stloc.0 
+ 0076: ldarg.0 
+ 0077: ldc.i4.1 
+ 0078: call method:MegaCrit.Sts2.Core.Models.PotionModel.Void set_IsQueued(Boolean)
+ 0083: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0088: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0093: ldloc.0 
+ 0094: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.Void RequestEnqueue(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0099: ret 
