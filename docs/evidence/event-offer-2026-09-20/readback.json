@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "event_offer_identity_unverified",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "157d4e49c3d24d5498167315659d939a:248",
+  "mutation_pending": true
+}

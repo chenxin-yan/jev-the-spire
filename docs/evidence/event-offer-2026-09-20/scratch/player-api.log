@@ -1,0 +1,20 @@
+TYPE MegaCrit.Sts2.Core.Entities.Players.Player
+PROP MegaCrit.Sts2.Core.Runs.IRunState RunState get=MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+FIELD System.Action`1[MegaCrit.Sts2.Core.Models.RelicModel] RelicObtained
+FIELD System.Action`1[MegaCrit.Sts2.Core.Models.RelicModel] RelicRemoved
+FIELD System.Action`1[System.Int32] MaxPotionCountChanged
+FIELD System.Action`1[MegaCrit.Sts2.Core.Models.PotionModel] PotionProcured
+FIELD System.Action`1[MegaCrit.Sts2.Core.Models.PotionModel] PotionDiscarded
+FIELD System.Action`1[MegaCrit.Sts2.Core.Models.PotionModel] UsedPotionRemoved
+FIELD System.Action AddPotionFailed
+FIELD System.Action GoldChanged
+FIELD MegaCrit.Sts2.Core.Entities.Cards.CardPile[] _runPiles
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.RelicModel] _relics
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.PotionModel] _potionSlots
+FIELD MegaCrit.Sts2.Core.Models.CharacterModel <Character>k__BackingField
+FIELD MegaCrit.Sts2.Core.Entities.Creatures.Creature <Creature>k__BackingField
+FIELD UInt64 <NetId>k__BackingField
+FIELD MegaCrit.Sts2.Core.Random.PlayerRngSet <PlayerRng>k__BackingField
+FIELD MegaCrit.Sts2.Core.Odds.PlayerOddsSet <PlayerOdds>k__BackingField
+FIELD MegaCrit.Sts2.Core.Runs.RelicGrabBag <RelicGrabBag>k__BackingField
+FIELD MegaCrit.Sts2.Core.Unlocks.UnlockState <UnlockState>k__BackingField

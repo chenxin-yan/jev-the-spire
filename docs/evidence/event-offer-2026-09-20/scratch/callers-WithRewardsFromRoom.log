@@ -1,0 +1,2 @@
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<GenerateForRoomEnd>d__2.MoveNext IL 29 -> MegaCrit.Sts2.Core.Rewards.RewardsSet.WithRewardsFromRoom
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<OfferForRoomEnd>d__0.MoveNext IL 90 -> MegaCrit.Sts2.Core.Rewards.RewardsSet.WithRewardsFromRoom

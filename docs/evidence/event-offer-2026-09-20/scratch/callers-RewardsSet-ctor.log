@@ -1,0 +1,8 @@
+CALLER MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor IL 1 -> System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward]..ctor
+CALLER MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor IL 26 -> System.Object..ctor
+CALLER MegaCrit.Sts2.Core.Models.Relics.NeowsBones+<AfterObtained>d__7.MoveNext IL 128 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<GenerateCustom>d__3.MoveNext IL 18 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<GenerateForRoomEnd>d__2.MoveNext IL 18 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<OfferCustom>d__1.MoveNext IL 17 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<OfferForRoomEnd>d__0.MoveNext IL 53 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor
+CALLER MegaCrit.Sts2.Core.Commands.RewardsCmd+<OfferForRoomEnd>d__0.MoveNext IL 79 -> MegaCrit.Sts2.Core.Rewards.RewardsSet..ctor

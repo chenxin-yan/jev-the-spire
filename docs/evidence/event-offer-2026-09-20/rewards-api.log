@@ -1,0 +1,43 @@
+NESTED MegaCrit.Sts2.Core.Rewards.RewardsSet+<>c
+NESTED MegaCrit.Sts2.Core.Rewards.RewardsSet+<GenerateWithoutOffering>d__32
+NESTED MegaCrit.Sts2.Core.Rewards.RewardsSet+<Offer>d__33
+TYPE MegaCrit.Sts2.Core.Rewards.RewardsSet
+PROP MegaCrit.Sts2.Core.Rooms.AbstractRoom Room get=MegaCrit.Sts2.Core.Rooms.AbstractRoom get_Room()
+PROP MegaCrit.Sts2.Core.Entities.Players.Player Player get=MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+PROP System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward] Rewards get=System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward] get_Rewards()
+PROP Boolean ThrowInTestIfRewardsNotTaken get=Boolean get_ThrowInTestIfRewardsNotTaken()
+PROP Boolean DisallowSkipping get=Boolean get_DisallowSkipping()
+PROP Boolean AllRewardsSuccessfullySelected get=Boolean get_AllRewardsSuccessfullySelected()
+PROP Int32 Id get=Int32 get_Id()
+FIELD MegaCrit.Sts2.Core.Rooms.AbstractRoom <Room>k__BackingField
+FIELD MegaCrit.Sts2.Core.Entities.Players.Player <Player>k__BackingField
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward] <Rewards>k__BackingField
+FIELD Boolean <ThrowInTestIfRewardsNotTaken>k__BackingField
+FIELD Boolean _allowEmptyRewards
+FIELD Boolean _disallowSkipping
+FIELD Boolean _isGenerated
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer _synchronizer
+FIELD Int32 <Id>k__BackingField
+FIELD System.Func`2[MegaCrit.Sts2.Core.Rewards.RewardsSet,System.Threading.Tasks.Task] testSelector
+METHOD MegaCrit.Sts2.Core.Rooms.AbstractRoom get_Room()
+METHOD Void set_Room(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+METHOD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward] get_Rewards()
+METHOD Boolean get_ThrowInTestIfRewardsNotTaken()
+METHOD Void set_ThrowInTestIfRewardsNotTaken(Boolean)
+METHOD Boolean get_DisallowSkipping()
+METHOD Boolean get_AllRewardsSuccessfullySelected()
+METHOD Int32 get_Id()
+METHOD Void set_Id(Int32)
+METHOD MegaCrit.Sts2.Core.Rewards.RewardsSet EmptyForRoom(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD MegaCrit.Sts2.Core.Rewards.RewardsSet WithRewardsFromRoom(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD MegaCrit.Sts2.Core.Rewards.RewardsSet WithCustomRewards(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward])
+METHOD MegaCrit.Sts2.Core.Rewards.RewardsSet WithSkippingDisallowed()
+METHOD System.Threading.Tasks.Task GenerateWithoutOffering()
+METHOD System.Threading.Tasks.Task Offer()
+METHOD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Rewards.Reward] GenerateRewardsFor(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD Void RollForPotionAndAddTo(System.Collections.Generic.ICollection`1[MegaCrit.Sts2.Core.Rewards.Reward], MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Rooms.RoomType)
+METHOD Boolean TryGenerateTutorialRewards(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD MegaCrit.Sts2.Core.Rewards.RelicReward GetTutorialRelicReward[T](MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD System.Nullable`1[System.ValueTuple`2[MegaCrit.Sts2.Core.Models.CardModel[],MegaCrit.Sts2.Core.Models.PotionModel]] GetTutorialMonsterRewards(MegaCrit.Sts2.Core.Entities.Players.Player, Int32)
+METHOD System.String ToString()

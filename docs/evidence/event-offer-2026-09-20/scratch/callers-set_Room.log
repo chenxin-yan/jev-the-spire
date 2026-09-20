@@ -1,0 +1,2 @@
+CALLER MegaCrit.Sts2.Core.Rewards.RewardsSet.EmptyForRoom IL 2 -> MegaCrit.Sts2.Core.Rewards.RewardsSet.set_Room
+CALLER MegaCrit.Sts2.Core.Rewards.RewardsSet.WithRewardsFromRoom IL 2 -> MegaCrit.Sts2.Core.Rewards.RewardsSet.set_Room
