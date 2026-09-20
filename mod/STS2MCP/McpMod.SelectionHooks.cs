@@ -98,15 +98,29 @@ public static partial class McpMod
     }
 
     private static void SelectionContextPrefix(object[] __args, out IDisposable __state)
-        => __state = SelectionOwners.Enter(ContextualSelectionOwner(__args.OfType<PlayerChoiceContext>().Single(), RequireTreasureIdentity, RequireEventIdentity));
+    {
+        var context = __args.OfType<PlayerChoiceContext>().Single();
+        // The wrapper decides its route inside the hooked command (SignalPlayerChoiceBegun), after this admission and before the
+        // selector boundary: the lease re-validates that it never branched, so a detached action cannot keep an actionable lease.
+        __state = SelectionOwners.Enter(ContextualSelectionOwner(context, RequireTreasureIdentity, RequireEventIdentity),
+            context is BranchingPlayerChoiceContext branching ? () => Unbranched(branching) : null);
+    }
+
+    private static bool Unbranched(BranchingPlayerChoiceContext branching) => GetInstanceFieldValue(branching, "_createdContext") == null;
 
     // One policy for every contextual CardSelectCmd overload. A GameAction context resolves only through explicit registration.
-    // Pinned v0.111: BlockingPlayerChoiceContext is the context the shared EventModel grid helper and relic AfterObtained lanes create;
+    // Pinned v0.111: CardModel.OnPlayWrapper/PotionModel.OnUseWrapper hand OnPlay/OnUse a BranchingPlayerChoiceContext over the action's
+    // GameActionPlayerChoiceContext. Until it branches into a HookPlayerChoiceContext (_createdContext) it forwards the choice to that
+    // _originalContext and the action still awaits the card/potion task, so it resolves through the same explicit registration only.
+    // BlockingPlayerChoiceContext is the context the shared EventModel grid helper and relic AfterObtained lanes create;
     // it inherits only the retained operation whose own dispatch flow is executing, after that source's identity adapter passes.
-    // Branching/Hook/Throwing contexts and any other flow mask inherited tokens; OwnerId/model-stack identity is never authority.
+    // Branched/Hook/Throwing contexts and any other flow mask inherited tokens; OwnerId/model-stack identity is never authority.
     private static object? ContextualSelectionOwner(PlayerChoiceContext context, Action<TreasureOperation> requireTreasure, Action<EventEntry> requireEvent)
     {
         if (context is GameActionPlayerChoiceContext action) return SelectionOwners.ResolveContext(action.Action);
+        if (context is BranchingPlayerChoiceContext branching)
+            return Unbranched(branching) && GetInstanceFieldValue(branching, "_originalContext") is GameActionPlayerChoiceContext original
+                ? SelectionOwners.ResolveContext(original.Action) : null;
         if (context is not BlockingPlayerChoiceContext) return null;
         switch (OwnedContextualRoot())
         {

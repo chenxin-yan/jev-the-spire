@@ -243,13 +243,14 @@ public static partial class McpMod
     {
         // Exact v0.111 types whose OnCardClicked/Confirm/Cancel/Close handlers and preview containers were inspected; the shared
         // CardsSelected boundary owns each. Enchant: FromDeckForEnchantment -> ShowScreen(cards, enchantment, amount, prefs) -> CardsSelected.
+        // Combat pile: FromCombatPile -> Create(pile, prefs, filter) -> CardsSelected; %Confirm -> CompleteSelection, no cancel button.
         var type = screen.GetType();
-        if (type != typeof(NDeckCardSelectScreen) && type != typeof(NSimpleCardSelectScreen)
-            && type != typeof(NDeckUpgradeSelectScreen) && type != typeof(NDeckTransformSelectScreen) && type != typeof(NDeckEnchantSelectScreen))
+        if (type != typeof(NDeckCardSelectScreen) && type != typeof(NSimpleCardSelectScreen) && type != typeof(NDeckUpgradeSelectScreen)
+            && type != typeof(NDeckTransformSelectScreen) && type != typeof(NDeckEnchantSelectScreen) && type != typeof(NCombatPileCardSelectScreen))
             throw new NotSupportedException($"unverified_grid_subclass:{type.Name}");
         if (GetInstanceFieldValue(screen, "_selectedCards") is not IEnumerable<CardModel> selection
             || GetInstanceFieldValue(screen, "_prefs") is not CardSelectorPrefs prefs
-            || GetInstanceFieldValue(screen, "_cards") is not IReadOnlyList<CardModel> candidates)
+            || GridCandidates(screen) is not { } candidates)
             throw new NotSupportedException("grid_selection_predicates_unavailable");
         var selected = selection.ToHashSet();
         var holders = FindAllSortedByPosition<NGridCardHolder>(screen);
@@ -279,6 +280,15 @@ public static partial class McpMod
         var cancels = FindAll<NBackButton>(screen);
         for (int i = 0; i < cancels.Count; i++)
             AddClick(actions, $"cancel_selection:{i}", preview ? "Cancel preview" : "Cancel selection", cancels[i]);
+    }
+
+    // NCombatPileCardSelectScreen never fills _cards (Create stores Array.Empty): its UpdatePileContents renders _pile.Cards, filtered by
+    // _filter when present, and re-runs on the pile's ContentsChanged, so that live pile is its only complete candidate list.
+    private static IReadOnlyList<CardModel>? GridCandidates(NCardGridSelectionScreen screen)
+    {
+        if (screen is not NCombatPileCardSelectScreen) return GetInstanceFieldValue(screen, "_cards") as IReadOnlyList<CardModel>;
+        if (GetInstanceFieldValue(screen, "_pile") is not CardPile pile) return null;
+        return GetInstanceFieldValue(screen, "_filter") is Func<CardModel, bool> filter ? pile.Cards.Where(filter).ToList() : pile.Cards;
     }
 
     private static void AddHandSelection(Dictionary<string, object?> state, NPlayerHand hand, List<LegalAction> actions)

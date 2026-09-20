@@ -26,7 +26,11 @@ var protocol = assembly.GetType("STS2_MCP.BridgeProtocol", true)!;
 int checks = 0;
 void Check(bool passed, string message) { Interlocked.Increment(ref checks); if (!passed) throw new Exception(message); }
 object? Call(Type type, object? instance, string name, params object?[] values)
-    => type.GetMethod(name, flags)!.Invoke(instance, values);
+{
+    var method = type.GetMethod(name, flags)!;
+    var padded = values.Concat(Enumerable.Repeat(Type.Missing, Math.Max(0, method.GetParameters().Length - values.Length))).ToArray();
+    return method.Invoke(instance, flags | BindingFlags.OptionalParamBinding, null, padded, null);
+}
 // Stage 1: production synchronous-receipt helper; no native/Godot object construction.
 void CheckOrdinaryReceipts()
 {
@@ -1514,6 +1518,7 @@ if (args.Length > 1)
         // The REAL contextual prefix: real GameActionPlayerChoiceContext objects over uninitialized concrete GameActions (no ctor, no Godot),
         // resolved only through explicit registration.
         harmonyType.GetMethod("Patch")!.Invoke(patcher, new[] { capture, Hook("SelectionContextPrefix"), null, null, Hook("SelectionContextFinalizer") });
+        harmonyType.GetMethod("Patch")!.Invoke(patcher, new[] { typeof(ManagedSelectorFixture).GetMethod("CaptureSelecting")!, Hook("SelectionContextPrefix"), null, null, Hook("SelectionContextFinalizer") });
         ManagedSelectorFixture.CurrentOwner = () => ownershipType.GetProperty("CurrentOwner", flags)!.GetValue(hookedRegistry);
         var actionContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext", true)!;
         object UnregisteredAction() => System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.GameActions.MoveToMapCoordAction", true)!);
@@ -1530,6 +1535,49 @@ if (args.Length > 1)
         contextGate.SetResult();
         Check(ReferenceEquals(await captured1, owned1) && ReferenceEquals(await captured2, owned2), "real Harmony scopes retain exact independent async owners across await");
         Call(ownershipType, hookedRegistry, "CloseOwner", owned1); Call(ownershipType, hookedRegistry, "CloseOwner", owned2);
+        // Pinned v0.111: CardModel.OnPlayWrapper / PotionModel.OnUseWrapper hand OnPlay/OnUse a BranchingPlayerChoiceContext over the action's
+        // GameActionPlayerChoiceContext (live seed5P4NPFRRCJY6 :25 Headbutt refusal). Until it branches into a HookPlayerChoiceContext it forwards
+        // the choice to that original context and the action still awaits the card task, so only that exact registration is the owner.
+        var branchingType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext", true)!;
+        var wrappedHookType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext", true)!;
+        object Branching(object original, bool branched = false)
+        {
+            var wrapper = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(branchingType);
+            branchingType.GetField("_originalContext", flags)!.SetValue(wrapper, original);
+            if (branched) branchingType.GetField("_createdContext", flags)!.SetValue(wrapper, System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(wrappedHookType));
+            return wrapper;
+        }
+        var action3 = UnregisteredAction(); var owned3 = new object();
+        Call(ownershipType, hookedRegistry, "RegisterContext", action3, owned3);
+        var foreignAmbient = new object();
+        using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", foreignAmbient)!)
+        {
+            Check(ReferenceEquals(await fixture.Capture(Branching(ActionContext(action3)), Task.CompletedTask), owned3),
+                "an unbranched Branching wrapper over a registered GameAction context installs exactly that registered owner (live Headbutt unowned_selection_continuation)");
+            Check(await fixture.Capture(Branching(ActionContext(UnregisteredAction())), Task.CompletedTask) == null, "a Branching wrapper over an unregistered GameAction context masks the ambient owner");
+            Check(await fixture.Capture(Branching(ActionContext(action3), branched: true), Task.CompletedTask) == null, "a Branching wrapper that already branched into a Hook context grants nothing");
+            Check(await fixture.Capture(Branching(System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(wrappedHookType)), Task.CompletedTask) == null, "a Branching wrapper over a non-GameAction context is masked");
+            Check(await fixture.Capture(Branching(Branching(ActionContext(action3))), Task.CompletedTask) == null, "nested Branching wrappers are not unwrapped");
+            Check(await fixture.Capture(System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(wrappedHookType), Task.CompletedTask) == null, "a bare Hook context is still masked");
+            // Native order inside the hooked command: admission (this prefix) -> SignalPlayerChoiceBegun decides the route -> selector boundary.
+            // A wrapper that branches after admission detaches the action; its lease must stop being actionable before that action completes.
+            var lateWrapper = Branching(ActionContext(action3)); var lateGrid = new ManagedSelectorFixture(); var lateGridGate = new TaskCompletionSource<int>();
+            var lateContextGate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            var lateCapture = fixture.CaptureSelecting(lateWrapper, () => lateGrid.Select(lateGridGate), lateContextGate.Task);
+            Check(ReferenceEquals(ManagedSelectorFixture.CurrentOwner(), foreignAmbient), "Branching admission scope restores the caller before the returned Task completes");
+            var lateLease = Call(ownershipType, hookedRegistry, "Find", lateGrid, owned3) ?? throw new Exception("boundary reached inside the real Branching admission must lease the selector to the registered owner");
+            var lateParent = OwnedSession(owned3, new TaskCompletionSource().Task, Task.CompletedTask, () => null);
+            Check((bool)Call(ownershipType, hookedRegistry, "IsCurrent", lateLease, owned3)! && GateValue(Gate(lateGrid, exitCardType, false, null, lateParent, hookedRegistry), "Stop") == null,
+                "the unbranched wrapper's boundary lease is current and decidable");
+            branchingType.GetField("_createdContext", flags)!.SetValue(lateWrapper, System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(wrappedHookType));
+            Check(!(bool)Call(ownershipType, hookedRegistry, "IsCurrent", lateLease, owned3)!
+                && GateValue(Gate(lateGrid, exitCardType, false, null, lateParent, hookedRegistry), "Stop") is Dictionary<string, object?> lateStop && lateStop["state_type"] is "waiting",
+                "a wrapper that branched after admission stops being actionable at the next observation: no dispatch window before the detached action completes");
+            lateGridGate.SetResult(0); lateContextGate.SetResult();
+            Check(ReferenceEquals(await lateCapture, owned3), "the admission itself was the registered owner before the branch");
+            Call(ownershipType, hookedRegistry, "CloseOwner", owned3);
+            Check(await fixture.Capture(Branching(ActionContext(action3)), Task.CompletedTask) == null, "a Branching wrapper over a closed registration grants nothing to a late continuation");
+        }
         // Same production entry/postfix/finalizer used by the native reward hooks, detouring managed code only.
         var rewardCapture = typeof(ManagedSelectorFixture).GetMethod("CaptureReward")!;
         harmonyType.GetMethod("Patch")!.Invoke(patcher, new[] { rewardCapture, Hook("EnterRewardUi"), Hook("RewardTaskPostfix"), null, Hook("RewardTaskFinalizer") });
@@ -1922,6 +1970,35 @@ if (args.Length > 1)
         && policyOperands.OfType<MethodBase>().Any(m => m.Name == "OwnedContextualRoot" && m.DeclaringType == bridge) && policyOperands.OfType<MethodBase>().Any(m => m.Name == "ResolveContext")
         && !policyOperands.OfType<MethodBase>().Any(m => m.Name is "get_OwnerId" or "get_ModelStack" or "get_LastInvolvedModel"),
         "policy admits the exact Blocking context type through the owned-root decision, never OwnerId/model-stack identity");
+    // Card/potion action lane: the wrapper OnPlay/OnUse receive is a BranchingPlayerChoiceContext whose begin signal routes to _originalContext
+    // until it creates a Hook context (_createdContext); the policy unwraps exactly that unbranched wrapper to its registered GameAction context.
+    var branchingContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext", true)!;
+    var hookContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext", true)!;
+    Check(policyOperands.Contains(branchingContextType) && policyOperands.OfType<string>().Contains("_originalContext") && policyOperands.OfType<MethodBase>().Any(m => m.Name == "Unbranched" && m.DeclaringType == bridge)
+        && Operands(bridge.GetMethod("Unbranched", flags)!).OfType<string>().Contains("_createdContext")
+        && branchingContextType.GetField("_originalContext", flags)?.FieldType == choiceContextType && branchingContextType.GetField("_createdContext", flags)?.FieldType == hookContextType,
+        "policy unwraps only the unbranched Branching wrapper through its pinned _originalContext/_createdContext fields");
+    var contextPrefixCalls = CalledMethods("SelectionContextPrefix").Concat(CalledInClosures("SelectionContextPrefix")).ToList();
+    Check(contextPrefixOperands.Contains(branchingContextType) && contextPrefixCalls.Any(m => m.Name == "Unbranched" && m.DeclaringType == bridge)
+        && contextPrefixCalls.Any(m => m.Name == "Enter" && m.DeclaringType == ownershipType && m.GetParameters().Length == 2),
+        "the contextual prefix installs the Branching re-validation as the readiness of every lease begun under that admission");
+    var fromCombatPile = game.GetType("MegaCrit.Sts2.Core.Commands.CardSelectCmd", true)!.GetNestedTypes(flags).Where(t => t.Name.StartsWith("<FromCombatPile>")).SelectMany(t => CalledBy(t.GetMethod("MoveNext", flags)!)).ToList();
+    Check(fromCombatPile.Any(m => m.Name == "SignalPlayerChoiceBegun") && fromCombatPile.Any(m => m.Name == "CardsSelected")
+        && fromCombatPile.Any(m => m.Name == "Create" && m.DeclaringType == game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen", true)!),
+        "pinned FromCombatPile signals the choice route on the context before creating the combat pile grid and awaiting its CardsSelected boundary");
+    foreach (var (modelName, wrapperName, callback) in new[] { ("MegaCrit.Sts2.Core.Models.CardModel", "<OnPlayWrapper>", "OnPlay"), ("MegaCrit.Sts2.Core.Models.PotionModel", "<OnUseWrapper>", "OnUse") })
+    {
+        var modelType = game.GetType(modelName, true)!;
+        var wrapperCalls = CalledBy(modelType.GetNestedTypes(flags).Single(t => t.Name.StartsWith(wrapperName)).GetMethod("MoveNext", flags)!);
+        Check(wrapperCalls.Any(m => m is ConstructorInfo && m.DeclaringType == branchingContextType) && wrapperCalls.Any(m => m.Name == callback && m.DeclaringType == modelType)
+            && wrapperCalls.Any(m => m.Name == "AssignTaskAndWaitForPauseOrCompletion" && m.DeclaringType == branchingContextType),
+            "pinned " + modelName + wrapperName + " hands " + callback + " a BranchingPlayerChoiceContext and awaits the task through it");
+    }
+    var branchingBegun = Operands(branchingContextType.GetNestedTypes(flags).Single(t => t.Name.StartsWith("<SignalPlayerChoiceBegun>")).GetMethod("MoveNext", flags)!);
+    Check(branchingBegun.OfType<FieldInfo>().Any(f => f.Name == "_originalContext") && branchingBegun.OfType<FieldInfo>().Any(f => f.Name == "_createdContext")
+        && branchingBegun.OfType<MethodBase>().Any(m => m is ConstructorInfo && m.DeclaringType == hookContextType) && branchingBegun.OfType<MethodBase>().Any(m => m.Name == "SignalPlayerChoiceBegun")
+        && CalledBy(branchingContextType.GetMethod("SignalPlayerChoiceEnded", flags)!).Any(m => m.Name == "SignalPlayerChoiceEnded"),
+        "pinned Branching begin/end forward to _originalContext unless a Hook context was created");
     var nativeContextSubclasses = game.GetTypes().Where(t => t != choiceContextType && choiceContextType.IsAssignableFrom(t)).Select(t => t.Name).OrderBy(n => n).ToArray();
     Check(nativeContextSubclasses.SequenceEqual(new[] { "BlockingPlayerChoiceContext", "BranchingPlayerChoiceContext", "GameActionPlayerChoiceContext", "HookPlayerChoiceContext", "ThrowingPlayerChoiceContext" }),
         "audited v0.111 PlayerChoiceContext subclasses: " + string.Join(",", nativeContextSubclasses));
@@ -2276,12 +2353,68 @@ if (args.Length > 1)
     Check(gridInit.Any(m => m.Name == "CancelAsync") && gridInit.Any(m => m.Name == "InitGrid" && m.GetParameters().Length == 0) && gridInit.Any(m => m.Name == "AnimateIn"),
         "native InitGrid awaits before allocating holders: an empty grid for a non-empty candidate list is a transient native window");
     var gridActions = Operands(bridge.GetMethod("AddGridActions", flags)!);
-    Check(gridActions.OfType<Type>().Contains(enchantType) && gridActions.OfType<Type>().Count(t => gridBaseType.IsAssignableFrom(t) && t != gridBaseType) == 5
+    var combatPileType = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen", true)!;
+    Check(gridActions.OfType<Type>().Contains(enchantType) && gridActions.OfType<Type>().Contains(combatPileType) && gridActions.OfType<Type>().Count(t => gridBaseType.IsAssignableFrom(t) && t != gridBaseType) == 6
         && gridActions.OfType<MethodBase>().Any(m => m.Name == "op_Inequality" && m.DeclaringType == typeof(Type)) && gridActions.OfType<string>().Contains("unverified_grid_subclass:"),
-        "grid actions bind the five inspected exact types (enchant included) and still refuse any other subclass");
-    Check(gridActions.OfType<string>().Contains("_cards") && gridActions.OfType<string>().Contains("grid_candidates_incomplete")
+        "grid actions bind the six inspected exact types (enchant and combat pile included) and still refuse any other subclass");
+    var gridCandidates = Operands(bridge.GetMethod("GridCandidates", flags)!);
+    Check(gridActions.OfType<MethodBase>().Any(m => m.Name == "GridCandidates" && m.DeclaringType == bridge) && gridActions.OfType<string>().Contains("grid_candidates_incomplete")
+        && gridCandidates.OfType<string>().Contains("_cards") && gridCandidates.OfType<string>().Contains("_pile") && gridCandidates.OfType<string>().Contains("_filter") && gridCandidates.Contains(combatPileType)
         && gridActions.OfType<MethodBase>().Any(m => m.Name == "SameCards" && m.DeclaringType == protocol) && gridActions.OfType<string>().Contains("waiting"),
         "grid actions compare the exact candidate list to allocated holders, wait on the empty native window and halt on a partial window");
+    // Combat pile grid (Headbutt lane): exact native type, shared CardsSelected boundary, live pile candidates, confirm-only completion.
+    Check(combatPileType.BaseType == gridBaseType && combatPileType.GetMethod("CardsSelected", flags | BindingFlags.DeclaredOnly) == null
+        && combatPileType.GetField("_closeButton", flags) == null && combatPileType.GetMethod("CloseSelection", flags | BindingFlags.DeclaredOnly) == null,
+        "combat pile screen is a direct grid subclass using the base CardsSelected boundary, with no cancel/close lane");
+    foreach (string field in new[] { "_selectedCards", "_prefs", "_cards", "_pile", "_filter", "_confirmButton", "_cardResults" })
+        Check(combatPileType.GetField(field, flags) != null, "NCombatPileCardSelectScreen." + field);
+    var combatPileCreate = Operands(combatPileType.GetMethod("Create", flags)!);
+    Check(combatPileCreate.OfType<MethodBase>().Any(m => m.Name == "Empty" && m.DeclaringType == typeof(Array)) && combatPileCreate.OfType<FieldInfo>().Any(f => f.Name == "_cards")
+        && combatPileCreate.OfType<FieldInfo>().Any(f => f.Name == "_pile") && combatPileCreate.OfType<FieldInfo>().Any(f => f.Name == "_filter"),
+        "native Create stores an empty _cards list and the live pile/filter instead");
+    var combatPileUpdate = Operands(combatPileType.GetMethod("UpdatePileContents", flags)!);
+    Check(combatPileUpdate.OfType<FieldInfo>().Any(f => f.Name == "_pile") && combatPileUpdate.OfType<MethodBase>().Any(m => m.Name == "get_Cards") && combatPileUpdate.OfType<FieldInfo>().Any(f => f.Name == "_filter")
+        && combatPileUpdate.OfType<MethodBase>().Any(m => m.Name == "Where") && combatPileUpdate.OfType<MethodBase>().Any(m => m.Name == "SetCards") && combatPileUpdate.OfType<MethodBase>().Count(m => m.Name == "CompleteSelection") == 2
+        && CalledBy(combatPileType.GetMethod("_EnterTree", flags)!).Any(m => m.Name == "add_ContentsChanged"),
+        "native UpdatePileContents renders _pile.Cards (filtered when _filter is set), re-runs on ContentsChanged and auto-completes an empty or fully selected pile");
+    var combatPileReady = Operands(combatPileType.GetMethod("_Ready", flags)!);
+    Check(combatPileReady.OfType<string>().Contains("%Confirm") && combatPileReady.OfType<MethodBase>().Count(m => m.Name == "Connect") == 1
+        && CalledBy(combatPileType.GetMethod("<_Ready>b__16_0", flags)!).Any(m => m.Name == "CompleteSelection")
+        && CalledBy(combatPileType.GetMethod("CompleteSelection", flags)!).Any(m => m.Name == "SetResult") && CalledBy(combatPileType.GetMethod("CompleteSelection", flags)!).Any(m => m.Name == "Remove")
+        && CalledBy(combatPileType.GetMethod("OnCardClicked", flags)!).Any(m => m.Name == "CheckIfSelectionComplete") && CalledBy(combatPileType.GetMethod("OnCardClicked", flags)!).Any(m => m.Name == "get_MaxSelect")
+        && CalledBy(combatPileType.GetMethod("CheckIfSelectionComplete", flags)!).Any(m => m.Name == "CompleteSelection"),
+        "native combat pile wires only %Confirm -> CompleteSelection; card clicks toggle _selectedCards under MaxSelect and auto-complete without manual confirmation");
+    var flashRelics = CalledBy(combatPileType.GetNestedTypes(flags).Single(t => t.Name.StartsWith("<FlashRelicsOnModifiedCards>")).GetMethod("MoveNext", flags)!);
+    Check(flashRelics.Any(m => m.Name == "Flash") && flashRelics.Any(m => m.Name == "FlashRelicOnCard") && flashRelics.Any(m => m.Name == "AwaitProcessFrame")
+        && !flashRelics.Any(m => m.DeclaringType?.Namespace?.StartsWith("MegaCrit.Sts2.Core.Commands") == true) && combatPileCreate.OfType<FieldInfo>().Any(f => f.Name == "_cardResults"),
+        "detached AfterOverlayOpened lane only flashes relic VFX over _cardResults (null from Create): no command, input or selection effect");
+    // Actual candidate derivation over real native pile/card objects (no Godot init): the live pile, not the empty _cards list.
+    {
+        var cardType = game.GetType("MegaCrit.Sts2.Core.Models.Cards.Headbutt", true)!; var cardModelType = game.GetType("MegaCrit.Sts2.Core.Models.CardModel", true)!;
+        object Card() => System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(cardType);
+        object p1 = Card(), p2 = Card(), p3 = Card();
+        var pileType = game.GetType("MegaCrit.Sts2.Core.Entities.Cards.CardPile", true)!;
+        var pile = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(pileType);
+        var pileList = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(cardModelType))!;
+        pileList.Add(p1); pileList.Add(p2); pileList.Add(p3);
+        pileType.GetField("_cards", flags)!.SetValue(pile, pileList);
+        var combatPile = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(combatPileType);
+        combatPileType.GetField("_cards", flags)!.SetValue(combatPile, Array.CreateInstance(cardModelType, 0));
+        combatPileType.GetField("_pile", flags)!.SetValue(combatPile, pile);
+        object? Candidates(object screen) => Call(bridge, null, "GridCandidates", screen);
+        Check(Candidates(combatPile) is System.Collections.IEnumerable all && (bool)Call(protocol, null, "SameCards", all.Cast<object>(), new[] { p1, p2, p3 })!,
+            "combat pile candidates are the live pile, never the empty _cards list");
+        var filterType = typeof(Func<,>).MakeGenericType(cardModelType, typeof(bool));
+        var filter = Delegate.CreateDelegate(filterType, p2, typeof(object).GetMethod("Equals", new[] { typeof(object) })!);
+        combatPileType.GetField("_filter", flags)!.SetValue(combatPile, filter);
+        Check(Candidates(combatPile) is System.Collections.IEnumerable filtered && (bool)Call(protocol, null, "SameCards", filtered.Cast<object>(), new[] { p2 })!,
+            "combat pile candidates honour the native _filter exactly as UpdatePileContents does");
+        combatPileType.GetField("_pile", flags)!.SetValue(combatPile, null);
+        Check(Candidates(combatPile) == null, "a combat pile screen without its pile has no verified candidate list");
+        var deckGrid = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NSimpleCardSelectScreen", true)!);
+        gridBaseType.GetField("_cards", flags)!.SetValue(deckGrid, pileList);
+        Check(Candidates(deckGrid) is System.Collections.IEnumerable deck && (bool)Call(protocol, null, "SameCards", deck.Cast<object>(), new[] { p1, p2, p3 })!, "other grids keep the exact _cards list as candidates");
+    }
     var cardSelectState = Operands(bridge.GetMethod("BuildCardSelectState", flags)!);
     Check(cardSelectState.OfType<string>().Contains("%EnchantSinglePreviewContainer") && cardSelectState.OfType<string>().Contains("%EnchantMultiPreviewContainer")
         && cardSelectState.OfType<string>().Contains("_enchantmentTitle") && cardSelectState.OfType<string>().Contains("_enchantmentDescription") && cardSelectState.OfType<string>().Contains("_enchantmentAmount")
@@ -2553,6 +2686,9 @@ sealed class ManagedSelectorFixture
     { SeenAtEntry = CurrentRewardOwner(); await gate; return CurrentRewardOwner(); }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
     public async Task<object?> Capture(object owner, Task gate) { await gate; return CurrentOwner(); }
+    // Native-equivalent order of a hooked CardSelectCmd overload: the selector boundary runs synchronously inside the admitted scope.
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    public async Task<object?> CaptureSelecting(object owner, Func<Task> boundary, Task gate) { var selecting = boundary(); await gate; await selecting; return CurrentOwner(); }
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
     public Task<int> Select(TaskCompletionSource<int> gate) => gate.Task;
 }

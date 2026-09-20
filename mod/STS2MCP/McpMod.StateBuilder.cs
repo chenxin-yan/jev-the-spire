@@ -1834,6 +1834,7 @@ public static partial class McpMod
             NDeckEnchantSelectScreen => "enchant",
             NDeckCardSelectScreen => "select",
             NSimpleCardSelectScreen => "simple_select",
+            NCombatPileCardSelectScreen => "combat_pile",
             _ => screen.GetType().Name
         };
 

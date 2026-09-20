@@ -11,6 +11,8 @@ namespace STS2_MCP;
 internal sealed class SelectionOwnership
 {
     private readonly AsyncLocal<object?> _ambient = new();
+    // Re-validation of the admission that installed the ambient owner; every lease begun under it inherits it as Ready.
+    private readonly AsyncLocal<Func<bool>?> _ambientReady = new();
     private long _generation;
     private readonly Dictionary<object, Lease> _selectors = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, Lease> _continuations = new(ReferenceEqualityComparer.Instance);
@@ -29,7 +31,7 @@ internal sealed class SelectionOwnership
         internal Func<bool> Ready = () => true;
     }
 
-    private sealed class Scope(SelectionOwnership registry, object? previous) : IDisposable
+    private sealed class Scope(SelectionOwnership registry, object? previous, Func<bool>? previousReady) : IDisposable
     {
         private bool _disposed;
         public void Dispose()
@@ -37,13 +39,15 @@ internal sealed class SelectionOwnership
             if (_disposed) return;
             _disposed = true;
             registry._ambient.Value = previous;
+            registry._ambientReady.Value = previousReady;
         }
     }
 
-    internal IDisposable Enter(object? owner)
+    internal IDisposable Enter(object? owner, Func<bool>? ready = null)
     {
-        var scope = new Scope(this, _ambient.Value);
+        var scope = new Scope(this, _ambient.Value, _ambientReady.Value);
         _ambient.Value = owner;
+        _ambientReady.Value = owner == null ? null : ready;
         return scope;
     }
 
@@ -87,7 +91,7 @@ internal sealed class SelectionOwnership
                 if (CurrentOwner != null) _failedOwners.Add(CurrentOwner);
                 throw new NotSupportedException("overlapping_selection_ownership");
             }
-            var lease = new Lease(++_generation, selector, CurrentOwner);
+            var lease = new Lease(++_generation, selector, CurrentOwner) { Ready = _ambientReady.Value ?? (() => true) };
             _selectors.Add(selector, lease);
             return lease;
         }
