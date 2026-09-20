@@ -1,0 +1,4 @@
+f9dd44b5a8b7f7c8cbc5a6c66e5d9d96d086d67a5c506a07642dc326c741aaf3  /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/LICENSE
+ff678b72c276ceda662b1a4c8eff61b50973a60db46491d752844de845639a42  /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.conf
+71ebec737f466c87800262475c94024a70c61dd3bb496229f2386ed5b2dac8bd  /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll
+f64ee11ebfa9f3cc9dfa89d99fa6125c594e3de4a46ac5e1776327f7a80aa3c9  /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.json

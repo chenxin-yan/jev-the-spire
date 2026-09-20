@@ -1,0 +1,2 @@
+# Captured evidence includes HTTP CRLF and is checked against byte-level hashes.
+docs/evidence/** -text

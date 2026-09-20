@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "observation_unavailable:NullReferenceException:Object reference not set to an instance of an object.",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "348b8154c1a142f8a2a0a93b6449e6ee:1",
+  "mutation_pending": false
+}

@@ -1,0 +1,250 @@
+{
+  "state_type": "card_reward",
+  "card_reward": {
+    "cards": [
+      {
+        "id": "BREAKTHROUGH",
+        "name": "Breakthrough",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Lose 1 HP.\nDeal 9 damage to ALL enemies.",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 0
+      },
+      {
+        "id": "INFLAME",
+        "name": "Inflame",
+        "type": "Power",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 2 Strength.",
+        "rarity": "Uncommon",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Strength",
+            "description": "Strength adds additional damage to Attacks."
+          }
+        ],
+        "index": 1
+      },
+      {
+        "id": "ANGER",
+        "name": "Anger",
+        "type": "Attack",
+        "cost": "0",
+        "star_cost": null,
+        "description": "Deal 6 damage.\nAdd a copy of this card into your Discard Pile.",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 2
+      }
+    ],
+    "can_skip": true
+  },
+  "run": {
+    "act": 1,
+    "floor": 2,
+    "ascension": 0
+  },
+  "player": {
+    "character": "The Ironclad",
+    "hp": 57,
+    "max_hp": 80,
+    "block": 0,
+    "deck": [
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "BASH",
+        "name": "Bash",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "Deal 8 damage.\nApply 2 Vulnerable.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Vulnerable",
+            "description": "Vulnerable creatures take 50% more damage from Attacks."
+          }
+        ]
+      },
+      {
+        "id": "SETUP_STRIKE",
+        "name": "Setup Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 7 damage.\nGain 3 Strength this turn.",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Strength",
+            "description": "Strength adds additional damage to Attacks."
+          }
+        ]
+      }
+    ],
+    "gold": 118,
+    "status": [],
+    "relics": [
+      {
+        "id": "BURNING_BLOOD",
+        "name": "Burning Blood",
+        "description": "At the end of combat, heal 6 HP.",
+        "counter": null,
+        "keywords": []
+      }
+    ],
+    "potions": [],
+    "max_potion_slots": 3
+  },
+  "seed": "F8AG9S4KZ3GG",
+  "terminal": false,
+  "waiting": false,
+  "legal_actions_complete": true,
+  "legal_actions": [
+    {
+      "label": "select_card_reward:0",
+      "description": "Take Breakthrough"
+    },
+    {
+      "label": "select_card_reward:1",
+      "description": "Take Inflame"
+    },
+    {
+      "label": "select_card_reward:2",
+      "description": "Take Anger"
+    },
+    {
+      "label": "card_reward_alternative:0",
+      "description": "Skip"
+    }
+  ],
+  "state_version": "7abef2179c6041419084f56970d88157:46",
+  "mutation_pending": true
+}

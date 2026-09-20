@@ -1,0 +1,9 @@
+PASS normal-loop-success: loop=RanToCompletion failure=none pending=False closed=True; expectedFailure=False expectedPending=False
+RED owned-teardown-pending: loop=Canceled failure=combat_loop_cancelled pending=True closed=True; expectedFailure=False expectedPending=True
+RED owned-teardown-final: loop=Canceled failure=combat_loop_cancelled pending=True closed=True; expectedFailure=False expectedPending=False
+PASS unowned-cancel: loop=Canceled failure=combat_loop_cancelled pending=True closed=True; expectedFailure=True expectedPending=True
+PASS map-fault: loop=RanToCompletion failure=reward_work_faulted pending=True closed=True; expectedFailure=True expectedPending=True
+PASS map-cancel: loop=RanToCompletion failure=reward_work_cancelled pending=True closed=True; expectedFailure=True expectedPending=True
+PASS offer-fault: loop=RanToCompletion failure=reward_work_faulted pending=True closed=True; expectedFailure=True expectedPending=True
+PASS offer-pending: loop=RanToCompletion failure=none pending=True closed=False; expectedFailure=False expectedPending=True
+red=2; expected current candidate defect: 2 red cases

@@ -1,0 +1,8 @@
+[INFO] Found mod manifest file /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.json
+[WARN] Mod STS2_MCP does not declare min game version. Assuming that it is supported.
+[INFO] Loading assembly DLL /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll
+[INFO] Calling initializer method of type STS2_MCP.McpMod for STS2_MCP, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+[STS2 MCP] v0.4.0 server started on http://localhost:15526/
+[INFO] Finished mod initialization for 'STS2 MCP' (STS2_MCP).
+[INFO]  --- RUNNING MODDED! --- Loaded 1 mods (1 total)
+[STS2 MCP] Instant Mode checkbox injected into settings

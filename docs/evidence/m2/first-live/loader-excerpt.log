@@ -1,0 +1,17 @@
+[INFO] Current save versions: PrefsSave v2; ProfileSave v2; SerializableProgress v24; RunHistory v10; SerializableRun v20; SettingsSave v8
+[INFO] Found mod manifest file /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.json
+[WARN] Mod STS2_MCP does not declare min game version. Assuming that it is supported.
+[INFO] Loading assembly DLL /Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll
+[INFO] Calling initializer method of type STS2_MCP.McpMod for STS2_MCP, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+[STS2 MCP] v0.4.0 server started on http://localhost:15526/
+[INFO] Finished mod initialization for 'STS2 MCP' (STS2_MCP).
+[INFO]  --- RUNNING MODDED! --- Loaded 1 mods (1 total)
+[WARN] Asset not cached: res://scenes/debug/dev_console.tscn
+[INFO] Syncing cloud save files to the local save directory
+[WARN] Asset not cached: res://scenes/cards/card.tscn
+[INFO] Window changed! New size: (1266, 2002)
+[STS2 MCP] Instant Mode checkbox injected into settings
+[INFO] [Startup] Time to main menu (Godot ticks): 12243ms
+[WARN] Asset not cached: res://images/ui/top_panel/character_icon_ironclad.png
+[INFO] [Startup] Time to main menu: 12,348ms
+[INFO] [Startup] Resource stats (main menu loaded (essential)): StaticMem=0B, VRAM=226.1MB, Objects=8,284, Resources=465, Nodes=1,661, CachedAssets=12

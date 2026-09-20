@@ -1,0 +1,204 @@
+{
+  "state_type": "map",
+  "map": {
+    "current_position": {
+      "col": 3,
+      "row": 1,
+      "type": "Monster"
+    },
+    "visited": [
+      {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient"
+      },
+      {
+        "col": 3,
+        "row": 1,
+        "type": "Monster"
+      }
+    ],
+    "nodes": [],
+    "next_options": []
+  },
+  "run": {
+    "act": 1,
+    "floor": 2,
+    "ascension": 0
+  },
+  "player": {
+    "character": "The Ironclad",
+    "hp": 75,
+    "max_hp": 80,
+    "block": 0,
+    "deck": [
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "BASH",
+        "name": "Bash",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "Deal 8 damage.\nApply 2 Vulnerable.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Vulnerable",
+            "description": "Vulnerable creatures take 50% more damage from Attacks."
+          }
+        ]
+      }
+    ],
+    "gold": 113,
+    "status": [],
+    "relics": [
+      {
+        "id": "BURNING_BLOOD",
+        "name": "Burning Blood",
+        "description": "At the end of combat, heal 6 HP.",
+        "counter": null,
+        "keywords": []
+      },
+      {
+        "id": "BOOMING_CONCH",
+        "name": "Booming Conch",
+        "description": "At the start of Elite combats, draw 2 additional cards and gain [ironclad_energy_icon.png].",
+        "counter": null,
+        "keywords": [
+          {
+            "name": "Energy",
+            "description": "Energy is used to play cards from your Hand."
+          }
+        ]
+      }
+    ],
+    "potions": [],
+    "max_potion_slots": 3
+  },
+  "seed": "YXRKN2F6AQHC",
+  "terminal": false,
+  "waiting": false,
+  "legal_actions_complete": true,
+  "legal_actions": [],
+  "state_version": "c8a9facc8e01492790c35b596ab1970a:44",
+  "mutation_pending": true
+}

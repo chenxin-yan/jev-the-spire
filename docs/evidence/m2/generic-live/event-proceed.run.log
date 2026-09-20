@@ -1,0 +1,43 @@
+POST 202 {'status': 'dispatched', 'state_version': 'c8a9facc8e01492790c35b596ab1970a:51', 'label': 'choose_event_option:0'}
+GET 200 {
+  "state_type": "map",
+  "map": {
+    "current_position": {
+      "col": 3,
+      "row": 2,
+      "type": "Unknown"
+    },
+    "visited": [
+      {
+        "col": 3,
+        "row": 0,
+        "type": "Ancient"
+      },
+      {
+        "col": 3,
+        "row": 1,
+        "type": "Monster"
+      },
+      {
+        "col": 3,
+        "row": 2,
+        "type": "Unknown"
+      }
+    ],
+    "nodes": [],
+    "next_options": []
+  },
+  "run": {
+    "act": 1,
+    "floor": 3,
+    "ascension": 0
+  },
+  "seed": "YXRKN2F6AQHC",
+  "terminal": false,
+  "waiting": false,
+  "legal_actions_complete": true,
+  "legal_actions": [],
+  "state_version": "c8a9facc8e01492790c35b596ab1970a:53",
+  "mutation_pending": false
+}
+player {'hp': 75, 'energy': None, 'gold': 113, 'hand': None}

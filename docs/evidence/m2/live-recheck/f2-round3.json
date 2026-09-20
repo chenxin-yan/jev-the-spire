@@ -1,0 +1,375 @@
+{
+  "state_type": "monster",
+  "battle": {
+    "round": 3,
+    "turn": "player",
+    "is_play_phase": true,
+    "enemies": [
+      {
+        "entity_id": "TWIG_SLIME_M_0",
+        "combat_id": 2,
+        "name": "Twig Slime (M)",
+        "hp": 19,
+        "max_hp": 28,
+        "block": 0,
+        "status": [],
+        "intents": [
+          {
+            "type": "Attack",
+            "label": "11",
+            "title": "Aggressive",
+            "description": "This enemy intends to Attack for 11 damage."
+          }
+        ]
+      }
+    ]
+  },
+  "run": {
+    "act": 1,
+    "floor": 2,
+    "ascension": 0
+  },
+  "player": {
+    "character": "The Ironclad",
+    "hp": 62,
+    "max_hp": 80,
+    "block": 0,
+    "energy": 3,
+    "max_energy": 3,
+    "hand": [
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 0,
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 1,
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ],
+        "index": 2,
+        "target_type": "Self",
+        "can_play": true,
+        "unplayable_reason": null
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 3,
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [],
+        "index": 4,
+        "target_type": "AnyEnemy",
+        "can_play": true,
+        "unplayable_reason": null
+      }
+    ],
+    "draw_pile_count": 8,
+    "discard_pile_count": 0,
+    "exhaust_pile_count": 0,
+    "draw_pile": [
+      {
+        "name": "Bash",
+        "cost": "2",
+        "star_cost": null,
+        "description": "Deal 8 damage.\nApply 2 Vulnerable."
+      },
+      {
+        "name": "Defend",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block."
+      },
+      {
+        "name": "Defend",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block."
+      },
+      {
+        "name": "Defend",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block."
+      },
+      {
+        "name": "Setup Strike",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 7 damage.\nGain 3 Strength this turn."
+      },
+      {
+        "name": "Slimed",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Draw 1 card.\nExhaust."
+      },
+      {
+        "name": "Slimed",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Draw 1 card.\nExhaust."
+      },
+      {
+        "name": "Strike",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage."
+      }
+    ],
+    "discard_pile": [],
+    "exhaust_pile": [],
+    "deck": [
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "BASH",
+        "name": "Bash",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "Deal 8 damage.\nApply 2 Vulnerable.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Vulnerable",
+            "description": "Vulnerable creatures take 50% more damage from Attacks."
+          }
+        ]
+      },
+      {
+        "id": "SETUP_STRIKE",
+        "name": "Setup Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 7 damage.\nGain 3 Strength this turn.",
+        "rarity": "Common",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Strength",
+            "description": "Strength adds additional damage to Attacks."
+          }
+        ]
+      }
+    ],
+    "gold": 118,
+    "status": [],
+    "relics": [
+      {
+        "id": "BURNING_BLOOD",
+        "name": "Burning Blood",
+        "description": "At the end of combat, heal 6 HP.",
+        "counter": null,
+        "keywords": []
+      }
+    ],
+    "potions": [],
+    "max_potion_slots": 3
+  },
+  "seed": "F8AG9S4KZ3GG",
+  "terminal": false,
+  "waiting": false,
+  "legal_actions_complete": true,
+  "legal_actions": [
+    {
+      "label": "play_card:0:2",
+      "description": "Play hand[0] Strike targeting Twig Slime (M) (2)"
+    },
+    {
+      "label": "play_card:1:2",
+      "description": "Play hand[1] Strike targeting Twig Slime (M) (2)"
+    },
+    {
+      "label": "play_card:2:none",
+      "description": "Play hand[2] Defend"
+    },
+    {
+      "label": "play_card:3:2",
+      "description": "Play hand[3] Strike targeting Twig Slime (M) (2)"
+    },
+    {
+      "label": "play_card:4:2",
+      "description": "Play hand[4] Strike targeting Twig Slime (M) (2)"
+    },
+    {
+      "label": "end_turn",
+      "description": "End turn"
+    }
+  ],
+  "state_version": "7abef2179c6041419084f56970d88157:30",
+  "mutation_pending": false
+}

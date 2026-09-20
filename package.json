@@ -1,0 +1,29 @@
+{
+  "name": "jev-slay-the-spire-2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "play": "bun run src/main.ts",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "check": "bun run lint && bun run fmt:check && bun run typecheck && bun run test",
+    "test": "bun --no-env-file test",
+    "typecheck": "bunx --no-env-file tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/gateway": "4.0.87",
+    "@crustjs/core": "0.3.3",
+    "@crustjs/effect": "0.1.0",
+    "ai": "7.0.107",
+    "effect": "4.0.0-rc.116"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "oxfmt": "0.68.0",
+    "oxlint": "1.83.0",
+    "oxlint-tsgolint": "7.0.2002",
+    "typescript": "7.0.2"
+  }
+}

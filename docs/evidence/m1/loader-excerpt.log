@@ -1,0 +1,12 @@
+13: [INFO] Found mod manifest file ~/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.json
+17: [INFO] Loading assembly DLL ~/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll
+18: [INFO] Calling initializer method of type STS2_MCP.McpMod for STS2_MCP, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+20: [STS2 MCP] v0.4.0 server started on http://localhost:15526/
+21: [INFO] Finished mod initialization for 'STS2 MCP' (STS2_MCP).
+22: [INFO]  --- RUNNING MODDED! --- Loaded 1 mods (1 total)
+26: [INFO] Copying profile1/saves/progress.save -> modded/profile1/saves/progress.save
+178: [INFO] Deleting modded/profile.save because it does not exist on remote
+207: [INFO] Deleting modded/profile1/saves/progress.save because it does not exist on remote
+3489: [INFO] Embarking on a singleplayer IRONCLAD run. Ascension: 0 Seed: F8AG9S4KZ3GG
+3503: [INFO] Wrote 40534 bytes to path=user://steam/<account>/modded/profile2/saves/current_run.save save_dir=user://steam/<account>
+3504: [INFO] Wrote 40534 bytes to modded/profile2/saves/current_run.save in steam remote store

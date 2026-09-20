@@ -1,0 +1,57 @@
+bun test v1.3.10 (30e609e0)
+
+test/bridge.test.ts:
+(pass) bridge transport > GET sends no browser origin/fetch-metadata headers and parses the snapshot [3.10ms]
+(pass) bridge transport > GET retries a 5xx a bounded number of times, then succeeds [2.13ms]
+(pass) bridge transport > GET gives up after three transport failures [2003.72ms]
+(pass) bridge transport > GET does not retry a 4xx or a malformed body [1.35ms]
+(pass) bridge transport > POST sends exactly {state_version,label} as JSON once and returns status/body [0.93ms]
+(pass) bridge transport > POST rejection body is returned, not retried [0.62ms]
+(pass) bridge transport > GET halts instead of waiting when Retry-After exceeds the demo budget [0.37ms]
+(pass) bridge transport > GET honors an HTTP-date Retry-After that is already due [1.75ms]
+(pass) bridge transport > parseSnapshot rejects wrongly typed optional fields the loop consumes [0.31ms]
+(pass) bridge transport > parseSnapshot rejects duplicate labels and missing fields [0.10ms]
+
+test/loop.test.ts:
+(pass) runLoop > waits through zero-action observations, decides once, dispatches, then stops on terminal [25.39ms]
+(pass) runLoop > contextOf strips bridge bookkeeping but keeps the snapshot [0.17ms]
+(pass) runLoop > singleton legal set dispatches directly without inference and logs singleton_only [2.45ms]
+(pass) runLoop > singleton that grows to multiple actions before dispatch is re-decided by Jev [4.71ms]
+(pass) runLoop > state change between inference and POST never dispatches the old choice [4.70ms]
+(pass) runLoop > owned child decision is actionable while the parent mutation is pending [3.22ms]
+(pass) runLoop > invalid answer is re-asked once, then dispatched [3.95ms]
+(pass) runLoop > second invalid answer halts without dispatch [1.63ms]
+(pass) runLoop > non-answer model failure halts without re-ask or dispatch [1.38ms]
+(pass) runLoop > unsupported state halts without inference or dispatch [1.27ms]
+(pass) runLoop > bounded wait on persistent waiting halts with wait_timeout [30.29ms]
+(pass) runLoop > dispatch timeout is never retried and halts as uncertain [2.69ms]
+(pass) runLoop > 409 rejection halts after one POST [2.41ms]
+(pass) runLoop > abort while inference is pending prevents dispatch even when the answer arrives [11.04ms]
+(pass) runLoop > abort while waiting stops polling without dispatch and reports the abort reason [15.39ms]
+(pass) runLoop > a total deadline ends repeated stale snapshots even when observe ignores the signal [30.41ms]
+(pass) runLoop > a logging failure before dispatch prevents the POST [2.64ms]
+(pass) runLoop > stops at the action bound counting forced and model actions [6.48ms]
+
+test/jev.test.ts:
+(pass) makeJevDecider > maps a joint classify decision to one Gateway choice question and back [12.61ms]
+(pass) makeJevDecider > unknown label from the provider is an invalid answer (re-askable), never dispatched [1.41ms]
+(pass) makeJevDecider > missing probabilities is an invalid answer rather than an invented distribution [0.80ms]
+(pass) makeJevDecider > malformed response body is not an invalid answer and is not retried as one [2.20ms]
+(pass) makeJevDecider > oversized snapshot halts before any request [0.29ms]
+(pass) makeJevDecider > abort while the provider call is pending rejects without an answer [13.22ms]
+(pass) makeJevDecider > a provider call that never answers is cut off by the inference deadline [32.94ms]
+
+test/main.test.ts:
+(pass) main CLI arguments > rejects ["--max-actions"] (missing value) before any log or bridge request [155.34ms]
+(pass) main CLI arguments > rejects ["--max-actions","0"] (zero) before any log or bridge request [148.88ms]
+(pass) main CLI arguments > rejects ["--max-actions","1.5"] (non-integer) before any log or bridge request [149.19ms]
+(pass) main CLI arguments > rejects ["--max-actions","-2"] (negative) before any log or bridge request [155.31ms]
+(pass) main CLI arguments > rejects ["--max-actions","9007199254740993"] (unsafe integer) before any log or bridge request [150.85ms]
+(pass) main CLI arguments > rejects ["--max-actions","1","--unknown"] (unknown flag) before any log or bridge request [152.19ms]
+(pass) main CLI arguments > rejects ["--max-actions","1","stray"] (positional) before any log or bridge request [150.21ms]
+(pass) main CLI arguments > accepts --max-actions 1 and stops on the terminal snapshot [164.25ms]
+
+ 43 pass
+ 0 fail
+ 163 expect() calls
+Ran 43 tests across 4 files. [3.62s]

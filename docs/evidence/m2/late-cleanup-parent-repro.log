@@ -1,0 +1,18 @@
+inline-native-cancel: failure=none pending=False releases=1
+posted-native-cancel: failure=none pending=False releases=1
+loop-still-pending: failure=none pending=False releases=1
+offer-cancel: failure=reward_work_cancelled pending=True releases=1
+child-fault: failure=reward_work_faulted pending=True releases=1
+child-cancel: failure=reward_work_cancelled pending=True releases=1
+vote-fault: failure=reward_work_faulted pending=True releases=1
+vote-cancel: failure=reward_work_cancelled pending=True releases=1
+move-completion-cancel: failure=reward_work_cancelled pending=True releases=1
+move-execution-fault: failure=reward_work_faulted pending=True releases=1
+old-action-cancel: failure=mutation_cancelled pending=True releases=1
+setup-pending: failure=none pending=False releases=1
+setup-fault: failure=destination_setup_failed pending=True releases=1
+RED cleanup-after-exit must halt sticky and release; actual failure=none releases=0
+cleanup-after-exit: failure=none pending=True releases=0
+RED replacement-run-after-exit must halt sticky and release; actual failure=none releases=0
+replacement-run-after-exit: failure=none pending=True releases=0
+91 independent checks; 2 RED
