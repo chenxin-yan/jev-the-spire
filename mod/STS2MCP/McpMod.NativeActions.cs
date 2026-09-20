@@ -32,13 +32,14 @@ public static partial class McpMod
         if (RewardScopes.CurrentOwner is RewardScope child && ReferenceEquals(child.Operation, _combatExit) && child.Screen != null)
             return DispatchRewardChild(child.Screen, start, false);
         var owner = new OrdinaryOwner();
+        var session = _bridgeSession;
         using var scope = SelectionOwners.Enter(owner);
         try
         {
             var task = start() ?? throw new NotSupportedException("native_task_unavailable");
-            _bridgeSession.Track(owner, task, Task.CompletedTask, () => task, () => false);
-            _bridgeSession.HoldUntil(() => OrdinaryWorkDone(owner));
-            _bridgeSession.OnRelease(() => { owner.Closed = true; SelectionOwners.CloseOwner(owner); });
+            session.Track(owner, task, Task.CompletedTask, () => task, () => false);
+            session.HoldUntil(() => OrdinaryWorkDone(owner));
+            session.OnRelease(() => { owner.Closed = true; SelectionOwners.CloseOwner(owner); });
             return true;
         }
         catch { owner.Closed = true; SelectionOwners.CloseOwner(owner); throw; }
@@ -67,15 +68,16 @@ public static partial class McpMod
     private static bool DispatchPotion(PotionModel potion, int index, Creature? target)
     {
         var queues = RunManager.Instance.ActionQueueSet;
+        var session = _bridgeSession;
         UsePotionAction? owned = null;
         void OnEnqueued(GameAction action)
         {
             if (action is not UsePotionAction use) return;
             if (owned != null || !ReferenceEquals(use.Player, potion.Owner) || use.PotionIndex != index
                 || !ReferenceEquals(potion.Owner.PotionSlots[index], potion))
-            { _bridgeSession.Fail("unowned_potion_action"); return; }
+            { session.Fail("unowned_potion_action"); return; }
             owned = use;
-            TrackGameAction(_bridgeSession, use, Task.CompletedTask);
+            TrackGameAction(session, use, Task.CompletedTask);
         }
         queues.ActionEnqueued += OnEnqueued;
         try { potion.EnqueueManualUse(target); } // Preserve BeforeUse, target normalization and IsQueued.
@@ -87,14 +89,17 @@ public static partial class McpMod
     private static bool DispatchMap(NMapScreen screen, NMapPoint point, RunState run, Player player)
     {
         var manager = RunManager.Instance;
-        _eventEntry?.Close(); _eventEntry = null;
+        var queue = manager.ActionQueueSet;
+        var executor = manager.ActionExecutor;
+        var session = _bridgeSession;
+        ClearEventEntry();
         EventEntry? eventEntry = null;
         var destination = point.Point.coord;
         var source = new MapLocation(run.CurrentMapCoord, run.CurrentActIndex);
         int generation = manager.MapSelectionSynchronizer.MapGenerationCount;
         var chain = new QueuedActionChain(destination);
         var parent = _combatExit;
-        bool child = parent?.Map != null && ReferenceEquals(parent.Map, screen) && ReferenceEquals(_bridgeSession.OperationOwner, parent.Owner);
+        bool child = parent?.Map != null && ReferenceEquals(parent.Map, screen) && ReferenceEquals(session.OperationOwner, parent.Owner);
         var owner = child ? parent!.Owner : new object();
         var actions = new List<GameAction>();
         bool cancelled = false, dispatching = true;
@@ -161,14 +166,14 @@ public static partial class McpMod
                         throw new NotSupportedException("map_travel_identity_unavailable");
                     // Vote.ExecuteAction synchronously invokes MapSelectionSynchronizer.MoveToMapCoord.
                     // This exact executing vote + destination is the causal seam, not an arbitrary later map change.
-                    chain.AddChild(manager.ActionExecutor.CurrentlyRunningAction, coord, action, action.CompletionTask,
+                    chain.AddChild(executor.CurrentlyRunningAction, coord, action, action.CompletionTask,
                         () => GetInstanceFieldValue(action, "_executionTask") as Task);
                     Watch(action);
                     // This exact travel exits the old combat room (Reset(true) -> loop cancel) before entering the destination.
                     if (child) parent!.ExpectRoomExit(action, () => ReferenceEquals(manager.DebugOnlyGetState(), run) && run.CurrentMapCoord == destination);
                     entering = action;
                     _eventEntry = eventEntry = new EventEntry(action, owner, run, player);
-                    _bridgeSession.HoldUntil(() =>
+                    session.HoldUntil(() =>
                     {
                         eventEntry.Check();
                         return !eventEntry.Bound || EventInputsReady(eventEntry);
@@ -177,19 +182,19 @@ public static partial class McpMod
                     action.AfterFinished += RoomEntered; // Before queue insertion/execution can enter _Ready.
                 }
             }
-            catch { _bridgeSession.Fail("map_action_chain_mismatch"); }
+            catch { session.Fail("map_action_chain_mismatch"); }
         }
         void VoteFinished(GameAction vote)
         {
-            if (!ReferenceEquals(vote, chain.Root) || !chain.HasChild) _bridgeSession.Fail("map_vote_without_owned_travel");
-            manager.ActionQueueSet.ActionEnqueued -= OnEnqueued;
+            if (!ReferenceEquals(vote, chain.Root) || !chain.HasChild) session.Fail("map_vote_without_owned_travel");
+            queue.ActionEnqueued -= OnEnqueued;
         }
         // Existing native RoomExited, scoped to this consumed continuation: after PopCurrentRoom and the old room's Exit,
         // while the owned travel is the currently running action. CleanUp resets combat without emitting it.
         void Exited()
         {
             var state = manager.DebugOnlyGetState();
-            parent!.RoomExited(state, state?.CurrentRoom, manager.ActionExecutor.CurrentlyRunningAction);
+            parent!.RoomExited(state, state?.CurrentRoom, executor.CurrentlyRunningAction);
         }
         if (child)
         {
@@ -197,18 +202,18 @@ public static partial class McpMod
             parent.AddMapWork(chain.Poll, () => cancelled);
             manager.RoomExited += Exited;
         }
-        else _bridgeSession.Track(owner, Task.CompletedTask, Task.CompletedTask, chain.Poll, () => cancelled);
-        _bridgeSession.OnRelease(() =>
+        else session.Track(owner, Task.CompletedTask, Task.CompletedTask, chain.Poll, () => cancelled);
+        session.OnRelease(() => queue.ActionEnqueued -= OnEnqueued);
+        session.OnRelease(() =>
         {
-            manager.ActionQueueSet.ActionEnqueued -= OnEnqueued;
             if (child) manager.RoomExited -= Exited;
             if (Godot.GodotObject.IsInstanceValid(tree)) tree.NodeAdded -= NodeAdded;
-            if (cancelled || _bridgeSession.Failure != null) { entry?.Invalidate(); eventEntry?.Fail("event_movement_failed"); eventEntry?.Close(); }
+            if (cancelled || session.Failure != null) { entry?.Invalidate(); eventEntry?.Fail("event_movement_failed"); eventEntry?.Close(); }
             if (eventEntry?.Bound == false) eventEntry.Close();
             foreach (var action in actions) { action.BeforeCancelled -= OnCancelled; action.AfterFinished -= VoteFinished; action.AfterFinished -= RoomEntered; }
             if (!child) SelectionOwners.CloseOwner(owner);
         });
-        manager.ActionQueueSet.ActionEnqueued += OnEnqueued;
+        queue.ActionEnqueued += OnEnqueued;
         tree.NodeAdded += NodeAdded;
         using var selectionScope = SelectionOwners.Enter(owner);
         // The owned map continuation is not authority to adopt destination-room reward tasks.
@@ -226,6 +231,7 @@ public static partial class McpMod
     private static bool DispatchEndTurn(NEndTurnButton button, Player player)
     {
         var manager = RunManager.Instance;
+        var session = _bridgeSession;
         var combat = CombatManager.Instance;
         var playerState = player.PlayerCombatState ?? throw new NotSupportedException("player_combat_state_unavailable");
         int turn = playerState.TurnNumber;
@@ -233,7 +239,7 @@ public static partial class McpMod
         bool nextTurnStarted = false;
         void OnTurnStarted(CombatState state)
         {
-            if (!ReferenceEquals(state, combatState)) { _bridgeSession.Fail("end_turn_combat_changed"); return; }
+            if (!ReferenceEquals(state, combatState)) { session.Fail("end_turn_combat_changed"); return; }
             if (playerState.TurnNumber > turn && IsPlayPhase(player)) nextTurnStarted = true;
         }
         var loop = GetInstanceFieldValue(combat, "_turnLoopTask") as Task ?? throw new NotSupportedException("combat_loop_unavailable");
@@ -244,12 +250,12 @@ public static partial class McpMod
             if (action is not EndPlayerTurnAction) return;
             if (owned != null || !ReferenceEquals(GetInstanceFieldValue(action, "_player"), player)
                 || GetInstanceFieldValue(action, "_turnNumber") is not int actualTurn || actualTurn != turn)
-            { _bridgeSession.Fail("unowned_end_turn"); return; }
+            { session.Fail("unowned_end_turn"); return; }
             owned = (EndPlayerTurnAction)action;
-            TrackGameAction(_bridgeSession, action, Task.CompletedTask);
+            TrackGameAction(session, action, Task.CompletedTask);
             combat.TurnStarted += OnTurnStarted;
-            _bridgeSession.OnRelease(() => combat.TurnStarted -= OnTurnStarted);
-            _bridgeSession.HoldUntil(() =>
+            session.OnRelease(() => combat.TurnStarted -= OnTurnStarted);
+            session.HoldUntil(() =>
             {
                 // The loop spans the entire combat, including future human decision waits: never join it here.
                 // TurnStarted(player) follows awaited setup, auto-pre-play and CheckWinCondition;

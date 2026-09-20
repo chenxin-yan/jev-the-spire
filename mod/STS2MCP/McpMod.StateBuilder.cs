@@ -1831,6 +1831,7 @@ public static partial class McpMod
         {
             NDeckTransformSelectScreen => "transform",
             NDeckUpgradeSelectScreen => "upgrade",
+            NDeckEnchantSelectScreen => "enchant",
             NDeckCardSelectScreen => "select",
             NSimpleCardSelectScreen => "simple_select",
             _ => screen.GetType().Name
@@ -1862,10 +1863,29 @@ public static partial class McpMod
         }
         state["cards"] = cards;
 
+        // The decision's rules: v0.111 NDeckEnchantSelectScreen._Ready renders the mutable enchantment at _enchantmentAmount into
+        // these exact labels; the description is required text so a missing/empty rule halts instead of exposing the choice.
+        if (screen is NDeckEnchantSelectScreen)
+        {
+            if (GetInstanceFieldValue(screen, "_enchantmentTitle") is not MegaCrit.Sts2.addons.mega_text.MegaLabel enchantTitle
+                || GetInstanceFieldValue(screen, "_enchantmentDescription") is not MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel enchantDescription
+                || GetInstanceFieldValue(screen, "_enchantmentAmount") is not int enchantAmount)
+                throw new NotSupportedException("enchantment_rules_unavailable");
+            state["enchantment"] = new Dictionary<string, object?>
+            {
+                ["title"] = StripRichTextTags(enchantTitle.Text),
+                ["description"] = StripRichTextTags(enchantDescription.Text),
+                ["amount"] = enchantAmount
+            };
+        }
+
         // Preview container showing? (selection complete, awaiting confirm)
-        // Upgrade screens use UpgradeSinglePreviewContainer / UpgradeMultiPreviewContainer
-        var previewSingle = screen.GetNodeOrNull<Godot.Control>("%UpgradeSinglePreviewContainer");
-        var previewMulti = screen.GetNodeOrNull<Godot.Control>("%UpgradeMultiPreviewContainer");
+        // Upgrade screens use UpgradeSinglePreviewContainer / UpgradeMultiPreviewContainer;
+        // the enchant screen uses EnchantSinglePreviewContainer / EnchantMultiPreviewContainer (same Cancel/Confirm children).
+        var previewSingle = screen.GetNodeOrNull<Godot.Control>("%UpgradeSinglePreviewContainer")
+                            ?? screen.GetNodeOrNull<Godot.Control>("%EnchantSinglePreviewContainer");
+        var previewMulti = screen.GetNodeOrNull<Godot.Control>("%UpgradeMultiPreviewContainer")
+                           ?? screen.GetNodeOrNull<Godot.Control>("%EnchantMultiPreviewContainer");
         var previewGeneric = screen.GetNodeOrNull<Godot.Control>("%PreviewContainer");
         bool previewShowing = (previewSingle?.Visible ?? false)
                             || (previewMulti?.Visible ?? false)

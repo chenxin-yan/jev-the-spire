@@ -27,7 +27,12 @@ are ignored. Native checks require those assemblies and are separate from the ap
 
 The bridge is pinned to game v0.111.0 (`41cef1ea`), with `sts2.dll` SHA256
 `9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4`.
-Unsupported versions or ownership/tutorial states refuse dispatch. Build success is not
+Unsupported versions or ownership/tutorial states refuse dispatch. The bridge session is
+process-scoped and is replaced only at the native new-run boundary (`RunManager.InitializeNewRun`);
+failures within a run, on Continue/saved runs or on CLI reconnect stay latched. Deck grid screens
+(select/upgrade/transform/enchant) expose a decision only when every native candidate has an
+allocated holder: v0.111 `NCardGrid` allocates a sliding window of rows, so a deck larger than that
+window halts as `grid_candidates_incomplete` instead of offering a partial set. Build success is not
 permission to install: live work remains separately approved and restricted to profile 2.
 See [current scope](../../docs/minimal-demo.md) and
 [the offline review](../../docs/evidence/m3/crust-neow-review.md).

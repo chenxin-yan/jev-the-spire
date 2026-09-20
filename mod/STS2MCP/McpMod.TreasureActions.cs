@@ -160,7 +160,10 @@ public static partial class McpMod
             throw new NotSupportedException("treasure_owner_unavailable");
         BridgeProtocol.RequireOrdinaryTutorial(SaveManager.Instance.SeenFtue("obtain_relic_ftue"), "obtain_relic_ftue");
         var collection = (NTreasureRoomRelicCollection)GetInstanceFieldValue(scene, "_relicCollection")!;
-        var sync = RunManager.Instance.TreasureRoomRelicSynchronizer;
+        var manager = RunManager.Instance;
+        var queue = manager.ActionQueueSet;
+        var executor = manager.ActionExecutor;
+        var sync = manager.TreasureRoomRelicSynchronizer;
         var relics = sync.CurrentRelics?.ToArray() ?? Array.Empty<RelicModel>();
         TreasureOperation.RequireFresh(OrdinaryBool(scene, "_hasChestBeenOpened"), relics.Length,
             collection.RelicPickingBegan().IsCompleted, collection.RelicPickingFinished().IsCompleted);
@@ -184,17 +187,17 @@ public static partial class McpMod
         void Executing(GameAction source) { if (ReferenceEquals(source, op.Pick)) op.Executing = true; }
         void Enqueued(GameAction source) { if (source is PickRelicAction && !ReferenceEquals(source, op.Pick) && TreasureScopes.CurrentOwner is not TreasureScope) op.Fail("foreign_treasure_pick"); }
         _bridgeSession.HoldUntil(() => { RequireTreasureIdentity(op); return op.Poll(); });
+        _bridgeSession.OnRelease(() => executor.BeforeActionExecuted -= Executing);
+        _bridgeSession.OnRelease(() => queue.ActionEnqueued -= Enqueued);
         _bridgeSession.OnRelease(() =>
         {
-            RunManager.Instance.ActionExecutor.BeforeActionExecuted -= Executing;
-            RunManager.Instance.ActionQueueSet.ActionEnqueued -= Enqueued;
             if (GodotObject.IsInstanceValid(scene)) scene.TreeExiting -= Exiting;
             if (GodotObject.IsInstanceValid(chest)) chest.Released -= Input;
             if (GodotObject.IsInstanceValid(scene.ProceedButton)) scene.ProceedButton.Released -= Input;
         });
         scene.TreeExiting += Exiting; chest.Released += Input; scene.ProceedButton.Released += Input;
-        RunManager.Instance.ActionExecutor.BeforeActionExecuted += Executing;
-        RunManager.Instance.ActionQueueSet.ActionEnqueued += Enqueued;
+        executor.BeforeActionExecuted += Executing;
+        queue.ActionEnqueued += Enqueued;
         using var selection = SelectionOwners.Enter(op.Owner);
         using var context = TreasureScopes.Enter(new TreasureScope(op, Proceed: proceedOnly));
         control.ForceClick();
@@ -211,6 +214,7 @@ public static partial class McpMod
         if (picking && index.HasValue && !TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(op.Collection, "_openedTicks")!))
             throw new NotSupportedException("treasure_anti_click_guard");
         if (picking && !index.HasValue && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_not_ready");
+        var session = _bridgeSession;
         int receipts = 0;
         void Enqueued(GameAction action)
         {
@@ -224,7 +228,7 @@ public static partial class McpMod
                 void Canceled(GameAction source) { if (ReferenceEquals(source, pick)) canceled = true; }
                 void Finished(GameAction source) { if (ReferenceEquals(source, pick)) op.Executing = false; }
                 pick.BeforeCancelled += Canceled; pick.AfterFinished += Finished;
-                _bridgeSession.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
+                session.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
                 Task? joined = null;
                 op.BindPick(pick, index, () =>
                 {

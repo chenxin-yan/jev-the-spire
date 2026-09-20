@@ -643,6 +643,8 @@ Call(sessionType, multipleCleanup, "OnRelease", (Action)(() => { cleanupCount++;
 Call(sessionType, multipleCleanup, "OnRelease", (Action)(() => cleanupCount++));
 Call(sessionType, multipleCleanup, "Refresh");
 Check(cleanupCount == 2 && Pending(multipleCleanup) && Failure(multipleCleanup) != null, "all scoped subscriptions cleaned despite one cleanup exception");
+Check(!(bool)Call(sessionType, multipleCleanup, "Retire", (object?)null)! && Failure(multipleCleanup) == "mutation_cleanup_failed",
+    "cleanup failure during successful completion prevents retirement, not only cleanup during Fail");
 
 foreach (string unsupported in new[] { "open_shop", "close_shop", "proceed", "advance_dialogue", "open_treasure", "claim_treasure_relic:0" })
 {
@@ -1804,20 +1806,24 @@ if (args.Length > 1)
     List<MethodBase> CalledInClosures(string name) => bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags))
         .Where(m => m.Name.StartsWith("<" + name + ">")).SelectMany(CalledBy).ToList();
     List<MethodBase> CalledBy(MethodBase method) => Operands(method).OfType<MethodBase>().ToList();
-    // Resolved method, type (typeof/isinst/castclass) and string operands of one compiled method body.
+    // Resolved method, field, type (typeof/isinst/castclass) and string operands of one compiled method body.
     List<object> Operands(MethodBase method)
     {
         var bytes = method.GetMethodBody()!.GetILAsByteArray()!;
         var operands = new List<object>();
+        var typeArguments = method.DeclaringType?.IsGenericTypeDefinition == true ? method.DeclaringType.GetGenericArguments() : null;
+        var methodArguments = method.IsGenericMethodDefinition ? method.GetGenericArguments() : null;
         for (int i = 0; i < bytes.Length;)
         {
             ushort value = bytes[i++];
             if (value == 0xfe) value = (ushort)(0xfe00 + bytes[i++]);
             var op = opcodes[value];
             if (op.OperandType == OperandType.InlineMethod)
-                operands.Add(method.Module.ResolveMethod(BitConverter.ToInt32(bytes, i))!);
+                operands.Add(method.Module.ResolveMethod(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments)!);
+            else if (op.OperandType == OperandType.InlineField)
+                operands.Add(method.Module.ResolveField(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments)!);
             else if (op.OperandType == OperandType.InlineType)
-                operands.Add(method.Module.ResolveType(BitConverter.ToInt32(bytes, i)));
+                operands.Add(method.Module.ResolveType(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments));
             else if (op.OperandType == OperandType.InlineTok && method.Module.ResolveMember(BitConverter.ToInt32(bytes, i)) is Type token)
                 operands.Add(token);
             else if (op.OperandType == OperandType.InlineString)
@@ -2060,6 +2066,233 @@ if (args.Length > 1)
     var savedSetup = GameStateMachineCalls(runManagerType, "SetUpSavedSingleplayer");
     Check(savedSetup.Any(m => m.Name == "IncrementNumReloads") && savedSetup.Any(m => m.Name == "get_NumReloads") && savedSetup.Any(m => m.Name == "InitializeShared"),
         "saved singleplayer setup increments and passes the persisted reload count before initializing the run");
+    // Fresh-run epoch: the exact native new-run boundary, its bridge wiring, and the process-scoped session's replacement rules.
+    var initializeNewRun = runManagerType.GetMethod("InitializeNewRun", flags)!;
+    Check(initializeNewRun.IsPrivate && !initializeNewRun.IsStatic && initializeNewRun.ReturnType == typeof(void) && initializeNewRun.GetParameters().Length == 0,
+        "native InitializeNewRun is the parameterless instance boundary the observation-only postfix binds");
+    foreach (string setup in new[] { "SetUpNewSingleplayer", "SetUpNewMultiplayer", "SetUpTest" })
+        Check(CalledBy(runManagerType.GetMethod(setup, flags)!).Any(m => m.Name == "InitializeNewRun"), setup + " reaches the new-run boundary");
+    var newSingleplayer = CalledBy(runManagerType.GetMethod("SetUpNewSingleplayer", flags)!);
+    Check(newSingleplayer.Any(m => m.Name == "InitializeShared") && !newSingleplayer.Any(m => m.Name is "get_NumReloads" or "IncrementNumReloads" or "InitializeSavedRun"),
+        "new singleplayer setup initializes without any persisted reload count");
+    Check(!savedSetup.Any(m => m.Name == "InitializeNewRun") && savedSetup.Any(m => m.Name == "InitializeSavedRun")
+        && !GameStateMachineCalls(runManagerType, "SetUpSavedMultiplayer").Any(m => m.Name == "InitializeNewRun")
+        && !CalledBy(runManagerType.GetMethod("SetUpReplay", flags)!).Any(m => m.Name == "InitializeNewRun"),
+        "Continue/saved/replay setups never reach the new-run boundary: no epoch reset for a restored run");
+    Check(!CalledBy(runManagerType.GetMethod("CleanUp", flags)!).Any(m => m.Name == "InitializeNewRun") && !CalledBy(runManagerType.GetMethod("Launch", flags)!).Any(m => m.Name == "InitializeNewRun"),
+        "main-menu cleanup and Launch (RunStarted for every run kind) are not the boundary");
+    Check(Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("InitializeNewRun")
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("NewRunPostfix")
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<Type>().Contains(runManagerType),
+        "the pinned hook installer patches RunManager.InitializeNewRun with the observation-only postfix");
+    var newRunCalls = CalledMethods("NewRunPostfix");
+    Check(newRunCalls.Any(m => m.Name == "FreshRunEpoch" && m.DeclaringType == protocol) && newRunCalls.Any(m => m.Name == "BeginRunEpoch" && m.DeclaringType == bridge)
+        && newRunCalls.Any(m => m.Name == "DebugOnlyGetState") && newRunCalls.Any(m => m.Name == "get_Instance" && m.DeclaringType == runManagerType)
+        && Operands(bridge.GetMethod("NewRunPostfix", flags)!).OfType<string>().Contains("_numReloads"),
+        "postfix verifies live manager identity, run presence and the zero reload count before opening an epoch");
+    foreach (bool current in new[] { false, true }) foreach (bool present in new[] { false, true }) foreach (int? reloads in new int?[] { null, 0, 1, 3 })
+        Check((bool)Call(protocol, null, "FreshRunEpoch", current, present, reloads)! == (current && present && reloads == 0),
+            "only the live manager with a present run and zero reloads is a fresh run; saved (>=1) or unreadable counts never reset");
+    foreach (var closure in bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly)).Where(m => m.GetMethodBody() != null))
+        Check(!Operands(closure).OfType<FieldInfo>().Any(f => f.Name == "_bridgeSession"),
+            "late callbacks keep the session they were registered on, never the replaceable static: " + closure.DeclaringType!.Name + "." + closure.Name);
+    Check(CalledMethods("DispatchMap").Any(m => m.Name == "ClearEventEntry" && m.DeclaringType == bridge)
+        && CalledMethods("BeginRunEpoch").Any(m => m.Name == "ClearEventEntry" && m.DeclaringType == bridge)
+        && Operands(bridge.GetMethod("BeginActOpening", flags)!).OfType<FieldInfo>().Any(f => f.Name == "CleanupFailed"),
+        "map turnover and run retirement share checked event cleanup; opening admission cannot overwrite its failure");
+    var sessionField = bridge.GetField("_bridgeSession", flags)!;
+    var eventEntryField = bridge.GetField("_eventEntry", flags)!;
+    var restEntryField = bridge.GetField("_restEntry", flags)!;
+    var runProperty = sessionType.GetProperty("Run", flags)!;
+    object? Epoch() => sessionField.GetValue(null);
+    void BeginEpoch(object run) => Call(bridge, null, "BeginRunEpoch", run);
+    object PendingSession(object? run, Action? release)
+    {
+        var s = Activator.CreateInstance(sessionType, true)!;
+        if (run != null) runProperty.SetValue(s, run);
+        var version = (string)Call(sessionType, s, "Observe", "combat")!;
+        Check((int)Call(sessionType, s, "Accept", version, "play_card:0:none", new[] { "play_card:0:none" })! == 0, "epoch fixture accepts");
+        Call(sessionType, s, "Track", new object(), new TaskCompletionSource().Task, Task.CompletedTask, (Func<Task?>)(() => null), (Func<bool>)(() => false));
+        if (release != null) Call(sessionType, s, "OnRelease", release);
+        return s;
+    }
+    var originalEpoch = Epoch()!;
+    try
+    {
+        Check(!sessionField.IsInitOnly && runProperty.GetValue(originalEpoch) == null, "process-start epoch has no run and is replaceable only through the boundary");
+        object runA = new(), runB = new(), runC = new();
+        int releases = 0;
+        var poisoned = PendingSession(runA, () => releases++);
+        Call(sessionType, poisoned, "Fail", "combat_loop_cancelled");
+        Check(releases == 1 && Failure(poisoned) == "combat_loop_cancelled", "old failure released its owners once");
+        var laterVersion = (string)Call(sessionType, poisoned, "Observe", "neow with a different offer")!;
+        Check(Failure(poisoned) == "combat_loop_cancelled" && Pending(poisoned) && (int)Call(sessionType, poisoned, "Accept", laterVersion, "a", new[] { "a" })! == 409,
+            "same-run failure stays sticky through later observations, retries and map/room changes");
+        sessionField.SetValue(null, poisoned);
+        BeginEpoch(runA);
+        Check(ReferenceEquals(Epoch(), poisoned) && Failure(poisoned) == "combat_loop_cancelled", "a repeated boundary for the same run keeps its epoch and failure");
+        var staleEvent = Activator.CreateInstance(assembly.GetType("STS2_MCP.EventEntry", true)!, flags, null, new[] { new object(), new object(), runA, new object() }, null)!;
+        var staleRest = Activator.CreateInstance(assembly.GetType("STS2_MCP.OrdinaryRoomEntry", true)!, flags, null, new[] { new object(), new object(), runA, new object() }, null)!;
+        eventEntryField.SetValue(null, staleEvent); restEntryField.SetValue(null, staleRest);
+        BeginEpoch(runB);
+        var fresh = Epoch()!;
+        Check(!ReferenceEquals(fresh, poisoned) && Failure(fresh) == null && !Pending(fresh) && ReferenceEquals(runProperty.GetValue(fresh), runB),
+            "a verified new run opens an independent clean epoch bound to that run");
+        Check(releases == 1 && eventEntryField.GetValue(null) == null && restEntryField.GetValue(null) == null
+            && (bool)staleEvent.GetType().GetField("Closed", flags)!.GetValue(staleEvent)!, "retirement closes stale event/rest entries and runs no cleanup twice");
+        var freshVersion = (string)Call(sessionType, fresh, "Observe", "neow with a different offer")!;
+        Check(freshVersion.Split(':')[0] != laterVersion.Split(':')[0] && (int)Call(sessionType, fresh, "Accept", laterVersion, "a", new[] { "a" })! == 409
+            && (int)Call(sessionType, poisoned, "Accept", freshVersion, "a", new[] { "a" })! == 409, "old-epoch state_versions are rejected by the new epoch and vice versa");
+        Call(sessionType, poisoned, "Fail", "late_stale_callback"); Call(sessionType, poisoned, "Refresh");
+        Check(Failure(fresh) == null && !Pending(fresh) && (int)Call(sessionType, fresh, "Accept", freshVersion, "a", new[] { "a" })! == 0,
+            "stale callbacks into the retired session cannot poison the new epoch");
+        int pendingReleases = 0;
+        var abandoned = PendingSession(runB, () => pendingReleases++);
+        sessionField.SetValue(null, abandoned);
+        BeginEpoch(runC);
+        Check(!ReferenceEquals(Epoch(), abandoned) && pendingReleases == 1 && Failure(abandoned) == "mutation_abandoned" && ReferenceEquals(runProperty.GetValue(Epoch()!), runC),
+            "a still-pending old operation is retired exactly once when a verified new run begins");
+        BeginEpoch(new object()); BeginEpoch(new object());
+        Check(pendingReleases == 1, "later epochs never re-run a retired session's cleanup");
+        var brokenCleanup = PendingSession(runC, () => throw new InvalidOperationException("unsubscribe failed"));
+        sessionField.SetValue(null, brokenCleanup);
+        BeginEpoch(new object());
+        Check(ReferenceEquals(Epoch(), brokenCleanup) && Failure(brokenCleanup) == "mutation_cleanup_failed", "failed retirement keeps the failed epoch instead of a clean replacement");
+        BeginEpoch(new object());
+        Check(ReferenceEquals(Epoch(), brokenCleanup) && Failure(brokenCleanup) == "mutation_cleanup_failed", "a cleanup failure is sticky across further new runs");
+        sessionField.SetValue(null, multipleCleanup);
+        BeginEpoch(new object()); BeginEpoch(new object());
+        Check(ReferenceEquals(Epoch(), multipleCleanup) && cleanupCount == 2 && Failure(multipleCleanup) == "mutation_cleanup_failed",
+            "successful-completion cleanup failure keeps its epoch across repeated fresh-run boundaries");
+        foreach (bool previouslyFailed in new[] { false, true })
+        {
+            var idleEventSession = Activator.CreateInstance(sessionType, true)!;
+            sessionField.SetValue(null, idleEventSession);
+            var failedEntry = Activator.CreateInstance(assembly.GetType("STS2_MCP.EventEntry", true)!, flags, null,
+                new[] { new object(), new object(), runA, new object() }, null)!;
+            int eventCleanups = 0;
+            failedEntry.GetType().GetField("Cleanup", flags)!.SetValue(failedEntry, (Action)(() => { eventCleanups++; throw new Exception("event unsubscribe failed"); }));
+            eventEntryField.SetValue(null, failedEntry);
+            if (previouslyFailed)
+            {
+                Call(failedEntry.GetType(), failedEntry, "Fail", "foreign_event_state_change");
+                bool turnoverRejected = false;
+                try { Call(bridge, null, "ClearEventEntry"); }
+                catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { turnoverRejected = true; }
+                Check(turnoverRejected && ReferenceEquals(eventEntryField.GetValue(null), failedEntry) && eventCleanups == 1,
+                    "map turnover cannot discard a previously failed event cleanup before the next run boundary");
+            }
+            bool escaped = false;
+            try { BeginEpoch(new object()); BeginEpoch(new object()); }
+            catch (TargetInvocationException) { escaped = true; }
+            Check(!escaped && ReferenceEquals(Epoch(), idleEventSession) && Failure(idleEventSession) == "mutation_cleanup_failed" && eventCleanups == 1,
+                "event cleanup failure is sticky without interrupting native setup or repeating cleanup; prior failure=" + previouslyFailed);
+        }
+        var cleanEntry = Activator.CreateInstance(assembly.GetType("STS2_MCP.EventEntry", true)!, flags, null,
+            new[] { new object(), new object(), runA, new object() }, null)!;
+        int cleanEventCloses = 0;
+        cleanEntry.GetType().GetField("Cleanup", flags)!.SetValue(cleanEntry, (Action)(() => cleanEventCloses++));
+        eventEntryField.SetValue(null, cleanEntry);
+        Call(bridge, null, "ClearEventEntry"); Call(bridge, null, "ClearEventEntry");
+        Check(eventEntryField.GetValue(null) == null && cleanEventCloses == 1, "successful event turnover drops the entry after exact-once cleanup");
+        var idle = Activator.CreateInstance(sessionType, true)!;
+        sessionField.SetValue(null, idle);
+        Check(!(bool)Call(sessionType, PendingSession(null, () => throw new Exception("x")), "Retire", (object?)null)! && (bool)Call(sessionType, PendingSession(null, null), "Retire", (object?)null)!,
+            "Retire reports cleanup outcome");
+    }
+    finally { sessionField.SetValue(null, originalEpoch); eventEntryField.SetValue(null, null); restEntryField.SetValue(null, null); }
+    // Invoke the production unsubscribe closures without Godot: native publisher constructors and game actions are not run.
+    foreach (var (dispatch, publisherName, eventName, propertyName) in new[] {
+        ("DispatchMap", "MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet", "ActionEnqueued", "ActionQueueSet"),
+        ("DispatchTreasureOpen", "MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet", "ActionEnqueued", "ActionQueueSet"),
+        ("DispatchTreasureOpen", "MegaCrit.Sts2.Core.GameActions.ActionExecutor", "BeforeActionExecuted", "ActionExecutor") })
+    {
+        var publisherType = game.GetType(publisherName, true)!;
+        var callbacks = bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly))
+            .Where(m => m.Name.StartsWith("<" + dispatch + ">b__") && m.GetParameters().Length == 0
+                && CalledBy(m).Any(c => c.Name == "remove_" + eventName && c.DeclaringType == publisherType)
+                && !CalledBy(m).Any(c => c.DeclaringType?.Namespace?.StartsWith("Godot") == true)).ToList();
+        Check(callbacks.Count == 1, dispatch + " retains an independently releasable original " + propertyName + " subscription");
+        var callback = callbacks.Single();
+        var closure = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(callback.DeclaringType!);
+        var oldPublisher = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(publisherType);
+        var newPublisher = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(publisherType);
+        var manager = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(runManagerType);
+        var publisherProperty = runManagerType.GetProperty(propertyName, flags)!;
+        publisherProperty.SetValue(manager, oldPublisher);
+        foreach (var field in callback.DeclaringType!.GetFields(flags))
+        {
+            if (field.FieldType == publisherType) field.SetValue(closure, oldPublisher);
+            if (field.FieldType == runManagerType) field.SetValue(closure, manager);
+        }
+        var handlerMethod = Operands(callback).OfType<MethodInfo>().Single(m => m.DeclaringType == callback.DeclaringType && m.GetParameters().Length == 1);
+        var nativeEvent = publisherType.GetEvent(eventName, flags)!;
+        var handler = handlerMethod.CreateDelegate(nativeEvent.EventHandlerType!, closure);
+        nativeEvent.AddEventHandler(oldPublisher, handler);
+        nativeEvent.AddEventHandler(newPublisher, handler);
+        publisherProperty.SetValue(manager, newPublisher); // InitializeShared replaces publishers before the boundary.
+        var eventField = publisherType.GetField(eventName, flags)!;
+        var retained = PendingSession(new object(), (Action)callback.CreateDelegate(typeof(Action), closure));
+        try
+        {
+            sessionField.SetValue(null, retained);
+            BeginEpoch(new object());
+            Check(!ReferenceEquals(Epoch(), retained) && eventField.GetValue(oldPublisher) == null
+                && eventField.GetValue(newPublisher) is Delegate, dispatch + " retirement removes only the original publisher's handler");
+            nativeEvent.AddEventHandler(oldPublisher, handler);
+            BeginEpoch(new object());
+            Check(eventField.GetValue(oldPublisher) is Delegate && eventField.GetValue(newPublisher) is Delegate,
+                dispatch + " later boundaries never repeat the original unsubscribe");
+        }
+        finally { sessionField.SetValue(null, originalEpoch); }
+    }
+    // Enchant grid: exact native type, shared CardsSelected boundary, preview containers, rules labels and full candidate exposure.
+    var enchantType = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckEnchantSelectScreen", true)!;
+    var gridBaseType = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen", true)!;
+    Check(enchantType.BaseType == gridBaseType && gridBaseType.GetField("_cards", flags)!.FieldType == typeof(IReadOnlyList<>).MakeGenericType(game.GetType("MegaCrit.Sts2.Core.Models.CardModel", true)!),
+        "enchant screen is a direct grid subclass and the base holds the exact candidate list passed to ShowScreen");
+    foreach (string field in new[] { "_selectedCards", "_prefs", "_enchantment", "_enchantmentAmount", "_enchantmentTitle", "_enchantmentDescription", "_enchantSinglePreviewContainer", "_enchantMultiPreviewContainer", "_confirmButton", "_closeButton" })
+        Check(enchantType.GetField(field, flags) != null, "NDeckEnchantSelectScreen." + field);
+    var enchantReady = Operands(enchantType.GetMethod("_Ready", flags)!);
+    Check(enchantReady.OfType<string>().Contains("%EnchantSinglePreviewContainer") && enchantReady.OfType<string>().Contains("%EnchantMultiPreviewContainer")
+        && enchantReady.OfType<string>().Contains("%Close") && enchantReady.OfType<string>().Contains("Confirm") && enchantReady.OfType<string>().Contains("Cancel")
+        && enchantReady.OfType<MethodBase>().Any(m => m.Name is "get_DynamicDescription") && enchantReady.OfType<MethodBase>().Any(m => m.Name == "set_Amount")
+        && enchantReady.OfType<MethodBase>().Count(m => m.Name == "Connect") == 6,
+        "native enchant _Ready wires Close/Confirm/Cancel buttons and renders the amount-adjusted enchantment rules into its labels");
+    var enchantCommand = GameStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Commands.CardSelectCmd", true)!, "FromDeckForEnchantment");
+    Check(enchantCommand.Any(m => m.Name == "ShowScreen" && m.DeclaringType == enchantType) && enchantCommand.Any(m => m.Name == "CardsSelected" && m.DeclaringType == gridBaseType)
+        && enchantCommand.Any(m => m.Name == "SyncLocalChoice") && enchantCommand.Any(m => m.Name == "LogChoice"),
+        "enchant selection awaits the same pinned NCardGridSelectionScreen.CardsSelected boundary as the approved upgrade/transform lanes");
+    foreach (string handler in new[] { "CloseSelection", "CheckIfSelectionComplete" })
+        Check(CalledBy(enchantType.GetMethod(handler, flags)!).Any(m => m.Name == "SetResult") && CalledBy(enchantType.GetMethod(handler, flags)!).Any(m => m.Name == "Remove"),
+            "enchant " + handler + " completes the retained selection task and removes the overlay");
+    Check(CalledBy(enchantType.GetMethod("OnCardClicked", flags)!).Any(m => m.Name == "PreviewSelection") && CalledBy(enchantType.GetMethod("ConfirmSelection", flags)!).Any(m => m.Name == "CheckIfSelectionComplete"),
+        "enchant card click opens the preview and preview Confirm completes");
+    var cardGridType = game.GetType("MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid", true)!;
+    Check(CalledBy(cardGridType.GetMethod("CalculateRowsNeeded", flags)!).Any(m => m.Name == "GetTotalRowCount") && CalledBy(cardGridType.GetMethod("CalculateRowsNeeded", flags)!).Any(m => m.Name == "Min")
+        && cardGridType.GetMethod("ReallocateAbove", flags) != null && cardGridType.GetMethod("ReallocateBelow", flags) != null,
+        "native card grid allocates a sliding window of rows, so allocated holders can be fewer than the candidate list");
+    var gridInit = GameStateMachineCalls(cardGridType, "InitGrid");
+    Check(gridInit.Any(m => m.Name == "CancelAsync") && gridInit.Any(m => m.Name == "InitGrid" && m.GetParameters().Length == 0) && gridInit.Any(m => m.Name == "AnimateIn"),
+        "native InitGrid awaits before allocating holders: an empty grid for a non-empty candidate list is a transient native window");
+    var gridActions = Operands(bridge.GetMethod("AddGridActions", flags)!);
+    Check(gridActions.OfType<Type>().Contains(enchantType) && gridActions.OfType<Type>().Count(t => gridBaseType.IsAssignableFrom(t) && t != gridBaseType) == 5
+        && gridActions.OfType<MethodBase>().Any(m => m.Name == "op_Inequality" && m.DeclaringType == typeof(Type)) && gridActions.OfType<string>().Contains("unverified_grid_subclass:"),
+        "grid actions bind the five inspected exact types (enchant included) and still refuse any other subclass");
+    Check(gridActions.OfType<string>().Contains("_cards") && gridActions.OfType<string>().Contains("grid_candidates_incomplete")
+        && gridActions.OfType<MethodBase>().Any(m => m.Name == "SameCards" && m.DeclaringType == protocol) && gridActions.OfType<string>().Contains("waiting"),
+        "grid actions compare the exact candidate list to allocated holders, wait on the empty native window and halt on a partial window");
+    var cardSelectState = Operands(bridge.GetMethod("BuildCardSelectState", flags)!);
+    Check(cardSelectState.OfType<string>().Contains("%EnchantSinglePreviewContainer") && cardSelectState.OfType<string>().Contains("%EnchantMultiPreviewContainer")
+        && cardSelectState.OfType<string>().Contains("_enchantmentTitle") && cardSelectState.OfType<string>().Contains("_enchantmentDescription") && cardSelectState.OfType<string>().Contains("_enchantmentAmount")
+        && cardSelectState.OfType<string>().Contains("enchantment") && cardSelectState.OfType<string>().Contains("description") && cardSelectState.OfType<Type>().Contains(enchantType),
+        "card_select snapshot detects enchant previews and exposes the required enchantment rules text");
+    object c1 = new(), c2 = new(), c3 = new();
+    Check((bool)Call(protocol, null, "SameCards", new object[] { c1, c2, c3 }, new object[] { c3, c1, c2 })! && (bool)Call(protocol, null, "SameCards", new object[0], new object[0])!
+        && (bool)Call(protocol, null, "SameCards", new object[] { c1, c1, c2 }, new object[] { c2, c1, c1 })!, "identical candidate multiset in grid order is complete");
+    Check(!(bool)Call(protocol, null, "SameCards", new object[] { c1, c2, c3 }, new object[] { c1, c2 })! && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c2 }, new object[] { c1, c2, c3 })!
+        && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c2 }, new object[] { c1, c1 })! && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c1 }, new object[] { c1, c2 })!,
+        "missing, foreign, duplicated or stale holders are not a complete candidate set");
     Check(GameStateMachineCalls(runManagerType, "SetUpSavedMultiplayer").Any(m => m.Name == "IncrementNumReloads"), "saved multiplayer setup also increments the reload count");
     var enterAct = GameStateMachineCalls(runManagerType, "EnterAct");
     Check(enterAct.Any(m => m.Name == "get_StartedWithNeow") && enterAct.Any(m => m.Name == "get_StartingMapPoint") && enterAct.Any(m => m.Name == "EnterMapCoord")

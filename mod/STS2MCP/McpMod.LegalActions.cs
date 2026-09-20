@@ -241,15 +241,23 @@ public static partial class McpMod
 
     private static void AddGridActions(Dictionary<string, object?> state, NCardGridSelectionScreen screen, List<LegalAction> actions)
     {
+        // Exact v0.111 types whose OnCardClicked/Confirm/Cancel/Close handlers and preview containers were inspected; the shared
+        // CardsSelected boundary owns each. Enchant: FromDeckForEnchantment -> ShowScreen(cards, enchantment, amount, prefs) -> CardsSelected.
         var type = screen.GetType();
         if (type != typeof(NDeckCardSelectScreen) && type != typeof(NSimpleCardSelectScreen)
-            && type != typeof(NDeckUpgradeSelectScreen) && type != typeof(NDeckTransformSelectScreen))
+            && type != typeof(NDeckUpgradeSelectScreen) && type != typeof(NDeckTransformSelectScreen) && type != typeof(NDeckEnchantSelectScreen))
             throw new NotSupportedException($"unverified_grid_subclass:{type.Name}");
         if (GetInstanceFieldValue(screen, "_selectedCards") is not IEnumerable<CardModel> selection
-            || GetInstanceFieldValue(screen, "_prefs") is not CardSelectorPrefs prefs)
+            || GetInstanceFieldValue(screen, "_prefs") is not CardSelectorPrefs prefs
+            || GetInstanceFieldValue(screen, "_cards") is not IReadOnlyList<CardModel> candidates)
             throw new NotSupportedException("grid_selection_predicates_unavailable");
         var selected = selection.ToHashSet();
         var holders = FindAllSortedByPosition<NGridCardHolder>(screen);
+        // NCardGrid.InitGrid(Task) awaits cancellation/animate-out before allocating any holder: an empty grid for a non-empty
+        // candidate list is that native window. Any other difference is the sliding-window allocation hiding legal alternatives.
+        var shown = holders.Select(h => h.CardModel).Where(card => card != null).Cast<object>().ToList();
+        if (shown.Count == 0 && candidates.Count > 0) { state["waiting"] = true; return; }
+        if (!BridgeProtocol.SameCards(candidates, shown)) throw new NotSupportedException("grid_candidates_incomplete");
         var detail = (Dictionary<string, object?>)state["card_select"]!;
         detail["selected_indices"] = holders.Select((h, i) => (h, i)).Where(x => selected.Contains(x.h.CardModel)).Select(x => x.i).ToList();
         detail["min_select"] = prefs.MinSelect;

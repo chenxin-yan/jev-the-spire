@@ -114,6 +114,26 @@ internal static class BridgeProtocol
         => numReloads == 0 && actIndex == 0 && startedWithNeow && atStartingPoint && ancientPoint && visitedCoords == 1
             && !preFinished && !finished && !actionRunning;
 
+    // Native RunManager.InitializeNewRun is reached only from SetUpNewSingleplayer/SetUpNewMultiplayer/SetUpTest; saved and replay
+    // setups call InitializeSavedRun after IncrementNumReloads. A zero reload count on the live manager with its run present
+    // is therefore a verified NEW game run, never Continue, a CLI reconnect, a room transition or a restored selector.
+    internal static bool FreshRunEpoch(bool currentManager, bool runPresent, int? numReloads)
+        => currentManager && runPresent && numReloads == 0;
+
+    // Exact native candidate list versus the allocated grid holders, by reference and multiplicity. v0.111 NCardGrid allocates
+    // only a sliding window (CalculateRowsNeeded: visible rows + 2), so a mismatch is a virtualized deck the bridge cannot expose.
+    internal static bool SameCards(IEnumerable<object> candidates, IEnumerable<object> shown)
+    {
+        var remaining = new Dictionary<object, int>(ReferenceEqualityComparer.Instance);
+        foreach (var card in candidates) remaining[card] = remaining.GetValueOrDefault(card) + 1;
+        foreach (var card in shown)
+        {
+            if (!remaining.TryGetValue(card, out int count)) return false;
+            if (count == 1) remaining.Remove(card); else remaining[card] = count - 1;
+        }
+        return remaining.Count == 0;
+    }
+
     internal static bool DialogueAdvanced(int before, int after, bool last, bool visible, bool enabled, bool optionsReady)
         => after == before + 1 && (last ? !visible && !enabled && optionsReady : visible && enabled);
 
@@ -236,6 +256,9 @@ internal sealed class BridgeSession : IDisposable
 {
     private readonly string _epoch = Guid.NewGuid().ToString("N");
     private long _revision;
+    private bool _cleanupFailed;
+    // The verified new RunState this epoch was opened for; null for the process-start epoch (menus, saved runs).
+    internal object? Run { get; init; }
     private string? _fingerprint;
     private bool _pending;
     private string? _consumedVersion;
@@ -309,17 +332,33 @@ internal sealed class BridgeSession : IDisposable
         Exception? failure = null;
         foreach (Action cleanup in release?.GetInvocationList() ?? Array.Empty<Delegate>())
             try { cleanup(); } catch (Exception error) { failure ??= error; }
-        if (failure != null) throw new InvalidOperationException("Mutation cleanup failed", failure);
+        if (failure != null)
+        {
+            _cleanupFailed = true;
+            throw new InvalidOperationException("Mutation cleanup failed", failure);
+        }
     }
 
     internal void Fail(string reason)
     {
-        Failure = reason;
+        Failure = _cleanupFailed ? "mutation_cleanup_failed" : reason;
         _pending = true;
-        try { Release(); } catch { Failure = "mutation_cleanup_failed"; }
+        try { Release(); } catch { Failure = "mutation_cleanup_failed"; _cleanupFailed = true; }
     }
 
     public void Dispose() => Fail("mutation_abandoned");
+
+    // Exact-once retirement at a verified fresh-run boundary. False keeps this epoch: a release callback failed now or earlier,
+    // so its retained subscriptions cannot be proven gone and a clean replacement must not hide that.
+    internal bool Retire(Action? cleanup)
+    {
+        if (!_cleanupFailed)
+        {
+            _release += cleanup;
+            Dispose();
+        }
+        return !_cleanupFailed;
+    }
 
     // Main-thread poll of explicitly retained ownership. Task completion never invokes game APIs off-thread.
     internal void Refresh()

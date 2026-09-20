@@ -15,7 +15,7 @@ internal sealed class EventEntry(object move, object owner, object run, object p
     internal object? Room, Scene, Model, Layout, ActiveOwner;
     internal Task? Setup;
     internal int Generation;
-    internal bool Bound, Closed;
+    internal bool Bound, Closed, CleanupFailed;
     internal string? Failure;
     internal Action? Cleanup;
     private readonly Dictionary<object, (object Option, int Generation, bool Disabled)> _inputs = new(ReferenceEqualityComparer.Instance);
@@ -65,7 +65,14 @@ internal sealed class EventEntry(object move, object owner, object run, object p
         Check();
         if (Setup?.IsCompletedSuccessfully != true || generation != Generation) throw new NotSupportedException("event_generation_not_ready");
     }
-    internal void Close() { if (Closed) return; Closed = true; try { Cleanup?.Invoke(); } finally { Cleanup = null; } }
+    internal void Close()
+    {
+        if (Closed) return;
+        Closed = true;
+        try { Cleanup?.Invoke(); }
+        catch { CleanupFailed = true; throw; }
+        finally { Cleanup = null; }
+    }
 }
 
 // Ordinary event tasks have their own prerequisites; no combat-lifetime simulation.

@@ -23,10 +23,18 @@ public static partial class McpMod
     private static readonly SelectionOwnership EventScopes = new();
     private sealed record EventScope(EventOperation Operation, object? Set = null, object? Screen = null, object? Proceed = null);
 
+    private static void ClearEventEntry()
+    {
+        _eventEntry?.Close();
+        if (_eventEntry?.CleanupFailed == true) throw new NotSupportedException("event_cleanup_failed");
+        _eventEntry = null;
+    }
+
     // Genuine initial opening: the native run start created this Ancient room itself, so no owned map travel exists to bind.
     // Restored, resumed and foreign-travel rooms return null and keep the existing event_setup_unowned refusal.
     private static EventEntry? BeginActOpening(NEventRoom scene)
     {
+        if (_eventEntry?.CleanupFailed == true) return null;
         var manager = RunManager.Instance;
         if (manager.DebugOnlyGetState() is not RunState run || run.CurrentRoom is not EventRoom room
             || GetInstanceFieldValue(scene, "_event") is not EventModel model || run.CurrentMapCoord is not MegaCrit.Sts2.Core.Map.MapCoord coord
@@ -229,16 +237,17 @@ public static partial class McpMod
     private static bool DispatchEventOption(EventEntry entry, NEventOptionButton button, int generation)
     {
         RequireEventOption(entry, button, generation);
+        var session = _bridgeSession;
         var operation = new EventOperation(new object(), entry, SelectionOwners);
         _eventOperation = operation; entry.ActiveOwner = operation.Owner;
         bool proceed = button.Option.IsProceed;
         var map = NMapScreen.Instance;
-        _bridgeSession.Track(operation.Owner, Task.CompletedTask, Task.CompletedTask, () => operation.Root, () => false);
-        _bridgeSession.HoldUntil(() => { RequireEventIdentity(entry); return operation.Poll() && (proceed ? map?.IsOpen == true : EventInputsReady(entry)); });
-        _bridgeSession.OnRelease(() =>
+        session.Track(operation.Owner, Task.CompletedTask, Task.CompletedTask, () => operation.Root, () => false);
+        session.HoldUntil(() => { RequireEventIdentity(entry); return operation.Poll() && (proceed ? map?.IsOpen == true : EventInputsReady(entry)); });
+        session.OnRelease(() =>
         {
             operation.Close(); entry.ActiveOwner = null;
-            if (_bridgeSession.Failure != null) entry.Fail(_bridgeSession.Failure);
+            if (session.Failure != null) entry.Fail(session.Failure);
             if (ReferenceEquals(_eventOperation, operation)) _eventOperation = null;
         });
         using var selection = SelectionOwners.Enter(operation.Owner);

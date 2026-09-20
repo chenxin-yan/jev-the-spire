@@ -88,6 +88,11 @@ public static partial class McpMod
                 ?? throw new NotSupportedException("rest_post_select_boundary_changed");
             if (restPostSelect.ReturnType != typeof(Task)) throw new NotSupportedException("rest_post_select_task_api_changed");
             harmony.Patch(restPostSelect, postfix: Patch(nameof(RestPostSelectPostfix)));
+            // Observation only: the exact fresh-run boundary that opens a new bridge epoch (see NewRunPostfix).
+            var newRun = typeof(RunManager).GetMethod("InitializeNewRun", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new NotSupportedException("new_run_boundary_changed");
+            if (newRun.ReturnType != typeof(void) || newRun.GetParameters().Length != 0) throw new NotSupportedException("new_run_boundary_api_changed");
+            harmony.Patch(newRun, postfix: Patch(nameof(NewRunPostfix)));
         }
         catch { harmony.UnpatchAll("com.sts2mcp.selection-ownership"); throw; }
     }

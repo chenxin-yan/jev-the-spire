@@ -31,7 +31,29 @@ namespace STS2_MCP;
 
 public static partial class McpMod
 {
-    private static readonly BridgeSession _bridgeSession = new();
+    // Replaced only by BeginRunEpoch; dispatch closures capture the instance they were registered on, never this field.
+    private static BridgeSession _bridgeSession = new();
+
+    // Observation-only postfix on v0.111 RunManager.InitializeNewRun: State is already the new RunState and InitializeShared has
+    // stored the literal zero reload count. Profile/multiplayer gates still apply to every later observation of that run.
+    private static void NewRunPostfix(RunManager __instance)
+    {
+        var run = __instance.DebugOnlyGetState();
+        if (BridgeProtocol.FreshRunEpoch(ReferenceEquals(__instance, RunManager.Instance), run != null,
+                GetInstanceFieldValue(__instance, "_numReloads") as int?))
+            BeginRunEpoch(run!);
+    }
+
+    // Retires the previous epoch's owners and subscriptions exactly once, then every older state_version is rejected.
+    // A repeated boundary for the same run, or a retirement whose cleanup failed, keeps the current (possibly failed) epoch.
+    private static void BeginRunEpoch(object run)
+    {
+        var previous = _bridgeSession;
+        if (ReferenceEquals(previous.Run, run)) return;
+        if (!previous.Retire(ClearEventEntry)) return;
+        _restEntry = null;
+        _bridgeSession = new BridgeSession { Run = run };
+    }
 
     private sealed record LegalAction(string Label, string Description,
         [property: JsonIgnore] Func<bool> Dispatch, [property: JsonIgnore] string Identity);
