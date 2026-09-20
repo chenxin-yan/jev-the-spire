@@ -1,0 +1,11 @@
+{
+  "installed_utc": "2026-09-20T18:23:11.731772+00:00",
+  "normal_ui_quit": true,
+  "game_and_listener_absent_before_copy": true,
+  "old_sha256": "4b5b756f2022a52d88b7338ad977fc70c82fa90718fa019b0a3485a7f791bcf3",
+  "candidate_sha256": "a105a689977a0f887af8dcef688800536a4f11d450ad7de9bc91118b08925a48",
+  "destination_sha256": "a105a689977a0f887af8dcef688800536a4f11d450ad7de9bc91118b08925a48",
+  "native_sha256": "9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4",
+  "source_commit": "030edf1",
+  "only_mod_dll_replaced": true
+}

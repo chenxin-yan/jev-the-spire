@@ -1,0 +1,17 @@
+{
+  "profile": 2,
+  "running_modded": true,
+  "loaded_mod_count": 1,
+  "fresh_starts": 1,
+  "character": "Ironclad",
+  "ascension": 0,
+  "seed": "79675RSRGBWQ",
+  "seed_entered": false,
+  "normal_ui_setup": "Previous run Save and Quit -> Quit confirmation -> install reviewed DLL while stopped -> Steam launch -> Profile 2 verified -> Abandon confirmation -> Singleplayer -> Standard -> Ironclad confirm",
+  "parent_setup_ended_at": "initial Neow choices",
+  "save_or_settings_edits": false,
+  "restored_room_adoption": false,
+  "gameplay_choices": "Jev model or complete forced singleton only",
+  "limits": {"accepted_actions": 150, "minutes": 20, "attempts": 1},
+  "stop_conditions": ["rest-site interaction validated", "technical fault", "terminal outcome", "action limit", "deadline"]
+}

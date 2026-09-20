@@ -1,0 +1,248 @@
+{
+  "state_type": "event",
+  "event": {
+    "event_id": "NEOW",
+    "event_name": "Neow",
+    "is_ancient": true,
+    "in_dialogue": false,
+    "body": "Mother of Resurrection (Exiled)\n..I’ve... ..brought... ..you back...\nArcane Scroll\nObtain a random Rare Card.\nNeow's Torment\nAdd 1 Neow's Fury to your Deck.\nCursed Pearl\nReceive Greed. Gain 333 Gold.\nNEOW",
+    "options": [
+      {
+        "index": 0,
+        "title": "Arcane Scroll",
+        "description": "Obtain a random Rare Card.",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "Arcane Scroll",
+        "relic_description": "Upon pickup, obtain a random Rare Card to add to your Deck.",
+        "keywords": []
+      },
+      {
+        "index": 1,
+        "title": "Neow's Torment",
+        "description": "Add 1 Neow's Fury to your Deck.",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "Neow's Torment",
+        "relic_description": "Upon pickup, add 1 Neow's Fury to your Deck.",
+        "keywords": [
+          {
+            "name": "Neow's Fury",
+            "description": "Deal 10 damage.\nPut up to 2 cards from your Discard Pile into your Hand.\nExhaust."
+          },
+          {
+            "name": "Exhaust",
+            "description": "Removed until the end of combat."
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "title": "Cursed Pearl",
+        "description": "Receive Greed. Gain 333 Gold.",
+        "is_locked": false,
+        "is_proceed": false,
+        "was_chosen": false,
+        "relic_name": "Cursed Pearl",
+        "relic_description": "Upon pickup, receive Greed. Gain 333 Gold.",
+        "keywords": [
+          {
+            "name": "Greed",
+            "description": "Unplayable.\nEternal."
+          },
+          {
+            "name": "Eternal",
+            "description": "Cannot be removed or transformed from your Deck."
+          },
+          {
+            "name": "Unplayable",
+            "description": "Unplayable cards cannot be played."
+          }
+        ]
+      }
+    ]
+  },
+  "run": {
+    "act": 1,
+    "floor": 1,
+    "ascension": 0
+  },
+  "player": {
+    "character": "The Ironclad",
+    "hp": 80,
+    "max_hp": 80,
+    "block": 0,
+    "deck": [
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "STRIKE_IRONCLAD",
+        "name": "Strike",
+        "type": "Attack",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Deal 6 damage.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": []
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "DEFEND_IRONCLAD",
+        "name": "Defend",
+        "type": "Skill",
+        "cost": "1",
+        "star_cost": null,
+        "description": "Gain 5 Block.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Block",
+            "description": "Until next turn, prevents damage."
+          }
+        ]
+      },
+      {
+        "id": "BASH",
+        "name": "Bash",
+        "type": "Attack",
+        "cost": "2",
+        "star_cost": null,
+        "description": "Deal 8 damage.\nApply 2 Vulnerable.",
+        "rarity": "Basic",
+        "is_upgraded": false,
+        "keywords": [
+          {
+            "name": "Vulnerable",
+            "description": "Vulnerable creatures take 50% more damage from Attacks."
+          }
+        ]
+      }
+    ],
+    "gold": 99,
+    "status": [],
+    "relics": [
+      {
+        "id": "BURNING_BLOOD",
+        "name": "Burning Blood",
+        "description": "At the end of combat, heal 6 HP.",
+        "counter": null,
+        "keywords": []
+      }
+    ],
+    "potions": [],
+    "max_potion_slots": 3
+  },
+  "seed": "79675RSRGBWQ",
+  "terminal": false,
+  "waiting": false,
+  "legal_actions_complete": true,
+  "legal_actions": [
+    {
+      "label": "choose_event_option:0",
+      "description": "Arcane Scroll: Obtain a random Rare Card."
+    },
+    {
+      "label": "choose_event_option:1",
+      "description": "Neow's Torment: Add 1 Neow's Fury to your Deck."
+    },
+    {
+      "label": "choose_event_option:2",
+      "description": "Cursed Pearl: Receive Greed. Gain 333 Gold."
+    }
+  ],
+  "state_version": "e89b9cb09de247d4959726db7f48d545:2",
+  "mutation_pending": false
+}

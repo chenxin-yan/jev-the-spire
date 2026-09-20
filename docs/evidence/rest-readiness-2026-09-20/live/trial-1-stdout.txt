@@ -1,0 +1,104 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=10 deadline=300000ms log=/tmp/jev-rest-live-2026-09-20/trial-1.jsonl
+observed: event e89b9cb09de247d4959726db7f48d545:2 act 1 floor 1 actions=3
+[action 1/10] legal actions:
+  choose_event_option:0  Arcane Scroll: Obtain a random Rare Card.
+  choose_event_option:1  Neow's Torment: Add 1 Neow's Fury to your Deck.
+  choose_event_option:2  Cursed Pearl: Receive Greed. Gain 333 Gold.
+Jev (typesafe-ai/jev): choose_event_option:0  confidence=not returned
+  distribution: choose_event_option:0=0.78 choose_event_option:1=0.16 choose_event_option:2=0.06
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:2","label":"choose_event_option:0"}
+observed: event e89b9cb09de247d4959726db7f48d545:4 act 1 floor 1 actions=1
+singleton legal set: choose_event_option:0  Proceed:  (no inference)
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:4","label":"choose_event_option:0"}
+observed: map e89b9cb09de247d4959726db7f48d545:6 act 1 floor 1 actions=4
+[action 3/10] legal actions:
+  choose_map_node:0  Travel to Monster at (0,1)
+  choose_map_node:1  Travel to Monster at (2,1)
+  choose_map_node:2  Travel to Monster at (4,1)
+  choose_map_node:3  Travel to Monster at (6,1)
+Jev (typesafe-ai/jev): choose_map_node:0  confidence=not returned
+  distribution: choose_map_node:0=0.53 choose_map_node:1=0.3 choose_map_node:2=0.15 choose_map_node:3=0.02
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:6","label":"choose_map_node:0"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:7 actions=0
+waiting: monster e89b9cb09de247d4959726db7f48d545:9 actions=0
+waiting: monster e89b9cb09de247d4959726db7f48d545:10 actions=0
+waiting: monster e89b9cb09de247d4959726db7f48d545:11 actions=0
+waiting: monster e89b9cb09de247d4959726db7f48d545:12 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:13 act 1 floor 2 actions=12
+[action 4/10] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Twig Slime (S) (1)
+  play_card:1:2  Play hand[1] Strike targeting Twig Slime (M) (2)
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:1  Play hand[2] Strike targeting Twig Slime (S) (1)
+  play_card:2:2  Play hand[2] Strike targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:1  Play hand[3] Strike targeting Twig Slime (S) (1)
+  play_card:3:2  Play hand[3] Strike targeting Twig Slime (M) (2)
+  play_card:3:3  Play hand[3] Strike targeting Leaf Slime (S) (3)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.41 play_card:0:none=0.18 play_card:1:2=0.13 end_turn=0.11 play_card:2:1=0.05 play_card:2:2=0.05 play_card:3:2=0.02 play_card:1:3=0.01 play_card:2:3=0.01 play_card:3:1=0.01 play_card:3:3=0.01 play_card:4:none=0.01
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:13","label":"play_card:1:1"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:14 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:16 act 1 floor 2 actions=9
+[action 5/10] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Twig Slime (S) (1)
+  play_card:1:2  Play hand[1] Strike targeting Twig Slime (M) (2)
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:1  Play hand[2] Strike targeting Twig Slime (S) (1)
+  play_card:2:2  Play hand[2] Strike targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.44 play_card:1:2=0.16 play_card:0:none=0.15 end_turn=0.09 play_card:2:1=0.08 play_card:2:2=0.04 play_card:1:3=0.02 play_card:2:3=0.01 play_card:3:none=0.01
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:16","label":"play_card:1:1"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:17 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:19 act 1 floor 2 actions=5
+[action 6/10] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:2  Play hand[1] Strike targeting Twig Slime (M) (2)
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:2  confidence=not returned
+  distribution: play_card:1:2=0.48 play_card:0:none=0.18 play_card:1:3=0.16 end_turn=0.16 play_card:2:none=0.02
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:19","label":"play_card:1:2"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:20 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:22 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:22","label":"end_turn"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:23 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:25 act 1 floor 2 actions=8
+[action 8/10] legal actions:
+  play_card:0:2  Play hand[0] Bash targeting Twig Slime (M) (2)
+  play_card:0:3  Play hand[0] Bash targeting Leaf Slime (S) (3)
+  play_card:1:none  Play hand[1] Crimson Mantle
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:2  Play hand[3] Strike targeting Twig Slime (M) (2)
+  play_card:3:3  Play hand[3] Strike targeting Leaf Slime (S) (3)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.31 play_card:0:3=0.17 play_card:3:3=0.15 play_card:1:none=0.09 play_card:2:none=0.09 play_card:3:2=0.09 end_turn=0.08 play_card:4:none=0.02
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:25","label":"play_card:0:2"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:26 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:28 act 1 floor 2 actions=6
+[action 9/10] legal actions:
+  play_card:0:none  Play hand[0] Crimson Mantle
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:2  Play hand[2] Strike targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:2  confidence=not returned
+  distribution: play_card:2:2=0.57 play_card:2:3=0.19 play_card:0:none=0.15 play_card:1:none=0.04 end_turn=0.04 play_card:3:none=0.01
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:28","label":"play_card:2:2"}
+waiting: waiting e89b9cb09de247d4959726db7f48d545:29 actions=0
+observed: monster e89b9cb09de247d4959726db7f48d545:31 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"e89b9cb09de247d4959726db7f48d545:31","label":"end_turn"}
+summary: {"outcome":"max_actions","dispatched":10,"model_calls":7,"forced":3,"seed":"79675RSRGBWQ","act":1,"floor":2,"last_state_type":"monster","input_tokens":21850,"output_tokens":677,"wall_ms":22193}

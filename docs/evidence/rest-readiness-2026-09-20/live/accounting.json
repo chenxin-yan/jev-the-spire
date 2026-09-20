@@ -1,0 +1,39 @@
+{
+  "totals": {
+    "dispatched": 17,
+    "model_calls": 12,
+    "forced": 5,
+    "input_tokens": 34916,
+    "output_tokens": 1063
+  },
+  "summaries": [
+    {
+      "type": "summary",
+      "ts": "2026-09-20T18:26:08.069Z",
+      "outcome": "max_actions",
+      "dispatched": 10,
+      "model_calls": 7,
+      "forced": 3,
+      "seed": "79675RSRGBWQ",
+      "act": 1,
+      "floor": 2,
+      "last_state_type": "monster",
+      "input_tokens": 21850,
+      "output_tokens": 677,
+      "wall_ms": 22193
+    },
+    {
+      "type": "summary",
+      "ts": "2026-09-20T18:27:06.742Z",
+      "outcome": "halted",
+      "halt_reason": "unowned_selection_continuation",
+      "dispatched": 7,
+      "model_calls": 5,
+      "forced": 2,
+      "last_state_type": "unsupported",
+      "input_tokens": 13066,
+      "output_tokens": 386,
+      "wall_ms": 15982
+    }
+  ]
+}

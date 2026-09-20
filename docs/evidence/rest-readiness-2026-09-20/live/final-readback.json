@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "unowned_selection_continuation",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "e89b9cb09de247d4959726db7f48d545:50",
+  "mutation_pending": true
+}
