@@ -1,0 +1,12 @@
+{
+  "qa_segments_verified": [1, 2],
+  "accepted_actions": 4,
+  "model_actions": 3,
+  "forced_actions": 1,
+  "qa_1_readback": "Owned card selector ready with all 10 cards matching screenshot; mutation_pending true is expected while Neow waits for removal.",
+  "qa_2_readback": "First map ready with both native next routes, mutation_pending false, deck 10 -> 9 with one Strike removed. No tutorial or unsupported surface. UI shows both routes and deck count 9.",
+  "proceed_receipts": "Installed reviewed code retains exact EventOption.Chosen task and synchronous Opened/postcondition checks. Ready map plus pending=false reached through that path; no visibility/time/version-only completion claim.",
+  "visual_limit": "Intermediate select/confirm/proceed actions completed faster than parent UI observation. Their transitions are retained in CLI JSONL; separate post-segment readback and UI verified resulting state.",
+  "stop_control": "Each CLI exited at its explicit action bound. After-bound readback verified completion/owned-child readiness before another invocation. Offline real-CLI SIGINT and deadline tests passed; live SIGINT not yet tested.",
+  "next_segment_started": 3
+}

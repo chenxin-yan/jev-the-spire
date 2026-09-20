@@ -1,0 +1,40 @@
+{
+  "command": [
+    "mise",
+    "exec",
+    "--",
+    "bun",
+    "run",
+    "/tmp/jev-resume-2026-09-20/provider-attempt-2/provider-smoke.ts"
+  ],
+  "exit": 0,
+  "external_timeout": false,
+  "seconds": 1.239,
+  "result": {
+    "ok": true,
+    "application_evaluations": 1,
+    "fixture": "/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/docs/evidence/m2/generic-live/combat-ready.json",
+    "duration_ms": 914,
+    "configured_model": "typesafe-ai/jev",
+    "label": "play_card:3:1",
+    "probabilities": {
+      "play_card:0:none": 0.18,
+      "play_card:1:none": 0.02,
+      "play_card:2:none": 0.02,
+      "play_card:3:1": 0.35000000000000003,
+      "play_card:3:2": 0.1,
+      "play_card:3:3": 0.17,
+      "play_card:4:1": 0.02,
+      "play_card:4:2": 0.03,
+      "play_card:4:3": 0.03,
+      "end_turn": 0.08
+    },
+    "confidence": null,
+    "usage": {
+      "inputTokens": 3130,
+      "outputTokens": 135
+    },
+    "warning_count": 0
+  },
+  "stderr_bytes_omitted": 0
+}

@@ -1,0 +1,62 @@
+{
+  "attempts": 1,
+  "start_utc": "2026-09-20T17:44:12.132227+00:00",
+  "stop_utc": "2026-09-20T17:48:43.072Z",
+  "outcome": "technical stop; nonterminal; not a completed run",
+  "accepted_actions": 57,
+  "model_calls": 41,
+  "forced_actions": 16,
+  "input_tokens": 104875,
+  "output_tokens": 3153,
+  "segments": [
+    {
+      "segment": "full-1",
+      "expected_process_exit": 0,
+      "type": "summary",
+      "ts": "2026-09-20T17:45:13.266Z",
+      "outcome": "max_actions",
+      "dispatched": 20,
+      "model_calls": 14,
+      "forced": 6,
+      "seed": "0RBY5896E908",
+      "act": 1,
+      "floor": 4,
+      "last_state_type": "monster",
+      "input_tokens": 35776,
+      "output_tokens": 1086,
+      "wall_ms": 52332
+    },
+    {
+      "segment": "full-2",
+      "expected_process_exit": 0,
+      "type": "summary",
+      "ts": "2026-09-20T17:47:21.746Z",
+      "outcome": "max_actions",
+      "dispatched": 20,
+      "model_calls": 14,
+      "forced": 6,
+      "seed": "0RBY5896E908",
+      "act": 1,
+      "floor": 6,
+      "last_state_type": "monster",
+      "input_tokens": 36631,
+      "output_tokens": 1161,
+      "wall_ms": 50989
+    },
+    {
+      "segment": "full-3",
+      "expected_process_exit": 1,
+      "type": "summary",
+      "ts": "2026-09-20T17:48:43.072Z",
+      "outcome": "halted",
+      "halt_reason": "ordinary_mouse_input_unverified",
+      "dispatched": 17,
+      "model_calls": 13,
+      "forced": 4,
+      "last_state_type": "unsupported",
+      "input_tokens": 32468,
+      "output_tokens": 906,
+      "wall_ms": 37731
+    }
+  ]
+}

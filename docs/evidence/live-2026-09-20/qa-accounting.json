@@ -1,0 +1,40 @@
+{
+  "checked_utc": "2026-09-20T17:43:28.472745+00:00",
+  "fresh_starts": 1,
+  "cli_invocations": 5,
+  "accepted_actions": 23,
+  "model_calls": 18,
+  "forced_actions": 5,
+  "input_tokens": 47973,
+  "output_tokens": 1466,
+  "final_map": {
+    "seed": "0RBY5896E908",
+    "run": {
+      "act": 1,
+      "floor": 2,
+      "ascension": 0
+    },
+    "state_version": "a7ad6e193998409a8e3766f96b08a7cc:61",
+    "waiting": false,
+    "legal_actions_complete": true,
+    "mutation_pending": true,
+    "legal_actions": [
+      {
+        "label": "choose_map_node:0",
+        "description": "Travel to Monster at (3,2)"
+      }
+    ]
+  },
+  "final_position": {
+    "col": 3,
+    "row": 1,
+    "type": "Monster"
+  },
+  "final_hp": 75,
+  "final_gold": 99,
+  "deck_count": 9,
+  "all_distributions_valid": true,
+  "uncertain_or_rejected_posts": 0,
+  "no_post_stop_map_decision_or_dispatch": true,
+  "outcome": "bounded QA path reached; intentional SIGINT, not terminal"
+}

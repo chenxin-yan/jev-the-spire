@@ -1,0 +1,77 @@
+{
+  "checked_utc": "2026-09-20T17:55:24.649580+00:00",
+  "commands": [
+    {
+      "name": "lint",
+      "command": [
+        "mise",
+        "exec",
+        "--",
+        "bun",
+        "--no-env-file",
+        "run",
+        "lint"
+      ],
+      "exit": 0,
+      "seconds": 0.472
+    },
+    {
+      "name": "format",
+      "command": [
+        "mise",
+        "exec",
+        "--",
+        "bun",
+        "--no-env-file",
+        "run",
+        "fmt:check"
+      ],
+      "exit": 0,
+      "seconds": 0.426
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "mise",
+        "exec",
+        "--",
+        "bunx",
+        "--no-env-file",
+        "--no-install",
+        "tsc",
+        "--noEmit"
+      ],
+      "exit": 0,
+      "seconds": 0.252
+    },
+    {
+      "name": "test",
+      "command": [
+        "mise",
+        "exec",
+        "--",
+        "bun",
+        "--no-env-file",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 4.529
+    }
+  ],
+  "tests": {
+    "pass": 50,
+    "fail": 0,
+    "assertions": 193
+  },
+  "accounting": {
+    "command": "python3 docs/evidence/live-2026-09-20/check-accounting.py",
+    "exit": 0,
+    "negative_check": "temporary copy with missing probability label failed as intended, exit 1"
+  },
+  "git_diff_cached_check_exit": 0,
+  "format_scope": "Repository configuration excludes docs/evidence/**; raw captures intentionally unchanged.",
+  "native_checks": "Not repeated; source unchanged from reviewed 3af9351. See overnight evidence.",
+  "credential_scan": "No credential-shaped payloads found in known public evidence; credentials not accessed.",
+  "live_gameplay_outcome": "UNRESOLVED: ordinary_mouse_input_unverified, no retry; see full-accounting.json",
+  "controllers": "No running managed gameplay processes; game left at ready floor-7 rest site."
+}

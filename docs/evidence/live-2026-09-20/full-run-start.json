@@ -1,0 +1,11 @@
+{
+  "attempt": 1,
+  "mode": "continue clean Jev-owned QA run",
+  "seed": "0RBY5896E908",
+  "qa_actions_before_attempt": 23,
+  "start_utc": "2026-09-20T17:44:12.132227+00:00",
+  "deadline_utc": "2026-09-20T19:44:12.132227+00:00",
+  "max_gameplay_seconds": 7200,
+  "gameplay_intervention_allowed": false,
+  "provider_model": "typesafe-ai/jev"
+}

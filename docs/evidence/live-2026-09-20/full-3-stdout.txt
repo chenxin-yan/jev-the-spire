@@ -1,0 +1,154 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=20 deadline=300000ms log=/tmp/jev-resume-2026-09-20/full-3.jsonl
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:188 act 1 floor 6 actions=6
+[action 1/20] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.55 play_card:1:none=0.25 end_turn=0.12 play_card:2:none=0.03 play_card:4:none=0.03 play_card:3:none=0.02
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:188","label":"play_card:0:2"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:189 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:191 act 1 floor 6 actions=5
+[action 2/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.69 end_turn=0.24 play_card:1:none=0.04 play_card:3:none=0.02 play_card:2:none=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:191","label":"play_card:0:none"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:192 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:194 act 1 floor 6 actions=4
+[action 3/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.72 end_turn=0.25 play_card:2:none=0.02 play_card:1:none=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:194","label":"play_card:0:none"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:195 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:197 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:197","label":"end_turn"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:198 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:200 act 1 floor 6 actions=6
+[action 5/20] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:2  Play hand[2] Bash targeting Nibbit (2)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:2  confidence=not returned
+  distribution: play_card:2:2=0.74 play_card:0:2=0.17 end_turn=0.06 play_card:1:2=0.01 play_card:3:2=0.01 play_card:4:2=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:200","label":"play_card:2:2"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:201 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:203 act 1 floor 6 actions=5
+[action 6/20] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.78 end_turn=0.16 play_card:1:2=0.03 play_card:3:2=0.02 play_card:2:2=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:203","label":"play_card:0:2"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:204 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:206 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:206","label":"end_turn"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:207 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:209 act 1 floor 6 actions=6
+[action 8/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:2  confidence=not returned
+  distribution: play_card:4:2=0.91 end_turn=0.06 play_card:0:none=0.03 play_card:1:none=0 play_card:2:none=0 play_card:3:none=0
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:209","label":"play_card:4:2"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:210 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:212 act 1 floor 6 actions=5
+[action 9/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.52 end_turn=0.43 play_card:1:none=0.02 play_card:3:none=0.02 play_card:2:none=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:212","label":"play_card:0:none"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:213 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:215 act 1 floor 6 actions=4
+[action 10/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.62 end_turn=0.35 play_card:2:none=0.02 play_card:1:none=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:215","label":"play_card:0:none"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:216 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:218 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:218","label":"end_turn"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:219 actions=0
+observed: monster a7ad6e193998409a8e3766f96b08a7cc:221 act 1 floor 6 actions=6
+[action 12/20] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:2  Play hand[1] Bash targeting Nibbit (2)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:2  confidence=not returned
+  distribution: play_card:1:2=0.51 play_card:0:2=0.22 play_card:4:none=0.14 end_turn=0.1 play_card:2:2=0.02 play_card:3:2=0.01
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:221","label":"play_card:1:2"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:222 actions=0
+observed: rewards a7ad6e193998409a8e3766f96b08a7cc:223 act 1 floor 6 actions=3
+[action 13/20] legal actions:
+  claim_reward:0  13 Gold
+  claim_reward:1  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.37 proceed=0.35 claim_reward:1=0.28
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:223","label":"claim_reward:0"}
+observed: rewards a7ad6e193998409a8e3766f96b08a7cc:224 act 1 floor 6 actions=2
+[action 14/20] legal actions:
+  claim_reward:0  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.73 proceed=0.27
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:224","label":"claim_reward:0"}
+waiting: card_reward a7ad6e193998409a8e3766f96b08a7cc:225 actions=0
+observed: card_reward a7ad6e193998409a8e3766f96b08a7cc:226 act 1 floor 6 actions=4
+[action 15/20] legal actions:
+  select_card_reward:0  Take Shrug It Off
+  select_card_reward:1  Take Primal Force
+  select_card_reward:2  Take Breakthrough
+  card_reward_alternative:0  Skip
+Jev (typesafe-ai/jev): select_card_reward:1  confidence=not returned
+  distribution: select_card_reward:1=0.36 select_card_reward:0=0.29 card_reward_alternative:0=0.26 select_card_reward:2=0.09
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:226","label":"select_card_reward:1"}
+observed: rewards a7ad6e193998409a8e3766f96b08a7cc:227 act 1 floor 6 actions=1
+singleton legal set: proceed  Leave rewards (no inference)
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:227","label":"proceed"}
+waiting: map a7ad6e193998409a8e3766f96b08a7cc:229 actions=0
+observed: map a7ad6e193998409a8e3766f96b08a7cc:230 act 1 floor 6 actions=3
+[action 17/20] legal actions:
+  choose_map_node:0  Travel to Monster at (3,6)
+  choose_map_node:1  Travel to RestSite at (4,6)
+  choose_map_node:2  Travel to Elite at (5,6)
+Jev (typesafe-ai/jev): choose_map_node:1  confidence=not returned
+  distribution: choose_map_node:1=0.83 choose_map_node:0=0.11 choose_map_node:2=0.06
+POST 202 {"status":"dispatched","state_version":"a7ad6e193998409a8e3766f96b08a7cc:230","label":"choose_map_node:1"}
+waiting: waiting a7ad6e193998409a8e3766f96b08a7cc:231 actions=0
+observed: unsupported a7ad6e193998409a8e3766f96b08a7cc:233 actions=0
+summary: {"outcome":"halted","halt_reason":"ordinary_mouse_input_unverified","dispatched":17,"model_calls":13,"forced":4,"last_state_type":"unsupported","input_tokens":32468,"output_tokens":906,"wall_ms":37731}

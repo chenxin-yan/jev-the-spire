@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "3af9351",
+  "fresh_qa_starts": 1,
+  "profile": 2,
+  "modded_menu_confirmed": true,
+  "loaded_mod_count_visible": 1,
+  "standard_run": true,
+  "character": "Ironclad",
+  "ascension": 0,
+  "seed_entered_by_parent": false,
+  "observed_seed": "0RBY5896E908",
+  "human_setup_ended_at": "initial Neow options, no gameplay choice selected",
+  "initial_legal_set_ui_parity": ["Precise Scissors", "Scroll Boxes", "Hefty Tablet"],
+  "initial_observation_complete": true,
+  "initial_observation_waiting": false,
+  "unexpected_modals_or_tutorials": false,
+  "setup_notes": "Normal quit returned AppleEvent -128 but process/listener were absent. Verified candidate copied only to nested existing DLL location; previous DLL backed up. Relaunched through steam://rungameid/2868840. Profile 2 visible before Abandon. Confirmed Abandon, Singleplayer, Standard, selected Ironclad then confirm. First out-of-bounds coordinate call was rejected by UI tool before action; subsequent checked clicks used fresh image coordinates. No save/settings/credential inspection.",
+  "qa_cli_invocations_started": 1,
+  "qa_action_limit_total": 60,
+  "qa_invocation_limit": 6,
+  "qa_start_limit": 3
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "mise",
+    "exec",
+    "--",
+    "bun",
+    "run",
+    "src/main.ts",
+    "--max-actions",
+    "20",
+    "--log",
+    "/tmp/jev-resume-2026-09-20/qa-5.jsonl"
+  ],
+  "exit": 130,
+  "sigint_at_map_observation": true,
+  "seconds": 13.628
+}

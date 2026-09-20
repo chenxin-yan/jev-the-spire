@@ -1,0 +1,9 @@
+{
+  "state_type": "waiting",
+  "waiting": true,
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "a7ad6e193998409a8e3766f96b08a7cc:58",
+  "mutation_pending": true
+}
