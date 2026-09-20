@@ -89,7 +89,7 @@ public static partial class McpMod
                     if (button.Option.IsEnabled && GetInstanceFieldValue(button, "_isUnclickable") is false
                         && OrdinaryInput(button))
                         actions.Add(new($"choose_rest_option:{i}", $"{SafeGetText(() => button.Option.Title)}: {SafeGetText(() => button.Option.Description)}",
-                            () => DispatchUiTask(button, typeof(NRestSiteButton), "SelectOption", button.Option), button.GetInstanceId().ToString()));
+                            () => DispatchRestOption(run, player, room, button), button.GetInstanceId().ToString()));
                 }
                 AddOrdinaryProceed(actions, run, player, room, room.ProceedButton, () => RequireRest(run, player, room));
                 break;

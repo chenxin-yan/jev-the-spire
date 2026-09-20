@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Combat;
@@ -18,6 +19,10 @@ namespace STS2_MCP;
 
 public static partial class McpMod
 {
+    // An ordinary owned mutation plus the detached native work a scoped hook retains under it (e.g. the rest post-select lane).
+    // It exists before start() so a synchronous producer is captured, and closes with the owner so late producers are refused.
+    private sealed class OrdinaryOwner { internal readonly List<Task> Work = new(); internal bool Closed; }
+
     private static bool DispatchOwnedTask(Func<Task> start)
     {
         if (TreasureScopes.CurrentOwner is TreasureScope treasureChild && treasureChild.Screen != null)
@@ -26,16 +31,30 @@ public static partial class McpMod
             return DispatchEventRewardChild(eventChild.Screen, start);
         if (RewardScopes.CurrentOwner is RewardScope child && ReferenceEquals(child.Operation, _combatExit) && child.Screen != null)
             return DispatchRewardChild(child.Screen, start, false);
-        var owner = new object();
+        var owner = new OrdinaryOwner();
         using var scope = SelectionOwners.Enter(owner);
         try
         {
             var task = start() ?? throw new NotSupportedException("native_task_unavailable");
             _bridgeSession.Track(owner, task, Task.CompletedTask, () => task, () => false);
-            _bridgeSession.OnRelease(() => SelectionOwners.CloseOwner(owner));
+            _bridgeSession.HoldUntil(() => OrdinaryWorkDone(owner));
+            _bridgeSession.OnRelease(() => { owner.Closed = true; SelectionOwners.CloseOwner(owner); });
             return true;
         }
-        catch { SelectionOwners.CloseOwner(owner); throw; }
+        catch { owner.Closed = true; SelectionOwners.CloseOwner(owner); throw; }
+    }
+
+    private static void RetainOrdinaryWork(Task task)
+    {
+        if (SelectionOwners.CurrentOwner is not OrdinaryOwner { Closed: false } owner) throw new NotSupportedException("ordinary_work_owner_unverified");
+        owner.Work.Add(task ?? throw new NotSupportedException("ordinary_work_task_unavailable"));
+    }
+
+    private static bool OrdinaryWorkDone(OrdinaryOwner owner)
+    {
+        foreach (var task in owner.Work)
+            if (task.IsFaulted || task.IsCanceled) { _ = task.Exception; throw new NotSupportedException("ordinary_work_failed"); }
+        return owner.Work.All(task => task.IsCompletedSuccessfully);
     }
 
     private static bool DispatchUiTask(object node, Type declaring, string name, params object?[] arguments)

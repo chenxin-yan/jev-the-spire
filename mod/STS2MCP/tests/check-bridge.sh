@@ -1213,6 +1213,7 @@ if (args.Length > 1)
         ("hidden usable potion holder", new[] { false, true }, new[] { "choose_map_node:0", "discard_potion:1" }),
         ("valid unreadable potion target", new[] { true, false, true }, new[] { "end_turn", "discard_potion:0" }),
         ("ready map and potion", new[] { true, true, true }, new[] { "discard_potion:0", "use_potion:0:none" }),
+        ("unreadable combat target beside a readable one", new[] { true, false }, new[] { "play_card:0:none", "end_turn", "discard_potion:0" }),
         ("no eligible inputs", Array.Empty<bool>(), new[] { "discard_potion:0" }) })
     {
         var decisionState = new Dictionary<string, object?> { ["state_type"] = "map", ["waiting"] = false };
@@ -1508,11 +1509,19 @@ if (args.Length > 1)
         gate.SetResult(1); Check(Call(ownershipType, hookedRegistry, "Find", fixture, fixtureOwner) == null, "real Harmony task completion invalidates lease");
         Call(ownershipType, hookedRegistry, "CloseOwner", fixtureOwner);
         var capture = typeof(ManagedSelectorFixture).GetMethod("Capture")!;
-        harmonyType.GetMethod("Patch")!.Invoke(patcher, new[] { capture, Hook("SelectionContextEnter"), null, null, Hook("SelectionContextFinalizer") });
+        // The REAL contextual prefix: real GameActionPlayerChoiceContext objects over uninitialized concrete GameActions (no ctor, no Godot),
+        // resolved only through explicit registration.
+        harmonyType.GetMethod("Patch")!.Invoke(patcher, new[] { capture, Hook("SelectionContextPrefix"), null, null, Hook("SelectionContextFinalizer") });
         ManagedSelectorFixture.CurrentOwner = () => ownershipType.GetProperty("CurrentOwner", flags)!.GetValue(hookedRegistry);
-        var context1 = new object(); var context2 = new object(); var owned1 = new object(); var owned2 = new object();
-        Call(ownershipType, hookedRegistry, "RegisterContext", context1, owned1);
-        Call(ownershipType, hookedRegistry, "RegisterContext", context2, owned2);
+        var actionContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext", true)!;
+        object UnregisteredAction() => System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.GameActions.MoveToMapCoordAction", true)!);
+        object ActionContext(object action) => Activator.CreateInstance(actionContextType, flags, null, new[] { action }, null)!;
+        var action1 = UnregisteredAction(); var action2 = UnregisteredAction(); var owned1 = new object(); var owned2 = new object();
+        var context1 = ActionContext(action1); var context2 = ActionContext(action2);
+        Call(ownershipType, hookedRegistry, "RegisterContext", action1, owned1);
+        Call(ownershipType, hookedRegistry, "RegisterContext", action2, owned2);
+        using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", new object())!)
+            Check(await fixture.Capture(ActionContext(UnregisteredAction()), Task.CompletedTask) == null, "an unregistered GameAction context masks the inherited ambient owner");
         var contextGate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var captured1 = fixture.Capture(context1, contextGate.Task); var captured2 = fixture.Capture(context2, contextGate.Task);
         Check(ManagedSelectorFixture.CurrentOwner() == null, "real Harmony context finalizer restores caller before returned Tasks complete");
@@ -1570,6 +1579,101 @@ if (args.Length > 1)
     object?[] foreignArgs = { new object(), null };
     bridge.GetMethod("SelectionBoundaryPrefix", flags)!.Invoke(null, foreignArgs);
     Check(foreignArgs[1] == null, "foreign/human selector is neither instrumented nor blocked");
+    // Contextual selector authority: the ACTUAL SelectionContextPrefix/finalizer with real native context objects (bare ctors, no Godot
+    // init) inside a retained EventOperation's own dispatch flow. Pinned v0.111: the shared EventModel grid helper creates a
+    // BlockingPlayerChoiceContext; the baseline prefix masked every non-GameAction context (live seed79675RSRGBWQ :50 refusal).
+    {
+        var blockingType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.BlockingPlayerChoiceContext", true)!;
+        var throwingType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.ThrowingPlayerChoiceContext", true)!;
+        var contextPrefix = bridge.GetMethod("SelectionContextPrefix", flags)!;
+        var eventScopes = bridge.GetField("EventScopes", flags)!.GetValue(null)!;
+        var eventScopeType = bridge.GetNestedType("EventScope", flags)!;
+        var eventOperationType = assembly.GetType("STS2_MCP.EventOperation", true)!;
+        var ctxEntryType = assembly.GetType("STS2_MCP.EventEntry", true)!;
+        var retainedEventField = bridge.GetField("_eventOperation", flags)!;
+        object? CurrentSelectionOwner() => ownershipType.GetProperty("CurrentOwner", flags)!.GetValue(hookedRegistry);
+        // Runs the real prefix, reports the owner it installed (or the identity refusal) and restores through the real finalizer.
+        object? Installed(object context, out string? refusal)
+        {
+            refusal = null; object?[] args = { new object[] { context }, null };
+            try { contextPrefix.Invoke(null, args); }
+            catch (TargetInvocationException e) when (e.InnerException is NotSupportedException n) { refusal = n.Message; return null; }
+            try { return CurrentSelectionOwner(); }
+            finally { Call(bridge, null, "SelectionContextFinalizer", null, args[1]); }
+        }
+        object ctxOwner = new(); var ctxRoot = new TaskCompletionSource();
+        var ctxEntry = Activator.CreateInstance(ctxEntryType, flags, null, new[] { new object(), ctxOwner, new object(), new object() }, null)!;
+        Call(ctxEntryType, ctxEntry, "Bind", ctxOwner, new object(), new object(), new object(), new object()); Call(ctxEntryType, ctxEntry, "Attach", Task.CompletedTask);
+        var ctxOperation = Activator.CreateInstance(eventOperationType, flags, null, new[] { ctxOwner, ctxEntry, hookedRegistry }, null)!;
+        eventOperationType.GetField("Root", flags)!.SetValue(ctxOperation, ctxRoot.Task);
+        object EventScopeFor(object op) => Activator.CreateInstance(eventScopeType, flags, null, new object?[] { op, null, null, null }, null)!;
+        var blocking = Activator.CreateInstance(blockingType, true)!; var throwing = Activator.CreateInstance(throwingType, true)!;
+        Check(Installed(blocking, out _) == null && Installed(throwing, out _) == null, "a native choice context outside any owned flow installs no owner");
+        retainedEventField.SetValue(null, ctxOperation);
+        try
+        {
+            using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", ctxOwner)!)
+            using ((IDisposable)Call(ownershipType, eventScopes, "Enter", EventScopeFor(ctxOperation))!)
+            {
+                // The fixture entry binds plain objects, so the real event identity adapter refuses at its first native-identity comparison
+                // before any Godot read. Reaching that refusal proves the retained event operation is consulted; the baseline masks silently.
+                Check(Installed(blocking, out var identityRefusal) == null && identityRefusal == "event_identity_changed",
+                    "Blocking context created inside the owned event dispatch flow reaches the exact event identity adapter instead of being masked (live unowned_selection_continuation)");
+                Check(Installed(throwing, out var throwingRefusal) == null && throwingRefusal == null, "Throwing context is not an owner token even inside the owned event flow");
+                // Same shared policy with the identity adapters swapped for fixture guards: the admitted owner is the exact retained operation owner.
+                var treasureOperationType = assembly.GetType("STS2_MCP.TreasureOperation", true)!;
+                object Policy(object context, string guard) => Call(bridge, null, "ContextualSelectionOwner", context,
+                    ContextGuards.For(treasureOperationType, guard), ContextGuards.For(ctxEntryType, guard))!;
+                object? PolicyOrNull(object context, string guard) => bridge.GetMethod("ContextualSelectionOwner", flags)!.Invoke(null,
+                    new[] { context, ContextGuards.For(treasureOperationType, guard), ContextGuards.For(ctxEntryType, guard) });
+                Check(ReferenceEquals(PolicyOrNull(blocking, "pass"), ctxOwner), "Blocking context inside the owned event flow inherits exactly the retained operation owner once identity passes");
+                bool guardFirst = false;
+                try { Policy(blocking, "refuse"); } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException n && n.Message == "fixture_identity_refused") { guardFirst = true; }
+                Check(guardFirst, "identity adapter refusal is consulted before any owner is admitted");
+                Check(PolicyOrNull(throwing, "pass") == null, "Throwing context never inherits, whatever the identity adapter says");
+                // Parent-pending child: the grid boundary created under that owner is findable and dispatchable while the event root is still pending.
+                object grid = new(); object?[] gridArgs = { grid, null }; var gridTask = new TaskCompletionSource();
+                using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", PolicyOrNull(blocking, "pass"))!)
+                    bridge.GetMethod("SelectionBoundaryPrefix", flags)!.Invoke(null, gridArgs);
+                Call(bridge, null, "SelectionBoundaryPostfix", gridTask.Task, gridArgs[1]);
+                var gridLease = gridArgs[1]!;
+                Check(ReferenceEquals(Call(ownershipType, hookedRegistry, "Find", grid, ctxOwner), gridLease) && (bool)Call(eventOperationType, ctxOperation, "CanDecide")!
+                    && !(bool)Call(eventOperationType, ctxOperation, "Poll")!, "owned grid lease is exposed while the event root that awaits it is still pending");
+                var childParent = OwnedSession(ctxOwner, Task.CompletedTask, Task.CompletedTask, () => ctxRoot.Task);
+                var ctxChildVersion = (string)Call(sessionType, childParent, "Observe", "event grid child")!;
+                Check((bool)Call(ownershipType, hookedRegistry, "IsCurrent", gridLease, ctxOwner)!
+                    && (int)Call(sessionType, childParent, "AcceptChild", ctxChildVersion, "select_card:0", new[] { "select_card:0", "confirm_selection:0" }, ctxOwner)! == 0
+                    && Pending(childParent), "grid child decision is accepted without completing or replacing the pending event root");
+                Check(Call(ownershipType, hookedRegistry, "Find", grid, new object()) == null, "foreign owner cannot claim the event's grid");
+                object foreignGrid = new(); object?[] foreignGridArgs = { foreignGrid, null };
+                using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", (object?)null)!)
+                    bridge.GetMethod("SelectionBoundaryPrefix", flags)!.Invoke(null, foreignGridArgs);
+                Check(foreignGridArgs[1] == null && GateValue(Gate(foreignGrid, exitCardType, false, null, childParent, hookedRegistry), "Stop") is Dictionary<string, object?> foreignStop
+                    && foreignStop["halt_reason"] is "unowned_selection_continuation", "a second selector opened outside the owned flow stays unowned and halts the whole observation");
+                bool nestedRejected = false;
+                using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", ctxOwner)!)
+                    try { Call(ownershipType, hookedRegistry, "Begin", new object()); } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { nestedRejected = true; }
+                Check(nestedRejected, "overlapping selector under the same event owner still halts instead of guessing");
+                gridTask.SetResult();
+                Check(Call(ownershipType, hookedRegistry, "Find", grid, ctxOwner) == null && !(bool)Call(eventOperationType, ctxOperation, "Poll")!, "completed grid retires its lease; the parent root alone still gates release");
+                ctxRoot.SetResult(); Call(sessionType, childParent, "Refresh");
+                Check((bool)Call(eventOperationType, ctxOperation, "Poll")! && !Pending(childParent), "root completion after the owned selector releases the parent");
+                // Mismatched flows never inherit: foreign retained operation, foreign ambient owner, closed operation.
+                var otherOperation = Activator.CreateInstance(eventOperationType, flags, null, new[] { new object(), ctxEntry, hookedRegistry }, null)!;
+                using ((IDisposable)Call(ownershipType, eventScopes, "Enter", EventScopeFor(otherOperation))!)
+                    Check(PolicyOrNull(blocking, "pass") == null, "an event scope naming a different operation than the retained one is masked");
+                using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", new object())!)
+                    Check(PolicyOrNull(blocking, "pass") == null, "an ambient selection owner that is not the retained operation owner is masked");
+                Call(eventOperationType, ctxOperation, "Close");
+                Check(PolicyOrNull(blocking, "pass") == null, "a closed retained operation grants nothing to a late continuation");
+            }
+            Check(PolicyOrNullOutside() == null, "event flow scope restored: no ambient owner leaks to the caller");
+            object? PolicyOrNullOutside() => bridge.GetMethod("ContextualSelectionOwner", flags)!.Invoke(null,
+                new[] { blocking, ContextGuards.For(assembly.GetType("STS2_MCP.TreasureOperation", true)!, "pass"), ContextGuards.For(ctxEntryType, "pass") });
+        }
+        finally { retainedEventField.SetValue(null, null); Call(ownershipType, hookedRegistry, "CloseOwner", ctxOwner); }
+        Check(Installed(blocking, out _) == null, "after release a Blocking context is masked again without throwing into the native callback");
+    }
     var liveSession = bridge.GetField("_bridgeSession", flags)!.GetValue(null)!;
     var nativeTask = new TaskCompletionSource();
     var nativeVersion = (string)Call(sessionType, liveSession, "Observe", "native task fixture")!;
@@ -1607,6 +1711,70 @@ if (args.Length > 1)
     Check(Pending(liveSession) && (bool)Call(exitType, controllerFlow, "CanDecide")!, "actual completed child returns to retained parent decision without dropping Offer");
     Call(exitType, controllerFlow, "CompleteScreen", controllerScreen); controllerOffer.SetResult(); Call(sessionType, liveSession, "Refresh");
     Check(!Pending(liveSession) && bridge.GetField("_combatExit", flags)!.GetValue(null) == null, "actual session release cleans reward owner and registrations");
+    // Ordinary owned mutation with detached native work: a scoped hook retains the ORIGINAL producer Task under the dispatching owner,
+    // whether the producer runs synchronously inside start() (before Track) or from a delayed continuation (AsyncLocal flow). The
+    // primary Task alone never releases; retention outside an open owned flow is refused. Pinned reason: NRestSiteRoom.AfterSelectingOption
+    // drops AfterSelectingOptionAsync(...).RunSafely() while successful NRestSiteButton.SelectOption returns without awaiting it.
+    object? retiredOrdinaryOwner = null;
+    foreach (string lane in new[] { "sync", "delayed", "none" })
+    {
+        var primary = new TaskCompletionSource(); var detached = new TaskCompletionSource(); var gate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        void Retain() => Call(bridge, null, "RetainOrdinaryWork", detached.Task);
+        async Task Delayed() { await gate.Task; Retain(); }
+        var laneVersion = (string)Call(sessionType, liveSession, "Observe", "ordinary work " + lane)!;
+        Call(sessionType, liveSession, "Accept", laneVersion, "choose_rest_option:0", new[] { "choose_rest_option:0" });
+        Task? laneStarted = null;
+        Call(bridge, null, "DispatchOwnedTask", (Func<Task>)(() => { if (lane == "sync") Retain(); return laneStarted = lane == "delayed" ? Delayed() : primary.Task; }));
+        retiredOrdinaryOwner = sessionType.GetProperty("OperationOwner", flags)!.GetValue(liveSession);
+        if (lane == "delayed") { gate.SetResult(); await laneStarted!; }
+        else primary.SetResult();
+        Call(sessionType, liveSession, "Refresh");
+        Check(Pending(liveSession) == (lane != "none") && Failure(liveSession) == null, "primary Task completion releases only when no owner-scoped detached work is retained: " + lane);
+        detached.SetResult(); Call(sessionType, liveSession, "Refresh");
+        Check(!Pending(liveSession) && Failure(liveSession) == null, "retained detached work completion releases the ordinary mutation: " + lane);
+    }
+    bool lateRetention = false, foreignRetention = false;
+    try { Call(bridge, null, "RetainOrdinaryWork", Task.CompletedTask); } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { foreignRetention = true; }
+    using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", retiredOrdinaryOwner)!)
+        try { Call(bridge, null, "RetainOrdinaryWork", Task.CompletedTask); } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { lateRetention = true; }
+    Check(foreignRetention && lateRetention, "detached work outside an open owned flow, or under a released owner, is refused rather than adopted");
+    var ordinaryOwnerType = bridge.GetNestedType("OrdinaryOwner", flags)!;
+    foreach (var outcome in new[] { Task.FromException(new Exception("post-select lane failed")), Task.FromCanceled(new CancellationToken(true)) })
+    {
+        var failingOwner = Activator.CreateInstance(ordinaryOwnerType, true)!;
+        ((List<Task>)ordinaryOwnerType.GetField("Work", flags)!.GetValue(failingOwner)!).Add(outcome);
+        var failingSession = OwnedSession(failingOwner, Task.CompletedTask, Task.CompletedTask, () => Task.CompletedTask);
+        Call(sessionType, failingSession, "HoldUntil", (Func<bool>)(() => { try { return (bool)Call(bridge, null, "OrdinaryWorkDone", failingOwner)!; } catch (TargetInvocationException e) when (e.InnerException != null) { throw e.InnerException; } }));
+        Call(sessionType, failingSession, "Refresh");
+        Check(Pending(failingSession) && Failure(failingSession) == "ordinary_work_failed", "retained detached work fault/cancel is a sticky mutation failure, not success: " + outcome.Status);
+    }
+    // Rest post-select postfix: without an owned rest scope (human/foreign selection) it is inert; inside the scope an identity mismatch
+    // fails that scope before any native read. The exact-identity success path needs Godot nodes and is covered by compiled wiring below.
+    var restScopeType = bridge.GetNestedType("RestScope", flags)!;
+    var restScopes = bridge.GetField("RestScopes", flags)!.GetValue(null)!;
+    Call(bridge, null, "RestPostSelectPostfix", null, null, null);
+    Check(Failure(liveSession) == null && !Pending(liveSession), "foreign rest post-select lane without an owned scope is ignored, never adopted or failed");
+    var restScope = Activator.CreateInstance(restScopeType, flags, null, new object[] { new object(), new object(), new object(), new object(), new object() }, null)!;
+    using ((IDisposable)Call(ownershipType, restScopes, "Enter", restScope)!)
+        Call(bridge, null, "RestPostSelectPostfix", null, null, Task.CompletedTask);
+    Check(restScopeType.GetField("Failure", flags)!.GetValue(restScope) is "rest_post_select_identity_unverified", "owned rest scope refuses a post-select lane from a different room before any native read");
+    // Generic selector families already recognized by state/dispatch now also carry exact leases through the same boundary handlers.
+    foreach (var (familyType, familyMethod) in new[] { (game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseABundleSelectionScreen", true)!, "CardsSelected"),
+        (game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.NChooseARelicSelection", true)!, "RelicsSelected") })
+    {
+        var familyTarget = familyType.GetMethod(familyMethod, BindingFlags.Instance | BindingFlags.Public);
+        Check(familyTarget != null && typeof(Task).IsAssignableFrom(familyTarget.ReturnType) && familyTarget.GetParameters().Length == 0, "pinned native selector Task boundary: " + familyType.Name);
+        object familyScreen = new(), familyOwner = new(); object?[] familyArgs = { familyScreen, null }; var familyTask = new TaskCompletionSource();
+        using ((IDisposable)Call(ownershipType, hookedRegistry, "Enter", familyOwner)!)
+            bridge.GetMethod("SelectionBoundaryPrefix", flags)!.Invoke(null, familyArgs);
+        Call(bridge, null, "SelectionBoundaryPostfix", familyTask.Task, familyArgs[1]);
+        var familySession = OwnedSession(familyOwner, Task.CompletedTask, Task.CompletedTask, () => new TaskCompletionSource().Task);
+        Check(ReferenceEquals(GateValue(Gate(familyScreen, familyType, false, null, familySession, hookedRegistry), "Lease"), familyArgs[1])
+            && GateValue(Gate(new object(), familyType, false, null, familySession, hookedRegistry), "Stop") is Dictionary<string, object?> familyStop && familyStop["halt_reason"] is "unowned_selection_continuation",
+            "owned " + familyType.Name + " lease is exposed only for the exact screen; a foreign screen of the family halts");
+        familyTask.SetResult(); Check(Call(ownershipType, hookedRegistry, "Find", familyScreen, familyOwner) == null, familyType.Name + " completion retires its lease");
+        Call(ownershipType, hookedRegistry, "CloseOwner", familyOwner);
+    }
     bool rejectedTips = false;
     var tips = Array.CreateInstance(game.GetType("MegaCrit.Sts2.Core.HoverTips.IHoverTip", true)!, 1);
     try { Call(bridge, null, "BuildHoverTips", (object)tips); }
@@ -1725,6 +1893,77 @@ if (args.Length > 1)
     Check(bridge.GetMethod("AddPotionActions", flags)!.GetParameters()[0].ParameterType == typeof(Dictionary<string, object?>)
         && CalledMethods("CaptureObservationCore").Any(m => m.Name == "AddPotionActions"),
         "potion readiness receives the observation dictionary from the actual observation path");
+    // Combat targets: an unreadable native-legal target marks the whole decision waiting through the same gate; CanPlay/CanPlayTargeting/IsAlive
+    // remain the semantic eligibility filters. Baseline silently skipped the target while exposing every sibling.
+    var combatCalls = CalledMethods("AddCombatActions");
+    Check(combatCalls.Any(m => m.Name == "DecisionInputReady" && m.DeclaringType == bridge) && combatCalls.Any(m => m.Name == "CanPlayTargeting")
+        && combatCalls.Any(m => m.Name == "CanPlay") && combatCalls.Any(m => m.Name == "VisibleCreatures" && m.DeclaringType == bridge)
+        && CalledInClosures("AddCombatActions").Any(m => m.Name == "get_IsAlive")
+        && bridge.GetMethod("AddCombatActions", flags)!.GetParameters()[0].ParameterType == typeof(Dictionary<string, object?>)
+        && CalledMethods("CaptureObservationCore").Any(m => m.Name == "AddCombatActions"),
+        "combat target visibility routes into the whole-decision gate from the actual observation path without pruning native eligibility");
+    // Contextual authority wiring: one shared policy behind every contextual CardSelectCmd prefix, with the real treasure/event identity
+    // adapters injected, admitting only the pinned BlockingPlayerChoiceContext among the audited native context subclasses.
+    var contextPolicyCalls = CalledMethods("SelectionContextPrefix");
+    var contextPrefixOperands = Operands(bridge.GetMethod("SelectionContextPrefix", flags)!);
+    Check(contextPolicyCalls.Any(m => m.Name == "ContextualSelectionOwner" && m.DeclaringType == bridge) && contextPolicyCalls.Any(m => m.Name == "Enter" && m.DeclaringType == ownershipType)
+        && contextPrefixOperands.OfType<MethodBase>().Any(m => m.Name == "RequireTreasureIdentity") && contextPrefixOperands.OfType<MethodBase>().Any(m => m.Name == "RequireEventIdentity"),
+        "the contextual prefix delegates to the shared policy with the real treasure and event identity adapters");
+    var policyOperands = Operands(bridge.GetMethod("ContextualSelectionOwner", flags)!);
+    var blockingContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.BlockingPlayerChoiceContext", true)!;
+    var choiceContextType = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext", true)!;
+    Check(policyOperands.Contains(blockingContextType) && policyOperands.Contains(game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext", true)!)
+        && policyOperands.OfType<MethodBase>().Any(m => m.Name == "OwnedContextualRoot" && m.DeclaringType == bridge) && policyOperands.OfType<MethodBase>().Any(m => m.Name == "ResolveContext")
+        && !policyOperands.OfType<MethodBase>().Any(m => m.Name is "get_OwnerId" or "get_ModelStack" or "get_LastInvolvedModel"),
+        "policy admits the exact Blocking context type through the owned-root decision, never OwnerId/model-stack identity");
+    var nativeContextSubclasses = game.GetTypes().Where(t => t != choiceContextType && choiceContextType.IsAssignableFrom(t)).Select(t => t.Name).OrderBy(n => n).ToArray();
+    Check(nativeContextSubclasses.SequenceEqual(new[] { "BlockingPlayerChoiceContext", "BranchingPlayerChoiceContext", "GameActionPlayerChoiceContext", "HookPlayerChoiceContext", "ThrowingPlayerChoiceContext" }),
+        "audited v0.111 PlayerChoiceContext subclasses: " + string.Join(",", nativeContextSubclasses));
+    var eventGridHelper = game.GetType("MegaCrit.Sts2.Core.Models.EventModel", true)!.GetNestedTypes(flags).Single(t => t.Name.StartsWith("<SelectCardsToAddToDeckFromGrid>"));
+    var eventGridCalls = CalledBy(eventGridHelper.GetMethod("MoveNext", flags)!);
+    Check(eventGridCalls.Any(m => m is ConstructorInfo && m.DeclaringType == blockingContextType) && eventGridCalls.Any(m => m.Name == "FromSimpleGridForRewards"),
+        "pinned shared EventModel grid helper creates a BlockingPlayerChoiceContext for the hooked contextual selector");
+    var rootDecisionCalls = CalledMethods("OwnedContextualRoot");
+    Check(rootDecisionCalls.Count(m => m.Name == "get_CurrentOwner" && m.DeclaringType == ownershipType) >= 3
+        && rootDecisionCalls.Any(m => m.Name == "get_Operation" && m.DeclaringType == bridge.GetNestedType("EventScope", flags))
+        && rootDecisionCalls.Any(m => m.Name == "get_Operation" && m.DeclaringType == bridge.GetNestedType("TreasureScope", flags)) && rootDecisionCalls.Any(m => m.Name == "get_Obtain"),
+        "owned-root decision requires the source scope (treasure Obtain or event) and the ambient selection owner to name the same retained operation");
+    // Rest post-select lane: the SelectOption Task is not post-selection readiness (pinned detached RunSafely lane), so the rest dispatch
+    // enters an owned scope and the scoped postfix retains the ORIGINAL AfterSelectingOptionAsync Task under that owner.
+    var nativeRestRoomType = game.GetType("MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom", true)!;
+    var afterSelecting = nativeRestRoomType.GetMethod("AfterSelectingOptionAsync", flags)!;
+    Check(CalledBy(nativeRestRoomType.GetMethod("AfterSelectingOption", flags)!).Any(m => m.MetadataToken == afterSelecting.MetadataToken)
+        && CalledBy(nativeRestRoomType.GetMethod("AfterSelectingOption", flags)!).Any(m => m.Name == "RunSafely") && afterSelecting.ReturnType == typeof(Task) && afterSelecting.IsPrivate
+        && NativeStateMachineCalls(nativeRestButton, "SelectOption").Any(m => m.Name == "AfterSelectingOption") && NativeStateMachineCalls(nativeRestButton, "SelectOption").Any(m => m.Name == "ChooseLocalOption"),
+        "pinned: SelectOption awaits ChooseLocalOption then drops AfterSelectingOptionAsync through RunSafely");
+    Check(Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("AfterSelectingOptionAsync")
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).Contains(nativeRestRoomType)
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("RelicsSelected")
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).Contains(game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseABundleSelectionScreen", true)!)
+        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).Contains(game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.NChooseARelicSelection", true)!)
+        && !Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Any(s => s is "RunSafely" or "LogTaskExceptions" or "AfterSelectingOption" or "UpdateRestSiteOptions"),
+        "exact new boundary targets only: rest post-select producer, bundle and relic selector Tasks; no RunSafely/Task-wide interception");
+    Check(CalledInClosures("AddNonCombatActions").Any(m => m.Name == "DispatchRestOption" && m.DeclaringType == bridge), "rest options dispatch through the owned rest scope");
+    var restDispatchCalls = CalledMethods("DispatchRestOption").Concat(CalledInClosures("DispatchRestOption")).ToList();
+    Check(restDispatchCalls.Any(m => m.Name == "Enter" && m.DeclaringType == ownershipType) && restDispatchCalls.Any(m => m.Name == "DispatchUiTask" && m.DeclaringType == bridge)
+        && restDispatchCalls.Any(m => m.Name == "HoldUntil") && Operands(bridge.GetMethod("DispatchRestOption", flags)!).OfType<string>().Contains("SelectOption"),
+        "rest dispatch enters the rest scope around the tracked SelectOption and holds the session on that scope's failure");
+    var restPostfixCalls = CalledMethods("RestPostSelectPostfix");
+    Check(restPostfixCalls.Any(m => m.Name == "RequireRest" && m.DeclaringType == bridge) && restPostfixCalls.Any(m => m.Name == "RetainOrdinaryWork" && m.DeclaringType == bridge)
+        && restPostfixCalls.Any(m => m.Name == "get_Instance" && m.DeclaringType == nativeRestRoomType) && !restPostfixCalls.Any(m => m.Name is "Fail" && m.DeclaringType == sessionType),
+        "rest postfix binds exact room/run/player/option through RequireRest and retains the original Task; failures stay on the owned scope");
+    var ordinaryDispatchCalls = CalledMethods("DispatchOwnedTask").Concat(CalledInClosures("DispatchOwnedTask")).ToList();
+    Check(ordinaryDispatchCalls.Any(m => m.Name == "OrdinaryWorkDone" && m.DeclaringType == bridge) && ordinaryDispatchCalls.Any(m => m.Name == "HoldUntil")
+        && ordinaryDispatchCalls.Any(m => m is ConstructorInfo && m.DeclaringType == bridge.GetNestedType("OrdinaryOwner", flags)),
+        "ordinary owned dispatch creates the work-retaining owner before start() and holds release on its retained work");
+    // Grounded rest Smith path: OnSelect uses the context-free FromDeckForUpgrade, whose state machine awaits the already hooked
+    // NCardGridSelectionScreen.CardsSelected, so the rest owner flows to that grid without any contextual prefix.
+    var smithOnSelect = NativeStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption", true)!, "OnSelect");
+    var fromDeckForUpgrade = game.GetType("MegaCrit.Sts2.Core.Commands.CardSelectCmd", true)!.GetMethods(flags).Single(m => m.Name == "FromDeckForUpgrade");
+    var gridBoundary = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen", true)!.GetMethod("CardsSelected", BindingFlags.Instance | BindingFlags.Public)!;
+    Check(smithOnSelect.Any(m => m.MetadataToken == fromDeckForUpgrade.MetadataToken) && fromDeckForUpgrade.GetParameters().All(p => !choiceContextType.IsAssignableFrom(p.ParameterType))
+        && NativeStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Commands.CardSelectCmd", true)!, "FromDeckForUpgrade").Any(m => m.MetadataToken == gridBoundary.MetadataToken),
+        "pinned Smith selector reaches the hooked grid boundary through a context-free command under the flowing rest owner");
     Check(CalledMethods("DispatchLabel").Any(m => m.Name == "CaptureObservation")
         && CalledMethods("CaptureObservationCore").Any(m => m.Name == "FinishObservation"),
         "POST re-captures through the same readiness and whole-set finalizer");
@@ -1933,6 +2172,14 @@ foreach (bool skip in new[] { false, true }) foreach (bool seen in new[] { false
 }
 Console.WriteLine($"PASS: {checks} actual-DLL checks; no game initialization or HTTP.");
 
+// Fixture identity adapters for the shared contextual-ownership policy; the real adapters need Godot nodes and are checked by compiled wiring.
+static class ContextGuards
+{
+    public static void Pass<T>(T _) { }
+    public static void Refuse<T>(T _) => throw new NotSupportedException("fixture_identity_refused");
+    public static Delegate For(Type argument, string guard)
+        => Delegate.CreateDelegate(typeof(Action<>).MakeGenericType(argument), typeof(ContextGuards).GetMethod(guard == "pass" ? nameof(Pass) : nameof(Refuse))!.MakeGenericMethod(argument));
+}
 sealed class ManagedSelectorFixture
 {
     public static Func<object?> CurrentOwner = null!;

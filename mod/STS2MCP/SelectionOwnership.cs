@@ -62,8 +62,6 @@ internal sealed class SelectionOwnership
             return context != null && _contexts.TryGetValue(context, out var owner) ? owner : null;
     }
 
-    internal IDisposable EnterRegisteredContext(object? context) => Enter(ResolveContext(context));
-
     internal Lease? BeginBoundary(object selector)
     {
         if (CurrentOwner != null) return Begin(selector);

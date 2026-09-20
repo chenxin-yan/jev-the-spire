@@ -42,7 +42,8 @@ public static partial class McpMod
                     harmony.Patch(method, prefix: Patch(nameof(SelectionContextPrefix)), finalizer: Patch(nameof(SelectionContextFinalizer)));
             }
             foreach (var (type, name) in new[] { (typeof(NPlayerHand), "SelectCards"), (typeof(NCardGridSelectionScreen), "CardsSelected"),
-                (typeof(NChooseACardSelectionScreen), "CardsSelected"), (typeof(NCardRewardSelectionScreen), "OptionSelected") })
+                (typeof(NChooseACardSelectionScreen), "CardsSelected"), (typeof(NCardRewardSelectionScreen), "OptionSelected"),
+                (typeof(NChooseABundleSelectionScreen), "CardsSelected"), (typeof(NChooseARelicSelection), "RelicsSelected") })
             {
                 var method = type.GetMethod(name, BindingFlags.Instance | BindingFlags.Public)
                     ?? throw new NotSupportedException("selection_boundary_api_changed:" + name);
@@ -82,23 +83,43 @@ public static partial class McpMod
             harmony.Patch(typeof(NRewardsScreen).GetMethod("ShowScreen", BindingFlags.Static | BindingFlags.Public)
                 ?? throw new NotSupportedException("reward_screen_boundary_api_changed"),
                 prefix: Patch(nameof(RewardScreenPrefix)), postfix: Patch(nameof(RewardScreenPostfix)));
+            // Observation only: retains the exact detached post-select Task under the owned rest dispatch (see DispatchRestOption).
+            var restPostSelect = typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom).GetMethod("AfterSelectingOptionAsync", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new NotSupportedException("rest_post_select_boundary_changed");
+            if (restPostSelect.ReturnType != typeof(Task)) throw new NotSupportedException("rest_post_select_task_api_changed");
+            harmony.Patch(restPostSelect, postfix: Patch(nameof(RestPostSelectPostfix)));
         }
         catch { harmony.UnpatchAll("com.sts2mcp.selection-ownership"); throw; }
     }
 
     private static void SelectionContextPrefix(object[] __args, out IDisposable __state)
+        => __state = SelectionOwners.Enter(ContextualSelectionOwner(__args.OfType<PlayerChoiceContext>().Single(), RequireTreasureIdentity, RequireEventIdentity));
+
+    // One policy for every contextual CardSelectCmd overload. A GameAction context resolves only through explicit registration.
+    // Pinned v0.111: BlockingPlayerChoiceContext is the context the shared EventModel grid helper and relic AfterObtained lanes create;
+    // it inherits only the retained operation whose own dispatch flow is executing, after that source's identity adapter passes.
+    // Branching/Hook/Throwing contexts and any other flow mask inherited tokens; OwnerId/model-stack identity is never authority.
+    private static object? ContextualSelectionOwner(PlayerChoiceContext context, Action<TreasureOperation> requireTreasure, Action<EventEntry> requireEvent)
     {
-        var context = __args.OfType<PlayerChoiceContext>().Single();
-        // Only the exact captured treasure Obtain may introduce an ordinary choice context.
-        if (context is not GameActionPlayerChoiceContext && TreasureScopes.CurrentOwner is TreasureScope { Obtain: true } treasure
-            && ReferenceEquals(treasure.Operation, _treasureOperation))
-        { RequireTreasureIdentity(treasure.Operation); __state = SelectionOwners.Enter(treasure.Operation.Owner); return; }
-        // Foreign/non-action contexts otherwise mask inherited tokens.
-        SelectionContextEnter((context as GameActionPlayerChoiceContext)?.Action, out __state);
+        if (context is GameActionPlayerChoiceContext action) return SelectionOwners.ResolveContext(action.Action);
+        if (context is not BlockingPlayerChoiceContext) return null;
+        switch (OwnedContextualRoot())
+        {
+            case TreasureOperation treasure: requireTreasure(treasure); return treasure.Owner;
+            case EventOperation operation: requireEvent(operation.Entry); return operation.Owner;
+            default: return null;
+        }
     }
 
-    private static void SelectionContextEnter(object? owner, out IDisposable __state)
-        => __state = SelectionOwners.EnterRegisteredContext(owner);
+    // The retained operation whose own dispatch flow is executing: its source scope and the ambient selection owner must both name it.
+    private static object? OwnedContextualRoot()
+    {
+        if (TreasureScopes.CurrentOwner is TreasureScope { Obtain: true, Operation: { Closed: false } treasure } && ReferenceEquals(treasure, _treasureOperation)
+            && ReferenceEquals(SelectionOwners.CurrentOwner, treasure.Owner)) return treasure;
+        if (EventScopes.CurrentOwner is EventScope { Operation: { Closed: false } operation } && ReferenceEquals(operation, _eventOperation)
+            && ReferenceEquals(SelectionOwners.CurrentOwner, operation.Owner)) return operation;
+        return null;
+    }
 
     private static Exception? SelectionContextFinalizer(Exception? __exception, IDisposable? __state)
     {

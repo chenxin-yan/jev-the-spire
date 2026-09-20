@@ -1,9 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.RestSite;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
+using MegaCrit.Sts2.Core.Nodes.RestSite;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;
 using MegaCrit.Sts2.Core.Nodes.Screens.Shops;
@@ -15,6 +18,40 @@ namespace STS2_MCP;
 public static partial class McpMod
 {
     private static OrdinaryRoomEntry? _restEntry;
+    // v0.111 SelectOption returns without awaiting successful selection's AfterSelectingOptionAsync(...).RunSafely() work.
+    // Retain that exact detached Task under the dispatched room/option; human selections carry no scope. A declined selection
+    // skips this producer, waits a frame and re-enables options, so absence of a receipt alone is not failure.
+    private static readonly SelectionOwnership RestScopes = new();
+    private sealed class RestScope(object run, object player, object room, object button, object option)
+    {
+        internal readonly object Run = run, Player = player, Room = room, Button = button, Option = option;
+        internal bool Captured;
+        internal string? Failure;
+    }
+
+    private static bool DispatchRestOption(RunState run, Player player, NRestSiteRoom room, NRestSiteButton button)
+    {
+        var scope = new RestScope(run, player, room, button, button.Option);
+        using var entered = RestScopes.Enter(scope);
+        bool dispatched = DispatchUiTask(button, typeof(NRestSiteButton), "SelectOption", button.Option);
+        _bridgeSession.HoldUntil(() => scope.Failure == null ? true : throw new NotSupportedException(scope.Failure));
+        return dispatched;
+    }
+
+    private static void RestPostSelectPostfix(NRestSiteRoom __instance, RestSiteOption __0, Task __result)
+    {
+        if (RestScopes.CurrentOwner is not RestScope scope) return; // Foreign/human lane: never adopted, never blocked.
+        try
+        {
+            if (scope.Captured || !ReferenceEquals(__instance, scope.Room) || !ReferenceEquals(__0, scope.Option)
+                || !ReferenceEquals(((NRestSiteButton)scope.Button).Option, __0) || !ReferenceEquals(NRestSiteRoom.Instance, __instance))
+                throw new NotSupportedException("rest_post_select_identity_unverified");
+            scope.Captured = true;
+            RequireRest((RunState)scope.Run, (Player)scope.Player, __instance);
+            RetainOrdinaryWork(__result);
+        }
+        catch (Exception e) { scope.Failure ??= e is NotSupportedException ? e.Message : "rest_post_select_capture_failed"; }
+    }
 
     private static bool OrdinaryBool(object receiver, string field)
         => GetInstanceFieldValue(receiver, field) is bool value ? value : throw new NotSupportedException("ordinary_field_unavailable:" + field);

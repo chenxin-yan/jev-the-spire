@@ -145,7 +145,7 @@ public static partial class McpMod
                         && player.Creature.IsAlive && NPlayerHand.Instance is { InCardPlay: false } hand
                         && hand.CurrentMode == NPlayerHand.Mode.Play)
                     {
-                        try { AddCombatActions(player, actions); }
+                        try { AddCombatActions(state, player, actions); }
                         catch (NotSupportedException e) { state = HaltState(e.Message); }
                     }
                     try
@@ -243,7 +243,7 @@ public static partial class McpMod
     private static Dictionary<string, object?> HaltState(string reason)
         => new() { ["state_type"] = "unsupported", ["halt_reason"] = reason, ["terminal"] = false };
 
-    private static void AddCombatActions(Player player, List<LegalAction> actions)
+    private static void AddCombatActions(Dictionary<string, object?> state, Player player, List<LegalAction> actions)
     {
         var combat = player.Creature.CombatState!;
         var visible = VisibleCreatures();
@@ -262,7 +262,8 @@ public static partial class McpMod
             };
             foreach (var target in targets)
             {
-                if (!card.CanPlayTargeting(target) || (target != null && !visible.Contains(target))) continue;
+                // Native legality is the semantic filter; an unreadable legal target makes the whole decision wait, never prunes it.
+                if (!card.CanPlayTargeting(target) || (target != null && !DecisionInputReady(state, visible.Contains(target)))) continue;
                 string label = $"play_card:{i}:" + (target?.CombatId.ToString() ?? "none");
                 string description = $"Play hand[{i}] {SafeGetText(() => card.Title)}"
                     + (target == null ? "" : $" targeting {SafeGetText(() => target.Monster?.Title) ?? "player"} ({target.CombatId})");
