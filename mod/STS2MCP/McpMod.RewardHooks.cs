@@ -123,6 +123,12 @@ public static partial class McpMod
     private static void EnterRewardUi(object? owner, bool allowProceed, out RewardCapture __state)
         => __state = BeginRewardCapture(owner as CombatExitOperation, 0, null, null, allowProceed);
 
+    // OfferCustom leaves Room unset; the source identity adapter has already verified the live room.
+    // A bound reward room must still match, and neither form can substitute another player or run.
+    private static bool NonCombatOfferIdentity(RewardsSet set, object? room, object player, object run)
+        => room != null && (set.Room == null || ReferenceEquals(set.Room, room))
+            && ReferenceEquals(set.Player, player) && ReferenceEquals(set.Player.RunState, run);
+
     private static void RewardOfferPrefix(RewardsSet __instance, out RewardCapture __state)
     {
         if (TreasureScopes.CurrentOwner is TreasureScope treasure && ReferenceEquals(treasure.Operation, _treasureOperation))
@@ -131,8 +137,7 @@ public static partial class McpMod
             try
             {
                 RequireTreasureIdentity(op);
-                if (treasure.Set != null || treasure.Screen != null || !ReferenceEquals(__instance.Room, op.Room)
-                    || !ReferenceEquals(__instance.Player, op.Player) || !ReferenceEquals(__instance.Player.RunState, op.Run))
+                if (treasure.Set != null || treasure.Screen != null || !NonCombatOfferIdentity(__instance, op.Room, op.Player, op.Run))
                     throw new NotSupportedException("treasure_offer_identity_unverified");
                 op.BeginOffer(__instance);
             }
@@ -146,8 +151,7 @@ public static partial class McpMod
             try
             {
                 RequireEventIdentity(op.Entry);
-                if (ordinary.Screen != null || ordinary.Set != null || !ReferenceEquals(__instance.Room, op.Entry.Room)
-                    || !ReferenceEquals(__instance.Player, op.Entry.Player) || !ReferenceEquals(__instance.Player.RunState, op.Entry.Run))
+                if (ordinary.Screen != null || ordinary.Set != null || !NonCombatOfferIdentity(__instance, op.Entry.Room, op.Entry.Player, op.Entry.Run))
                     throw new NotSupportedException("event_offer_identity_unverified");
                 op.BeginOffer(__instance);
             }

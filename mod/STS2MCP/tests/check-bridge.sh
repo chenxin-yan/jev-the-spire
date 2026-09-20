@@ -1988,6 +1988,47 @@ if (args.Length > 1)
         && dispatchCallbacks.Any(m => m.Name == "get_CurrentlyRunningAction") && dispatchCallbacks.Any(m => m.Name == "remove_RoomExited")
         && CalledMethods("DispatchMap").Any(m => m.Name == "add_RoomExited") && CalledMethods("DispatchMap").Any(m => m.Name == "ConsumeMap" && m.DeclaringType == exitType),
         "DispatchMap binds the exact queued travel and a continuation-scoped native RoomExited receipt with release cleanup");
+    // Native OfferCustom leaves Room unset, unlike the room-end reward builders. Uninitialized pure-CLR instances, no engine.
+    {
+        var rewardsSetType = game.GetType("MegaCrit.Sts2.Core.Rewards.RewardsSet", true)!;
+        var playerType = game.GetType("MegaCrit.Sts2.Core.Entities.Players.Player", true)!;
+        Check(!rewardsSetType.GetMethods(flags).Any(m => m.Name == "WithCustomRewards" && CalledBy(m).Any(c => c.Name == "set_Room"))
+            && rewardsSetType.GetNestedTypes(flags).Any(t => t.Name.StartsWith("<Offer>")) && playerType.GetField("_runState", flags) != null,
+            "pinned native custom-reward contract: WithCustomRewards leaves RewardsSet.Room null; Player.RunState is a field read");
+        object NativeRun() => System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.Runs.RunState", true)!);
+        object NativePlayer(object run)
+        {
+            var player = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(playerType);
+            playerType.GetField("_runState", flags)!.SetValue(player, run); return player;
+        }
+        object NativeSet(object? room, object player)
+        {
+            var set = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(rewardsSetType);
+            rewardsSetType.GetField("<Room>k__BackingField", flags)!.SetValue(set, room);
+            rewardsSetType.GetField("<Player>k__BackingField", flags)!.SetValue(set, player); return set;
+        }
+        object ownedRun = NativeRun(), ownedPlayer = NativePlayer(ownedRun), foreignRun = NativeRun();
+        object ownedRoom = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.Rooms.EventRoom", true)!);
+        object foreignRoom = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(game.GetType("MegaCrit.Sts2.Core.Rooms.TreasureRoom", true)!);
+        bool Owned(object set, object? room) => (bool)Call(bridge, null, "NonCombatOfferIdentity", set, room, ownedPlayer, ownedRun)!;
+        Check(Owned(NativeSet(null, ownedPlayer), ownedRoom), "native custom RewardsSet (Room null) offered by the verified player in the verified live room is owned");
+        Check(Owned(NativeSet(ownedRoom, ownedPlayer), ownedRoom), "room-end RewardsSet for the exact live room is owned");
+        Check(!Owned(NativeSet(foreignRoom, ownedPlayer), ownedRoom), "RewardsSet bound to a different room is refused");
+        Check(!Owned(NativeSet(null, NativePlayer(ownedRun)), ownedRoom), "custom RewardsSet for a different player is refused");
+        Check(!(bool)Call(bridge, null, "NonCombatOfferIdentity", NativeSet(null, ownedPlayer), ownedRoom, ownedPlayer, foreignRun)!,
+            "custom RewardsSet with the same player but a different expected run is refused");
+        Check(!(bool)Call(bridge, null, "NonCombatOfferIdentity", NativeSet(ownedRoom, ownedPlayer), ownedRoom, ownedPlayer, foreignRun)!,
+            "same room and player do not excuse a different expected run");
+        Check(!Owned(NativeSet(null, ownedPlayer), null), "an unbound live room never matches; identity adapters must have bound it first");
+        var offerCalls = CalledMethods("RewardOfferPrefix");
+        Check(offerCalls.Count(m => m.Name == "NonCombatOfferIdentity" && m.DeclaringType == bridge) == 2
+            && offerCalls.Any(m => m.Name == "RequireTreasureIdentity" && m.DeclaringType == bridge) && offerCalls.Any(m => m.Name == "RequireEventIdentity" && m.DeclaringType == bridge),
+            "treasure and event offer branches each verify native identity, then the one shared non-combat RewardsSet predicate");
+        var offerStrings = Operands(bridge.GetMethod("RewardOfferPrefix", flags)!).OfType<string>().ToList();
+        Check(offerCalls.Count(m => m.Name == "get_Room" && m.DeclaringType == rewardsSetType) == 1 && offerCalls.Any(m => m.Name == "get_CurrentRoom")
+            && offerStrings.Contains("rewards_set_identity_mismatch") && offerStrings.Contains("nested_rewards_set_unverified"),
+            "combat branch keeps its own strict room-bound RewardsSet.Room/CurrentRoom comparison and nested-set refusal");
+    }
     var actionType = bridge.GetNestedType("LegalAction", BindingFlags.NonPublic)!;
     foreach (var property in new[] { "Dispatch", "Identity" })
         Check(actionType.GetProperty(property)!.GetCustomAttribute<JsonIgnoreAttribute>() != null, "private action data never serialized");
