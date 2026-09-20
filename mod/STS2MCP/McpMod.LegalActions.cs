@@ -76,6 +76,13 @@ public static partial class McpMod
                 var room = NRestSiteRoom.Instance!;
                 RequireRest(run, player, room);
                 var buttons = FindAll<NRestSiteButton>(room);
+                // Native AnimateIn window: visible and IsEnabled but mouse Ignore until the fade ends (live full-3 :233).
+                // Wait for the whole set rather than halting on OrdinaryInput or exposing a partial decision.
+                if (BridgeProtocol.RestOptionsInputDisabled(buttons.Select(b => (int)b.MouseFilter)))
+                {
+                    state["waiting"] = true;
+                    break;
+                }
                 for (int i = 0; i < buttons.Count; i++)
                 {
                     var button = buttons[i];

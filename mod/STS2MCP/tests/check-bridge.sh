@@ -1423,6 +1423,29 @@ if (args.Length > 1)
         Check(rewardDispatches == 0, "observation never executes a reward callback: " + phase);
     }
 
+    // Rest-site entry readiness: live full-3 (:230 choose_map_node:1 -> :233 unsupported ordinary_mouse_input_unverified -> :234 ready
+    // rest_site). Pinned rest_site_button.tscn ships mouse_filter Ignore and NRestSiteButton._Ready starts the unawaited AnimateIn
+    // fade whose tail is the only set_MouseFilter(Stop). That window is a waiting whole decision, not a halt or a pruned choice.
+    Check(protocol.GetMethod("RestOptionsInputDisabled", flags) != null, "old rest_site branch halts on the native AnimateIn mouse-Ignore window instead of waiting");
+    foreach (var (phase, filters) in new (string, int[])[] { ("entry", new[] { 2, 2 }), ("partial", new[] { 0, 2 }), ("ready", new[] { 0, 0 }), ("pass", new[] { 1, 0 }), ("none", Array.Empty<int>()) })
+    {
+        bool disabled = (bool)Call(protocol, null, "RestOptionsInputDisabled", filters)!;
+        Check(disabled == (phase is "entry" or "partial"), "any rest button still mouse-Ignore withholds the decision; Stop/Pass and no buttons stay ready: " + phase);
+        int restDispatches = 0;
+        var restActions = (System.Collections.IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(legalType))!;
+        var restState = new Dictionary<string, object?> { ["state_type"] = "rest_site", ["waiting"] = Call(protocol, null, "IsWaiting", "rest_site", false, false, false, false) };
+        if (disabled) restState["waiting"] = true;
+        else foreach (var label in new[] { "choose_rest_option:0", "choose_rest_option:1", "proceed" })
+            restActions.Add(legalCtor.Invoke(new object[] { label, label, (Func<bool>)(() => { restDispatches++; return true; }), label }));
+        var restObservation = Call(bridge, null, "FinishObservation", restState, restActions, "rest fixture")!;
+        var restOutput = (Dictionary<string, object?>)restObservation.GetType().GetProperty("State")!.GetValue(restObservation)!;
+        var restLabels = ((System.Collections.IEnumerable)restOutput["legal_actions"]!).Cast<object>().Select(a => (string)legalType.GetProperty("Label")!.GetValue(a)!).ToArray();
+        Check(restOutput["state_type"] is "rest_site" && !restOutput.ContainsKey("halt_reason") && Equals(restOutput["waiting"], disabled)
+            && Equals(restOutput["legal_actions_complete"], !disabled) && restLabels.Length == (disabled ? 0 : 3),
+            "AnimateIn window is a waiting, incomplete rest_site observation with no options or Proceed; the faded-in set is complete: " + phase);
+        Check(restDispatches == 0, "observation never executes a rest callback: " + phase);
+    }
+
     // Production event-binding/latch helper with a controlled event source. No native GameAction instantiation.
     var bindCancellation = sessionType.GetMethod("TrackCancellable", flags)!.MakeGenericMethod(typeof(object));
     var events = new Dictionary<object, Action<object>?>();
@@ -1655,6 +1678,36 @@ if (args.Length > 1)
         "compiled context read evaluates run presence eagerly and the network service only through the ordered helper's deferred read");
     Check(CalledMethods("AddNonCombatActions").Any(m => m.Name == "RewardCardsInputDisabled" && m.DeclaringType == protocol),
         "card-reward observation branch is wired to the production readiness helper");
+    // Compiled rest_site order: owned entry/tutorial (RequireRest) before readiness, readiness before the per-button hotkey-safe
+    // OrdinaryInput gate, which keeps refusing mouse-Ignore for every other ordinary surface.
+    var restBranch = CalledMethods("AddNonCombatActions");
+    int restRequire = restBranch.FindIndex(m => m.Name == "RequireRest" && m.DeclaringType == bridge);
+    int restReadiness = restBranch.FindIndex(m => m.Name == "RestOptionsInputDisabled" && m.DeclaringType == protocol);
+    int restInput = restBranch.FindIndex(m => m.Name == "OrdinaryInput" && m.DeclaringType == bridge);
+    Check(restRequire >= 0 && restReadiness > restRequire && restInput > restReadiness && CalledInClosures("AddNonCombatActions").Any(m => m.Name == "get_MouseFilter"),
+        "rest_site observation branch checks the native AnimateIn mouse filter after RequireRest and before the OrdinaryInput gate");
+    Check(CalledMethods("OrdinaryInput").Any(m => m.Name == "OrdinaryInput" && m.DeclaringType == protocol)
+        && Operands(bridge.GetMethod("OrdinaryInput", flags)!).OfType<string>().Contains("ordinary_mouse_input_unverified"),
+        "shared OrdinaryInput still halts on mouse Ignore for shop/treasure/event/proceed callers");
+    // Pinned native rest-button lifecycle behind the waiting window (metadata only, never instantiated).
+    var nativeRestButton = game.GetType("MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton", true)!;
+    var nativeRestRoom = game.GetType("MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom", true)!;
+    List<MethodBase> NativeStateMachineCalls(Type type, string method) => type.GetNestedTypes(flags).Where(t => t.Name.StartsWith("<" + method + ">"))
+        .SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly)).Where(m => m.Name == "MoveNext").SelectMany(CalledBy).ToList();
+    var restReady = CalledBy(nativeRestButton.GetMethod("_Ready", flags)!);
+    var animateIn = NativeStateMachineCalls(nativeRestButton, "AnimateIn");
+    Check(restReady.Any(m => m.Name == "set_Modulate") && restReady.Any(m => m.Name == "AnimateIn") && restReady.Any(m => m.Name == "RunSafely")
+        && animateIn.Any(m => m.Name == "TweenProperty") && animateIn.Any(m => m.Name == "AwaitFinished") && animateIn.Any(m => m.Name == "set_MouseFilter"),
+        "NRestSiteButton._Ready fades in through an unawaited AnimateIn whose tail sets the mouse filter");
+    IEnumerable<MethodBase> NativeMethods(Type type) => type.GetNestedTypes(flags).Prepend(type).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly).Cast<MethodBase>()
+        .Concat(t.GetConstructors(flags | BindingFlags.DeclaredOnly))).Where(m => m.GetMethodBody() != null);
+    Check(NativeMethods(nativeRestButton).Concat(NativeMethods(nativeRestRoom)).Count(m => CalledBy(m).Any(c => c.Name == "set_MouseFilter")) == 1,
+        "AnimateIn's tail is the only rest button/room mouse-filter write, so Ignore means the fade has not finished");
+    Check(CalledBy(nativeRestButton.GetMethod("get_Hotkeys", flags)!).Any(m => m.Name == "Empty" && m.DeclaringType == typeof(Array)),
+        "rest buttons have no hotkeys: the Ignore window is not a hotkey-accessible choice");
+    Check(NativeStateMachineCalls(nativeRestRoom, "AfterSelectingOptionAsync").Any(m => m.Name == "UpdateRestSiteOptions")
+        && CalledBy(nativeRestRoom.GetMethod("UpdateRestSiteOptions", flags)!).Any(m => m.Name == "Create" && m.DeclaringType == nativeRestButton),
+        "every option recreates the rest buttons, so the same fade window recurs after each choice");
     // Actual compiled map predicate and both potion visibility sites must route into the same whole-decision gate.
     var mapPredicate = bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags))
         .Single(m => m.Name.StartsWith("<CaptureObservationCore>") && CalledBy(m).Any(c => c.Name == "IsReadableCanvas"));

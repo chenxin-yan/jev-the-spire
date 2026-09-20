@@ -1,0 +1,3 @@
+SentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.
+PASS: installed API private-field compatibility and built GET mutation regressions (metadata only).
+PASS: 1950 actual-DLL checks; no game initialization or HTTP.

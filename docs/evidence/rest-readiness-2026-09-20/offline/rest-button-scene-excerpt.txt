@@ -1,0 +1,14 @@
+[node name="RestSiteButton" type="Control"]
+custom_minimum_size = Vector2(246.786, 162.879)
+layout_mode = 3
+anchors_preset = 0
+offset_top = -1.0
+offset_right = 250.0
+offset_bottom = 163.0
+pivot_offset = Vector2(125, 82)
+focus_mode = 2
+mouse_filter = 2
+script = ExtResource("1_w1w5t")
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+

@@ -1,0 +1,427 @@
+METHOD Void UpdateRestSiteOptions()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Boolean IsValid(Godot.Node)
+ 0006: brfalse.s 16
+ 0008: ldarg.0 
+ 0009: call method:Godot.Node.Boolean IsInsideTree()
+ 0014: brtrue.s 17
+ 0016: ret 
+ 0017: ldarg.0 
+ 0018: ldfld field:Godot.Control _choicesContainer
+ 0023: ldc.i4.0 
+ 0024: callvirt method:Godot.Node.Godot.Collections.Array`1[Godot.Node] GetChildren(Boolean)
+ 0029: callvirt method:Godot.Collections.Array`1[Godot.Node].System.Collections.Generic.IEnumerator`1[Godot.Node] GetEnumerator()
+ 0034: stloc.1 
+ 0035: br.s 50
+ 0037: ldloc.1 
+ 0038: callvirt method:System.Collections.Generic.IEnumerator`1[Godot.Node].Godot.Node get_Current()
+ 0043: stloc.2 
+ 0044: ldloc.2 
+ 0045: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void QueueFreeSafely(Godot.Node)
+ 0050: ldloc.1 
+ 0051: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0056: brtrue.s 37
+ 0058: leave.s 70
+ 0060: ldloc.1 
+ 0061: brfalse.s 69
+ 0063: ldloc.1 
+ 0064: callvirt method:System.IDisposable.Void Dispose()
+ 0069: endfinally 
+ 0070: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Void .ctor()
+ 0075: stloc.0 
+ 0076: ldarg.0 
+ 0077: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption] get_Options()
+ 0082: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption] GetEnumerator()
+ 0087: stloc.3 
+ 0088: br.s 190
+ 0090: ldloc.3 
+ 0091: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption].MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption get_Current()
+ 0096: stloc.s 4
+ 0098: ldloc.s 4
+ 0100: call method:MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton.MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton Create(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption)
+ 0105: stloc.s 5
+ 0107: ldarg.0 
+ 0108: ldfld field:Godot.Control _choicesContainer
+ 0113: ldloc.s 5
+ 0115: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0120: ldloc.s 5
+ 0122: ldsfld field:Godot.StringName Focused
+ 0127: ldarg.0 
+ 0128: ldftn method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.Void RestSiteButtonHovered(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton)
+ 0134: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Void .ctor(System.Object, IntPtr)
+ 0139: call method:Godot.Callable.Godot.Callable From[NRestSiteButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton])
+ 0144: ldc.i4.0 
+ 0145: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0150: pop 
+ 0151: ldloc.s 5
+ 0153: ldsfld field:Godot.StringName Unfocused
+ 0158: ldarg.0 
+ 0159: ldftn method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.Void RestSiteButtonUnhovered(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton)
+ 0165: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Void .ctor(System.Object, IntPtr)
+ 0170: call method:Godot.Callable.Godot.Callable From[NRestSiteButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton])
+ 0175: ldc.i4.0 
+ 0176: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0181: pop 
+ 0182: ldloc.0 
+ 0183: ldloc.s 5
+ 0185: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Void Add(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton)
+ 0190: ldloc.3 
+ 0191: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0196: brtrue.s 90
+ 0198: leave.s 210
+ 0200: ldloc.3 
+ 0201: brfalse.s 209
+ 0203: ldloc.3 
+ 0204: callvirt method:System.IDisposable.Void Dispose()
+ 0209: endfinally 
+ 0210: ldc.i4.0 
+ 0211: stloc.s 6
+ 0213: br 358
+ 0218: ldloc.0 
+ 0219: ldloc.s 6
+ 0221: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Item(Int32)
+ 0226: stloc.s 7
+ 0228: ldloc.s 7
+ 0230: ldloc.s 6
+ 0232: ldc.i4.0 
+ 0233: bgt.s 256
+ 0235: ldloc.0 
+ 0236: dup 
+ 0237: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Int32 get_Count()
+ 0242: ldc.i4.1 
+ 0243: sub 
+ 0244: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Item(Int32)
+ 0249: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0254: br.s 271
+ 0256: ldloc.0 
+ 0257: ldloc.s 6
+ 0259: ldc.i4.1 
+ 0260: sub 
+ 0261: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Item(Int32)
+ 0266: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0271: callvirt method:Godot.Control.Void set_FocusNeighborLeft(Godot.NodePath)
+ 0276: ldloc.s 7
+ 0278: ldloc.s 6
+ 0280: ldloc.0 
+ 0281: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Int32 get_Count()
+ 0286: ldc.i4.1 
+ 0287: sub 
+ 0288: blt.s 304
+ 0290: ldloc.0 
+ 0291: ldc.i4.0 
+ 0292: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Item(Int32)
+ 0297: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0302: br.s 319
+ 0304: ldloc.0 
+ 0305: ldloc.s 6
+ 0307: ldc.i4.1 
+ 0308: add 
+ 0309: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Item(Int32)
+ 0314: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0319: callvirt method:Godot.Control.Void set_FocusNeighborRight(Godot.NodePath)
+ 0324: ldloc.s 7
+ 0326: ldloc.s 7
+ 0328: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0333: callvirt method:Godot.Control.Void set_FocusNeighborTop(Godot.NodePath)
+ 0338: ldloc.s 7
+ 0340: ldloc.s 7
+ 0342: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0347: callvirt method:Godot.Control.Void set_FocusNeighborBottom(Godot.NodePath)
+ 0352: ldloc.s 6
+ 0354: ldc.i4.1 
+ 0355: add 
+ 0356: stloc.s 6
+ 0358: ldloc.s 6
+ 0360: ldloc.0 
+ 0361: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].Int32 get_Count()
+ 0366: blt 218
+ 0371: ret 
+METHOD Void DisableOptions()
+ 0000: ldarg.0 
+ 0001: ldfld field:Godot.Control _choicesContainer
+ 0006: ldc.i4.0 
+ 0007: callvirt method:Godot.Node.Godot.Collections.Array`1[Godot.Node] GetChildren(Boolean)
+ 0012: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton] OfType[NRestSiteButton](System.Collections.IEnumerable)
+ 0017: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton] GetEnumerator()
+ 0022: stloc.0 
+ 0023: br.s 38
+ 0025: ldloc.0 
+ 0026: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Current()
+ 0031: stloc.1 
+ 0032: ldloc.1 
+ 0033: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0038: ldloc.0 
+ 0039: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0044: brtrue.s 25
+ 0046: leave.s 58
+ 0048: ldloc.0 
+ 0049: brfalse.s 57
+ 0051: ldloc.0 
+ 0052: callvirt method:System.IDisposable.Void Dispose()
+ 0057: endfinally 
+ 0058: ret 
+METHOD Void EnableOptions()
+ 0000: ldarg.0 
+ 0001: ldfld field:Boolean _roomExiting
+ 0006: brfalse.s 9
+ 0008: ret 
+ 0009: ldarg.0 
+ 0010: ldfld field:Godot.Control _choicesContainer
+ 0015: ldc.i4.0 
+ 0016: callvirt method:Godot.Node.Godot.Collections.Array`1[Godot.Node] GetChildren(Boolean)
+ 0021: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton] OfType[NRestSiteButton](System.Collections.IEnumerable)
+ 0026: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton] GetEnumerator()
+ 0031: stloc.0 
+ 0032: br.s 47
+ 0034: ldloc.0 
+ 0035: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton].MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton get_Current()
+ 0040: stloc.1 
+ 0041: ldloc.1 
+ 0042: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0047: ldloc.0 
+ 0048: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0053: brtrue.s 34
+ 0055: leave.s 67
+ 0057: ldloc.0 
+ 0058: brfalse.s 66
+ 0060: ldloc.0 
+ 0061: callvirt method:System.IDisposable.Void Dispose()
+ 0066: endfinally 
+ 0067: ldarg.0 
+ 0068: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.Godot.Control get_DefaultFocusedControl()
+ 0073: dup 
+ 0074: brtrue.s 78
+ 0076: pop 
+ 0077: ret 
+ 0078: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 0083: ret 
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse 174
+ 0020: ldloc.1 
+ 0021: ldfld field:Godot.Tween _choicesTween
+ 0026: dup 
+ 0027: brtrue.s 32
+ 0029: pop 
+ 0030: br.s 37
+ 0032: call method:Godot.Tween.Void Kill()
+ 0037: ldloc.1 
+ 0038: ldloc.1 
+ 0039: call method:Godot.Node.Godot.Tween CreateTween()
+ 0044: stfld field:Godot.Tween _choicesTween
+ 0049: ldloc.1 
+ 0050: ldfld field:Godot.Tween _choicesTween
+ 0055: ldloc.1 
+ 0056: ldfld field:Godot.Control _choicesScreen
+ 0061: ldstr str:modulate:a
+ 0066: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0071: ldc.r4 1
+ 0076: call method:Godot.Variant.Godot.Variant op_Implicit(Single)
+ 0081: ldc.r8 0.5
+ 0090: callvirt method:Godot.Tween.Godot.PropertyTweener TweenProperty(Godot.GodotObject, Godot.NodePath, Godot.Variant, Double)
+ 0095: ldc.i4.1 
+ 0096: conv.i8 
+ 0097: callvirt method:Godot.PropertyTweener.Godot.PropertyTweener SetEase(EaseType)
+ 0102: ldc.i4.7 
+ 0103: conv.i8 
+ 0104: callvirt method:Godot.PropertyTweener.Godot.PropertyTweener SetTrans(TransitionType)
+ 0109: pop 
+ 0110: ldloc.1 
+ 0111: ldfld field:Godot.Tween _choicesTween
+ 0116: ldarg.0 
+ 0117: ldfld field:System.Threading.CancellationToken ct
+ 0122: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.TweenHelper.System.Threading.Tasks.Task AwaitFinished(Godot.Tween, System.Threading.CancellationToken)
+ 0127: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0132: stloc.2 
+ 0133: ldloca.s 2
+ 0135: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0140: brtrue.s 202
+ 0142: ldarg.0 
+ 0143: ldc.i4.0 
+ 0144: dup 
+ 0145: stloc.0 
+ 0146: stfld field:Int32 <>1__state
+ 0151: ldarg.0 
+ 0152: ldloc.2 
+ 0153: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0158: ldarg.0 
+ 0159: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0164: ldloca.s 2
+ 0166: ldarg.0 
+ 0167: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<ShowChoices>d__67](System.Runtime.CompilerServices.TaskAwaiter ByRef, <ShowChoices>d__67 ByRef)
+ 0172: leave.s 253
+ 0174: ldarg.0 
+ 0175: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0180: stloc.2 
+ 0181: ldarg.0 
+ 0182: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0187: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0193: ldarg.0 
+ 0194: ldc.i4.m1 
+ 0195: dup 
+ 0196: stloc.0 
+ 0197: stfld field:Int32 <>1__state
+ 0202: ldloca.s 2
+ 0204: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0209: leave.s 234
+ 0211: stloc.3 
+ 0212: ldarg.0 
+ 0213: ldc.i4.s -2
+ 0215: stfld field:Int32 <>1__state
+ 0220: ldarg.0 
+ 0221: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0226: ldloc.3 
+ 0227: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0232: leave.s 253
+ 0234: ldarg.0 
+ 0235: ldc.i4.s -2
+ 0237: stfld field:Int32 <>1__state
+ 0242: ldarg.0 
+ 0243: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0248: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0253: ret 
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse.s 135
+ 0017: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.SaveManager get_Instance()
+ 0022: ldstr str:rest_site_ftue
+ 0027: callvirt method:MegaCrit.Sts2.Core.Saves.SaveManager.Boolean SeenFtue(System.String)
+ 0032: brfalse.s 39
+ 0034: leave 425
+ 0039: ldloc.1 
+ 0040: ldfld field:Godot.Control _choicesContainer
+ 0045: ldc.i4.0 
+ 0046: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0051: ldloc.1 
+ 0052: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.addons.mega_text.MegaLabel get_Header()
+ 0057: ldc.i4.0 
+ 0058: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0063: ldc.r4 0.5
+ 0068: ldloc.1 
+ 0069: ldfld field:System.Threading.CancellationTokenSource _cts
+ 0074: callvirt method:System.Threading.CancellationTokenSource.System.Threading.CancellationToken get_Token()
+ 0079: ldc.i4.0 
+ 0080: call method:MegaCrit.Sts2.Core.Commands.Cmd.System.Threading.Tasks.Task Wait(Single, System.Threading.CancellationToken, Boolean)
+ 0085: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0090: stloc.3 
+ 0091: ldloca.s 3
+ 0093: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0098: brtrue.s 163
+ 0100: ldarg.0 
+ 0101: ldc.i4.0 
+ 0102: dup 
+ 0103: stloc.0 
+ 0104: stfld field:Int32 <>1__state
+ 0109: ldarg.0 
+ 0110: ldloc.3 
+ 0111: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0116: ldarg.0 
+ 0117: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0122: ldloca.s 3
+ 0124: ldarg.0 
+ 0125: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<ShowFtueIfNeeded>d__46](System.Runtime.CompilerServices.TaskAwaiter ByRef, <ShowFtueIfNeeded>d__46 ByRef)
+ 0130: leave 444
+ 0135: ldarg.0 
+ 0136: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0141: stloc.3 
+ 0142: ldarg.0 
+ 0143: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0148: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0154: ldarg.0 
+ 0155: ldc.i4.m1 
+ 0156: dup 
+ 0157: stloc.0 
+ 0158: stfld field:Int32 <>1__state
+ 0163: ldloca.s 3
+ 0165: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0170: ldloc.1 
+ 0171: ldfld field:Godot.Control _choicesContainer
+ 0176: ldc.i4.1 
+ 0177: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0182: ldloc.1 
+ 0183: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.addons.mega_text.MegaLabel get_Header()
+ 0188: ldc.i4.1 
+ 0189: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0194: ldloc.1 
+ 0195: ldfld field:Godot.Control _choicesContainer
+ 0200: ldloc.1 
+ 0201: ldfld field:Godot.Control _choicesContainer
+ 0206: callvirt method:Godot.CanvasItem.Godot.Color get_Modulate()
+ 0211: stloc.s 4
+ 0213: ldloca.s 4
+ 0215: ldc.r4 0
+ 0220: stfld field:Single A
+ 0225: ldloc.s 4
+ 0227: callvirt method:Godot.CanvasItem.Void set_Modulate(Godot.Color)
+ 0232: ldloc.1 
+ 0233: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.addons.mega_text.MegaLabel get_Header()
+ 0238: ldloc.1 
+ 0239: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.addons.mega_text.MegaLabel get_Header()
+ 0244: callvirt method:Godot.CanvasItem.Godot.Color get_Modulate()
+ 0249: stloc.s 4
+ 0251: ldloca.s 4
+ 0253: ldc.r4 0
+ 0258: stfld field:Single A
+ 0263: ldloc.s 4
+ 0265: callvirt method:Godot.CanvasItem.Void set_Modulate(Godot.Color)
+ 0270: ldloc.1 
+ 0271: call method:Godot.Node.Godot.Tween CreateTween()
+ 0276: stloc.2 
+ 0277: ldloc.2 
+ 0278: ldloc.1 
+ 0279: ldfld field:Godot.Control _choicesContainer
+ 0284: ldstr str:modulate:a
+ 0289: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0294: ldc.r4 1
+ 0299: call method:Godot.Variant.Godot.Variant op_Implicit(Single)
+ 0304: ldc.r8 0.5
+ 0313: callvirt method:Godot.Tween.Godot.PropertyTweener TweenProperty(Godot.GodotObject, Godot.NodePath, Godot.Variant, Double)
+ 0318: pop 
+ 0319: ldloc.2 
+ 0320: ldloc.1 
+ 0321: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.addons.mega_text.MegaLabel get_Header()
+ 0326: ldstr str:modulate:a
+ 0331: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0336: ldc.r4 1
+ 0341: call method:Godot.Variant.Godot.Variant op_Implicit(Single)
+ 0346: ldc.r8 0.5
+ 0355: callvirt method:Godot.Tween.Godot.PropertyTweener TweenProperty(Godot.GodotObject, Godot.NodePath, Godot.Variant, Double)
+ 0360: pop 
+ 0361: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer.MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer get_Instance()
+ 0366: ldloc.1 
+ 0367: ldfld field:Godot.Control _choicesContainer
+ 0372: call method:MegaCrit.Sts2.Core.Nodes.Ftue.NRestSiteFtue.MegaCrit.Sts2.Core.Nodes.Ftue.NRestSiteFtue Create(Godot.Control)
+ 0377: ldc.i4.1 
+ 0378: callvirt method:MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer.Void Add(Godot.Node, Boolean)
+ 0383: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.SaveManager get_Instance()
+ 0388: ldstr str:rest_site_ftue
+ 0393: callvirt method:MegaCrit.Sts2.Core.Saves.SaveManager.Void MarkFtueAsComplete(System.String)
+ 0398: leave.s 425
+ 0400: stloc.s 5
+ 0402: ldarg.0 
+ 0403: ldc.i4.s -2
+ 0405: stfld field:Int32 <>1__state
+ 0410: ldarg.0 
+ 0411: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0416: ldloc.s 5
+ 0418: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0423: leave.s 444
+ 0425: ldarg.0 
+ 0426: ldc.i4.s -2
+ 0428: stfld field:Int32 <>1__state
+ 0433: ldarg.0 
+ 0434: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0439: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0444: ret 

@@ -181,6 +181,12 @@ internal static class BridgeProtocol
         return disabled;
     }
 
+    // v0.111 rest_site_button.tscn ships mouse_filter Ignore; NRestSiteButton._Ready starts the unawaited 0.5s AnimateIn fade whose
+    // tail is the only rest button/room set_MouseFilter (Stop). UpdateRestSiteOptions recreates the buttons on entry and after
+    // every option, and rest buttons have no hotkeys, so an Ignore button is the fade window: the whole decision waits.
+    internal static bool RestOptionsInputDisabled(IEnumerable<int> mouseFilters)
+        => System.Linq.Enumerable.Contains(mouseFilters, 2);
+
     internal static (string Version, string Label) ParseAction(string body)
     {
         using var doc = JsonDocument.Parse(body);
