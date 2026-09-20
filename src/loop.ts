@@ -1,4 +1,4 @@
-// Sequential observe -> decide -> validate -> dispatch -> re-observe loop with a finite action bound.
+// Sequential observe -> decide -> validate -> dispatch -> re-observe loop with an optional action bound.
 import type { Schema } from "effect";
 import type { DispatchResult, LegalAction, Snapshot } from "./bridge.ts";
 import { isInvalidAnswer, type Decided, type Decider } from "./jev.ts";
@@ -15,8 +15,8 @@ export interface LoopDeps {
   readonly log: (record: Record<string, unknown>) => void;
   readonly print: (line: string) => void;
   readonly signal: AbortSignal;
-  /** Demo bound on dispatched actions (model-chosen and forced singleton alike). */
-  readonly maxActions: number;
+  /** Optional bound on dispatched actions (model-chosen and forced singleton alike). */
+  readonly maxActions?: number | undefined;
   readonly waitMs?: number;
   readonly pollMs?: number;
 }
@@ -59,7 +59,7 @@ export const contextOf = (snapshot: Snapshot): Schema.Json => {
 const describeError = (error: unknown): string =>
   error instanceof Error ? `${error.name}: ${error.message}` : String(error);
 
-// Abort reasons are set by main (SIGINT / demo_deadline) and reported verbatim in the summary.
+// Abort reasons from the caller (e.g. SIGINT) are reported verbatim in the summary.
 const abortReason = (signal: AbortSignal): string =>
   signal.reason instanceof Error ? signal.reason.message : String(signal.reason);
 
@@ -225,7 +225,7 @@ export const runLoop = async (deps: LoopDeps): Promise<Summary> => {
       return { source: "singleton_only", label: sole.label };
     }
     print(
-      `[action ${dispatched + 1}/${deps.maxActions}] legal actions:\n${formatActions(snapshot.legal_actions)}`,
+      `[action ${dispatched + 1}${deps.maxActions === undefined ? "" : `/${deps.maxActions}`}] legal actions:\n${formatActions(snapshot.legal_actions)}`,
     );
     const decided = await infer(snapshot);
     print(
@@ -238,7 +238,8 @@ export const runLoop = async (deps: LoopDeps): Promise<Summary> => {
   try {
     while (true) {
       signal.throwIfAborted();
-      if (dispatched >= deps.maxActions) return finish("max_actions");
+      if (deps.maxActions !== undefined && dispatched >= deps.maxActions)
+        return finish("max_actions");
       const ready = await awaitReady();
       const snapshot = ready.snapshot;
       print(
@@ -252,7 +253,7 @@ export const runLoop = async (deps: LoopDeps): Promise<Summary> => {
 
       const choice = await choose(snapshot);
 
-      // Ctrl-C or the demo deadline during inference must prevent the POST even though the answer arrived.
+      // Cancellation during inference must prevent the POST even though the answer arrived.
       if (signal.aborted) return finish("aborted", abortReason(signal));
 
       // Freshness: the choice is only valid against the exact snapshot it was made on.

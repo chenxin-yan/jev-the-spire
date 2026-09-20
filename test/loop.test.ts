@@ -402,16 +402,16 @@ describe("runLoop", () => {
     expect(h.posts).toEqual([]);
   });
 
-  test("a total deadline ends repeated stale snapshots even when observe ignores the signal", async () => {
-    // Every observation is a fresh version, so each decision is stale forever; only the deadline can end this.
+  test("abort ends repeated stale snapshots even when observe ignores the signal", async () => {
+    // Every observation is a fresh version, so each decision is stale forever; cancellation must still work.
     let revision = 0;
     const h = harness([() => snap(++revision)], { maxActions: 5 });
     const run = runLoop(h.deps);
-    setTimeout(() => h.controller.abort(new Error("demo_deadline")), 30);
+    setTimeout(() => h.controller.abort(new Error("SIGINT")), 30);
     const summary = await run;
     expect(summary).toMatchObject({
       outcome: "aborted",
-      halt_reason: "demo_deadline",
+      halt_reason: "SIGINT",
       dispatched: 0,
     });
     expect(h.posts).toEqual([]);

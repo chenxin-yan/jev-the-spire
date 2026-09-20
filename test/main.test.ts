@@ -24,19 +24,10 @@ const halted = {
   terminal: false,
   halt_reason: "unsupported_state",
 };
-// Never ready: each poll sees a new version, so only an external abort ends the loop.
-let version = 0;
-const waiting = () => ({
-  ...terminal,
-  state_type: "combat",
-  terminal: false,
-  waiting: true,
-  state_version: `epoch:${++version}`,
-});
-
 let gets = 0;
 let posts = 0;
 let onGet: ((request: Request) => Response | Promise<Response>) | undefined;
+let onPost: ((request: Request) => Response | Promise<Response>) | undefined;
 let firstGet: (() => void) | undefined;
 const server = Bun.serve({
   hostname: "127.0.0.1",
@@ -44,7 +35,7 @@ const server = Bun.serve({
   fetch: (request) => {
     if (request.method === "POST") {
       posts++;
-      return Response.json({ error: "unexpected" }, { status: 500 });
+      return onPost?.(request) ?? Response.json({ error: "unexpected" }, { status: 500 });
     }
     gets++;
     firstGet?.();
@@ -59,6 +50,7 @@ const bridge = `http://127.0.0.1:${server.port}/api/v1/singleplayer`;
 
 interface RunOptions {
   readonly respond?: (request: Request) => Response | Promise<Response>;
+  readonly respondPost?: (request: Request) => Response | Promise<Response>;
   readonly preload?: string;
   /** Called once the first GET reaches the fake bridge, with the running process. */
   readonly onFirstGet?: (proc: ReturnType<typeof Bun.spawn>) => void;
@@ -68,6 +60,7 @@ const runCli = async (args: ReadonlyArray<string>, logName: string, options: Run
   gets = 0;
   posts = 0;
   onGet = options.respond ?? (() => Response.json(terminal));
+  onPost = options.respondPost;
   const logPath = join(OUT, logName);
   const preload = options.preload === undefined ? [] : [`--preload=${options.preload}`];
   const proc = Bun.spawn(
@@ -102,6 +95,26 @@ const runCli = async (args: ReadonlyArray<string>, logName: string, options: Run
   return { code, gets, posts, stderr, stdout, log, logPath };
 };
 
+const playToTerminal: RunOptions = {
+  respond: () =>
+    Response.json(
+      posts >= 12
+        ? terminal
+        : {
+            ...terminal,
+            terminal: false,
+            state_type: "combat",
+            state_version: `epoch:${posts + 1}`,
+            legal_actions: [{ label: "end_turn", description: "End turn" }],
+          },
+    ),
+  respondPost: async (request) => {
+    const action = await request.json();
+    await Bun.sleep(20);
+    return Response.json({ status: "dispatched", ...action }, { status: 202 });
+  },
+};
+
 describe("main CLI arguments (Crust strict parsing)", () => {
   test.each([
     [["--max-actions"], "missing value"],
@@ -134,10 +147,19 @@ describe("main CLI arguments (Crust strict parsing)", () => {
     });
   });
 
-  test("defaults the bound to 10 actions", async () => {
-    const result = await runCli([], "default.jsonl");
+  test("without --max-actions continues past 10 actions until terminal", async () => {
+    const result = await runCli([], "default.jsonl", playToTerminal);
     expect(result.code).toBe(0);
-    expect(result.stdout).toContain(" max-actions=10 ");
+    expect(result.posts).toBe(12);
+    expect(result.log?.at(-1)).toMatchObject({ outcome: "terminal", dispatched: 12 });
+    expect(result.stdout).toContain(" max-actions=unlimited ");
+  });
+
+  test("--max-actions stops at the explicitly requested count", async () => {
+    const result = await runCli(["--max-actions", "3"], "bounded.jsonl", playToTerminal);
+    expect(result.code).toBe(0);
+    expect(result.posts).toBe(3);
+    expect(result.log?.at(-1)).toMatchObject({ outcome: "max_actions", dispatched: 3 });
   });
 });
 
@@ -174,20 +196,14 @@ describe("main CLI exit status", () => {
     expect(result.stderr).not.toContain("Error:");
   });
 
-  test("the whole-demo deadline aborts an endlessly waiting bridge and exits 1", async () => {
-    const result = await runCli(["--max-actions", "1"], "deadline.jsonl", {
-      respond: () => Response.json(waiting()),
+  test("keeps playing beyond the former whole-run deadline", async () => {
+    const result = await runCli(["--max-actions", "20"], "deadline.jsonl", {
+      ...playToTerminal,
       preload: join(import.meta.dir, "deadline-preload.ts"),
     });
-    expect(result.code).toBe(1);
-    expect(result.posts).toBe(0);
-    expect(result.gets).toBeGreaterThan(0);
-    expect(result.log?.at(-1)).toMatchObject({
-      type: "summary",
-      outcome: "aborted",
-      halt_reason: "demo_deadline",
-    });
-    expect(result.stderr).toContain("demo deadline of 300000ms reached");
-    expect(result.stderr).toContain("Error: aborted: demo_deadline");
+    expect(result.code).toBe(0);
+    expect(result.posts).toBe(12);
+    expect(result.log?.at(-1)).toMatchObject({ outcome: "terminal", dispatched: 12 });
+    expect(result.stdout).not.toContain("deadline=");
   });
 });

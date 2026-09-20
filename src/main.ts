@@ -1,4 +1,4 @@
-// Bounded demo CLI: `bun run src/main.ts [--max-actions N] [--log PATH] [--bridge URL]`
+// Play until terminal/failure or Ctrl-C: `bun run src/main.ts [--max-actions N] [--log PATH] [--bridge URL]`
 // Requires AI_GATEWAY_API_KEY in the environment (read by @ai-sdk/gateway, never by this code).
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
@@ -10,10 +10,6 @@ import { BRIDGE_URL, dispatch, observe } from "./bridge.ts";
 import { JEV_MODEL_ID, makeJevDecider } from "./jev.ts";
 import { type LoopDeps, runLoop, type Summary } from "./loop.ts";
 
-const DEFAULT_MAX_ACTIONS = 10;
-// Whole demo wall-clock bound, covering repeated stale/waiting cycles the per-step bounds cannot.
-const DEMO_DEADLINE_MS = 5 * 60_000;
-
 // Crust's `number` type accepts "", 0, negatives and floats; the bound needs a positive safe integer.
 const parsePositiveInteger = (raw: string): number => {
   const value = Number(raw);
@@ -23,25 +19,17 @@ const parsePositiveInteger = (raw: string): number => {
   return value;
 };
 
-// Crust supplies no process AbortSignal: Ctrl-C and the demo deadline abort this controller, and the
-// loop reports the reason in its summary. Timer and listener are released before Crust's own cleanup.
-const runBoundedLoop = async (deps: Omit<LoopDeps, "signal">): Promise<Summary> => {
+// Crust supplies no process AbortSignal; retain Ctrl-C cancellation through pending I/O and inference.
+const runWithInterrupt = async (deps: Omit<LoopDeps, "signal">): Promise<Summary> => {
   const controller = new AbortController();
   const onSigint = () => {
     console.error("\nCtrl-C: stopping; no further dispatch");
     controller.abort(new Error("SIGINT"));
   };
   process.once("SIGINT", onSigint);
-  const deadline = setTimeout(() => {
-    console.error(
-      `\ndemo deadline of ${DEMO_DEADLINE_MS}ms reached: stopping; no further dispatch`,
-    );
-    controller.abort(new Error("demo_deadline"));
-  }, DEMO_DEADLINE_MS);
   try {
     return await runLoop({ ...deps, signal: controller.signal });
   } finally {
-    clearTimeout(deadline);
     process.removeListener("SIGINT", onSigint);
   }
 };
@@ -52,7 +40,6 @@ const app = new Crust("jev")
     {
       name: "max-actions",
       type: "string",
-      default: String(DEFAULT_MAX_ACTIONS),
       parse: parsePositiveInteger,
     },
     { name: "log", type: "string" },
@@ -72,11 +59,11 @@ const app = new Crust("jev")
           flags.log ?? `logs/run-${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`;
         mkdirSync(dirname(logPath), { recursive: true });
         console.log(
-          `bridge=${bridgeUrl} model=${JEV_MODEL_ID} max-actions=${maxActions} deadline=${DEMO_DEADLINE_MS}ms log=${logPath}`,
+          `bridge=${bridgeUrl} model=${JEV_MODEL_ID} max-actions=${maxActions ?? "unlimited"} log=${logPath}`,
         );
 
         const summary = yield* Effect.promise(() =>
-          runBoundedLoop({
+          runWithInterrupt({
             observe: (signal) => observe(bridgeUrl, signal),
             dispatch: (stateVersion, label, signal) =>
               dispatch(bridgeUrl, stateVersion, label, signal),

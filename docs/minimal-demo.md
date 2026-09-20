@@ -1,4 +1,6 @@
-# Minimal playable demo — approved scope
+# Minimal playable demo — original approved scope
+
+The owner has since made the CLI action limit opt-in and removed the whole-run deadline. See the [README](../README.md#run-owners-mac-game-running-with-the-modded-profile-2-bridge) for current usage. Budgets and checkpoint statements below describe the original demo, not the current CLI defaults.
 
 The owner confirmed that the three starting choices mean **Ancient/Neow choices at each act opening**, and selected **Build the minimal demo** rather than finish broad bridge coverage first.
 

@@ -1,6 +1,6 @@
 # Jev the Spire
 
-One bounded Bun process: observe the STS2MCP bridge → one joint Jev choice over the legal actions → validate freshness → one POST → re-observe. See `docs/minimal-demo.md` for scope.
+One Bun process, running until victory, defeat, a technical failure, or Ctrl-C: observe the STS2MCP bridge → one joint Jev choice over the legal actions → validate freshness → one POST → re-observe. See `docs/minimal-demo.md` for scope.
 
 ## Repository layout
 
@@ -17,14 +17,14 @@ binaries are never committed or downloaded by CI.
 ```sh
 mise install                            # Bun from package.json's packageManager; .NET from mise.toml
 bun install
-bun run src/main.ts                       # 10 actions by default
-bun run src/main.ts --max-actions 3       # positive integer bound
+bun run src/main.ts                       # no action-count or total runtime cap
+bun run src/main.ts --max-actions 3       # optional positive integer action bound
 bun run src/main.ts --log logs/demo.jsonl --bridge http://127.0.0.1:15526/api/v1/singleplayer
 ```
 
-`AI_GATEWAY_API_KEY` must be set in the environment (Bun auto-loads `.env`; only `@ai-sdk/gateway` reads it). The CLI is one Crust root command (`@crustjs/core`) whose action is an Effect program (`@crustjs/effect` `handler`). Flags are parsed strictly by Crust: unknown flags, positionals, anything after `--`, a missing value or a non-positive/non-safe-integer `--max-actions` (string flag with a local validator) print `Error: …` and exit 1 before any log or network I/O. There is no `--help` (no help extension installed); this file is the usage. Ctrl-C stops the loop and prevents any further POST. The whole demo also stops after 5 minutes wall clock (`demo_deadline`).
+`AI_GATEWAY_API_KEY` must be set in the environment (Bun auto-loads `.env`; only `@ai-sdk/gateway` reads it). The CLI is one Crust root command (`@crustjs/core`) whose action is an Effect program (`@crustjs/effect` `handler`). Flags are parsed strictly by Crust: unknown flags, positionals, anything after `--`, a missing value or a non-positive/non-safe-integer `--max-actions` (string flag with a local validator) print `Error: …` and exit 1 before any log or network I/O. There is no `--help` (no help extension installed); this file is the usage. Ctrl-C stops the loop and prevents any further POST. There is no default action limit or whole-run deadline. Only an explicit `--max-actions N` limits the action count; per-request, inference and readiness timeouts still stop technical failures.
 
-Exit status (Crust's native contract): 0 on `terminal` or `max_actions`; 130 on Ctrl-C (the aborted summary is still logged and printed, then the Effect is interrupted, which Crust reports silently); 1 on `halted`, `demo_deadline` (`Error: <outcome>: <halt_reason>` on stderr after the summary) and on bad arguments. Crust supplies no process signal: `src/main.ts` still owns the SIGINT listener and the deadline timer and releases both before Crust cleanup.
+Exit status (Crust's native contract): 0 on `terminal` or `max_actions`; 130 on Ctrl-C (the aborted summary is still logged and printed, then the Effect is interrupted, which Crust reports silently); 1 on `halted` (`Error: <outcome>: <halt_reason>` on stderr after the summary) and on bad arguments. Crust supplies no process signal: `src/main.ts` owns the SIGINT listener and releases it before Crust cleanup.
 
 ## Behavior
 
@@ -61,8 +61,8 @@ VS Code/Cursor users: install the recommended [Oxc extension](https://marketplac
 
 GitHub Actions runs `bun run check` on pull requests and pushes to `main`, using mise to read the Bun version from `package.json`'s `packageManager`, a frozen lockfile, SHA-pinned actions, and read-only repository permissions. No credentials or game installation are needed. Git hooks are not installed; CI enforces the checks without another dependency.
 
-`test/main.test.ts` spawns the real CLI against a local fake bridge; its deadline check preloads `test/deadline-preload.ts`, which shrinks only the 5-minute timer delay to 100 ms in that child process.
+`test/main.test.ts` spawns the real CLI against a local fake bridge. It verifies play beyond ten actions without a flag, explicit action limits, terminal/error exits and Ctrl-C. A test-only preload accelerates the former five-minute timer if it is reintroduced, catching an unintended whole-run deadline without a five-minute test.
 
 ## Limits
 
-Demo only: short bounded run, not M5. Bounds: action count, 30 s ready-wait, 60 s per inference, 10 s max server backoff, 5 min total; a `demo_deadline`/Ctrl-C abort is reported in the summary `halt_reason`. Request-size limits are enforced in JSON characters (not UTF-8 bytes; live provider units unverified). `confidence` is not part of the evaluate answer and is logged as absent. `202` is acceptance, not completion of the last action; the summary at `max_actions` reflects the last pre-dispatch observation. Halts leave the game where it is; restart the CLI manually after fixing the cause.
+Unlimited default runtime does not imply exhaustive bridge coverage. Safety bounds remain: 30 s ready-wait, 60 s per inference and 10 s max server backoff; an optional action count is set with `--max-actions`. Ctrl-C is reported in the summary `halt_reason`. Request-size limits are enforced in JSON characters (not UTF-8 bytes; live provider units unverified). `confidence` is not part of the evaluate answer and is logged as absent. `202` is acceptance, not completion of the last action; the summary at `max_actions` reflects the last pre-dispatch observation. Halts leave the game where it is; restart the CLI manually after fixing the cause.
