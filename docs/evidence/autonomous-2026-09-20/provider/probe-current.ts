@@ -1,0 +1,12 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import { gateway } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/@ai-sdk/gateway/dist/index.js';
+import { experimental_evaluate } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/ai/dist/index.js';
+import { contextOf } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/src/loop.ts';
+import { INSTRUCTIONS, JEV_MODEL_ID } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/src/jev.ts';
+const root='/tmp/jev-autonomous-2026-09-20';
+const snapshot=JSON.parse(readFileSync(root+'/run-3-stopped.json','utf8'));
+const result=await experimental_evaluate({model:gateway.evaluation(JEV_MODEL_ID),state:contextOf(snapshot),questions:{action:{type:'choice',instructions:INSTRUCTIONS,criteria:Object.fromEntries(snapshot.legal_actions.map((a:any)=>[a.label,a.description]))}},maxRetries:0,abortSignal:AbortSignal.timeout(60000)});
+const answer=result.answers.action;
+const evidence={purpose:'One diagnostic inference only; no dispatch',state_version:snapshot.state_version,answers:result.answers,rounding:result.rounding,usage:result.usage,modelId:result.response.modelId,sum:answer.probabilities?Object.values(answer.probabilities).reduce((a,b)=>a+b,0):null};
+writeFileSync(root+'/provider/current-result.json',JSON.stringify(evidence,null,2)+'\n');
+console.log(JSON.stringify(evidence,null,2));

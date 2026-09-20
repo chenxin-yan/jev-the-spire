@@ -1,0 +1,4 @@
+{"name": "test", "command": ["mise", "exec", "--", "bun", "--no-env-file", "test"], "exit": 0}
+{"name": "lint", "command": ["mise", "exec", "--", "bun", "--no-env-file", "run", "lint"], "exit": 0}
+{"name": "fmt:check", "command": ["mise", "exec", "--", "bun", "--no-env-file", "run", "fmt:check"], "exit": 0}
+{"name": "typecheck", "command": ["mise", "exec", "--", "bun", "--no-env-file", "run", "typecheck"], "exit": 0}

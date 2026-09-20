@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import { createGateway } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/@ai-sdk/gateway/dist/index.js';
+import { experimental_evaluate } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/ai/dist/index.js';
+import { INSTRUCTIONS, JEV_MODEL_ID, makeJevDecider } from '/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/src/jev.ts';
+const actions=[{label:'a',description:'A'},{label:'b',description:'B'},{label:'c',description:'C'}];
+const payload={answers:{action:{type:'choice',choice:'a',probabilities:{a:0.34,b:0.33,c:0.34}}},rounding:{probabilityDecimals:2},usage:{inputTokens:0,outputTokens:0}};
+const model=createGateway({apiKey:'offline-fixture',fetch:async()=>new Response(JSON.stringify(payload),{headers:{'content-type':'application/json'}})}).evaluation(JEV_MODEL_ID);
+const state={state_type:'monster'};
+const sdk=await experimental_evaluate({model,state,questions:{action:{type:'choice',instructions:INSTRUCTIONS,criteria:Object.fromEntries(actions.map(a=>[a.label,a.description]))}}});
+assert.deepEqual(sdk.answers,payload.answers);
+console.log('SDK accepted declared two-decimal rounding without changing label/probabilities; sum=1.01.');
+const decision=await makeJevDecider(model)(state,actions,new AbortController().signal).catch(error=>error);
+console.log(String(decision));
+assert(!(decision instanceof Error),'RED: the app rejects the SDK-valid declared-rounded distribution');

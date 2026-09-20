@@ -1,0 +1,33 @@
+{
+  "purpose": "One diagnostic inference only; no dispatch",
+  "state_version": "5d5fb3ecc3024cc8b97f36e52a0f2424:76",
+  "answers": {
+    "action": {
+      "type": "choice",
+      "choice": "play_card:3:2",
+      "probabilities": {
+        "play_card:0:3": 0.05,
+        "play_card:0:2": 0.13,
+        "end_turn": 0.05,
+        "play_card:2:3": 0.02,
+        "play_card:4:2": 0.05,
+        "play_card:3:3": 0.05,
+        "play_card:3:2": 0.57,
+        "play_card:1:none": 0.02,
+        "play_card:4:3": 0.02,
+        "play_card:2:2": 0.04
+      }
+    }
+  },
+  "rounding": {
+    "probabilityDecimals": 2,
+    "scoreDecimals": 2
+  },
+  "usage": {
+    "inputTokens": 3667,
+    "outputTokens": 137,
+    "totalTokens": 3804
+  },
+  "modelId": "typesafe-ai/jev",
+  "sum": 1
+}

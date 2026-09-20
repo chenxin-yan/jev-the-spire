@@ -1,0 +1,83 @@
+bun test v1.4.2 (744846f84)
+
+test/jev.test.ts:
+(pass) makeJevDecider > maps a joint classify decision to one Gateway choice question and back [7.37ms]
+1335 |  * ```
+1336 |  *
+1337 |  * @category constructors
+1338 |  * @since 4.0.0
+1339 |  */
+1340 | export const make = params => new AiError(params);
+                                     ^
+error: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+       _tag: "AiError",
+     module: "DecisionModel",
+     method: "decide",
+ ~effect/ai/AiError: "~effect/ai/AiError",
+
+      at make (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/AiError.js:1340:31)
+      at validateAnswer (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:95:31)
+      at validateAnswers (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:150:20)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:183:46)
+      at runLoop (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:487:86)
+      at evaluate (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:438:23)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:821:17)
+
+40 |   outputTokens: /*#__PURE__*/Schema.optional(Schema.Finite)
+41 | }) {}
+42 | const invalidOutput = description => AiError.make({
+43 |   module: "DecisionModel",
+44 |   method: "decide",
+45 |   reason: new AiError.InvalidOutputError({
+               ^
+error: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+       _tag: "InvalidOutputError",
+ description: "Provider returned probabilities that do not sum to 1 for decision \"action\"",
+   metadata: {},
+ ~effect/ai/AiError/Reason: "~effect/ai/AiError/Reason",
+
+      at invalidOutput (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:45:11)
+      at validateAnswer (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:95:31)
+      at validateAnswers (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:150:20)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:183:46)
+      at runLoop (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:487:86)
+      at evaluate (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:438:23)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:821:17)
+
+40 |   outputTokens: /*#__PURE__*/Schema.optional(Schema.Finite)
+41 | }) {}
+42 | const invalidOutput = description => AiError.make({
+43 |   module: "DecisionModel",
+44 |   method: "decide",
+45 |   reason: new AiError.InvalidOutputError({
+               ^
+error: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+       _tag: "InvalidOutputError",
+ description: "Provider returned probabilities that do not sum to 1 for decision \"action\"",
+   metadata: {},
+ ~effect/ai/AiError/Reason: "~effect/ai/AiError/Reason",
+
+      at invalidOutput (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:45:11)
+      at validateAnswer (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:95:31)
+      at validateAnswers (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:150:20)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/unstable/ai/DecisionModel.js:183:46)
+      at runLoop (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:487:86)
+      at evaluate (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:438:23)
+      at <anonymous> (/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/node_modules/effect/dist/internal/effect.js:821:17)
+(fail) makeJevDecider > preserves SDK-valid rounded probabilities and the provider's chosen tied label [2.60ms]
+(pass) makeJevDecider > rejects invalid distributions: undeclared [0.71ms]
+(pass) makeJevDecider > rejects invalid distributions: invalid_precision [0.28ms]
+(pass) makeJevDecider > rejects invalid distributions: excess_error [0.29ms]
+(pass) makeJevDecider > rejects invalid distributions: missing_label [0.24ms]
+(pass) makeJevDecider > rejects invalid distributions: extra_label [0.28ms]
+(pass) makeJevDecider > unknown label from the provider is an invalid answer (re-askable), never dispatched [0.30ms]
+(pass) makeJevDecider > missing probabilities is an invalid answer rather than an invented distribution [0.29ms]
+(pass) makeJevDecider > malformed response body is not an invalid answer and is not retried as one [2.16ms]
+(pass) makeJevDecider > oversized snapshot halts before any request [0.46ms]
+(pass) makeJevDecider > abort while the provider call is pending rejects without an answer [12.16ms]
+(pass) makeJevDecider > a provider call that never answers is cut off by the inference deadline [30.76ms]
+
+ 12 pass
+ 1 fail
+ 37 expect() calls
+Ran 13 tests across 1 file. [187.00ms]

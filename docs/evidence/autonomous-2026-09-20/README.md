@@ -4,7 +4,7 @@
 
 The user authorized full takeover, installation, testing and iteration after quitting the game. Scope remains modded **Profile 2, Standard Ironclad A0**, Jev-owned strategy and complete legal choices. No forced reward claims, model-policy changes, hidden information, credential inspection or uncertain mutation retries.
 
-This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 is underway for additional coverage. Later recorded outcomes supersede only status, not earlier failure evidence.
+This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 hit an adapter rounding mismatch and is now resuming after a separately approved repair. Later recorded outcomes supersede only status, not earlier failure evidence.
 
 ## Installations and setup
 
@@ -61,6 +61,18 @@ Live coverage included combat, map, battle rewards (five total reward-claim disp
 After terminal accounting, the parent used native Continue/Unlock/Confirm/Back to finish the earned Chapter 1 – Preon timeline unlock, then started another Standard Ironclad A0 run. These post-run/menu actions are outside Jev's 93 gameplay actions; no save edit or tutorial bypass occurred. Run 3 seed **`FFJPM9TD41CV`**, fresh epoch `5d5fb3ecc3024cc8b97f36e52a0f2424`, is in progress at this checkpoint.
 
 Recheck accounting offline: `python3 docs/evidence/autonomous-2026-09-20/audit-run.py 2` (exit 0). It verifies one-to-one decision/accepted-dispatch matching, unique consumed versions and exact model/forced counts.
+
+## Run 3: declared-rounding mismatch and resumed trial
+
+Seed **`FFJPM9TD41CV`**, epoch `5d5fb3ecc3024cc8b97f36e52a0f2424`. The initial CLI segment stopped at floor 3 after **25 dispatches, 20 inference attempts, 7 forced singletons; 57,856 reported input / 1,474 reported output tokens; 68,713 ms**. Its final two attempts failed Effect DecisionModel's probability-sum validation. Neither dispatched a mutation. Reported usage omits rejected answers because no successful Decided result was returned.
+
+Installed SDK `ai@7.0.107` validates declared probability rounding with tolerance `1e-6 + labelCount × 0.5 × 10^-decimals`. Gateway returns that rounding metadata; `effect@4.0.0-rc.116` DecisionModel has no rounding channel and repeated a fixed `1e-6` check. The offline real-Gateway/SDK fake-transport reproduction demonstrates an SDK-valid sum of 1.01 rejected by the original adapter. Historical rejected raw distributions were not captured, so their exact sums cannot be established. A single subsequent diagnostic inference returned declared two-decimal precision (sum 1 in that fresh sample), using **3,667 input / 137 output tokens**, with **no dispatch**. It is separate from gameplay accounting.
+
+After upstream-first disclosure, the user explicitly selected **Use SDK validation (Recommended)**. Source **`55020c2`** removes the incompatible duplicate DecisionModel validator while retaining Effect execution and SDK validation. It preserves Jev's exact label and probability values, including ties, and explicitly requires a full distribution (the SDK alone permits omission). Model identity, request bounds, cancellation/deadline, error classification, the one-invalid-answer re-ask, freshness and no-mutation-retry safeguards remain. No normalization, strategy/prompt/reward change, dependency update or native change occurred.
+
+Fresh reviewer `7a658af0-abb7-4f55-a2bb-ef2631fed3b0`: **OK**, no issues. New rounded/tied-label test failed before implementation; all **57 tests / 210 assertions**, lint, format and typecheck pass afterward. Negative tests cover undeclared rounding, invalid precision, excess error, missing and extra labels. Evidence: `provider/`; exact gates: `provider/gates/commands.jsonl`. Native checks were not rerun for this app-only change; the unchanged installed DLL retains the earlier 2,770-check gate. No upstream issue was published.
+
+Before resuming, readback confirmed the exact same ready combat version `:76`, complete legal set and **no pending mutation**. A new unlimited CLI segment logs to `run-3b.jsonl`, with normal fresh inference and pre-dispatch re-observation. The diagnostic answer was not reused. This is a post-fix continuation after a recorded failure, **not an uninterrupted successful run or a retry of an uncertain POST**. No native reinstall/restart or saved-event adoption occurred. Its outcome is pending at this checkpoint.
 
 ## Remaining live checks
 

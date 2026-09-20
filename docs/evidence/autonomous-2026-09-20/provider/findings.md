@@ -1,0 +1,19 @@
+# Declared-rounding mismatch — parent diagnosis and approved adapter change
+
+## Evidence
+
+Run3 (`FFJPM9TD41CV`, epoch `5d5fb3ecc3024cc8b97f36e52a0f2424`) stopped after25accepteddispatches,20inferenceattempts,7forcedsingletons at floor3/version76. Both final attempts failed with Effect DecisionModel's sum-to-one error. No mutation was sent for that decision. Run3 reported57,856input/1,474output tokens; failed inference usage is not included because no Decided result was returned. Native readback run-3-stopped.json remains complete monster decision, no pending mutation. Earlier technical stop is retained even if gameplay later resumes after repair.
+
+Installed sources: `ai@7.0.107` validate-evaluation.ts accepts declared rounding with tolerance `1e-6 + labelCount * .5 * 10^-probabilityDecimals`; checks exact labels, numeric finite [0,1], selected maximum/tie; never normalizes. evaluate.ts passes result.rounding through that validation. Gateway4.0.87 preserves answers and rounding. Effect4.0.0-rc.116 DecisionModel.ProviderResponse lacks a rounding channel and validateDistribution enforces1e-6 again. src/jev.ts fed SDK-validated answers into that duplicate validation.
+
+Real Gateway+SDK fake-transport repro `rounding-repro.ts` shows declared2decimal sum1.01 accepted unchanged bySDK then rejected by original adapter (rounding-red.log,exit1). Repository regression RED test also fails only SDK-valid rounded distribution/tied-label test (test-red.log). Historical rejected raw probabilities were not recorded, so their exact sums cannot be recovered. One authorized fresh diagnostic request against the stopped snapshot returned rounding.probabilityDecimals2/scoreDecimals2 (current-result.json), sum1 this time,3667input/137output. This request issued no dispatch and is excluded from gameplay accounting. No claims about the exact earlier rejected numerical values.
+
+## Approval and implementation
+
+Parent explained upstream mismatch and recommended upstream Effect support for declared rounding. User explicitly selected **Use SDK validation (Recommended)**, approving isolated adapter workaround, original label/probabilities, retained Effect execution and all other safeguards.
+
+Parent removed duplicate Decision/DecisionModel conversion from src/jev.ts; one joint SDK choice query now runs in Effect.tryPromise/runPromise. SDK validates declared rounding, exact complete label set and chosen maximum; local guard still requires probabilities (SDK permits omission), configured model identity and request bounds. Deadline, abort, transport behavior, AiError/InvalidOutput classification and existing loop single re-ask remain. No normalizing, reselection, prompt/strategy/reward change, dependency modification or native change. Compatibility comment identifies upstream limitation and revisit condition; README matches current implementation.
+
+Tests: valid rounded .99 with selected second tied label remains byte-for-byte values; negatives for undeclared rounding, fractional precision, excess sum error, missing/extra labels. All original tests retained. Final parent gates57tests/210assertions,lint/fmt/typecheck all0. Native gates not rerun for app-only change; installed DLL remains37157f73... and previously passed2770checks.
+
+Frozen source paths README.md/src/jev.ts/test/jev.test.ts against237b88a, final.diff saved. Fresh read-only reviewer7a658af0-abb7-4f55-a2bb-ef2631fed3b0 pending. No further game request, inference or gameplay after single diagnostic; CLI stopped. After review/acceptance: preserve evidence/commit, fresh readback, resume run3 in same retained native session only if still ready/complete/no pending mutation. Do not dispatch cached diagnostic answer or reuse an old version. No game restart/native reinstall needed for this CLI-only change. Retain run3 earlier halt separately and combine accounting explicitly.

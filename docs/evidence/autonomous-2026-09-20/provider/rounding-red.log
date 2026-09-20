@@ -1,0 +1,20 @@
+SDK accepted declared two-decimal rounding without changing label/probabilities; sum=1.01.
+effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+ 9 | const sdk=await experimental_evaluate({model,state,questions:{action:{type:'choice',instructions:INSTRUCTIONS,criteria:Object.fromEntries(actions.map(a=>[a.label,a.description]))}}});
+10 | assert.deepEqual(sdk.answers,payload.answers);
+11 | console.log('SDK accepted declared two-decimal rounding without changing label/probabilities; sum=1.01.');
+12 | const decision=await makeJevDecider(model)(state,actions,new AbortController().signal).catch(error=>error);
+13 | console.log(String(decision));
+14 | assert(!(decision instanceof Error),'RED: the app rejects the SDK-valid declared-rounded distribution');
+     ^
+AssertionError: RED: the app rejects the SDK-valid declared-rounded distribution
+ generatedMessage: false,
+     actual: false,
+   expected: true,
+   operator: "==",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /private/tmp/jev-autonomous-2026-09-20/provider/rounding-repro.ts:14:1
+
+Bun v1.4.2 (macOS arm64)

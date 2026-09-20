@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "type": "summary",
+    "ts": "2026-09-20T23:32:09.386Z",
+    "outcome": "halted",
+    "halt_reason": "effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision \"action\"",
+    "dispatched": 25,
+    "model_calls": 20,
+    "forced": 7,
+    "seed": "FFJPM9TD41CV",
+    "act": 1,
+    "floor": 3,
+    "last_state_type": "monster",
+    "input_tokens": 57856,
+    "output_tokens": 1474,
+    "wall_ms": 68713
+  },
+  "all_dispatches_accepted_once": true,
+  "decision_sources": {
+    "model": 18,
+    "singleton_only": 7
+  },
+  "decision_states": {
+    "event": 2,
+    "bundle_select": 2,
+    "map": 2,
+    "monster": 18,
+    "rewards": 1
+  },
+  "action_families": {
+    "choose_event_option": 2,
+    "select_bundle": 1,
+    "confirm_bundle_selection": 1,
+    "choose_map_node": 2,
+    "play_card": 13,
+    "end_turn": 5,
+    "proceed": 1
+  },
+  "failed_inferences": [
+    {
+      "type": "inference",
+      "ts": "2026-09-20T23:32:09.122Z",
+      "state_version": "5d5fb3ecc3024cc8b97f36e52a0f2424:76",
+      "attempt": 1,
+      "ok": false,
+      "latency_ms": 333,
+      "error": "effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision \"action\""
+    },
+    {
+      "type": "inference",
+      "ts": "2026-09-20T23:32:09.386Z",
+      "state_version": "5d5fb3ecc3024cc8b97f36e52a0f2424:76",
+      "attempt": 2,
+      "ok": false,
+      "latency_ms": 264,
+      "error": "effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision \"action\""
+    }
+  ]
+}

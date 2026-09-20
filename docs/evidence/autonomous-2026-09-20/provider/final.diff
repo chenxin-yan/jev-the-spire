@@ -1,0 +1,266 @@
+diff --git a/README.md b/README.md
+index 0cf68cd..38dc664 100644
+--- a/README.md
++++ b/README.md
+@@ -29,7 +29,7 @@ Exit status (Crust's native contract): 0 on `terminal` or `max_actions`; 130 on
+ ## Behavior
+ 
+ - Ready = `legal_actions_complete && !waiting && legal_actions.length > 0`. Otherwise poll every 500 ms for up to 30 s, then halt `wait_timeout`. `mutation_pending` alone never blocks (owned child decisions are actionable); a version change alone is not completion.
+-- ≥2 legal actions: one Effect `Decision.classify` over label→description, answered by `typesafe-ai/jev` through `ai.experimental_evaluate` on the Vercel AI Gateway. The top label is dispatched. Context is the current snapshot minus bridge bookkeeping (`legal_actions`, `legal_actions_complete`, `state_version`, `mutation_pending`); no history, no host scoring/pruning.
++- ≥2 legal actions: one joint choice question over label→description, answered by `typesafe-ai/jev` through `ai.experimental_evaluate` on the Vercel AI Gateway, executed with Effect. The SDK validates the answer, including declared probability rounding; the provider's chosen label and probabilities are preserved without normalization. The adapter still requires a full distribution. Context is the current snapshot minus bridge bookkeeping (`legal_actions`, `legal_actions_complete`, `state_version`, `mutation_pending`); no history, no host scoring/pruning.
+ - 1 legal action: dispatched directly without a model call, logged `source: "singleton_only"` (owner decision, see `docs/minimal-demo.md`). No model id/distribution/tokens are invented.
+ - Before every POST the state is re-observed; a changed `state_version` discards the choice and goes back through observation. Unknown label, missing/invalid distribution or unexpected model id → one re-ask, then halt. Snapshot + questions over 64k / 32k JSON chars → halt, never truncate.
+ - One model call must finish within 60 s or the loop halts (`inference deadline`). GET retries ≤3 on network/429/5xx; `Retry-After` (delta-seconds or HTTP-date) is honored up to 10 s, beyond that the loop halts instead of waiting. POST is sent once; a timeout/network error/abort mid-flight halts as `dispatch_uncertain`. Non-202 halts. `halt_reason`, `terminal` and unsupported states halt/stop cleanly with a summary; no auto-resume.
+@@ -41,7 +41,7 @@ Record types: `wait`, `inference` (application attempt, latency, model id, respo
+ 
+ ## Dependencies (pinned)
+ 
+-`effect@4.0.0-rc.116` (`effect/unstable/ai` Decision/DecisionModel), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. The Bun runtime version is pinned only in `package.json`'s `packageManager` field. `mise.toml` enables Bun's idiomatic version-file discovery so local development and CI read that same pin.
++`effect@4.0.0-rc.116` (Effect execution and `effect/unstable/ai` error types; its `DecisionModel` cannot represent the SDK's declared rounding), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. The Bun runtime version is pinned only in `package.json`'s `packageManager` field. `mise.toml` enables Bun's idiomatic version-file discovery so local development and CI read that same pin.
+ 
+ ## Checks
+ 
+diff --git a/src/jev.ts b/src/jev.ts
+index 596bbec..4087587 100644
+--- a/src/jev.ts
++++ b/src/jev.ts
+@@ -1,7 +1,6 @@
+-// Jev decider: Effect v4 Decision/DecisionModel over the AI SDK `experimental_evaluate`
+-// Gateway evaluation model for `typesafe-ai/jev`. One joint classify decision per call.
++// Jev decider: one joint Gateway choice evaluation, executed with Effect.
+ import { Effect, Schema } from "effect";
+-import { AiError, Decision, DecisionModel } from "effect/unstable/ai";
++import { AiError } from "effect/unstable/ai";
+ import {
+   experimental_evaluate,
+   InvalidResponseDataError,
+@@ -64,17 +63,6 @@ const invalidOutput = (description: string) =>
+     reason: new AiError.InvalidOutputError({ description }),
+   });
+ 
+-const toQuestion = (decision: Decision.Any): Experimental_EvaluationQuestion => {
+-  switch (decision._tag) {
+-    case "Classify":
+-      return { type: "choice", instructions: decision.instructions, criteria: decision.criteria };
+-    case "Rate":
+-      return { type: "score", instructions: decision.instructions, criteria: decision.criteria };
+-    case "Probability":
+-      return { type: "boolean", instructions: decision.instructions, criteria: decision.criteria };
+-  }
+-};
+-
+ const checkRequestSize = (
+   state: Schema.Json,
+   questions: Record<string, Experimental_EvaluationQuestion>,
+@@ -96,98 +84,63 @@ export const makeJevDecider =
+     const criteria = Object.fromEntries(
+       actions.map((action) => [action.label, action.description]),
+     );
+-    const definition = Decision.make({
+-      input: Schema.Json,
+-      decisions: { action: Decision.classify({ instructions: INSTRUCTIONS, criteria }) },
+-    });
+-    let meta: Pick<Decided, "modelId" | "responseId" | "warnings"> | undefined;
+-
+-    const program = Effect.gen(function* () {
+-      const decisionModel = yield* DecisionModel.make({
+-        decide: (options) =>
+-          Effect.tryPromise({
+-            try: async (fiberSignal) => {
+-              const questions = Object.fromEntries(
+-                Object.entries(options.decisions).map(([key, decision]) => [
+-                  key,
+-                  toQuestion(decision),
+-                ]),
+-              );
+-              const state = options.state;
+-              if (typeof state !== "object" || state === null)
+-                throw invalidInput("snapshot context must be a JSON object");
+-              checkRequestSize(state, questions);
+-              const deadline = new AbortController();
+-              const timer = setTimeout(
+-                () => deadline.abort(new Error(`inference deadline of ${deadlineMs}ms exceeded`)),
+-                deadlineMs,
+-              );
+-              let result: Awaited<ReturnType<typeof experimental_evaluate<typeof questions>>>;
+-              try {
+-                result = await experimental_evaluate({
+-                  model,
+-                  state,
+-                  questions,
+-                  abortSignal: AbortSignal.any([signal, fiberSignal, deadline.signal]),
+-                });
+-              } catch (error) {
+-                // The SDK's retry backoff reports a generic abort; surface the deadline as the cause.
+-                throw deadline.signal.aborted ? deadline.signal.reason : error;
+-              } finally {
+-                clearTimeout(timer);
+-              }
+-              // Requested SDK identity (Gateway echoes the configured model id); guards adapter/config mismatch, not server attestation.
+-              meta = {
+-                modelId: result.response.modelId,
+-                responseId: result.response.id,
+-                warnings: result.warnings,
+-              };
+-              if (result.response.modelId !== JEV_MODEL_ID) {
+-                throw invalidOutput(`unexpected model id ${result.response.modelId}`);
+-              }
+-              const answers: Record<string, DecisionModel.ProviderAnswer> = {};
+-              for (const [key, answer] of Object.entries(result.answers)) {
+-                if (answer.type !== "choice") throw invalidOutput(`answer ${key} is not a choice`);
+-                // Gateway may omit probabilities; DecisionModel then rejects the answer (no invented distribution).
+-                answers[key] = {
+-                  _tag: "Classify",
+-                  label: answer.choice,
+-                  probabilities: answer.probabilities ?? {},
+-                };
+-              }
+-              return {
+-                answers,
+-                usage: {
+-                  inputTokens: result.usage.inputTokens,
+-                  outputTokens: result.usage.outputTokens,
+-                },
+-              };
+-            },
+-            catch: (error) => {
+-              if (AiError.isAiError(error)) return error;
+-              if (InvalidResponseDataError.isInstance(error)) return invalidOutput(error.message);
+-              return AiError.make({
+-                module: "JevGateway",
+-                method: "evaluate",
+-                reason: new AiError.UnknownError({
+-                  description: error instanceof Error ? error.message : String(error),
+-                }),
+-              });
+-            },
++    const questions = {
++      action: { type: "choice", instructions: INSTRUCTIONS, criteria },
++    } as const;
++    const program = Effect.tryPromise({
++      try: async (fiberSignal) => {
++        if (typeof state !== "object" || state === null)
++          throw invalidInput("snapshot context must be a JSON object");
++        checkRequestSize(state, questions);
++        const deadline = new AbortController();
++        const timer = setTimeout(
++          () => deadline.abort(new Error(`inference deadline of ${deadlineMs}ms exceeded`)),
++          deadlineMs,
++        );
++        let result: Awaited<ReturnType<typeof experimental_evaluate<typeof questions>>>;
++        try {
++          // Effect rc.116 DecisionModel cannot express declared rounding. Use the SDK's validation without
++          // renormalizing; the duplicate validator can return only when upstream supports that metadata.
++          result = await experimental_evaluate({
++            model,
++            state,
++            questions,
++            abortSignal: AbortSignal.any([signal, fiberSignal, deadline.signal]),
++          });
++        } catch (error) {
++          // The SDK's retry backoff reports a generic abort; surface the deadline as the cause.
++          throw deadline.signal.aborted ? deadline.signal.reason : error;
++        } finally {
++          clearTimeout(timer);
++        }
++        // Requested SDK identity (Gateway echoes the configured model id); guards adapter/config mismatch, not server attestation.
++        if (result.response.modelId !== JEV_MODEL_ID)
++          throw invalidOutput(`unexpected model id ${result.response.modelId}`);
++        const answer = result.answers.action;
++        // The SDK allows omitted probabilities; this adapter requires the provider's full distribution.
++        if (answer.probabilities === undefined)
++          throw invalidOutput("answer action has no probability distribution");
++        return {
++          label: answer.choice,
++          probabilities: answer.probabilities,
++          confidence: undefined,
++          modelId: result.response.modelId,
++          responseId: result.response.id,
++          usage: { inputTokens: result.usage.inputTokens, outputTokens: result.usage.outputTokens },
++          warnings: result.warnings,
++        };
++      },
++      catch: (error) => {
++        if (AiError.isAiError(error)) return error;
++        if (InvalidResponseDataError.isInstance(error)) return invalidOutput(error.message);
++        return AiError.make({
++          module: "JevGateway",
++          method: "evaluate",
++          reason: new AiError.UnknownError({
++            description: error instanceof Error ? error.message : String(error),
+           }),
+-      });
+-      return yield* decisionModel.decide(definition, { input: state });
++        });
++      },
+     });
+-
+-    const response = await Effect.runPromise(program, { signal });
+-    const answer = response.answers.action;
+-    return {
+-      label: answer.label,
+-      probabilities: answer.probabilities,
+-      confidence: answer.confidence,
+-      modelId: meta!.modelId,
+-      responseId: meta!.responseId,
+-      usage: { inputTokens: response.usage.inputTokens, outputTokens: response.usage.outputTokens },
+-      warnings: meta!.warnings,
+-    };
++    return Effect.runPromise(program, { signal });
+   };
+diff --git a/test/jev.test.ts b/test/jev.test.ts
+index b4c182b..5a8a846 100644
+--- a/test/jev.test.ts
++++ b/test/jev.test.ts
+@@ -90,6 +90,51 @@ describe("makeJevDecider", () => {
+     expect(decided.usage).toEqual({ inputTokens: 1234, outputTokens: 7 });
+   });
+ 
++  test("preserves SDK-valid rounded probabilities and the provider's chosen tied label", async () => {
++    const probabilities = Object.fromEntries(
++      actions.map((action, i) => [action.label, [0.34, 0.34, 0.08, 0.08, 0.08, 0.07][i]!]),
++    );
++    const { decide, calls } = decider(() =>
++      json({
++        answers: { action: { type: "choice", choice: actions[1]!.label, probabilities } },
++        rounding: { probabilityDecimals: 2 },
++      }),
++    );
++    const decided = await decide(state, actions, new AbortController().signal);
++    expect(calls).toHaveLength(1);
++    expect(decided.label).toBe(actions[1]!.label);
++    expect(decided.probabilities).toEqual(probabilities);
++    expect(Object.values(decided.probabilities).reduce((sum, p) => sum + p, 0)).toBeCloseTo(0.99);
++  });
++
++  for (const kind of [
++    "undeclared",
++    "invalid_precision",
++    "excess_error",
++    "missing_label",
++    "extra_label",
++  ] as const) {
++    test(`rejects invalid distributions: ${kind}`, async () => {
++      const probabilities = Object.fromEntries(
++        actions.map((action, i) => [action.label, [0.34, 0.34, 0.08, 0.08, 0.08, 0.07][i]!]),
++      );
++      if (kind === "excess_error") probabilities.end_turn = 0.27;
++      if (kind === "missing_label") delete probabilities[actions[2]!.label];
++      if (kind === "extra_label") probabilities.foreign = 0;
++      const { decide, calls } = decider(() =>
++        json({
++          answers: { action: { type: "choice", choice: actions[1]!.label, probabilities } },
++          ...(kind === "undeclared"
++            ? {}
++            : { rounding: { probabilityDecimals: kind === "invalid_precision" ? 2.5 : 2 } }),
++        }),
++      );
++      const error = await decide(state, actions, new AbortController().signal).catch((e) => e);
++      expect(isInvalidAnswer(error)).toBe(true);
++      expect(calls).toHaveLength(1);
++    });
++  }
++
+   test("unknown label from the provider is an invalid answer (re-askable), never dispatched", async () => {
+     const { decide } = decider(() =>
+       json({ answers: { action: { type: "choice", choice: "play_card:9:9" } } }),

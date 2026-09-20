@@ -1,0 +1,21 @@
+bun test v1.4.2 (744846f84)
+
+test/jev.test.ts:
+(pass) makeJevDecider > maps a joint classify decision to one Gateway choice question and back [4.17ms]
+(pass) makeJevDecider > preserves SDK-valid rounded probabilities and the provider's chosen tied label [0.37ms]
+(pass) makeJevDecider > rejects invalid distributions: undeclared [1.73ms]
+(pass) makeJevDecider > rejects invalid distributions: invalid_precision [0.26ms]
+(pass) makeJevDecider > rejects invalid distributions: excess_error [0.25ms]
+(pass) makeJevDecider > rejects invalid distributions: missing_label [0.18ms]
+(pass) makeJevDecider > rejects invalid distributions: extra_label [0.17ms]
+(pass) makeJevDecider > unknown label from the provider is an invalid answer (re-askable), never dispatched [0.23ms]
+(pass) makeJevDecider > missing probabilities is an invalid answer rather than an invented distribution [0.23ms]
+(pass) makeJevDecider > malformed response body is not an invalid answer and is not retried as one [1.66ms]
+(pass) makeJevDecider > oversized snapshot halts before any request [0.15ms]
+(pass) makeJevDecider > abort while the provider call is pending rejects without an answer [11.94ms]
+(pass) makeJevDecider > a provider call that never answers is cut off by the inference deadline [30.82ms]
+
+ 13 pass
+ 0 fail
+ 41 expect() calls
+Ran 13 tests across 1 file. [168.00ms]
