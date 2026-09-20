@@ -1,0 +1,16 @@
+{
+  "command": [
+    "mise",
+    "exec",
+    "--",
+    "bun",
+    "run",
+    "src/main.ts",
+    "--max-actions",
+    "10",
+    "--log",
+    "/tmp/jev-generalized-live-2026-09-20/trial-1.jsonl"
+  ],
+  "exit": 0,
+  "sigint_at_rest_entry": false
+}

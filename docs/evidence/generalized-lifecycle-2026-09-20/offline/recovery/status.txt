@@ -1,0 +1,7 @@
+ M mod/STS2MCP/McpMod.Contract.cs
+ M mod/STS2MCP/McpMod.LegalActions.cs
+ M mod/STS2MCP/McpMod.NativeActions.cs
+ M mod/STS2MCP/McpMod.OrdinaryActions.cs
+ M mod/STS2MCP/McpMod.SelectionHooks.cs
+ M mod/STS2MCP/SelectionOwnership.cs
+ M mod/STS2MCP/tests/check-bridge.sh

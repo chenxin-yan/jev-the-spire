@@ -1,0 +1,184 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=20 deadline=300000ms log=/tmp/jev-generalized-live-2026-09-20/trial-2.jsonl
+observed: monster 157d4e49c3d24d5498167315659d939a:30 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:30","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:31 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:33 act 1 floor 2 actions=11
+[action 2/20] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Twig Slime (M) (2)
+  play_card:0:3  Play hand[0] Strike targeting Leaf Slime (S) (3)
+  play_card:1:2  Play hand[1] Strike targeting Twig Slime (M) (2)
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:2  Play hand[2] Bash targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Bash targeting Leaf Slime (S) (3)
+  play_card:3:2  Play hand[3] Strike targeting Twig Slime (M) (2)
+  play_card:3:3  Play hand[3] Strike targeting Leaf Slime (S) (3)
+  play_card:4:2  Play hand[4] Strike targeting Twig Slime (M) (2)
+  play_card:4:3  Play hand[4] Strike targeting Leaf Slime (S) (3)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:2  confidence=not returned
+  distribution: play_card:2:2=0.68 play_card:0:2=0.1 play_card:2:3=0.1 end_turn=0.04 play_card:0:3=0.02 play_card:1:2=0.01 play_card:1:3=0.01 play_card:3:2=0.01 play_card:3:3=0.01 play_card:4:2=0.01 play_card:4:3=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:33","label":"play_card:2:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:34 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:36 act 1 floor 2 actions=5
+[action 3/20] legal actions:
+  play_card:0:3  Play hand[0] Strike targeting Leaf Slime (S) (3)
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:3  Play hand[3] Strike targeting Leaf Slime (S) (3)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:3  confidence=not returned
+  distribution: play_card:0:3=0.84 end_turn=0.13 play_card:1:3=0.01 play_card:2:3=0.01 play_card:3:3=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:36","label":"play_card:0:3"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:37 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:39 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:39","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:40 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:42 act 1 floor 2 actions=6
+[action 5/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:none  Play hand[3] Slimed
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:3  confidence=not returned
+  distribution: play_card:2:3=0.77 play_card:0:none=0.07 play_card:3:none=0.07 end_turn=0.07 play_card:1:none=0.01 play_card:4:none=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:42","label":"play_card:2:3"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:43 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:45 act 1 floor 2 actions=5
+[action 6/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Slimed
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.51 end_turn=0.26 play_card:2:none=0.16 play_card:1:none=0.04 play_card:3:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:45","label":"play_card:0:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:46 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:48 act 1 floor 2 actions=4
+[action 7/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Slimed
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.49 end_turn=0.33 play_card:1:none=0.14 play_card:2:none=0.04
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:48","label":"play_card:0:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:49 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:51 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:51","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:52 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:54 act 1 floor 2 actions=6
+[action 9/20] legal actions:
+  play_card:0:none  Play hand[0] Slimed
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:3  Play hand[4] Strike targeting Leaf Slime (S) (3)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:3  confidence=not returned
+  distribution: play_card:4:3=0.85 end_turn=0.08 play_card:0:none=0.04 play_card:1:none=0.03 play_card:2:none=0 play_card:3:none=0
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:54","label":"play_card:4:3"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:55 actions=0
+observed: rewards 157d4e49c3d24d5498167315659d939a:56 act 1 floor 2 actions=3
+[action 10/20] legal actions:
+  claim_reward:0  18 Gold
+  claim_reward:1  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.37 claim_reward:1=0.33 proceed=0.3
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:56","label":"claim_reward:0"}
+observed: rewards 157d4e49c3d24d5498167315659d939a:57 act 1 floor 2 actions=2
+[action 11/20] legal actions:
+  claim_reward:0  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.74 proceed=0.26
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:57","label":"claim_reward:0"}
+waiting: card_reward 157d4e49c3d24d5498167315659d939a:58 actions=0
+observed: card_reward 157d4e49c3d24d5498167315659d939a:59 act 1 floor 2 actions=4
+[action 12/20] legal actions:
+  select_card_reward:0  Take Rupture
+  select_card_reward:1  Take Sword Boomerang
+  select_card_reward:2  Take Shrug It Off
+  card_reward_alternative:0  Skip
+Jev (typesafe-ai/jev): select_card_reward:0  confidence=not returned
+  distribution: select_card_reward:0=0.35 select_card_reward:2=0.29 card_reward_alternative:0=0.2 select_card_reward:1=0.16
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:59","label":"select_card_reward:0"}
+observed: rewards 157d4e49c3d24d5498167315659d939a:60 act 1 floor 2 actions=1
+singleton legal set: proceed  Leave rewards (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:60","label":"proceed"}
+waiting: map 157d4e49c3d24d5498167315659d939a:62 actions=0
+observed: map 157d4e49c3d24d5498167315659d939a:63 act 1 floor 2 actions=1
+singleton legal set: choose_map_node:0  Travel to Monster at (3,2) (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:63","label":"choose_map_node:0"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:64 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:66 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:67 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:68 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:69 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:70 act 1 floor 3 actions=6
+[action 15/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Rupture
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.48 play_card:1:none=0.29 play_card:3:1=0.07 end_turn=0.07 play_card:2:none=0.06 play_card:4:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:70","label":"play_card:0:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:71 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:73 act 1 floor 3 actions=5
+[action 16/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Rupture
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.76 play_card:0:none=0.12 end_turn=0.06 play_card:1:none=0.03 play_card:3:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:73","label":"play_card:2:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:74 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:76 act 1 floor 3 actions=4
+[action 17/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Rupture
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.74 end_turn=0.18 play_card:1:none=0.05 play_card:2:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:76","label":"play_card:0:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:77 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:79 act 1 floor 3 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:79","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:80 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:82 act 1 floor 3 actions=6
+[action 19/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Bash targeting Shrinker Beetle (1)
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  play_card:4:1  Play hand[4] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+invalid answer, re-asking once: effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.57 play_card:0:none=0.23 play_card:2:1=0.1 end_turn=0.07 play_card:3:1=0.02 play_card:4:1=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:82","label":"play_card:1:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:83 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:85 act 1 floor 3 actions=5
+[action 20/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Shrinker Beetle (1)
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.56 play_card:0:none=0.31 end_turn=0.08 play_card:2:1=0.03 play_card:3:1=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:85","label":"play_card:1:1"}
+summary: {"outcome":"max_actions","dispatched":20,"model_calls":15,"forced":6,"seed":"77SVP3CVQFHQ","act":1,"floor":3,"last_state_type":"monster","input_tokens":36580,"output_tokens":1078,"wall_ms":45431}

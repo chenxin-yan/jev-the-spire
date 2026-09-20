@@ -1,0 +1,127 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=20 deadline=300000ms log=/tmp/jev-generalized-live-2026-09-20/trial-5.jsonl
+observed: map 157d4e49c3d24d5498167315659d939a:203 act 1 floor 6 actions=3
+[action 1/20] legal actions:
+  choose_map_node:0  Travel to Elite at (0,6)
+  choose_map_node:1  Travel to Monster at (1,6)
+  choose_map_node:2  Travel to Monster at (2,6)
+Jev (typesafe-ai/jev): choose_map_node:1  confidence=not returned
+  distribution: choose_map_node:1=0.46 choose_map_node:0=0.43 choose_map_node:2=0.11
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:203","label":"choose_map_node:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:204 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:206 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:207 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:208 actions=0
+waiting: monster 157d4e49c3d24d5498167315659d939a:209 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:210 act 1 floor 7 actions=9
+[action 2/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Strike targeting Slithering Strangler (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Snapping Jaxfruit (1)
+  play_card:3:2  Play hand[3] Strike targeting Slithering Strangler (2)
+  play_card:4:1  Play hand[4] Strike targeting Snapping Jaxfruit (1)
+  play_card:4:2  Play hand[4] Strike targeting Slithering Strangler (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:none  confidence=not returned
+  distribution: play_card:1:none=0.41 play_card:0:1=0.29 play_card:0:2=0.11 play_card:2:none=0.06 end_turn=0.05 play_card:3:1=0.03 play_card:3:2=0.02 play_card:4:1=0.02 play_card:4:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:210","label":"play_card:1:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:211 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:213 act 1 floor 7 actions=8
+[action 3/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Strike targeting Slithering Strangler (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Snapping Jaxfruit (1)
+  play_card:2:2  Play hand[2] Strike targeting Slithering Strangler (2)
+  play_card:3:1  Play hand[3] Strike targeting Snapping Jaxfruit (1)
+  play_card:3:2  Play hand[3] Strike targeting Slithering Strangler (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.33 play_card:1:none=0.31 play_card:0:2=0.14 end_turn=0.08 play_card:2:1=0.06 play_card:2:2=0.04 play_card:3:1=0.02 play_card:3:2=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:213","label":"play_card:0:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:214 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:216 act 1 floor 7 actions=6
+[action 4/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Snapping Jaxfruit (1)
+  play_card:1:2  Play hand[1] Strike targeting Slithering Strangler (2)
+  play_card:2:1  Play hand[2] Strike targeting Snapping Jaxfruit (1)
+  play_card:2:2  Play hand[2] Strike targeting Slithering Strangler (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.42 play_card:1:1=0.31 end_turn=0.12 play_card:1:2=0.09 play_card:2:1=0.04 play_card:2:2=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:216","label":"play_card:0:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:217 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:219 act 1 floor 7 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:219","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:220 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:222 act 1 floor 7 actions=8
+[action 6/20] legal actions:
+  play_card:0:1  Play hand[0] Bash targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Bash targeting Slithering Strangler (2)
+  play_card:1:1  Play hand[1] Strike targeting Snapping Jaxfruit (1)
+  play_card:1:2  Play hand[1] Strike targeting Slithering Strangler (2)
+  play_card:2:none  Play hand[2] Rupture
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:none  confidence=not returned
+  distribution: play_card:3:none=0.36 play_card:0:1=0.22 play_card:0:2=0.2 end_turn=0.06 play_card:2:none=0.05 play_card:1:1=0.04 play_card:1:2=0.04 play_card:4:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:222","label":"play_card:3:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:223 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:225 act 1 floor 7 actions=7
+[action 7/20] legal actions:
+  play_card:0:1  Play hand[0] Bash targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Bash targeting Slithering Strangler (2)
+  play_card:1:1  Play hand[1] Strike targeting Snapping Jaxfruit (1)
+  play_card:1:2  Play hand[1] Strike targeting Slithering Strangler (2)
+  play_card:2:none  Play hand[2] Rupture
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+invalid answer, re-asking once: effect/ai/AiError/AiError: DecisionModel.decide: Invalid output: Provider returned probabilities that do not sum to 1 for decision "action"
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.3 play_card:0:1=0.29 play_card:3:none=0.14 play_card:1:1=0.08 end_turn=0.08 play_card:2:none=0.06 play_card:1:2=0.05
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:225","label":"play_card:0:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:226 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:228 act 1 floor 7 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:228","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:229 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:231 act 1 floor 7 actions=10
+[action 9/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Strike targeting Slithering Strangler (2)
+  play_card:1:none  Play hand[1] Rupture
+  play_card:2:1  Play hand[2] Bash targeting Snapping Jaxfruit (1)
+  play_card:2:2  Play hand[2] Bash targeting Slithering Strangler (2)
+  play_card:3:1  Play hand[3] Strike targeting Snapping Jaxfruit (1)
+  play_card:3:2  Play hand[3] Strike targeting Slithering Strangler (2)
+  play_card:4:1  Play hand[4] Strike targeting Snapping Jaxfruit (1)
+  play_card:4:2  Play hand[4] Strike targeting Slithering Strangler (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:2  confidence=not returned
+  distribution: play_card:2:2=0.54 play_card:0:2=0.12 play_card:2:1=0.1 play_card:1:none=0.07 end_turn=0.06 play_card:0:1=0.05 play_card:3:1=0.02 play_card:3:2=0.02 play_card:4:1=0.01 play_card:4:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:231","label":"play_card:2:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:232 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:234 act 1 floor 7 actions=8
+[action 10/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Snapping Jaxfruit (1)
+  play_card:0:2  Play hand[0] Strike targeting Slithering Strangler (2)
+  play_card:1:none  Play hand[1] Rupture
+  play_card:2:1  Play hand[2] Strike targeting Snapping Jaxfruit (1)
+  play_card:2:2  Play hand[2] Strike targeting Slithering Strangler (2)
+  play_card:3:1  Play hand[3] Strike targeting Snapping Jaxfruit (1)
+  play_card:3:2  Play hand[3] Strike targeting Slithering Strangler (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.53 play_card:2:2=0.12 play_card:0:1=0.1 play_card:1:none=0.1 end_turn=0.09 play_card:3:2=0.04 play_card:2:1=0.01 play_card:3:1=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:234","label":"play_card:0:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:235 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:237 act 1 floor 7 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:237","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:238 actions=0
+observed: game_over 157d4e49c3d24d5498167315659d939a:240 actions=0
+summary: {"outcome":"terminal","dispatched":11,"model_calls":9,"forced":3,"seed":"77SVP3CVQFHQ","last_state_type":"game_over","visible_text":"","input_tokens":26389,"output_tokens":838,"wall_ms":31508}

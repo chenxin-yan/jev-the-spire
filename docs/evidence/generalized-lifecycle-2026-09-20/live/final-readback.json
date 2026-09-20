@@ -1,0 +1,10 @@
+{
+  "state_type": "game_over",
+  "terminal": true,
+  "visible_text": "Conquered\nContinue\nView Run\nInadequately prepared.",
+  "seed": "77SVP3CVQFHQ",
+  "legal_actions_complete": true,
+  "legal_actions": [],
+  "state_version": "157d4e49c3d24d5498167315659d939a:241",
+  "mutation_pending": false
+}

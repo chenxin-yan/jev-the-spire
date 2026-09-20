@@ -1,0 +1,17 @@
+{
+  "utc": "2026-09-20T19:29:08.122643+00:00",
+  "profile": 2,
+  "mode": "Standard",
+  "character": "Ironclad",
+  "ascension": 0,
+  "modded": true,
+  "loaded_mods": 1,
+  "seed": "77SVP3CVQFHQ",
+  "epoch": "157d4e49c3d24d5498167315659d939a",
+  "fresh_starts": 1,
+  "max_actions": 150,
+  "max_minutes": 20,
+  "max_segment_seconds": 300,
+  "stop": "technical fault, terminal, budget, or first settled rest interaction; Jev may decline it",
+  "setup": "normal Abandon of previously stopped trial, Singleplayer, Standard, default Ironclad confirmation; no gameplay choices by parent"
+}

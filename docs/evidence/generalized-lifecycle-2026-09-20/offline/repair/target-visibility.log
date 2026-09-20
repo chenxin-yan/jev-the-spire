@@ -1,0 +1,6 @@
+NChooseABundleSelectionScreen.CardsSelected public=True static=False virtual=False declaring=NChooseABundleSelectionScreen returns=Task`1 params=()
+NChooseARelicSelection.RelicsSelected public=True static=False virtual=False declaring=NChooseARelicSelection returns=Task`1 params=()
+NRestSiteRoom.AfterSelectingOptionAsync public=False static=False virtual=False declaring=NRestSiteRoom returns=Task params=(RestSiteOption)
+NRestSiteRoom.AfterSelectingOption public=True static=False virtual=False declaring=NRestSiteRoom returns=Void params=(RestSiteOption)
+NCardGridSelectionScreen.CardsSelected public=True static=False virtual=True declaring=NCardGridSelectionScreen returns=Task`1 params=()
+NDeckUpgradeSelectScreen.CardsSelected public=True static=False virtual=True declaring=NCardGridSelectionScreen returns=Task`1 params=()

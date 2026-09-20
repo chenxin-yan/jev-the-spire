@@ -1,0 +1,86 @@
+{
+  "totals": {
+    "dispatched": 81,
+    "model_calls": 61,
+    "forced": 22,
+    "input_tokens": 168382,
+    "output_tokens": 5005
+  },
+  "failed_calls_without_usage": 2,
+  "summaries": [
+    {
+      "type": "summary",
+      "ts": "2026-09-20T19:29:33.607Z",
+      "outcome": "max_actions",
+      "dispatched": 10,
+      "model_calls": 8,
+      "forced": 2,
+      "seed": "77SVP3CVQFHQ",
+      "act": 1,
+      "floor": 2,
+      "last_state_type": "monster",
+      "input_tokens": 22524,
+      "output_tokens": 689,
+      "wall_ms": 20497
+    },
+    {
+      "type": "summary",
+      "ts": "2026-09-20T19:30:51.912Z",
+      "outcome": "max_actions",
+      "dispatched": 20,
+      "model_calls": 15,
+      "forced": 6,
+      "seed": "77SVP3CVQFHQ",
+      "act": 1,
+      "floor": 3,
+      "last_state_type": "monster",
+      "input_tokens": 36580,
+      "output_tokens": 1078,
+      "wall_ms": 45431
+    },
+    {
+      "type": "summary",
+      "ts": "2026-09-20T19:32:29.062Z",
+      "outcome": "max_actions",
+      "dispatched": 20,
+      "model_calls": 14,
+      "forced": 6,
+      "seed": "77SVP3CVQFHQ",
+      "act": 1,
+      "floor": 5,
+      "last_state_type": "map",
+      "input_tokens": 38468,
+      "output_tokens": 1008,
+      "wall_ms": 50539
+    },
+    {
+      "type": "summary",
+      "ts": "2026-09-20T19:33:44.509Z",
+      "outcome": "max_actions",
+      "dispatched": 20,
+      "model_calls": 15,
+      "forced": 5,
+      "seed": "77SVP3CVQFHQ",
+      "act": 1,
+      "floor": 6,
+      "last_state_type": "rewards",
+      "input_tokens": 44421,
+      "output_tokens": 1392,
+      "wall_ms": 49392
+    },
+    {
+      "type": "summary",
+      "ts": "2026-09-20T19:34:45.425Z",
+      "outcome": "terminal",
+      "dispatched": 11,
+      "model_calls": 9,
+      "forced": 3,
+      "seed": "77SVP3CVQFHQ",
+      "last_state_type": "game_over",
+      "visible_text": "",
+      "input_tokens": 26389,
+      "output_tokens": 838,
+      "wall_ms": 31508
+    }
+  ]
+}

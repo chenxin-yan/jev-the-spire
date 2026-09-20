@@ -1,0 +1,23 @@
+NESTED MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption+<DoLocalPostSelectVfx>d__15
+NESTED MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption+<OnSelect>d__14
+TYPE MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption
+PROP System.String OptionId get=System.String get_OptionId()
+PROP System.Collections.Generic.IEnumerable`1[System.String] AssetPaths get=System.Collections.Generic.IEnumerable`1[System.String] get_AssetPaths()
+PROP Int32 SmithCount get=Int32 get_SmithCount()
+PROP MegaCrit.Sts2.Core.Localization.LocString Description get=MegaCrit.Sts2.Core.Localization.LocString get_Description()
+PROP Boolean IsEnabled get=Boolean get_IsEnabled()
+PROP MegaCrit.Sts2.Core.Entities.Players.Player Owner get=MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+PROP MegaCrit.Sts2.Core.Localization.LocString Title get=MegaCrit.Sts2.Core.Localization.LocString get_Title()
+PROP Godot.Texture2D Icon get=Godot.Texture2D get_Icon()
+FIELD Int32 <SmithCount>k__BackingField
+FIELD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] _selection
+METHOD System.String get_OptionId()
+METHOD System.Collections.Generic.IEnumerable`1[System.String] get_AssetPaths()
+METHOD Int32 get_SmithCount()
+METHOD Void set_SmithCount(Int32)
+METHOD MegaCrit.Sts2.Core.Localization.LocString get_Description()
+METHOD Boolean get_IsEnabled()
+METHOD System.Threading.Tasks.Task`1[System.Boolean] OnSelect()
+METHOD System.Threading.Tasks.Task DoLocalPostSelectVfx(System.Threading.CancellationToken)
+METHOD System.Threading.Tasks.Task DoRemotePostSelectVfx()
+METHOD Boolean <DoRemotePostSelectVfx>b__16_0(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter)

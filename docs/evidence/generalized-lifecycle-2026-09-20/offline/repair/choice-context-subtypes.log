@@ -1,0 +1,22 @@
+SUBTYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.BlockingPlayerChoiceContext
+   System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+   System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+SUBTYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext
+   System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+   System.Threading.Tasks.Task AssignTaskAndWaitForPauseOrCompletion(System.Threading.Tasks.Task)
+   System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+SUBTYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext
+   System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+   System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+   Void MockDependenciesForTest(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet, MegaCrit.Sts2.Core.GameActions.ActionExecutor)
+SUBTYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext
+   Void MockDependenciesForTest(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet, MegaCrit.Sts2.Core.GameActions.ActionExecutor)
+   System.Threading.Tasks.Task`1[System.Boolean] AssignTaskAndWaitForPauseOrCompletion(System.Threading.Tasks.Task)
+   System.Threading.Tasks.Task`1[System.Boolean] WaitForPauseOrCompletionWithoutAssigningTask(System.Threading.Tasks.Task)
+   System.Threading.Tasks.Task ExecuteTaskThenInvokeExecutionFinished(System.Threading.Tasks.Task)
+   System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+   System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+   System.Threading.Tasks.Task WaitForCompletion()
+SUBTYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.ThrowingPlayerChoiceContext
+   System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+   System.Threading.Tasks.Task SignalPlayerChoiceEnded()

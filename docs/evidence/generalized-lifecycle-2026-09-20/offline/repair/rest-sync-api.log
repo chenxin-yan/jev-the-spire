@@ -1,0 +1,57 @@
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+PlayerRestSite
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+<AfterAllRestSitesCompleted>d__33
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+<ChooseOption>d__31
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+<QueueHoverMessage>d__41
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+<SendHoverMessageAfterSmallDelay>d__42
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService _netService
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+FIELD MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+FIELD UInt64 _localPlayerId
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby _runLobby
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer+PlayerRestSite] _restSites
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+FIELD UInt64 _lastHoverMessageMsec
+FIELD System.Nullable`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Flavor.RestSiteOptionHoveredMessage] _hoveredMessage
+FIELD System.Threading.Tasks.Task _hoverMessageTask
+FIELD System.Action`1[System.UInt64] PlayerHoverChanged
+FIELD System.Action`2[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.UInt64] BeforePlayerOptionChosen
+FIELD System.Action`3[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.Boolean,System.UInt64] AfterPlayerOptionChosen
+FIELD Int32 minHoverMessageMsec = 50
+METHOD MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+METHOD Void add_PlayerHoverChanged(System.Action`1[System.UInt64])
+METHOD Void remove_PlayerHoverChanged(System.Action`1[System.UInt64])
+METHOD Void add_BeforePlayerOptionChosen(System.Action`2[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.UInt64])
+METHOD Void remove_BeforePlayerOptionChosen(System.Action`2[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.UInt64])
+METHOD Void add_AfterPlayerOptionChosen(System.Action`3[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.Boolean,System.UInt64])
+METHOD Void remove_AfterPlayerOptionChosen(System.Action`3[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption,System.Boolean,System.UInt64])
+METHOD Void Dispose()
+METHOD Void BeginRestSite()
+METHOD Void HandleRestSiteOptionChosenMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage, UInt64)
+METHOD Void HandleRestSiteOptionHoveredMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Flavor.RestSiteOptionHoveredMessage, UInt64)
+METHOD Void HandleRestSiteSkippedMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.RestSiteSkippedMessage, UInt64)
+METHOD Void OnPeerDisconnected(UInt64)
+METHOD System.Threading.Tasks.Task`1[System.Boolean] ChooseLocalOption(Int32)
+METHOD System.Threading.Tasks.Task`1[System.Boolean] ChooseOption(MegaCrit.Sts2.Core.Entities.Players.Player, Int32)
+METHOD Void BeforeLocalRestSiteExited()
+METHOD System.Threading.Tasks.Task AfterAllRestSitesCompleted()
+METHOD Void LocalOptionHovered(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption)
+METHOD System.Nullable`1[System.Int32] GetHoveredOptionIndex(UInt64)
+METHOD System.Nullable`1[System.Int32] GetChosenOptionIndex(UInt64)
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption] GetLocalOptions()
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption] GetOptionsForPlayer(UInt64)
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption] GetOptionsForPlayer(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD Void TrySendHoverMessage()
+METHOD System.Threading.Tasks.Task QueueHoverMessage(Int32)
+METHOD System.Threading.Tasks.Task SendHoverMessageAfterSmallDelay()
+METHOD Void SendHoverMessage()
+....
+ 0011: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0023: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0031: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[Int32](Int32)
+ 0038: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0044: callvirt method:MegaCrit.Sts2.Core.Logging.Logger.Void Debug(System.String, Int32)
+ 0081: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer.MegaCrit.Sts2.Core.Runs.RunLocation get_CurrentLocation()
+ 0098: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.Void SendMessage[OptionIndexChosenMessage](MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage)
+ 0105: call method:MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer.MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+ 0111: call method:MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer.System.Threading.Tasks.Task`1[System.Boolean] ChooseOption(MegaCrit.Sts2.Core.Entities.Players.Player, Int32)
+....

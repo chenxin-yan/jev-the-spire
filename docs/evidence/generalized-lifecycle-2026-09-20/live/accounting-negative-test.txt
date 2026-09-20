@@ -1,0 +1,7 @@
+Offline negative test: change first decision label to not_a_legal_label in a temporary capture copy.
+Exit: 1
+Traceback (most recent call last):
+  File "/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmpci1mn6ic/check-accounting.py", line 38, in <module>
+    assert decision['label'] in labels
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,44 @@
+METHOD System.Threading.Tasks.Task RunSafely(System.Threading.Tasks.Task)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Helpers.TaskHelper.System.Threading.Tasks.Task LogTaskExceptions(System.Threading.Tasks.Task)
+ 0006: ret 
+....
+METHOD Void .ctor()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.Void .ctor()
+ 0006: ret 
+....
+NESTED MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom+MethodName
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter] characterAnims
+FIELD MegaCrit.Sts2.Core.Rooms.RestSiteRoom _room
+FIELD MegaCrit.Sts2.Core.Runs.IRunState _runState
+FIELD MegaCrit.Sts2.Core.Nodes.CommonUi.NProceedButton _proceedButton
+FIELD System.Threading.CancellationTokenSource _cts
+FIELD Single _originalDescriptionYPos
+FIELD MegaCrit.Sts2.addons.mega_text.MegaLabel <Header>k__BackingField
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel <Description>k__BackingField
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter] <Characters>k__BackingField
+FIELD Boolean _isDebugUiVisible
+FIELD Single _lowDescriptionYPos = 885
+FIELD System.String _scenePath = res://scenes/rooms/rest_site_room.tscn
+FIELD IntPtr NativePtr
+METHOD MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom Create(MegaCrit.Sts2.Core.Rooms.RestSiteRoom, MegaCrit.Sts2.Core.Runs.IRunState)
+METHOD Void AfterSelectingOption(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption)
+METHOD System.Threading.Tasks.Task ShowFtueIfNeeded()
+METHOD Void DisableOptions()
+METHOD Void EnableOptions()
+METHOD Void AnimateDescriptionDown()
+METHOD Void AnimateDescriptionUp()
+METHOD Void UpdateRestSiteOptions()
+METHOD Void RestSiteButtonHovered(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton)
+METHOD Void RestSiteButtonUnhovered(MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton)
+METHOD Void OnPlayerChangedHoveredRestSiteOption(UInt64)
+METHOD Void OnBeforePlayerSelectedRestSiteOption(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption, UInt64)
+METHOD Void OnAfterPlayerSelectedRestSiteOption(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption, Boolean, UInt64)
+METHOD System.Threading.Tasks.Task AfterSelectingOptionAsync(MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption)
+METHOD Void ShowProceedButton()
+METHOD Void FadeOutOptionDescription()
+METHOD Void ExtinguishFireIfAble()
+METHOD System.Threading.Tasks.Task ShowChoices(System.Threading.CancellationToken)
+METHOD System.Threading.Tasks.Task HideChoices(System.Threading.CancellationToken)
+METHOD Void OnActiveScreenUpdated()

@@ -1,0 +1,14 @@
+{
+  "utc": "2026-09-20T19:25:37.106256+00:00",
+  "old_sha256": "a105a689977a0f887af8dcef688800536a4f11d450ad7de9bc91118b08925a48",
+  "candidate_sha256": "9bcaa0b1d837f390d7a82662f441c8c8157752468d994cdc8d2ae98be187c09a",
+  "installed_sha256": "9bcaa0b1d837f390d7a82662f441c8c8157752468d994cdc8d2ae98be187c09a",
+  "destination": "/Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll",
+  "backup": "/tmp/jev-generalized-live-2026-09-20/previous-install/STS2_MCP.dll",
+  "process_absent": true,
+  "listener_absent": true,
+  "method": "normal Save and Quit, then Quit confirmation; copy only nested DLL",
+  "source_base": "96af9eb",
+  "patch": "/tmp/jev-generalized-2026-09-20/recovery/final.diff",
+  "review_verdict": "OK with notes; lifecycle comments corrected"
+}

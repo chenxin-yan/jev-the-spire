@@ -1,0 +1,208 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=20 deadline=300000ms log=/tmp/jev-generalized-live-2026-09-20/trial-4.jsonl
+observed: monster 157d4e49c3d24d5498167315659d939a:146 act 1 floor 6 actions=9
+[action 1/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Nibbit (1)
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Bash targeting Nibbit (1)
+  play_card:2:2  Play hand[2] Bash targeting Nibbit (2)
+  play_card:3:none  Play hand[3] Rupture
+  play_card:4:1  Play hand[4] Strike targeting Nibbit (1)
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.22 play_card:1:none=0.21 play_card:0:1=0.2 play_card:2:2=0.16 play_card:3:none=0.08 end_turn=0.06 play_card:0:2=0.04 play_card:4:1=0.02 play_card:4:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:146","label":"play_card:2:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:147 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:149 act 1 floor 6 actions=7
+[action 2/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Nibbit (1)
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Rupture
+  play_card:3:1  Play hand[3] Strike targeting Nibbit (1)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.49 play_card:0:2=0.17 play_card:1:none=0.13 end_turn=0.1 play_card:3:1=0.06 play_card:2:none=0.03 play_card:3:2=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:149","label":"play_card:0:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:150 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:152 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:152","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:153 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:155 act 1 floor 6 actions=8
+[action 4/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Nibbit (1)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:1  Play hand[4] Strike targeting Nibbit (1)
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.48 play_card:0:none=0.18 play_card:2:2=0.1 play_card:4:1=0.08 play_card:1:none=0.04 play_card:3:none=0.04 play_card:4:2=0.04 end_turn=0.04
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:155","label":"play_card:2:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:156 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:158 act 1 floor 6 actions=6
+[action 5/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Nibbit (1)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:1  confidence=not returned
+  distribution: play_card:3:1=0.48 play_card:3:2=0.24 play_card:0:none=0.15 end_turn=0.08 play_card:1:none=0.03 play_card:2:none=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:158","label":"play_card:3:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:159 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:161 act 1 floor 6 actions=4
+[action 6/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:none  confidence=not returned
+  distribution: play_card:0:none=0.75 end_turn=0.21 play_card:2:none=0.03 play_card:1:none=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:161","label":"play_card:0:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:162 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:164 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:164","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:165 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:167 act 1 floor 6 actions=10
+[action 8/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Nibbit (1)
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:1  Play hand[1] Strike targeting Nibbit (1)
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Nibbit (1)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  play_card:4:1  Play hand[4] Strike targeting Nibbit (1)
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:none  confidence=not returned
+  distribution: play_card:2:none=0.47 play_card:0:1=0.28 play_card:3:1=0.06 end_turn=0.05 play_card:0:2=0.04 play_card:1:1=0.04 play_card:4:1=0.03 play_card:1:2=0.01 play_card:3:2=0.01 play_card:4:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:167","label":"play_card:2:none"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:168 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:170 act 1 floor 6 actions=9
+[action 9/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Nibbit (1)
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:1  Play hand[1] Strike targeting Nibbit (1)
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:1  Play hand[2] Strike targeting Nibbit (1)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:1  Play hand[3] Strike targeting Nibbit (1)
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.61 end_turn=0.15 play_card:0:2=0.07 play_card:1:1=0.06 play_card:2:1=0.04 play_card:1:2=0.02 play_card:2:2=0.02 play_card:3:1=0.02 play_card:3:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:170","label":"play_card:0:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:171 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:173 act 1 floor 6 actions=7
+[action 10/20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Nibbit (1)
+  play_card:0:2  Play hand[0] Strike targeting Nibbit (2)
+  play_card:1:1  Play hand[1] Strike targeting Nibbit (1)
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:1  Play hand[2] Strike targeting Nibbit (1)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.59 end_turn=0.31 play_card:0:2=0.03 play_card:1:1=0.03 play_card:2:1=0.02 play_card:1:2=0.01 play_card:2:2=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:173","label":"play_card:0:1"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:174 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:176 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:176","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:177 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:179 act 1 floor 6 actions=6
+[action 12/20] legal actions:
+  play_card:0:2  Play hand[0] Bash targeting Nibbit (2)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:none  Play hand[4] Rupture
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.48 play_card:1:none=0.15 play_card:2:2=0.14 end_turn=0.13 play_card:4:none=0.07 play_card:3:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:179","label":"play_card:0:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:180 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:182 act 1 floor 6 actions=5
+[action 13/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Rupture
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:2  confidence=not returned
+  distribution: play_card:1:2=0.8 play_card:0:none=0.09 end_turn=0.06 play_card:3:none=0.04 play_card:2:none=0.01
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:182","label":"play_card:1:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:183 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:185 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:185","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:186 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:188 act 1 floor 6 actions=6
+[action 15/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:2  Play hand[2] Bash targeting Nibbit (2)
+  play_card:3:none  Play hand[3] Rupture
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:2  confidence=not returned
+  distribution: play_card:2:2=0.63 play_card:4:2=0.17 play_card:0:none=0.08 end_turn=0.07 play_card:3:none=0.03 play_card:1:none=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:188","label":"play_card:2:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:189 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:191 act 1 floor 6 actions=5
+[action 16/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Rupture
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:2  confidence=not returned
+  distribution: play_card:3:2=0.7 play_card:0:none=0.18 end_turn=0.08 play_card:1:none=0.02 play_card:2:none=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:191","label":"play_card:3:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:192 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:194 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:194","label":"end_turn"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:195 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:197 act 1 floor 6 actions=6
+[action 18/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:2  Play hand[2] Strike targeting Nibbit (2)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:2  Play hand[4] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:2  confidence=not returned
+  distribution: play_card:1:2=0.54 play_card:2:2=0.15 play_card:4:2=0.15 play_card:0:none=0.08 end_turn=0.05 play_card:3:none=0.03
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:197","label":"play_card:1:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:198 actions=0
+observed: monster 157d4e49c3d24d5498167315659d939a:200 act 1 floor 6 actions=5
+[action 19/20] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:2  Play hand[1] Strike targeting Nibbit (2)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:2  Play hand[3] Strike targeting Nibbit (2)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:2  confidence=not returned
+  distribution: play_card:1:2=0.72 play_card:0:none=0.11 play_card:3:2=0.09 end_turn=0.06 play_card:2:none=0.02
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:200","label":"play_card:1:2"}
+waiting: waiting 157d4e49c3d24d5498167315659d939a:201 actions=0
+observed: rewards 157d4e49c3d24d5498167315659d939a:202 act 1 floor 6 actions=4
+[action 20/20] legal actions:
+  claim_reward:0  18 Gold
+  claim_reward:1  Speed Potion
+  claim_reward:2  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): proceed  confidence=not returned
+  distribution: proceed=0.37 claim_reward:2=0.31 claim_reward:0=0.27 claim_reward:1=0.05
+POST 202 {"status":"dispatched","state_version":"157d4e49c3d24d5498167315659d939a:202","label":"proceed"}
+summary: {"outcome":"max_actions","dispatched":20,"model_calls":15,"forced":5,"seed":"77SVP3CVQFHQ","act":1,"floor":6,"last_state_type":"rewards","input_tokens":44421,"output_tokens":1392,"wall_ms":49392}

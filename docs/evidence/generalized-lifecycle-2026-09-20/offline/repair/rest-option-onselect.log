@@ -1,0 +1,131 @@
+=== Smith
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.MegaCrit.Sts2.Core.Localization.LocString get_UpgradeSelectionPrompt
+call MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption.Int32 get_SmithCount
+newobj MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void set_Cancelable
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void set_RequireManualConfirmation
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Commands.CardSelectCmd.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForUpgrade
+call MegaCrit.Sts2.Core.Commands.CardCmd.Void Upgrade
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Hooks.Hook.System.Threading.Tasks.Task AfterRestSiteSmith
+=== Heal
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Entities.RestSite.HealRestSiteOption.System.Threading.Tasks.Task ExecuteRestSiteHeal
+=== Mend
+call MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance
+callvirt MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.UInt32 ReserveChoiceId
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Context.LocalContext.Boolean IsMe
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+callvirt MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.Void AnimateDescriptionDown
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+callvirt MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton GetButtonForOption
+call MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager.MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager get_Instance
+callvirt MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager.Boolean get_IsUsingDirectionalNavigation
+call MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager.MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager get_Instance
+newobj System.Func`1[System.Boolean].Void
+newobj System.Func`2[Godot.Node,System.Boolean].Void
+callvirt MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager.Void StartTargeting
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+newobj System.Func`2[MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter,System.Boolean].Void
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+call MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+call MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus
+newobj System.Action`1[Godot.Node].Void
+newobj System.Action`1[Godot.Node].Void
+callvirt MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager.System.Threading.Tasks.Task`1[Godot.Node] SelectionFinished
+call MegaCrit.Sts2.Core.Entities.RestSite.MendRestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player NodeToPlayer
+call MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance
+callvirt MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId
+newobj System.Nullable`1[System.UInt64].Void
+call MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult FromPlayerId
+callvirt MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void SyncLocalChoice
+newobj System.Action`1[Godot.Node].Void
+newobj System.Action`1[Godot.Node].Void
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+callvirt MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter.Godot.Control get_Hitbox
+call MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance
+callvirt MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult] WaitForRemoteChoice
+callvirt MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.System.Nullable`1[System.UInt64] AsPlayerId
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState
+callvirt MegaCrit.Sts2.Core.Runs.IPlayerCollection.MegaCrit.Sts2.Core.Entities.Players.Player GetPlayer
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.Void AnimateDescriptionUp
+callvirt MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Localization.LocString get_Description
+callvirt MegaCrit.Sts2.Core.Localization.LocString.Void Add
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton GetButtonForOption
+call MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton.Void RefreshTextState
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature
+call MegaCrit.Sts2.Core.Entities.RestSite.MendRestSiteOption.System.Decimal GetHealAmount
+call MegaCrit.Sts2.Core.Commands.CreatureCmd.System.Threading.Tasks.Task Heal
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState
+call MegaCrit.Sts2.Core.Hooks.Hook.System.Threading.Tasks.Task AfterRestSiteHeal
+call MegaCrit.Sts2.Core.TestSupport.TestMode.Boolean get_IsOff
+call MegaCrit.Sts2.Core.Helpers.SceneHelper.System.String GetScenePath
+call MegaCrit.Sts2.Core.Assets.PreloadManager.MegaCrit.Sts2.Core.Assets.AssetCache get_Cache
+callvirt MegaCrit.Sts2.Core.Assets.AssetCache.Godot.PackedScene GetScene
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom get_Instance
+call MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom.MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteCharacter GetCharacterForPlayer
+call MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely
+=== Clone
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Cards.CardPile get_Deck
+callvirt MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards
+newobj System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean].Void
+newobj System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult].Void
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState
+callvirt MegaCrit.Sts2.Core.Runs.ICardScope.MegaCrit.Sts2.Core.Models.CardModel CloneCard
+call MegaCrit.Sts2.Core.Commands.CardPileCmd.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] Add
+call MegaCrit.Sts2.Core.Commands.CardCmd.Void PreviewCardPileAdd
+=== Cook
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.MegaCrit.Sts2.Core.Localization.LocString get_RemoveSelectionPrompt
+newobj MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void set_Cancelable
+call MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void set_RequireManualConfirmation
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Commands.CardSelectCmd.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForRemoval
+call MegaCrit.Sts2.Core.Commands.CardPileCmd.System.Threading.Tasks.Task RemoveFromDeck
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature
+newobj System.Decimal.Void
+call MegaCrit.Sts2.Core.Commands.CreatureCmd.System.Threading.Tasks.Task GainMaxHp
+=== Dig
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Factories.RelicFactory.MegaCrit.Sts2.Core.Models.RelicModel PullNextRelicFromFront
+callvirt MegaCrit.Sts2.Core.Models.RelicModel.MegaCrit.Sts2.Core.Models.RelicModel ToMutable
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Commands.RelicCmd.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Models.RelicModel] Obtain
+=== Hatch
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+call MegaCrit.Sts2.Core.Commands.RelicCmd.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Models.Relics.Byrdpip] Obtain[Byrdpip]
+=== Kindle
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Models.Relics.PumpkinCandle GetRelic[PumpkinCandle]
+call MegaCrit.Sts2.Core.Models.Relics.PumpkinCandle.Void Rekindle
+=== Lift
+call MegaCrit.Sts2.Core.Entities.RestSite.RestSiteOption.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner
+callvirt MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Models.Relics.Girya GetRelic[Girya]
+callvirt MegaCrit.Sts2.Core.Models.Relics.Girya.Int32 get_TimesLifted
+callvirt MegaCrit.Sts2.Core.Models.Relics.Girya.Void set_TimesLifted

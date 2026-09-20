@@ -1,0 +1,19 @@
+# Working tree status vs 96af9eb (nothing staged, nothing committed, nothing installed)
+
+ M mod/STS2MCP/McpMod.Contract.cs
+ M mod/STS2MCP/McpMod.LegalActions.cs
+ M mod/STS2MCP/McpMod.NativeActions.cs
+ M mod/STS2MCP/McpMod.OrdinaryActions.cs
+ M mod/STS2MCP/McpMod.SelectionHooks.cs
+ M mod/STS2MCP/SelectionOwnership.cs
+ M mod/STS2MCP/tests/check-bridge.sh
+
+staged files: 0
+HEAD: 96af9eb
+
+candidate DLL sha256: defad43796b942d96c0b16695aeb27ba5cd83844ae65e0218de0c6b823e97094
+baseline  DLL sha256: 5a2ac678ef4f5d1c479f085d2587ca860df0eb875303167076937c44ae697ce1
+native sts2.dll sha256: 9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4
+
+check-bridge: baseline exit 0 / 1972 checks; red (new tests vs baseline DLL) exit 134; final exit 0 / 2032 checks
+mutations a-e: all exit 134 (see check-mutation-*.log)

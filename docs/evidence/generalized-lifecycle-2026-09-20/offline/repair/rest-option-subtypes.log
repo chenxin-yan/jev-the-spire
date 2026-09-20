@@ -1,0 +1,9 @@
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.CloneRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.CookRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.DigRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.HatchRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.HealRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.KindleRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.LiftRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.MendRestSiteOption
+SUBTYPE MegaCrit.Sts2.Core.Entities.RestSite.SmithRestSiteOption

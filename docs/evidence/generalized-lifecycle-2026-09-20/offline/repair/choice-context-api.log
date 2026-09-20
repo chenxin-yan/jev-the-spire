@@ -1,0 +1,40 @@
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.BlockingPlayerChoiceContext
+PROP System.Nullable`1[System.UInt64] OwnerId get=System.Nullable`1[System.UInt64] get_OwnerId()
+PROP System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] ModelStack get=System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] get_ModelStack()
+PROP MegaCrit.Sts2.Core.Models.AbstractModel LastInvolvedModel get=MegaCrit.Sts2.Core.Models.AbstractModel get_LastInvolvedModel()
+METHOD System.Nullable`1[System.UInt64] get_OwnerId()
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext
+PROP System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] ModelStack get=System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] get_ModelStack()
+PROP MegaCrit.Sts2.Core.Models.AbstractModel LastInvolvedModel get=MegaCrit.Sts2.Core.Models.AbstractModel get_LastInvolvedModel()
+PROP System.Nullable`1[System.UInt64] OwnerId get=System.Nullable`1[System.UInt64] get_OwnerId()
+FIELD System.Collections.Generic.Stack`1[MegaCrit.Sts2.Core.Models.AbstractModel] _modelStack
+METHOD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] get_ModelStack()
+METHOD MegaCrit.Sts2.Core.Models.AbstractModel get_LastInvolvedModel()
+METHOD System.Nullable`1[System.UInt64] get_OwnerId()
+METHOD Void PushModel(MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD Void PopModel(MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext+<SignalPlayerChoiceEnded>d__16
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext
+PROP MegaCrit.Sts2.Core.GameActions.GameAction Action get=MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+PROP System.Nullable`1[System.UInt64] OwnerId get=System.Nullable`1[System.UInt64] get_OwnerId()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer ActionQueueSynchronizer get=MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet ActionQueueSet get=MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+PROP MegaCrit.Sts2.Core.GameActions.ActionExecutor ActionExecutor get=MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+PROP System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] ModelStack get=System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] get_ModelStack()
+PROP MegaCrit.Sts2.Core.Models.AbstractModel LastInvolvedModel get=MegaCrit.Sts2.Core.Models.AbstractModel get_LastInvolvedModel()
+FIELD MegaCrit.Sts2.Core.GameActions.GameAction <Action>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer _actionQueueSynchronizer
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet _actionQueueSet
+FIELD MegaCrit.Sts2.Core.GameActions.ActionExecutor _actionExecutor
+METHOD MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+METHOD System.Nullable`1[System.UInt64] get_OwnerId()
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+METHOD MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceEnded()
+METHOD Void MockDependenciesForTest(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet, MegaCrit.Sts2.Core.GameActions.ActionExecutor)

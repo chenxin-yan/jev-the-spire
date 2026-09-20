@@ -1,0 +1,4 @@
+{"name": "lint", "command": ["mise", "exec", "--", "bun", "--no-env-file", "run", "lint"], "exit": 0, "seconds": 0.402}
+{"name": "format", "command": ["mise", "exec", "--", "bun", "--no-env-file", "run", "fmt:check"], "exit": 0, "seconds": 0.397}
+{"name": "typecheck", "command": ["mise", "exec", "--", "bunx", "--no-env-file", "--no-install", "tsc", "--noEmit"], "exit": 0, "seconds": 0.236}
+{"name": "test", "command": ["mise", "exec", "--", "bun", "--no-env-file", "test"], "exit": 0, "seconds": 4.532}
