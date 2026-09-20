@@ -1,0 +1,17 @@
+[
+  {
+    "manifest": "docs/evidence/m2/first-live/SHA256SUMS",
+    "count": 132,
+    "failures": []
+  },
+  {
+    "manifest": "docs/evidence/m2/generic-live/SHA256SUMS",
+    "count": 196,
+    "failures": []
+  },
+  {
+    "manifest": "docs/evidence/m2/live-recheck/SHA256SUMS",
+    "count": 177,
+    "failures": []
+  }
+]

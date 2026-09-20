@@ -1,0 +1,134 @@
+{
+  "mod/STS2MCP/BridgeProtocol.cs": {
+    "source": "BridgeProtocol.cs",
+    "sha256": "7ab08e4c8d7335ec450baa3cbc1f9ca28a6c052ed9275bebccd46f8ecc58b2f4"
+  },
+  "mod/STS2MCP/CombatExitOperation.cs": {
+    "source": "CombatExitOperation.cs",
+    "sha256": "ce9c3c153d9188662c23430c1d63576b8c805c29e87f3d7203c0a484d6cdf4be"
+  },
+  "mod/STS2MCP/EventOperation.cs": {
+    "source": "EventOperation.cs",
+    "sha256": "961515b8a38c238a7e2e542e408f792f5c86dad702ec879b25c8d2feb719dce5"
+  },
+  "mod/STS2MCP/McpMod.Actions.cs": {
+    "source": "McpMod.Actions.cs",
+    "sha256": "87e5a16051a9d4e0bf8c844b7f1bd87c1d346ff2650cb067388159765b443cef"
+  },
+  "mod/STS2MCP/McpMod.Compendium.cs": {
+    "source": "McpMod.Compendium.cs",
+    "sha256": "5c6acd0f4540e331984634241e62f7f36c1575278f0dc10c8aee00f86ee8cebd"
+  },
+  "mod/STS2MCP/McpMod.Contract.cs": {
+    "source": "McpMod.Contract.cs",
+    "sha256": "26dac1099f20be28ba0d737ae300e8a0d33d21052775f6eacb0e7d20b9d8e5e0"
+  },
+  "mod/STS2MCP/McpMod.EventActions.cs": {
+    "source": "McpMod.EventActions.cs",
+    "sha256": "23ccd3d817c60c15d31e1c946329c58e9192c6ac767eeba6c3c8a449cb70880b"
+  },
+  "mod/STS2MCP/McpMod.Formatting.cs": {
+    "source": "McpMod.Formatting.cs",
+    "sha256": "f293ef0c35017433cd26883865164087172360f361d6ac8967ca50150767cb5f"
+  },
+  "mod/STS2MCP/McpMod.Helpers.cs": {
+    "source": "McpMod.Helpers.cs",
+    "sha256": "6674af90c8ebb4348d07285fdea23a79bc9ff4bd311154ed212e505add650796"
+  },
+  "mod/STS2MCP/McpMod.LegalActions.cs": {
+    "source": "McpMod.LegalActions.cs",
+    "sha256": "7f5f352818cb7f9d27a8d018b532034f954277099848207fdb31b8e65da01a2c"
+  },
+  "mod/STS2MCP/McpMod.MultiplayerActions.cs": {
+    "source": "McpMod.MultiplayerActions.cs",
+    "sha256": "751501c24747491faa7da7bf898efec89308158a141ac6d63eefb044ead232d4"
+  },
+  "mod/STS2MCP/McpMod.MultiplayerState.cs": {
+    "source": "McpMod.MultiplayerState.cs",
+    "sha256": "51b72c5035d3721c5db8f52675d81114525fda49a0b743dbfa5ca0c238d61a2d"
+  },
+  "mod/STS2MCP/McpMod.NativeActions.cs": {
+    "source": "McpMod.NativeActions.cs",
+    "sha256": "3b51c6ea0560638cb96414cbd4bb7c9604aea6e3caf47789b87c491f232fcb47"
+  },
+  "mod/STS2MCP/McpMod.OrdinaryActions.cs": {
+    "source": "McpMod.OrdinaryActions.cs",
+    "sha256": "eef2c669932639ee80b12960313c3a6ca66c1a39b2c7db7d4b3362193da71efa"
+  },
+  "mod/STS2MCP/McpMod.Profile.cs": {
+    "source": "McpMod.Profile.cs",
+    "sha256": "5cfeb575d988fd2323b4814cef55b17e827ab27bf41a43e50fa081b0b74d2b75"
+  },
+  "mod/STS2MCP/McpMod.RewardHooks.cs": {
+    "source": "McpMod.RewardHooks.cs",
+    "sha256": "369ae0602be4ab5fdbae6f486953dac6dd27ce7d8613a175a7ed80f89254b97f"
+  },
+  "mod/STS2MCP/McpMod.SelectionHooks.cs": {
+    "source": "McpMod.SelectionHooks.cs",
+    "sha256": "c47241e243c996ba2cc3d129b4e2710ad8fdc262356792623f79b2fceb4b1287"
+  },
+  "mod/STS2MCP/McpMod.SettingsUI.cs": {
+    "source": "McpMod.SettingsUI.cs",
+    "sha256": "d7e905fc047402d693f988c1cf1f6d7b386d081391e9557fbf8eb4595a4f0c60"
+  },
+  "mod/STS2MCP/McpMod.StateBuilder.cs": {
+    "source": "McpMod.StateBuilder.cs",
+    "sha256": "34412b2f7d743e0ab8d0c9215dfb6aa8315567150951f6a3c404f0eb30563598"
+  },
+  "mod/STS2MCP/McpMod.TreasureActions.cs": {
+    "source": "McpMod.TreasureActions.cs",
+    "sha256": "da3447dce34ad59002dbff8fce1e5be016835a3a96551c20d7cef32b5ba5732b"
+  },
+  "mod/STS2MCP/McpMod.Wiki.cs": {
+    "source": "McpMod.Wiki.cs",
+    "sha256": "25494cda134ff335a1cd15ad95707a5953bdeff6ff883434b57da59feef5b8f5"
+  },
+  "mod/STS2MCP/McpMod.cs": {
+    "source": "McpMod.cs",
+    "sha256": "0aa85d477b7e4d8146be18d39747d1b83007486fbe973dd5083efdd8e34137ec"
+  },
+  "mod/STS2MCP/QueuedActionChain.cs": {
+    "source": "QueuedActionChain.cs",
+    "sha256": "96674c8893a920b1a397568298fcbaba804702e3b37182390658681ec4675d44"
+  },
+  "mod/STS2MCP/SelectionOwnership.cs": {
+    "source": "SelectionOwnership.cs",
+    "sha256": "49e6f9ef18c46c15b821d09c6332b97f97831449367b973dc621659c58aeaa71"
+  },
+  "mod/STS2MCP/TreasureOperation.cs": {
+    "source": "TreasureOperation.cs",
+    "sha256": "5f524a8cccf8fcde45a074dfa400cf16cd9d8f8e5e0c2eefda36ca87703dcc4c"
+  },
+  "mod/STS2MCP/STS2_MCP.csproj": {
+    "source": "STS2_MCP.csproj",
+    "sha256": "363cb85c2649aca193ede69c28ca487ac587a53f40e1f1af3f00f2ae75e5270b"
+  },
+  "mod/STS2MCP/STS2_MCP.sln": {
+    "source": "STS2_MCP.sln",
+    "sha256": "2b4d8829e35de3768ffbc072321a840e657f11af85b87ab3ff3ba91a5791d981"
+  },
+  "mod/STS2MCP/build.ps1": {
+    "source": "build.ps1",
+    "sha256": "f1f8218ad916ff29d868b4b27fc020414ae68a66929f9388b5453f2350f55e27"
+  },
+  "mod/STS2MCP/mod_manifest.json": {
+    "source": "mod_manifest.json",
+    "sha256": "f64ee11ebfa9f3cc9dfa89d99fa6125c594e3de4a46ac5e1776327f7a80aa3c9"
+  },
+  "mod/STS2MCP/LICENSE": {
+    "source": "LICENSE",
+    "sha256": "f9dd44b5a8b7f7c8cbc5a6c66e5d9d96d086d67a5c506a07642dc326c741aaf3"
+  },
+  "mod/STS2MCP/.gitignore": {
+    "source": ".gitignore",
+    "sha256": "d00c127bb1caea40c142a2176357be990b0f42bbc9cf7910b48df37cbe533faf"
+  },
+  "mod/STS2MCP/tests/check-bridge.sh": {
+    "source": "tests/check-bridge.sh",
+    "sha256": "321bd045b31a95ed724d2c87c97e5fcf97cb00db0eb666684fe5ec75fe03ad53"
+  },
+  "mod/STS2MCP/UPSTREAM.md": {
+    "source": "README.md",
+    "sha256": "d664095ef10bb481bf42be5b69383b2e2b396660f0e5e8dd210f114242f22318"
+  }
+}

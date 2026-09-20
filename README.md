@@ -2,6 +2,16 @@
 
 One bounded Bun process: observe the STS2MCP bridge → one joint Jev choice over the legal actions → validate freshness → one POST → re-observe. See `docs/minimal-demo.md` for scope.
 
+## Repository layout
+
+- `src/`, `test/`: Bun / Crust / Effect CLI and its offline checks.
+- [`mod/STS2MCP/`](mod/STS2MCP/README.md): C# bridge source, license, build instructions and native checks.
+- `docs/`: shared scope, research and preserved verification evidence.
+
+The CLI and mod are versioned together. The old sibling mod checkout is a checkpoint backup,
+not a second working copy. Native builds require locally installed game assemblies; those
+binaries are never committed or downloaded by CI.
+
 ## Run (owner's Mac, game running with the modded profile 2 bridge)
 
 ```sh
@@ -45,7 +55,7 @@ Individual checks: `bun run lint`, `bun run fmt:check`, `bun run typecheck`, `bu
 
 [Oxlint](https://oxc.rs/docs/guide/usage/linter/quickstart.html) uses correctness rules and [type-aware linting](https://oxc.rs/docs/guide/usage/linter/type-aware.html) via `oxlint-tsgolint`. Warnings and unused suppressions fail the check. The existing TypeScript compiler remains the typecheck gate; experimental Oxlint type checking is not enabled.
 
-[Oxfmt](https://oxc.rs/docs/guide/usage/formatter/quickstart.html) uses its defaults (100 columns, two spaces, double quotes, semicolons). Both tools respect Git ignores and exclude downloaded `.agent-sources/` and captured `docs/evidence/` artifacts. Configuration lives in `.oxlintrc.json` and `.oxfmtrc.json`; tool versions are pinned in `package.json` and `bun.lock`.
+[Oxfmt](https://oxc.rs/docs/guide/usage/formatter/quickstart.html) uses its defaults (100 columns, two spaces, double quotes, semicolons). Both tools respect Git ignores and exclude downloaded `.agent-sources/` and captured `docs/evidence/` artifacts. Oxfmt also preserves the imported `mod/STS2MCP/UPSTREAM.md` archive unchanged. Configuration lives in `.oxlintrc.json` and `.oxfmtrc.json`; tool versions are pinned in `package.json` and `bun.lock`.
 
 VS Code/Cursor users: install the recommended [Oxc extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode). Workspace settings enable formatting on save and safe lint fixes on explicit save; type-aware linting comes from the shared config. Other editors can use the [official editor setup](https://oxc.rs/docs/guide/usage/linter/editors.html).
 

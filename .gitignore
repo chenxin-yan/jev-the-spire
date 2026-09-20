@@ -1,6 +1,7 @@
 .env
 .env.*
 node_modules/
+.agent-sources/
 logs/
 dist/
 *.log
