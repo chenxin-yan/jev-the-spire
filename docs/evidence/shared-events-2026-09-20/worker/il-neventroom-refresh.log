@@ -1,0 +1,17 @@
+METHOD Void RefreshEventState(MegaCrit.Sts2.Core.Models.EventModel)
+ 0000: ldarg.0 
+ 0001: ldarg.0 
+ 0002: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Localization.LocString GetDescriptionOrFallback()
+ 0007: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.Void SetDescription(MegaCrit.Sts2.Core.Localization.LocString)
+ 0012: ldarg.1 
+ 0013: isinst type:MegaCrit.Sts2.Core.Models.AncientEventModel
+ 0018: brfalse.s 36
+ 0020: ldarg.0 
+ 0021: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Nodes.Events.NEventLayout get_Layout()
+ 0026: castclass type:MegaCrit.Sts2.Core.Nodes.Events.NAncientEventLayout
+ 0031: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NAncientEventLayout.Void ClearDialogue()
+ 0036: ldarg.0 
+ 0037: ldarg.0 
+ 0038: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _event
+ 0043: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.Void SetOptions(MegaCrit.Sts2.Core.Models.EventModel)
+ 0048: ret 

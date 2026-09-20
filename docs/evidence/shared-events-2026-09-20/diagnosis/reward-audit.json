@@ -1,0 +1,55 @@
+{
+  "reward_decisions": [
+    {
+      "floor": 2,
+      "state_version": "0c940da5f3624b0586ed753feeb3074c:50",
+      "offered": [
+        "10 Gold",
+        "Strength Potion",
+        "Add a card to your deck."
+      ],
+      "selected": "proceed",
+      "source": "model",
+      "probabilities": {
+        "claim_reward:0": 0.28,
+        "claim_reward:1": 0.17,
+        "claim_reward:2": 0.2,
+        "proceed": 0.35
+      },
+      "dispatch_status": 202,
+      "next_decision": "map"
+    },
+    {
+      "floor": 3,
+      "state_version": "0c940da5f3624b0586ed753feeb3074c:92",
+      "offered": [
+        "10 Gold",
+        "Add a card to your deck."
+      ],
+      "selected": "proceed",
+      "source": "model",
+      "probabilities": {
+        "claim_reward:0": 0.27,
+        "claim_reward:1": 0.33,
+        "proceed": 0.4
+      },
+      "dispatch_status": 202,
+      "next_decision": "map"
+    }
+  ],
+  "reward_claim_dispatches": 0,
+  "summary": {
+    "type": "summary",
+    "ts": "2026-09-20T21:40:57.757Z",
+    "outcome": "halted",
+    "halt_reason": "shared_event_unverified",
+    "dispatched": 33,
+    "model_calls": 25,
+    "forced": 8,
+    "last_state_type": "unsupported",
+    "input_tokens": 67833,
+    "output_tokens": 1740,
+    "wall_ms": 80373
+  },
+  "limitation": "Decision logs omit full player snapshots. Native Proceed semantics establish skipped claims; historical inventory deltas and model reasoning are not recorded."
+}

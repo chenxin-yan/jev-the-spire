@@ -1,0 +1,286 @@
+diff --git a/docs/research/generalized-events.md b/docs/research/generalized-events.md
+index 5889ed2..9ac6457 100644
+--- a/docs/research/generalized-events.md
++++ b/docs/research/generalized-events.md
+@@ -13,6 +13,8 @@ No event-effect reimplementation, per-event strategy, event/relic allowlist, new
+ 
+ **This generalizes a shared interaction protocol, not every possible game interface.** Custom minigames, shared voting and event-to-combat transitions are different interaction/lifecycle shapes. Add a reusable handler only when a concrete missing shape warrants it; do not claim universal event support from generic option clicking.
+ 
++Update (owner-approved after the floor-5 Morphic Grove halt): `IsShared` models in a native **singleplayer** run are now admitted for the sole local player only. Native v0.111 `MorphicGrove.IsShared` is constant true even alone, and the native chain (`ChooseLocalOption -> PlayerVotedForSharedOptionIndex -> ChooseSharedEventOption -> ChooseOptionForSharedEvent -> ChooseOptionForEvent`) closes synchronously inside the click when the single vote slot is filled and the service is `Singleplayer`, so the bridge keeps clicking the original button and additionally verifies the synchronizer's canonical event, service, single empty vote slot and a one-page receipt (`mod/STS2MCP/BridgeProtocol.cs`). Multiplayer voting remains unsupported.
++
+ ## What the research established
+ 
+ The game already implements the ordinary route:
+diff --git a/mod/STS2MCP/BridgeProtocol.cs b/mod/STS2MCP/BridgeProtocol.cs
+index 72b5bcd..e83ae17 100644
+--- a/mod/STS2MCP/BridgeProtocol.cs
++++ b/mod/STS2MCP/BridgeProtocol.cs
+@@ -139,12 +139,30 @@ internal static class BridgeProtocol
+ 
+     // The ordinary native option protocol is generic: no event-name or callback-name admission.
+     // Certifies the current decision only; an unsupported later surface halts through existing diagnostics.
+-    internal static void RequireEventPolicy(bool shared, bool embeddedCombat)
++    // A shared model (v0.111 MorphicGrove.IsShared is constant true, singleplayer included) reuses the unchanged native vote chain:
++    // NEventRoom.OptionButtonClicked (shared keeps its buttons) -> EventSynchronizer.ChooseLocalOption -> PlayerVotedForSharedOptionIndex
++    // (page-matched vote; every slot voted and not Client) -> ChooseSharedEventOption -> ChooseOptionForSharedEvent (votes cleared, page++)
++    // -> ChooseOptionForEvent per player -> _pendingOptionTasks.Add(RunSafely(option.Chosen())). NetSingleplayerGameService reports
++    // Singleplayer with empty SendMessage bodies, and BeforeOptionChosen/AddOptions take the ordinary branch at Players.Count <= 1, so the
++    // sole player's click completes that chain synchronously and appends exactly one task. Multiplayer voting stays unsupported.
++    internal static void RequireEventPolicy(bool shared, bool embeddedCombat, bool soleLocalPlayer)
+     {
+-        if (shared) throw new NotSupportedException("shared_event_unverified");
++        if (shared && !soleLocalPlayer) throw new NotSupportedException("shared_event_unverified");
+         if (embeddedCombat) throw new NotSupportedException("event_embedded_combat_unverified");
+     }
+ 
++    // The synchronizer's canonical flag must agree with the bound model, and no vote may be pending (only shared voting ever sets one).
++    // BeginEvent only grows _playerVotes, so a shared vote needs exactly the sole player's slot; a second slot could never close the vote.
++    internal static void RequireEventSynchronizer(bool shared, bool synchronizerShared, int voteSlots, int pendingVotes)
++    {
++        if (shared != synchronizerShared) throw new NotSupportedException("event_synchronizer_identity_unverified");
++        if (pendingVotes != 0 || shared && voteSlots != 1) throw new NotSupportedException("shared_event_vote_state_unverified");
++    }
++
++    // Post-click receipt beside the appended task: a shared choice advanced exactly one page and left no vote; an ordinary choice touched neither.
++    internal static bool EventChoiceCompleted(bool shared, uint pageBefore, uint pageAfter, int pendingVotes)
++        => pageAfter == pageBefore + (shared ? 1u : 0u) && pendingVotes == 0;
++
+     internal static void RequireRewardProceed(bool terminal, bool actTransition, bool skip, bool ftueSeen, bool debugOverride)
+     {
+         if (terminal && debugOverride) throw new NotSupportedException("reward_debug_override_unverified");
+diff --git a/mod/STS2MCP/McpMod.EventActions.cs b/mod/STS2MCP/McpMod.EventActions.cs
+index c85a856..cb381b6 100644
+--- a/mod/STS2MCP/McpMod.EventActions.cs
++++ b/mod/STS2MCP/McpMod.EventActions.cs
+@@ -7,6 +7,7 @@ using Godot;
+ using MegaCrit.Sts2.Core.Context;
+ using MegaCrit.Sts2.Core.Events;
+ using MegaCrit.Sts2.Core.Models;
++using MegaCrit.Sts2.Core.Multiplayer.Game;
+ using MegaCrit.Sts2.Core.Nodes.Events;
+ using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+@@ -130,6 +131,10 @@ public static partial class McpMod
+             || scene.CustomEventNode != null || scene.EmbeddedCombatRoom != null)
+             throw new NotSupportedException("event_identity_changed");
+     }
++    // Native BeforeOptionChosen and the shared vote label branch on Players.Count; the synchronizer closes the vote on the non-Client type.
++    private static bool SoleLocalPlayer(EventEntry entry)
++        => entry.Run is RunState run && run.Players.Count == 1 && ReferenceEquals(run.Players[0], entry.Player)
++            && RunManager.Instance.NetService?.Type == NetGameType.Singleplayer;
+     private static bool EventInputsReady(EventEntry entry)
+     {
+         RequireEventIdentity(entry);
+@@ -140,7 +145,7 @@ public static partial class McpMod
+         if (layout is NAncientEventLayout ancient && ancient.GetNodeOrNull<NClickableControl>("%DialogueHitbox") is { } hitbox
+             && IsControlVisibleOrActionable(hitbox)) return OrdinaryInput(hitbox);
+         var model = (EventModel)entry.Model!;
+-        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null);
++        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null, SoleLocalPlayer(entry));
+         var buttons = layout.OptionButtons.ToArray();
+         return buttons.Length > 0 && buttons.All(button => button.Option.IsLocked || entry.InputReady(button, button.Option, entry.Generation,
+             button.MouseFilter == Control.MouseFilterEnum.Stop && button.IsEnabled, layout is NAncientEventLayout));
+@@ -149,7 +154,7 @@ public static partial class McpMod
+     {
+         RequireEventIdentity(entry); entry.RequireGeneration(generation);
+         var model = (EventModel)entry.Model!;
+-        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null);
++        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null, SoleLocalPlayer(entry));
+         if (!ReferenceEquals(button.Event, model) || !((NEventLayout)entry.Layout!).OptionButtons.Contains(button)
+             || button.Option.IsLocked || OrdinaryBool(button.Option, "<DisableOnChosen>k__BackingField") && button.Option.WasChosen)
+             throw new NotSupportedException("event_option_identity_changed");
+@@ -172,11 +177,15 @@ public static partial class McpMod
+         {
+             var sync = RunManager.Instance.EventSynchronizer;
+             int index = EventOptionIndex(button);
+-            if (sync.IsShared || sync.Events.Count != 1 || !ReferenceEquals(sync.Events[0], model)
++            if (sync.Events.Count != 1 || !ReferenceEquals(sync.Events[0], model)
++                || !ReferenceEquals(GetInstanceFieldValue(sync, "_canonicalEvent"), model.CanonicalInstance)
+                 || !ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), entry.Run)
+                 || !Equals(GetInstanceFieldValue(sync, "_localPlayerId"), model.Owner!.NetId)
++                || !ReferenceEquals(GetInstanceFieldValue(sync, "_netService"), RunManager.Instance.NetService)
++                || GetInstanceFieldValue(sync, "_playerVotes") is not List<uint?> votes
+                 || index < 0 || index >= model.CurrentOptions.Count || !ReferenceEquals(model.CurrentOptions[index], button.Option))
+                 throw new NotSupportedException("event_synchronizer_identity_unverified");
++            BridgeProtocol.RequireEventSynchronizer(model.IsShared, sync.IsShared, votes.Count, votes.Count(vote => vote.HasValue));
+             // Native Chosen awaits whatever single callback the model supplied; a multicast Func<Task> returns only its last task.
+             if (GetInstanceFieldValue(button.Option, "<OnChosen>k__BackingField") is not Delegate chosen || chosen.GetInvocationList().Length != 1)
+                 throw new NotSupportedException("event_option_callback_unverified");
+@@ -263,9 +272,13 @@ public static partial class McpMod
+         else
+         {
+             var sync = RunManager.Instance.EventSynchronizer;
+-            if (!sync.Events.Contains((EventModel)entry.Model!) || GetInstanceFieldValue(sync, "_pendingOptionTasks") is not List<Task> tasks)
++            bool shared = ((EventModel)entry.Model!).IsShared;
++            if (!sync.Events.Contains((EventModel)entry.Model!) || GetInstanceFieldValue(sync, "_pendingOptionTasks") is not List<Task> tasks
++                || GetInstanceFieldValue(sync, "_playerVotes") is not List<uint?> votes || GetInstanceFieldValue(sync, "_pageIndex") is not uint page)
+                 throw new NotSupportedException("event_task_list_identity_unavailable");
+             operation.Root = BridgeProtocol.CaptureAppendedTask(tasks, () => button.ForceClick());
++            if (!BridgeProtocol.EventChoiceCompleted(shared, page, (uint)GetInstanceFieldValue(sync, "_pageIndex")!, votes.Count(vote => vote.HasValue)))
++                throw new NotSupportedException("event_choice_receipt_unverified");
+         }
+         return true;
+     }
+diff --git a/mod/STS2MCP/README.md b/mod/STS2MCP/README.md
+index 31a0cf1..4bb5e82 100644
+--- a/mod/STS2MCP/README.md
++++ b/mod/STS2MCP/README.md
+@@ -32,8 +32,11 @@ process-scoped and is replaced only at the native new-run boundary (`RunManager.
+ failures within a run, on Continue/saved runs or on CLI reconnect stay latched. Deck grid screens
+ (select/upgrade/transform/enchant) expose a decision only when every native candidate has an
+ allocated holder: v0.111 `NCardGrid` allocates a sliding window of rows, so a deck larger than that
+-window halts as `grid_candidates_incomplete` instead of offering a partial set. Build success is not
+-permission to install: live work remains separately approved and restricted to profile 2.
++window halts as `grid_candidates_incomplete` instead of offering a partial set. Events flagged `IsShared`
++(v0.111 Morphic Grove is constant true, singleplayer included) are supported only for the sole local player of a
++native singleplayer run: the bridge clicks the original button and the unchanged native vote chain closes
++synchronously, appending one task and advancing one page. Multiplayer voting stays `shared_event_unverified`.
++Build success is not permission to install: live work remains separately approved and restricted to profile 2.
+ See [current scope](../../docs/minimal-demo.md) and
+ [the offline review](../../docs/evidence/m3/crust-neow-review.md).
+ 
+diff --git a/mod/STS2MCP/tests/check-bridge.sh b/mod/STS2MCP/tests/check-bridge.sh
+index 2b387e8..f519243 100644
+--- a/mod/STS2MCP/tests/check-bridge.sh
++++ b/mod/STS2MCP/tests/check-bridge.sh
+@@ -819,7 +819,7 @@ if (args.Length > 1)
+         ("Nodes.Events.NAncientEventLayout", new[] { "_dialogueContainer", "_currentDialogueLine" }),
+         ("Events.EventOption", new[] { "BeforeChosen", "<OnChosen>k__BackingField", "<DisableOnChosen>k__BackingField" }),
+         ("Nodes.Events.NEventOptionButton", new[] { "<Index>k__BackingField" }),
+-        ("Multiplayer.Game.EventSynchronizer", new[] { "_playerCollection", "_localPlayerId" }),
++        ("Multiplayer.Game.EventSynchronizer", new[] { "_playerCollection", "_localPlayerId", "_netService", "_canonicalEvent", "_playerVotes", "_pageIndex" }),
+         ("Nodes.Cards.Holders.NCardHolder", new[] { "_isClickable" }),
+         ("Nodes.Combat.NPlayerHand", new[] { "_prefs", "_selectedCards", "_currentSelectionFilter" }),
+         ("Nodes.Potions.NPotionHolder", new[] { "_isUsable" }),
+@@ -1316,7 +1316,7 @@ if (args.Length > 1)
+     }
+     string? PolicyReason(bool shared, bool embedded)
+     {
+-        try { Call(protocol, null, "RequireEventPolicy", shared, embedded); return null; }
++        try { Call(protocol, null, "RequireEventPolicy", shared, embedded, false); return null; }
+         catch (TargetInvocationException e) { return e.InnerException!.Message; }
+     }
+     // Any unsupported CURRENT alternative (policy, callback shape, lethal confirmation) clears the whole decision; no per-event admission remains.
+@@ -2389,10 +2389,56 @@ if (args.Length > 1)
+     Check(CalledBy(mapScreenType.GetMethod("OnMapPointSelectedLocally", flags)!).Any(m => m.Name == "RequestEnqueue")
+         && !CalledBy(mapScreenType.GetMethod("OnMapPointSelectedLocally", flags)!).Any(m => m.Name is "TryCancelStartOfActAnim" or "DisableInputVeryBriefly"),
+         "native owned map selection enqueues the vote without consulting the human-only animation interrupt path");
+-    Check(CalledMethods("EventInputsReady").Any(m => m.Name == "RequireEventPolicy" && m.DeclaringType == protocol && m.GetParameters().Length == 2)
+-        && CalledMethods("RequireEventOption").Any(m => m.Name == "RequireEventPolicy" && m.DeclaringType == protocol && m.GetParameters().Length == 2)
++    Check(CalledMethods("EventInputsReady").Any(m => m.Name == "RequireEventPolicy" && m.DeclaringType == protocol && m.GetParameters().Length == 3)
++        && CalledMethods("RequireEventOption").Any(m => m.Name == "RequireEventPolicy" && m.DeclaringType == protocol && m.GetParameters().Length == 3)
++        && CalledMethods("EventInputsReady").Any(m => m.Name == "SoleLocalPlayer" && m.DeclaringType == bridge) && CalledMethods("RequireEventOption").Any(m => m.Name == "SoleLocalPlayer" && m.DeclaringType == bridge)
+         && !CalledMethods("EventInputsReady").Any(m => m.Name == "get_IsFinished"),
+-        "readiness and per-option checks use the two-argument shared/embedded policy and never infer readiness from IsFinished");
++        "readiness and per-option checks use the shared/embedded/sole-player policy and never infer readiness from IsFinished");
++    // Sole-player shared events: the bridge proves the sole local player, the singleplayer service, the synchronizer's canonical/vote state and a
++    // page receipt, then reuses the unchanged native vote chain. No new Harmony target, no event-name exception, no direct effect invocation.
++    var synchronizerType = game.GetType("MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer", true)!;
++    var singleplayerServiceType = game.GetType("MegaCrit.Sts2.Core.Multiplayer.NetSingleplayerGameService", true)!;
++    var netGameType = game.GetType("MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType", true)!;
++    var optionType = game.GetType("MegaCrit.Sts2.Core.Events.EventOption", true)!;
++    Check(CalledMethods("SoleLocalPlayer").Any(m => m.Name == "get_Players") && CalledMethods("SoleLocalPlayer").Any(m => m.Name == "get_NetService")
++        && CalledMethods("SoleLocalPlayer").Any(m => m.Name == "get_Type" && m.DeclaringType!.Name == "INetGameService")
++        && (int)Enum.Parse(netGameType, "Singleplayer") == 1 && (int)Enum.Parse(netGameType, "Client") == 3,
++        "the sole-player proof reads the run's player list and the live service type against the native Singleplayer enum member");
++    Check(CalledMethods("RequireEventOption").Any(m => m.Name == "RequireEventSynchronizer" && m.DeclaringType == protocol)
++        && CalledMethods("RequireEventOption").Any(m => m.Name == "get_IsShared" && m.DeclaringType == synchronizerType) && CalledMethods("RequireEventOption").Any(m => m.Name == "get_CanonicalInstance")
++        && new[] { "_canonicalEvent", "_netService", "_playerVotes", "_playerCollection", "_localPlayerId" }.All(Operands(bridge.GetMethod("RequireEventOption", flags)!).OfType<string>().Contains),
++        "per-option admission binds the synchronizer's canonical event, service, votes, player collection and local id before consulting the shared policy");
++    Check(EventPathOperands("DispatchEventOption").OfType<MethodBase>().Any(m => m.Name == "EventChoiceCompleted" && m.DeclaringType == protocol)
++        && EventPathOperands("DispatchEventOption").OfType<MethodBase>().Any(m => m.Name == "CaptureAppendedTask" && m.DeclaringType == protocol)
++        && EventPathOperands("DispatchEventOption").OfType<string>().Contains("_pageIndex") && EventPathOperands("DispatchEventOption").OfType<string>().Contains("_playerVotes")
++        && !EventPathOperands("DispatchEventOption").OfType<MethodBase>().Any(m => m.DeclaringType == synchronizerType && m.Name is "ChooseLocalOption" or "ChooseOptionForEvent" or "ChooseOptionForSharedEvent" or "ChooseSharedEventOption" or "PlayerVotedForSharedOptionIndex")
++        && !EventPathOperands("DispatchEventOption").OfType<MethodBase>().Any(m => m.Name == "Chosen" && m.DeclaringType == optionType),
++        "dispatch still clicks the original native button, retains the exact appended task and reads the page/vote receipt; it never calls the synchronizer or option effects itself");
++    Check(synchronizerType.GetField("_playerVotes", flags)!.FieldType == typeof(List<uint?>) && synchronizerType.GetField("_pageIndex", flags)!.FieldType == typeof(uint)
++        && synchronizerType.GetField("_canonicalEvent", flags)!.FieldType == eventModelType && synchronizerType.GetField("_netService", flags)!.FieldType.Name == "INetGameService",
++        "pinned synchronizer vote/page/canonical/service field shapes");
++    var chooseLocal = CalledBy(synchronizerType.GetMethod("ChooseLocalOption", flags)!);
++    var voted = synchronizerType.GetMethod("PlayerVotedForSharedOptionIndex", flags)!;
++    var chooseShared = synchronizerType.GetMethod("ChooseOptionForSharedEvent", flags)!;
++    var chooseForEvent = synchronizerType.GetMethod("ChooseOptionForEvent", flags)!;
++    Check(CalledBy(eventRoomType.GetMethod("OptionButtonClicked", flags)!).Any(m => m.Name == "ChooseLocalOption") && CalledBy(eventRoomType.GetMethod("OptionButtonClicked", flags)!).Any(m => m.Name == "get_IsShared")
++        && chooseLocal.Any(m => m.Name == "get_IsShared" && m.DeclaringType == synchronizerType) && chooseLocal.Any(m => m.Name == "PlayerVotedForSharedOptionIndex") && chooseLocal.Any(m => m.Name == "ChooseOptionForEvent")
++        && CalledBy(voted).Any(m => m.Name == "ChooseSharedEventOption") && CalledBy(voted).Any(m => m.Name == "get_Type") && Operands(voted).OfType<FieldInfo>().Any(f => f.Name == "_pageIndex") && Operands(voted).OfType<FieldInfo>().Any(f => f.Name == "_playerVotes")
++        && CalledBy(synchronizerType.GetMethod("ChooseSharedEventOption", flags)!).Any(m => m.Name == "ChooseOptionForSharedEvent") && CalledBy(synchronizerType.GetMethod("ChooseSharedEventOption", flags)!).Any(m => m.Name == "get_Type")
++        && CalledBy(chooseShared).Any(m => m.Name == "ClearPlayerVotes") && CalledBy(chooseShared).Any(m => m.Name == "get_Players") && CalledBy(chooseShared).Any(m => m.Name == "ChooseOptionForEvent") && Operands(chooseShared).OfType<FieldInfo>().Any(f => f.Name == "_pageIndex")
++        && CalledBy(chooseForEvent).Any(m => m.Name == "Chosen" && m.DeclaringType == optionType) && CalledBy(chooseForEvent).Any(m => m.Name == "RunSafely") && Operands(chooseForEvent).OfType<FieldInfo>().Any(f => f.Name == "_pendingOptionTasks")
++        && CalledBy(synchronizerType.GetMethod("get_IsShared", flags)!).Any(m => m.Name == "get_IsShared" && m.DeclaringType == eventModelType) && Operands(synchronizerType.GetMethod("get_IsShared", flags)!).OfType<FieldInfo>().Any(f => f.Name == "_canonicalEvent"),
++        "native shared chain: click -> ChooseLocalOption -> page-indexed vote -> host/singleplayer ChooseSharedEventOption -> ChooseOptionForSharedEvent (votes cleared, page++) -> ChooseOptionForEvent -> Chosen appended to _pendingOptionTasks");
++    var beforeChosen = GameStateMachineCalls(eventRoomType, "BeforeOptionChosen");
++    Check(beforeChosen.Any(m => m.Name == "get_Players") && beforeChosen.Any(m => m.Name == "get_Count") && beforeChosen.Any(m => m.Name == "BeforeSharedOptionChosen") && beforeChosen.Any(m => m.Name == "DisableOptionButtons")
++        && CalledBy(game.GetType("MegaCrit.Sts2.Core.Nodes.Events.NEventLayout", true)!.GetMethod("AddOptions", flags)!).Any(m => m.Name == "get_Players"),
++        "native BeforeOptionChosen and the shared vote label branch on the run's player count, so a sole player takes the ordinary disable path");
++    Check(singleplayerServiceType.GetMethod("get_Type", flags)!.GetMethodBody()!.GetILAsByteArray()!.SequenceEqual(new byte[] { 0x17, 0x2a })
++        && singleplayerServiceType.GetMethods(flags).Where(m => m.Name == "SendMessage").Count() == 2
++        && singleplayerServiceType.GetMethods(flags).Where(m => m.Name == "SendMessage").All(m => m.GetMethodBody()!.GetILAsByteArray()!.SequenceEqual(new byte[] { 0x2a })),
++        "NetSingleplayerGameService reports Singleplayer (ldc.i4.1; ret) and both SendMessage overloads are empty, so the vote chain neither waits on nor emits network messages");
++    Check(game.GetType("MegaCrit.Sts2.Core.Models.Events.MorphicGrove", true)!.GetMethod("get_IsShared", flags)!.GetMethodBody()!.GetILAsByteArray()!.SequenceEqual(new byte[] { 0x17, 0x2a }),
++        "singleplayer content carries constant-true IsShared (MorphicGrove), the live floor-5 halt");
+     Check(CalledMethods("RequireEventOption").Any(m => m.Name == "GetInvocationList") && Operands(bridge.GetMethod("RequireEventOption", flags)!).OfType<string>().Contains("WillKillPlayer")
+         && CalledMethods("RequireEventOption").Any(m => m.Name == "get_CurrentOptions") && CalledMethods("RequireEventOption").Any(m => m.Name == "RequireGeneration"),
+         "single-callback, lethal-confirmation, exact CurrentOptions[index] and generation guards are retained on the generic path");
+@@ -2428,13 +2474,58 @@ if (args.Length > 1)
+     finally { eventOperationField.SetValue(null, null); }
+     Console.WriteLine("PASS: installed API private-field compatibility and built GET mutation regressions (metadata only).");
+ }
+-Check(protocol.GetMethod("RequireEventPolicy", flags)!.GetParameters().Length == 2, "event policy takes no per-model audited/allowlist argument");
+-foreach (bool shared in new[] { false, true }) foreach (bool embedded in new[] { false, true })
++// Sole-player shared events (v0.111 MorphicGrove.IsShared is constant true, also in singleplayer) are admitted through the native vote chain;
++// the old two-argument policy halted the live run as shared_event_unverified with no legal actions.
++var eventPolicy = protocol.GetMethod("RequireEventPolicy", flags)!;
++Check(eventPolicy.GetParameters().Length is 2 or 3 && eventPolicy.GetParameters().All(p => p.ParameterType == typeof(bool)),
++    "event policy takes no per-model audited/allowlist argument");
++string? soleSharedHalt = null;
++try { eventPolicy.Invoke(null, eventPolicy.GetParameters().Length == 2 ? new object?[] { true, false } : new object?[] { true, false, true }); }
++catch (TargetInvocationException e) { soleSharedHalt = e.InnerException!.Message; }
++Check(soleSharedHalt == null, "the sole local player of a native singleplayer run may choose a shared event option; production halted: " + soleSharedHalt);
++foreach (bool shared in new[] { false, true }) foreach (bool embedded in new[] { false, true }) foreach (bool sole in new[] { false, true })
+ {
+     bool refused = false;
+-    try { Call(protocol, null, "RequireEventPolicy", shared, embedded); }
++    try { Call(protocol, null, "RequireEventPolicy", shared, embedded, sole); }
+     catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { refused = true; }
+-    Check(refused == (shared || embedded), "shared-in-singleplayer and embedded-combat alternatives halt before dispatch; ordinary unlisted models are admitted by the native option protocol");
++    Check(refused == (shared && !sole || embedded), $"shared voting without a proven sole player and embedded-combat alternatives halt before dispatch; ordinary unlisted models are admitted by the native option protocol: shared={shared} embedded={embedded} sole={sole}");
++}
++{
++    bool Refused(Action test) { try { test(); return false; } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { return true; } }
++    foreach (var (shared, syncShared, slots, pendingVotes, refused) in new[] { (true, true, 1, 0, false), (false, false, 1, 0, false), (false, false, 2, 0, false),
++        (true, false, 1, 0, true), (false, true, 1, 0, true), (true, true, 2, 0, true), (true, true, 0, 0, true), (true, true, 1, 1, true), (false, false, 1, 1, true) })
++        Check(Refused(() => Call(protocol, null, "RequireEventSynchronizer", shared, syncShared, slots, pendingVotes)) == refused,
++            $"synchronizer flag agreement, sole vote slot and no pending vote: shared={shared} sync={syncShared} slots={slots} pending={pendingVotes}");
++    // Sole-player shared fixture around the production receipts: the native vote chain (vote -> every slot voted -> votes cleared, page++ ->
++    // Chosen appended) runs synchronously inside the click; anything short of exactly that is not a receipt. Ordinary events move no page.
++    foreach (var scenario in new[] { "success", "stalled_vote", "vote_left", "double_page", "no_page", "no_task", "two_tasks", "ordinary", "ordinary_page_moved" })
++    {
++        bool shared = !scenario.StartsWith("ordinary");
++        var pending = new List<Task>(); var votes = new List<uint?> { null }; uint page = 0; var chosen = new TaskCompletionSource();
++        void NativeClick()
++        {
++            if (!shared) { pending.Add(chosen.Task); if (scenario == "ordinary_page_moved") page++; return; }
++            votes[0] = 1; // PlayerVotedForSharedOptionIndex
++            if (scenario == "stalled_vote") return; // another slot still waiting for its voter
++            votes[0] = null; page += scenario switch { "double_page" => 2u, "no_page" => 0u, _ => 1u }; // ChooseOptionForSharedEvent
++            if (scenario == "vote_left") votes[0] = 1;
++            if (scenario != "no_task") pending.Add(chosen.Task); // ChooseOptionForEvent
++            if (scenario == "two_tasks") pending.Add(Task.CompletedTask);
++        }
++        Call(protocol, null, "RequireEventSynchronizer", shared, shared, votes.Count, votes.Count(v => v.HasValue));
++        uint before = page; Task? root = null; bool receiptRefused = false;
++        try
++        {
++            root = (Task)Call(protocol, null, "CaptureAppendedTask", pending, (Action)NativeClick)!;
++            if (!(bool)Call(protocol, null, "EventChoiceCompleted", shared, before, page, votes.Count(v => v.HasValue))!) throw new TargetInvocationException(new NotSupportedException("event_choice_receipt_unverified"));
++        }
++        catch (TargetInvocationException) { receiptRefused = true; }
++        Check(receiptRefused == scenario is not ("success" or "ordinary"), "sole-player shared choice receipt scenario: " + scenario);
++        if (receiptRefused) continue;
++        Check(ReferenceEquals(root, chosen.Task) && !root!.IsCompleted, "exact appended task retained while its awaited effects are still pending: " + scenario);
++        chosen.SetResult();
++        Check(root.IsCompletedSuccessfully, "retained task completes with the native effects, not with the click: " + scenario);
++    }
+ }
+ foreach (bool terminal in new[] { false, true }) foreach (bool act in new[] { false, true })
+ foreach (bool skip in new[] { false, true }) foreach (bool seen in new[] { false, true }) foreach (bool debug in new[] { false, true })

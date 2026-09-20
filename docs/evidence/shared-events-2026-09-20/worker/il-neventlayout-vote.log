@@ -1,0 +1,21 @@
+METHOD Void OnPlayerVoteChanged(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton] get_OptionButtons()
+ 0006: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton] GetEnumerator()
+ 0011: stloc.0 
+ 0012: br.s 27
+ 0014: ldloc.0 
+ 0015: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton].MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton get_Current()
+ 0020: stloc.1 
+ 0021: ldloc.1 
+ 0022: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.Void RefreshVotes()
+ 0027: ldloc.0 
+ 0028: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0033: brtrue.s 14
+ 0035: leave.s 47
+ 0037: ldloc.0 
+ 0038: brfalse.s 46
+ 0040: ldloc.0 
+ 0041: callvirt method:System.IDisposable.Void Dispose()
+ 0046: endfinally 
+ 0047: ret 

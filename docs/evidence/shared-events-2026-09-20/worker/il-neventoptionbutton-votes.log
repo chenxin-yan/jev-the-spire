@@ -1,0 +1,36 @@
+METHOD Void RefreshVotes()
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NMultiplayerVoteContainer _playerVoteContainer
+ 0006: ldc.i4.1 
+ 0007: callvirt method:MegaCrit.Sts2.Core.Nodes.CommonUi.NMultiplayerVoteContainer.Void RefreshPlayerVotes(Boolean)
+ 0012: ret 
+METHOD Boolean ShouldDisplayPlayerVote(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0000: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0005: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+ 0010: ldarg.1 
+ 0011: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.System.Nullable`1[System.UInt32] GetPlayerVote(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0016: stloc.2 
+ 0017: ldloca.s 2
+ 0019: call method:System.Nullable`1[System.UInt32].Boolean get_HasValue()
+ 0024: brtrue.s 37
+ 0026: ldloca.s 3
+ 0028: initobj type:System.Nullable`1[System.Int64]
+ 0034: ldloc.3 
+ 0035: br.s 50
+ 0037: ldloca.s 2
+ 0039: call method:System.Nullable`1[System.UInt32].UInt32 GetValueOrDefault()
+ 0044: conv.u8 
+ 0045: newobj method:System.Nullable`1[System.Int64].Void .ctor(Int64)
+ 0050: stloc.0 
+ 0051: ldarg.0 
+ 0052: call method:MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.Int32 get_Index()
+ 0057: conv.i8 
+ 0058: stloc.1 
+ 0059: ldloca.s 0
+ 0061: call method:System.Nullable`1[System.Int64].Int64 GetValueOrDefault()
+ 0066: ldloc.1 
+ 0067: ceq 
+ 0069: ldloca.s 0
+ 0071: call method:System.Nullable`1[System.Int64].Boolean get_HasValue()
+ 0076: and 
+ 0077: ret 

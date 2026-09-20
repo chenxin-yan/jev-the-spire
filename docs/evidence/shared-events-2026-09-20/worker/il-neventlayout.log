@@ -1,0 +1,225 @@
+METHOD Void _EnterTree()
+ 0000: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0005: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+ 0010: ldarg.0 
+ 0011: ldftn method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void OnPlayerVoteChanged(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0017: newobj method:System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player].Void .ctor(System.Object, IntPtr)
+ 0022: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void add_PlayerVoteChanged(System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+ 0027: call method:MegaCrit.Sts2.Core.Nodes.NGame.MegaCrit.Sts2.Core.Nodes.NGame get_Instance()
+ 0032: dup 
+ 0033: brtrue.s 37
+ 0035: pop 
+ 0036: ret 
+ 0037: ldsfld field:Godot.StringName PhobiaModeToggled
+ 0042: ldarg.0 
+ 0043: ldftn method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void UpdatePhobiaMode()
+ 0049: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0054: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0059: ldc.i4.0 
+ 0060: call method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0065: pop 
+ 0066: ret 
+METHOD Void _ExitTree()
+ 0000: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0005: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+ 0010: ldarg.0 
+ 0011: ldftn method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void OnPlayerVoteChanged(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0017: newobj method:System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player].Void .ctor(System.Object, IntPtr)
+ 0022: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void remove_PlayerVoteChanged(System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+ 0027: call method:MegaCrit.Sts2.Core.Nodes.NGame.MegaCrit.Sts2.Core.Nodes.NGame get_Instance()
+ 0032: dup 
+ 0033: brtrue.s 37
+ 0035: pop 
+ 0036: ret 
+ 0037: ldsfld field:Godot.StringName PhobiaModeToggled
+ 0042: ldarg.0 
+ 0043: ldftn method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void UpdatePhobiaMode()
+ 0049: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0054: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0059: call method:Godot.GodotObject.Void Disconnect(Godot.StringName, Godot.Callable)
+ 0064: ret 
+METHOD Void AddOptions(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Events.EventOption])
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.addons.mega_text.MegaLabel _sharedEventLabel
+ 0006: brfalse.s 77
+ 0008: ldarg.0 
+ 0009: ldfld field:MegaCrit.Sts2.addons.mega_text.MegaLabel _sharedEventLabel
+ 0014: ldarg.0 
+ 0015: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _event
+ 0020: stloc.3 
+ 0021: ldloc.3 
+ 0022: brfalse.s 71
+ 0024: ldloc.3 
+ 0025: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsShared()
+ 0030: brfalse.s 71
+ 0032: ldloc.3 
+ 0033: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsFinished()
+ 0038: brtrue.s 71
+ 0040: ldarg.0 
+ 0041: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _event
+ 0046: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0051: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 0056: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0061: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Entities.Players.Player].Int32 get_Count()
+ 0066: ldc.i4.1 
+ 0067: cgt 
+ 0069: br.s 72
+ 0071: ldc.i4.0 
+ 0072: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0077: ldarg.1 
+ 0078: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Events.EventOption].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Events.EventOption] GetEnumerator()
+ 0083: stloc.s 4
+ 0085: br.s 143
+ 0087: ldloc.s 4
+ 0089: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Events.EventOption].MegaCrit.Sts2.Core.Events.EventOption get_Current()
+ 0094: stloc.s 5
+ 0096: ldarg.0 
+ 0097: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _event
+ 0102: ldloc.s 5
+ 0104: ldarg.0 
+ 0105: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0110: ldc.i4.0 
+ 0111: callvirt method:Godot.Node.Int32 GetChildCount(Boolean)
+ 0116: call method:MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton Create(MegaCrit.Sts2.Core.Models.EventModel, MegaCrit.Sts2.Core.Events.EventOption, Int32)
+ 0121: stloc.s 6
+ 0123: ldarg.0 
+ 0124: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0129: ldloc.s 6
+ 0131: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0136: ldloc.s 6
+ 0138: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.Void RefreshVotes()
+ 0143: ldloc.s 4
+ 0145: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0150: brtrue.s 87
+ 0152: leave.s 166
+ 0154: ldloc.s 4
+ 0156: brfalse.s 165
+ 0158: ldloc.s 4
+ 0160: callvirt method:System.IDisposable.Void Dispose()
+ 0165: endfinally 
+ 0166: ldarg.0 
+ 0167: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0172: ldc.i4.0 
+ 0173: callvirt method:Godot.Node.Int32 GetChildCount(Boolean)
+ 0178: stloc.0 
+ 0179: ldloc.0 
+ 0180: brtrue.s 183
+ 0182: ret 
+ 0183: ldarg.0 
+ 0184: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0189: ldc.i4.0 
+ 0190: ldc.i4.0 
+ 0191: callvirt method:Godot.Node.Godot.Control GetChild[Control](Int32, Boolean)
+ 0196: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0201: stloc.1 
+ 0202: ldarg.0 
+ 0203: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0208: ldloc.0 
+ 0209: ldc.i4.1 
+ 0210: sub 
+ 0211: ldc.i4.0 
+ 0212: callvirt method:Godot.Node.Godot.Control GetChild[Control](Int32, Boolean)
+ 0217: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0222: stloc.2 
+ 0223: ldc.i4.0 
+ 0224: stloc.s 7
+ 0226: br.s 351
+ 0228: ldarg.0 
+ 0229: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0234: ldloc.s 7
+ 0236: ldc.i4.0 
+ 0237: callvirt method:Godot.Node.Godot.Control GetChild[Control](Int32, Boolean)
+ 0242: stloc.s 8
+ 0244: ldloc.s 8
+ 0246: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0251: stloc.s 9
+ 0253: ldloc.s 8
+ 0255: ldloc.s 9
+ 0257: callvirt method:Godot.Control.Void set_FocusNeighborLeft(Godot.NodePath)
+ 0262: ldloc.s 8
+ 0264: ldloc.s 9
+ 0266: callvirt method:Godot.Control.Void set_FocusNeighborRight(Godot.NodePath)
+ 0271: ldloc.s 8
+ 0273: ldloc.s 7
+ 0275: ldc.i4.0 
+ 0276: bgt.s 281
+ 0278: ldloc.2 
+ 0279: br.s 302
+ 0281: ldarg.0 
+ 0282: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0287: ldloc.s 7
+ 0289: ldc.i4.1 
+ 0290: sub 
+ 0291: ldc.i4.0 
+ 0292: callvirt method:Godot.Node.Godot.Control GetChild[Control](Int32, Boolean)
+ 0297: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0302: callvirt method:Godot.Control.Void set_FocusNeighborTop(Godot.NodePath)
+ 0307: ldloc.s 8
+ 0309: ldloc.s 7
+ 0311: ldloc.0 
+ 0312: ldc.i4.1 
+ 0313: sub 
+ 0314: blt.s 319
+ 0316: ldloc.1 
+ 0317: br.s 340
+ 0319: ldarg.0 
+ 0320: ldfld field:Godot.VBoxContainer _optionsContainer
+ 0325: ldloc.s 7
+ 0327: ldc.i4.1 
+ 0328: add 
+ 0329: ldc.i4.0 
+ 0330: callvirt method:Godot.Node.Godot.Control GetChild[Control](Int32, Boolean)
+ 0335: callvirt method:Godot.Node.Godot.NodePath GetPath()
+ 0340: callvirt method:Godot.Control.Void set_FocusNeighborBottom(Godot.NodePath)
+ 0345: ldloc.s 7
+ 0347: ldc.i4.1 
+ 0348: add 
+ 0349: stloc.s 7
+ 0351: ldloc.s 7
+ 0353: ldloc.0 
+ 0354: blt.s 228
+ 0356: ldarg.0 
+ 0357: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void AnimateButtonsIn()
+ 0362: ret 
+METHOD Void DisableEventOptions()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton] get_OptionButtons()
+ 0006: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton] GetEnumerator()
+ 0011: stloc.0 
+ 0012: br.s 27
+ 0014: ldloc.0 
+ 0015: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton].MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton get_Current()
+ 0020: stloc.1 
+ 0021: ldloc.1 
+ 0022: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0027: ldloc.0 
+ 0028: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0033: brtrue.s 14
+ 0035: leave.s 47
+ 0037: ldloc.0 
+ 0038: brfalse.s 46
+ 0040: ldloc.0 
+ 0041: callvirt method:System.IDisposable.Void Dispose()
+ 0046: endfinally 
+ 0047: ret 
+METHOD System.Threading.Tasks.Task BeforeSharedOptionChosen(MegaCrit.Sts2.Core.Events.EventOption)
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Runtime.CompilerServices.AsyncTaskMethodBuilder Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout <>4__this
+ 0020: ldloca.s 0
+ 0022: ldarg.1 
+ 0023: stfld field:MegaCrit.Sts2.Core.Events.EventOption option
+ 0028: ldloca.s 0
+ 0030: ldc.i4.m1 
+ 0031: stfld field:Int32 <>1__state
+ 0036: ldloca.s 0
+ 0038: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0043: ldloca.s 0
+ 0045: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void Start[<BeforeSharedOptionChosen>d__34](<BeforeSharedOptionChosen>d__34 ByRef)
+ 0050: ldloca.s 0
+ 0052: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0057: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Threading.Tasks.Task get_Task()
+ 0062: ret 

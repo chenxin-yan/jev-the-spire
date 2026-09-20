@@ -1,0 +1,9 @@
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType get_Type()
+ 0000: ldc.i4.1 
+ 0001: ret 
+METHOD Void SendMessage[T](T, UInt64)
+ 0000: ret 
+METHOD UInt64 get_NetId()
+ 0000: ldc.i4.1 
+ 0001: conv.i8 
+ 0002: ret 

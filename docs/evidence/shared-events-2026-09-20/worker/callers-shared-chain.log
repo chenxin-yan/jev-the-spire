@@ -1,0 +1,39 @@
+== callers of ChooseLocalOption
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.OptionButtonClicked IL 65 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseLocalOption
+CALLER MegaCrit.Sts2.Core.Nodes.RestSite.NRestSiteButton+<SelectOption>d__26.MoveNext IL 171 -> MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer.ChooseLocalOption
+== callers of add_PlayerVoteChanged
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen._Ready IL 612 -> MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer.add_PlayerVoteChanged
+CALLER MegaCrit.Sts2.Core.Nodes.Multiplayer.NMultiplayerPlayerState._Ready IL 1276 -> MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer.add_PlayerVoteChanged
+CALLER MegaCrit.Sts2.Core.Nodes.Events.NEventLayout._EnterTree IL 22 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.add_PlayerVoteChanged
+== callers of GetPlayerVote
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.TreasureRoomRelic.NTreasureRoomRelicCollection+<AnimateRelicAwards>d__31.MoveNext IL 163 -> MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer.GetPlayerVote
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.TreasureRoomRelic.NTreasureRoomRelicHolder.PlayerVotedForRelic IL 11 -> MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer.GetPlayerVote
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NTreasureRoom.IsPlayerVotingForSkip IL 30 -> MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer.GetPlayerVote
+CALLER MegaCrit.Sts2.Core.Nodes.Events.NEventOptionButton.ShouldDisplayPlayerVote IL 11 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.GetPlayerVote
+== callers of get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared IL 21 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.BeginEvent IL 56 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.HandleVotedForSharedEventOptionMessage IL 124 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.HandleEventOptionChosenMessage IL 108 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseLocalOption IL 1 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForSharedEvent IL 1 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared
+CALLER MegaCrit.Sts2.Core.Models.EventModel.get_IsDeterministic IL 1 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Models.EventModel.EnterCombatWithoutExitingEvent IL 1 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Models.EventModel+<BeginEvent>d__28.MoveNext IL 80 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.OptionButtonClicked IL 36 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom+<BeforeOptionChosen>d__31.MoveNext IL 59 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.get_IsShared
+CALLER MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.AddOptions IL 25 -> MegaCrit.Sts2.Core.Models.EventModel.get_IsShared
+== callers of PlayerVotedForSharedOptionIndex
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.HandleVotedForSharedEventOptionMessage IL 251 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.PlayerVotedForSharedOptionIndex
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseLocalOption IL 74 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.PlayerVotedForSharedOptionIndex
+== callers of ChooseSharedEventOption
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.PlayerVotedForSharedOptionIndex IL 413 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseSharedEventOption
+== callers of ChooseOptionForSharedEvent
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseSharedEventOption IL 242 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForSharedEvent
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.HandleSharedEventOptionChosenMessage IL 324 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForSharedEvent
+== callers of ChooseOptionForEvent
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.HandleEventOptionChosenMessage IL 205 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForEvent
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseLocalOption IL 196 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForEvent
+CALLER MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForSharedEvent IL 142 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.ChooseOptionForEvent
+== callers of AwaitPendingOptionTasks
+CALLER MegaCrit.Sts2.Core.Rooms.EventRoom+<Exit>d__19.MoveNext IL 27 -> MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.AwaitPendingOptionTasks

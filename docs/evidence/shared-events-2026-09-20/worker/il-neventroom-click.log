@@ -1,0 +1,46 @@
+METHOD Void OptionButtonClicked(MegaCrit.Sts2.Core.Events.EventOption, Int32)
+ 0000: ldarg.1 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.Boolean get_IsLocked()
+ 0006: brfalse.s 9
+ 0008: ret 
+ 0009: ldarg.1 
+ 0010: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.Boolean get_IsProceed()
+ 0015: brfalse.s 30
+ 0017: ldarg.1 
+ 0018: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.System.Threading.Tasks.Task Chosen()
+ 0023: call method:MegaCrit.Sts2.Core.Helpers.TaskHelper.System.Threading.Tasks.Task RunSafely(System.Threading.Tasks.Task)
+ 0028: pop 
+ 0029: ret 
+ 0030: ldarg.0 
+ 0031: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _event
+ 0036: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsShared()
+ 0041: brtrue.s 54
+ 0043: ldarg.0 
+ 0044: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Nodes.Events.NEventLayout get_Layout()
+ 0049: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void ClearOptions()
+ 0054: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0059: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+ 0064: ldarg.2 
+ 0065: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void ChooseLocalOption(Int32)
+ 0070: ret 
+METHOD System.Threading.Tasks.Task BeforeOptionChosen(MegaCrit.Sts2.Core.Events.EventOption)
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Runtime.CompilerServices.AsyncTaskMethodBuilder Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom <>4__this
+ 0020: ldloca.s 0
+ 0022: ldarg.1 
+ 0023: stfld field:MegaCrit.Sts2.Core.Events.EventOption option
+ 0028: ldloca.s 0
+ 0030: ldc.i4.m1 
+ 0031: stfld field:Int32 <>1__state
+ 0036: ldloca.s 0
+ 0038: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0043: ldloca.s 0
+ 0045: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void Start[<BeforeOptionChosen>d__31](<BeforeOptionChosen>d__31 ByRef)
+ 0050: ldloca.s 0
+ 0052: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0057: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Threading.Tasks.Task get_Task()
+ 0062: ret 

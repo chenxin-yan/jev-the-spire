@@ -1,0 +1,58 @@
+METHOD Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, MegaCrit.Sts2.Core.Runs.IRunState, UInt64, UInt64)
+ 0000: ldarg.0 
+ 0001: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel].Void .ctor()
+ 0006: stfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+ 0011: ldarg.0 
+ 0012: newobj method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].Void .ctor()
+ 0017: stfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0022: ldarg.0 
+ 0023: newobj method:System.Collections.Generic.List`1[System.Threading.Tasks.Task].Void .ctor()
+ 0028: stfld field:System.Collections.Generic.List`1[System.Threading.Tasks.Task] _pendingOptionTasks
+ 0033: ldarg.0 
+ 0034: ldstr str:EventSynchronizer
+ 0039: ldc.i4.3 
+ 0040: newobj method:MegaCrit.Sts2.Core.Logging.Logger.Void .ctor(System.String, MegaCrit.Sts2.Core.Logging.LogType)
+ 0045: stfld field:MegaCrit.Sts2.Core.Logging.Logger _logger
+ 0050: ldarg.0 
+ 0051: call method:System.Object.Void .ctor()
+ 0056: ldarg.0 
+ 0057: ldarg.2 
+ 0058: stfld field:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService _netService
+ 0063: ldarg.0 
+ 0064: ldarg.1 
+ 0065: stfld field:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+ 0070: ldarg.0 
+ 0071: ldarg.3 
+ 0072: stfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0077: ldarg.0 
+ 0078: ldarg.s 5
+ 0080: stfld field:UInt64 _localPlayerId
+ 0085: ldarg.0 
+ 0086: ldarg.s 6
+ 0088: ldstr str:event_synchronizer
+ 0093: newobj method:MegaCrit.Sts2.Core.Random.Rng.Void .ctor(UInt64, System.String)
+ 0098: stfld field:MegaCrit.Sts2.Core.Random.Rng _multiplayerOptionSelectionRng
+ 0103: ldarg.0 
+ 0104: ldarg.3 
+ 0105: ldarg.s 4
+ 0107: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.EventCombatSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Runs.IPlayerCollection, MegaCrit.Sts2.Core.Runs.IRunState)
+ 0112: stfld field:MegaCrit.Sts2.Core.Multiplayer.Game.EventCombatSynchronizer _combatSynchronizer
+ 0117: ldarg.0 
+ 0118: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+ 0123: ldarg.0 
+ 0124: ldftn method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void HandleEventOptionChosenMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage, UInt64)
+ 0130: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage].Void .ctor(System.Object, IntPtr)
+ 0135: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer.Void RegisterMessageHandler[OptionIndexChosenMessage](MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage])
+ 0140: ldarg.0 
+ 0141: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+ 0146: ldarg.0 
+ 0147: ldftn method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void HandleVotedForSharedEventOptionMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.VotedForSharedEventOptionMessage, UInt64)
+ 0153: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.VotedForSharedEventOptionMessage].Void .ctor(System.Object, IntPtr)
+ 0158: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer.Void RegisterMessageHandler[VotedForSharedEventOptionMessage](MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.VotedForSharedEventOptionMessage])
+ 0163: ldarg.0 
+ 0164: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+ 0169: ldarg.0 
+ 0170: ldftn method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void HandleSharedEventOptionChosenMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.SharedEventOptionChosenMessage, UInt64)
+ 0176: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.SharedEventOptionChosenMessage].Void .ctor(System.Object, IntPtr)
+ 0181: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer.Void RegisterMessageHandler[SharedEventOptionChosenMessage](MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate`1[MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.SharedEventOptionChosenMessage])
+ 0186: ret 

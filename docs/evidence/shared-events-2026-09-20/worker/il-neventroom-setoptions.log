@@ -1,0 +1,75 @@
+METHOD Void SetOptions(MegaCrit.Sts2.Core.Models.EventModel)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Nodes.Events.NEventLayout get_Layout()
+ 0006: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void ClearOptions()
+ 0011: ldarg.1 
+ 0012: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Events.EventOption] get_CurrentOptions()
+ 0017: stloc.0 
+ 0018: ldarg.1 
+ 0019: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsFinished()
+ 0024: brfalse.s 77
+ 0026: ldarg.1 
+ 0027: ldsfld field:System.Func`1[System.Threading.Tasks.Task] <0>__Proceed
+ 0032: dup 
+ 0033: brtrue.s 54
+ 0035: pop 
+ 0036: ldnull 
+ 0037: ldftn method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.System.Threading.Tasks.Task Proceed()
+ 0043: newobj method:System.Func`1[System.Threading.Tasks.Task].Void .ctor(System.Object, IntPtr)
+ 0048: dup 
+ 0049: stsfld field:System.Func`1[System.Threading.Tasks.Task] <0>__Proceed
+ 0054: ldstr str:PROCEED
+ 0059: ldc.i4.0 
+ 0060: ldc.i4.1 
+ 0061: call method:System.Array.MegaCrit.Sts2.Core.HoverTips.IHoverTip[] Empty[IHoverTip]()
+ 0066: newobj method:MegaCrit.Sts2.Core.Events.EventOption.Void .ctor(MegaCrit.Sts2.Core.Models.EventModel, System.Func`1[System.Threading.Tasks.Task], System.String, Boolean, Boolean, MegaCrit.Sts2.Core.HoverTips.IHoverTip[])
+ 0071: newobj method:<>z__ReadOnlySingleElementList`1[MegaCrit.Sts2.Core.Events.EventOption].Void .ctor(MegaCrit.Sts2.Core.Events.EventOption)
+ 0076: stloc.0 
+ 0077: ldloc.0 
+ 0078: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Events.EventOption].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Events.EventOption] GetEnumerator()
+ 0083: stloc.1 
+ 0084: br.s 123
+ 0086: ldloc.1 
+ 0087: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Events.EventOption].MegaCrit.Sts2.Core.Events.EventOption get_Current()
+ 0092: stloc.2 
+ 0093: ldloc.2 
+ 0094: ldarg.0 
+ 0095: ldftn method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.System.Threading.Tasks.Task BeforeOptionChosen(MegaCrit.Sts2.Core.Events.EventOption)
+ 0101: newobj method:System.Func`2[MegaCrit.Sts2.Core.Events.EventOption,System.Threading.Tasks.Task].Void .ctor(System.Object, IntPtr)
+ 0106: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.Void add_BeforeChosen(System.Func`2[MegaCrit.Sts2.Core.Events.EventOption,System.Threading.Tasks.Task])
+ 0111: ldarg.0 
+ 0112: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Events.EventOption] _connectedOptions
+ 0117: ldloc.2 
+ 0118: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Events.EventOption].Void Add(MegaCrit.Sts2.Core.Events.EventOption)
+ 0123: ldloc.1 
+ 0124: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0129: brtrue.s 86
+ 0131: leave.s 143
+ 0133: ldloc.1 
+ 0134: brfalse.s 142
+ 0136: ldloc.1 
+ 0137: callvirt method:System.IDisposable.Void Dispose()
+ 0142: endfinally 
+ 0143: ldarg.0 
+ 0144: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Nodes.Events.NEventLayout get_Layout()
+ 0149: ldloc.0 
+ 0150: callvirt method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void AddOptions(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Events.EventOption])
+ 0155: ldarg.0 
+ 0156: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.Godot.Control get_DefaultFocusedControl()
+ 0161: dup 
+ 0162: brtrue.s 166
+ 0164: pop 
+ 0165: ret 
+ 0166: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 0171: ret 
+METHOD Void DisableOptionButtons()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.MegaCrit.Sts2.Core.Nodes.Events.NEventLayout get_Layout()
+ 0006: dup 
+ 0007: brtrue.s 11
+ 0009: pop 
+ 0010: ret 
+ 0011: call method:MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.Void DisableEventOptions()
+ 0016: ret 
+Unhandled exception. System.Exception: not found OnEventStateChanged
+   at IlProbe.Main(String[] args)

@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "shared_event_unverified",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "0c940da5f3624b0586ed753feeb3074c:102",
+  "mutation_pending": true
+}

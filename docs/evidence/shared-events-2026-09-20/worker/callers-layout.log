@@ -1,0 +1,13 @@
+== callers of ClearOptions
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.SetOptions IL 6 -> MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.ClearOptions
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.OptionButtonClicked IL 49 -> MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.ClearOptions
+CALLER MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.InvokeGodotClassMethod IL 499 -> MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.ClearOptions
+== callers of AddOptions
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.SetOptions IL 150 -> MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.AddOptions
+== callers of DisableOptionButtons
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.OnEnteringEventCombat IL 1 -> MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.DisableOptionButtons
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.InvokeGodotClassMethod IL 185 -> MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.DisableOptionButtons
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom+<BeforeOptionChosen>d__31.MoveNext IL 194 -> MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom.DisableOptionButtons
+== callers of BeforeSharedOptionChosen
+CALLER MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom+<BeforeOptionChosen>d__31.MoveNext IL 91 -> MegaCrit.Sts2.Core.Nodes.Events.NEventLayout.BeforeSharedOptionChosen
+== callers of SendMessage

@@ -1,0 +1,7 @@
+TYPE MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType
+FIELD Int32 value__
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType None = 0
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType Singleplayer = 1
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType Host = 2
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType Client = 3
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType Replay = 4

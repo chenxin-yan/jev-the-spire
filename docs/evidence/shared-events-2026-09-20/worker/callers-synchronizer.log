@@ -1,0 +1,4 @@
+== callers of EventSynchronizer.ChooseLocalOption
+== callers of EventSynchronizer.add_PlayerVoteChanged
+== callers of EventSynchronizer.GetPlayerVote
+== callers of EventSynchronizer.get_IsShared

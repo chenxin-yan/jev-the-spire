@@ -1,0 +1,4 @@
+/private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.dJoRqRqKC6/Program.cs(2517,15): warning CS8602: Dereference of a possibly null reference. [/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.dJoRqRqKC6/Check.csproj]
+SentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.
+PASS: installed API private-field compatibility and built GET mutation regressions (metadata only).
+PASS: 2735 actual-DLL checks; no game initialization or HTTP.

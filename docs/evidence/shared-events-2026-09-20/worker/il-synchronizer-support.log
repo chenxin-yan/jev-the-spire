@@ -1,0 +1,309 @@
+METHOD Boolean get_IsShared()
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Models.EventModel _canonicalEvent
+ 0006: dup 
+ 0007: brtrue.s 21
+ 0009: pop 
+ 0010: ldstr str:Event is not in progress!
+ 0015: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0020: throw 
+ 0021: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsShared()
+ 0026: ret 
+METHOD Void BeginEvent(MegaCrit.Sts2.Core.Models.EventModel, Boolean, System.Action`1[MegaCrit.Sts2.Core.Models.EventModel])
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Logging.Logger _logger
+ 0006: ldloca.s 0
+ 0008: ldc.i4.s 26
+ 0010: ldc.i4.2 
+ 0011: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0016: ldloca.s 0
+ 0018: ldstr str:Beginning event 
+ 0023: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0028: ldloca.s 0
+ 0030: ldarg.1 
+ 0031: callvirt method:MegaCrit.Sts2.Core.Models.AbstractModel.MegaCrit.Sts2.Core.Models.ModelId get_Id()
+ 0036: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[ModelId](MegaCrit.Sts2.Core.Models.ModelId)
+ 0041: ldloca.s 0
+ 0043: ldstr str:, shared: 
+ 0048: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0053: ldloca.s 0
+ 0055: ldarg.1 
+ 0056: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsShared()
+ 0061: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[Boolean](Boolean)
+ 0066: ldloca.s 0
+ 0068: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0073: ldc.i4.1 
+ 0074: callvirt method:MegaCrit.Sts2.Core.Logging.Logger.Void Debug(System.String, Int32)
+ 0079: ldarg.0 
+ 0080: ldfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0085: callvirt method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].Int32 get_Count()
+ 0090: stloc.1 
+ 0091: br.s 117
+ 0093: ldarg.0 
+ 0094: ldfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0099: ldloca.s 2
+ 0101: initobj type:System.Nullable`1[System.UInt32]
+ 0107: ldloc.2 
+ 0108: callvirt method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].Void Add(System.Nullable`1[System.UInt32])
+ 0113: ldloc.1 
+ 0114: ldc.i4.1 
+ 0115: add 
+ 0116: stloc.1 
+ 0117: ldloc.1 
+ 0118: ldarg.0 
+ 0119: ldfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0124: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0129: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Entities.Players.Player].Int32 get_Count()
+ 0134: blt.s 93
+ 0136: ldarg.0 
+ 0137: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+ 0142: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel].Enumerator GetEnumerator()
+ 0147: stloc.3 
+ 0148: br 290
+ 0153: ldloca.s 3
+ 0155: call method:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Models.EventModel].MegaCrit.Sts2.Core.Models.EventModel get_Current()
+ 0160: stloc.s 4
+ 0162: ldloc.s 4
+ 0164: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Boolean get_IsFinished()
+ 0169: brtrue.s 290
+ 0171: ldarg.0 
+ 0172: ldfld field:MegaCrit.Sts2.Core.Logging.Logger _logger
+ 0177: ldc.i4.s 65
+ 0179: ldc.i4.3 
+ 0180: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0185: stloc.0 
+ 0186: ldloca.s 0
+ 0188: ldstr str:Beginning new event 
+ 0193: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0198: ldloca.s 0
+ 0200: ldarg.1 
+ 0201: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[EventModel](MegaCrit.Sts2.Core.Models.EventModel)
+ 0206: ldloca.s 0
+ 0208: ldstr str:, but event 
+ 0213: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0218: ldloca.s 0
+ 0220: ldloc.s 4
+ 0222: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[EventModel](MegaCrit.Sts2.Core.Models.EventModel)
+ 0227: ldloca.s 0
+ 0229: ldstr str: for player 
+ 0234: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0239: ldloca.s 0
+ 0241: ldloc.s 4
+ 0243: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0248: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0253: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[UInt64](UInt64)
+ 0258: ldloca.s 0
+ 0260: ldstr str: is not yet finished!
+ 0265: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0270: ldloca.s 0
+ 0272: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0277: ldc.i4.1 
+ 0278: callvirt method:MegaCrit.Sts2.Core.Logging.Logger.Void Warn(System.String, Int32)
+ 0283: ldloc.s 4
+ 0285: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.Void EnsureCleanup()
+ 0290: ldloca.s 3
+ 0292: call method:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Models.EventModel].Boolean MoveNext()
+ 0297: brtrue 153
+ 0302: leave.s 318
+ 0304: ldloca.s 3
+ 0306: constrained. type:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Models.EventModel]
+ 0312: callvirt method:System.IDisposable.Void Dispose()
+ 0317: endfinally 
+ 0318: ldarg.0 
+ 0319: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+ 0324: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel].Void Clear()
+ 0329: ldarg.0 
+ 0330: ldfld field:System.Collections.Generic.List`1[System.Threading.Tasks.Task] _pendingOptionTasks
+ 0335: callvirt method:System.Collections.Generic.List`1[System.Threading.Tasks.Task].Void Clear()
+ 0340: ldarg.0 
+ 0341: call method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void ClearPlayerVotes()
+ 0346: ldarg.0 
+ 0347: ldc.i4.0 
+ 0348: stfld field:UInt32 _pageIndex
+ 0353: ldarg.0 
+ 0354: ldarg.1 
+ 0355: stfld field:MegaCrit.Sts2.Core.Models.EventModel _canonicalEvent
+ 0360: ldarg.0 
+ 0361: ldfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0366: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0371: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Players.Player].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player] GetEnumerator()
+ 0376: stloc.s 5
+ 0378: br 562
+ 0383: ldloc.s 5
+ 0385: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player].MegaCrit.Sts2.Core.Entities.Players.Player get_Current()
+ 0390: stloc.s 6
+ 0392: ldarg.1 
+ 0393: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.MegaCrit.Sts2.Core.Models.EventModel ToMutable()
+ 0398: stloc.s 7
+ 0400: ldarg.3 
+ 0401: brfalse.s 411
+ 0403: ldarg.3 
+ 0404: ldloc.s 7
+ 0406: callvirt method:System.Action`1[MegaCrit.Sts2.Core.Models.EventModel].Void Invoke(MegaCrit.Sts2.Core.Models.EventModel)
+ 0411: ldarg.0 
+ 0412: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+ 0417: ldloc.s 7
+ 0419: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel].Void Add(MegaCrit.Sts2.Core.Models.EventModel)
+ 0424: ldloc.s 7
+ 0426: ldloc.s 6
+ 0428: ldarg.0 
+ 0429: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.EventCombatSynchronizer _combatSynchronizer
+ 0434: ldarg.2 
+ 0435: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.System.Threading.Tasks.Task BeginEvent(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Multiplayer.Game.EventCombatSynchronizer, Boolean)
+ 0440: call method:MegaCrit.Sts2.Core.Helpers.TaskHelper.System.Threading.Tasks.Task RunSafely(System.Threading.Tasks.Task)
+ 0445: pop 
+ 0446: ldarg.0 
+ 0447: ldfld field:MegaCrit.Sts2.Core.Logging.Logger _logger
+ 0452: ldc.i4.s 39
+ 0454: ldc.i4.3 
+ 0455: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0460: stloc.0 
+ 0461: ldloca.s 0
+ 0463: ldstr str:Event 
+ 0468: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0473: ldloca.s 0
+ 0475: ldloc.s 7
+ 0477: callvirt method:MegaCrit.Sts2.Core.Models.AbstractModel.MegaCrit.Sts2.Core.Models.ModelId get_Id()
+ 0482: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[ModelId](MegaCrit.Sts2.Core.Models.ModelId)
+ 0487: ldloca.s 0
+ 0489: ldstr str: began for player 
+ 0494: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0499: ldloca.s 0
+ 0501: ldloc.s 6
+ 0503: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0508: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[UInt64](UInt64)
+ 0513: ldloca.s 0
+ 0515: ldstr str: with options: 
+ 0520: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0525: ldloca.s 0
+ 0527: ldstr str:,
+ 0532: ldloc.s 7
+ 0534: callvirt method:MegaCrit.Sts2.Core.Models.EventModel.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Events.EventOption] get_CurrentOptions()
+ 0539: call method:System.String.System.String Join[EventOption](System.String, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Events.EventOption])
+ 0544: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0549: ldloca.s 0
+ 0551: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0556: ldc.i4.1 
+ 0557: callvirt method:MegaCrit.Sts2.Core.Logging.Logger.Void VeryDebug(System.String, Int32)
+ 0562: ldloc.s 5
+ 0564: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0569: brtrue 383
+ 0574: leave.s 588
+ 0576: ldloc.s 5
+ 0578: brfalse.s 587
+ 0580: ldloc.s 5
+ 0582: callvirt method:System.IDisposable.Void Dispose()
+ 0587: endfinally 
+ 0588: ret 
+METHOD Void ClearPlayerVotes()
+ 0000: ldc.i4.0 
+ 0001: stloc.0 
+ 0002: br.s 29
+ 0004: ldarg.0 
+ 0005: ldfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0010: ldloc.0 
+ 0011: ldloca.s 1
+ 0013: initobj type:System.Nullable`1[System.UInt32]
+ 0019: ldloc.1 
+ 0020: callvirt method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].Void set_Item(Int32, System.Nullable`1[System.UInt32])
+ 0025: ldloc.0 
+ 0026: ldc.i4.1 
+ 0027: add 
+ 0028: stloc.0 
+ 0029: ldloc.0 
+ 0030: ldarg.0 
+ 0031: ldfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0036: callvirt method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].Int32 get_Count()
+ 0041: blt.s 4
+ 0043: ret 
+METHOD MegaCrit.Sts2.Core.Models.EventModel GetEventForPlayer(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0006: ldarg.1 
+ 0007: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.Int32 GetPlayerSlotIndex(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0012: stloc.0 
+ 0013: ldarg.0 
+ 0014: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+ 0019: ldloc.0 
+ 0020: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel].MegaCrit.Sts2.Core.Models.EventModel get_Item(Int32)
+ 0025: ret 
+METHOD MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0006: ldarg.0 
+ 0007: ldfld field:UInt64 _localPlayerId
+ 0012: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.MegaCrit.Sts2.Core.Entities.Players.Player GetPlayer(UInt64)
+ 0017: ret 
+METHOD MegaCrit.Sts2.Core.Models.EventModel GetLocalEvent()
+ 0000: ldarg.0 
+ 0001: ldarg.0 
+ 0002: call method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+ 0007: call method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.MegaCrit.Sts2.Core.Models.EventModel GetEventForPlayer(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0012: ret 
+METHOD System.Nullable`1[System.UInt32] GetPlayerVote(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+ 0006: ldarg.0 
+ 0007: ldfld field:MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+ 0012: ldarg.1 
+ 0013: callvirt method:MegaCrit.Sts2.Core.Runs.IPlayerCollection.Int32 GetPlayerSlotIndex(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0018: callvirt method:System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]].System.Nullable`1[System.UInt32] get_Item(Int32)
+ 0023: ret 
+METHOD Void SaveEventOptionToHistory(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Events.EventOption)
+ 0000: ldarg.2 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.Boolean get_ShouldSaveChoiceToHistory()
+ 0006: brtrue.s 9
+ 0008: ret 
+ 0009: ldloca.s 1
+ 0011: initobj type:MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry
+ 0017: ldloca.s 1
+ 0019: ldarg.2 
+ 0020: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.MegaCrit.Sts2.Core.Localization.LocString get_HistoryName()
+ 0025: call method:MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry.Void set_Title(MegaCrit.Sts2.Core.Localization.LocString)
+ 0030: ldloca.s 1
+ 0032: newobj method:System.Collections.Generic.Dictionary`2[System.String,System.Object].Void .ctor()
+ 0037: call method:MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry.Void set_Variables(System.Collections.Generic.Dictionary`2[System.String,System.Object])
+ 0042: ldloc.1 
+ 0043: stloc.0 
+ 0044: ldarg.2 
+ 0045: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.Boolean get_ShouldSaveVariablesToHistory()
+ 0050: brfalse.s 124
+ 0052: ldarg.2 
+ 0053: callvirt method:MegaCrit.Sts2.Core.Events.EventOption.MegaCrit.Sts2.Core.Localization.LocString get_HistoryName()
+ 0058: callvirt method:MegaCrit.Sts2.Core.Localization.LocString.System.Collections.Generic.IReadOnlyDictionary`2[System.String,System.Object] get_Variables()
+ 0063: callvirt method:System.Collections.Generic.IEnumerable`1[System.Collections.Generic.KeyValuePair`2[System.String,System.Object]].System.Collections.Generic.IEnumerator`1[System.Collections.Generic.KeyValuePair`2[System.String,System.Object]] GetEnumerator()
+ 0068: stloc.2 
+ 0069: br.s 104
+ 0071: ldloc.2 
+ 0072: callvirt method:System.Collections.Generic.IEnumerator`1[System.Collections.Generic.KeyValuePair`2[System.String,System.Object]].System.Collections.Generic.KeyValuePair`2[System.String,System.Object] get_Current()
+ 0077: stloc.3 
+ 0078: ldloca.s 0
+ 0080: call method:MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry.System.Collections.Generic.Dictionary`2[System.String,System.Object] get_Variables()
+ 0085: ldloca.s 3
+ 0087: call method:System.Collections.Generic.KeyValuePair`2[System.String,System.Object].System.String get_Key()
+ 0092: ldloca.s 3
+ 0094: call method:System.Collections.Generic.KeyValuePair`2[System.String,System.Object].System.Object get_Value()
+ 0099: callvirt method:System.Collections.Generic.Dictionary`2[System.String,System.Object].Void set_Item(System.String, System.Object)
+ 0104: ldloc.2 
+ 0105: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0110: brtrue.s 71
+ 0112: leave.s 124
+ 0114: ldloc.2 
+ 0115: brfalse.s 123
+ 0117: ldloc.2 
+ 0118: callvirt method:System.IDisposable.Void Dispose()
+ 0123: endfinally 
+ 0124: ldarg.1 
+ 0125: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 0130: callvirt method:MegaCrit.Sts2.Core.Runs.IRunState.MegaCrit.Sts2.Core.Runs.History.MapPointHistoryEntry get_CurrentMapPointHistoryEntry()
+ 0135: dup 
+ 0136: brtrue.s 140
+ 0138: pop 
+ 0139: ret 
+ 0140: ldarg.1 
+ 0141: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0146: call method:MegaCrit.Sts2.Core.Runs.History.MapPointHistoryEntry.MegaCrit.Sts2.Core.Runs.PlayerMapPointHistoryEntry GetEntry(UInt64)
+ 0151: callvirt method:MegaCrit.Sts2.Core.Runs.PlayerMapPointHistoryEntry.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry] get_EventChoices()
+ 0156: ldloc.0 
+ 0157: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry].Void Add(MegaCrit.Sts2.Core.Runs.History.EventOptionHistoryEntry)
+ 0162: ret 

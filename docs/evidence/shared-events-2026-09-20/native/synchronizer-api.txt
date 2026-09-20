@@ -1,0 +1,43 @@
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer+<>c
+NESTED MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer+<AwaitPendingOptionTasks>d__40
+TYPE MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer
+PROP System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.EventModel] Events get=System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.EventModel] get_Events()
+PROP Boolean IsShared get=Boolean get_IsShared()
+PROP MegaCrit.Sts2.Core.Entities.Players.Player LocalPlayer get=MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService _netService
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer _messageBuffer
+FIELD MegaCrit.Sts2.Core.Runs.IPlayerCollection _playerCollection
+FIELD UInt64 _localPlayerId
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.EventModel] _events
+FIELD MegaCrit.Sts2.Core.Models.EventModel _canonicalEvent
+FIELD System.Collections.Generic.List`1[System.Nullable`1[System.UInt32]] _playerVotes
+FIELD UInt32 _pageIndex
+FIELD System.Collections.Generic.List`1[System.Threading.Tasks.Task] _pendingOptionTasks
+FIELD MegaCrit.Sts2.Core.Random.Rng _multiplayerOptionSelectionRng
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.EventCombatSynchronizer _combatSynchronizer
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+FIELD System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player] PlayerVoteChanged
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.EventModel] get_Events()
+METHOD Boolean get_IsShared()
+METHOD Void add_PlayerVoteChanged(System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+METHOD Void remove_PlayerVoteChanged(System.Action`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+METHOD MegaCrit.Sts2.Core.Entities.Players.Player get_LocalPlayer()
+METHOD Void Dispose()
+METHOD Void BeginEvent(MegaCrit.Sts2.Core.Models.EventModel, Boolean, System.Action`1[MegaCrit.Sts2.Core.Models.EventModel])
+METHOD Void HandleVotedForSharedEventOptionMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.VotedForSharedEventOptionMessage, UInt64)
+METHOD Void PlayerVotedForSharedOptionIndex(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32, UInt32)
+METHOD Void ChooseSharedEventOption()
+METHOD Void HandleSharedEventOptionChosenMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.SharedEventOptionChosenMessage, UInt64)
+METHOD Void HandleEventOptionChosenMessage(MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage, UInt64)
+METHOD Void ChooseLocalOption(Int32)
+METHOD Void ChooseOptionForSharedEvent(UInt32)
+METHOD Void ChooseOptionForEvent(MegaCrit.Sts2.Core.Entities.Players.Player, Int32)
+METHOD Void SaveEventOptionToHistory(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Events.EventOption)
+METHOD Void ClearPlayerVotes()
+METHOD System.Nullable`1[System.UInt32] GetPlayerVote(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD MegaCrit.Sts2.Core.Models.EventModel GetLocalEvent()
+METHOD MegaCrit.Sts2.Core.Models.EventModel GetEventForPlayer(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD Void ResumeEvents(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD Void GenerateInternalCombatStateIfNecessary(MegaCrit.Sts2.Core.Models.EventModel)
+METHOD Void BeforeExitingRoom()
+METHOD System.Threading.Tasks.Task AwaitPendingOptionTasks()
