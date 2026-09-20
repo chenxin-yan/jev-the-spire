@@ -15,7 +15,7 @@ binaries are never committed or downloaded by CI.
 ## Run (owner's Mac, game running with the modded profile 2 bridge)
 
 ```sh
-mise install                              # project-local Bun 1.4.2 (mise.toml); Crust requires Bun >= 1.4
+mise install                            # Bun from package.json's packageManager; .NET from mise.toml
 bun install
 bun run src/main.ts                       # 10 actions by default
 bun run src/main.ts --max-actions 3       # positive integer bound
@@ -41,7 +41,7 @@ Record types: `wait`, `inference` (application attempt, latency, model id, respo
 
 ## Dependencies (pinned)
 
-`effect@4.0.0-rc.116` (`effect/unstable/ai` Decision/DecisionModel), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. Bun 1.4.2 pinned in `mise.toml`.
+`effect@4.0.0-rc.116` (`effect/unstable/ai` Decision/DecisionModel), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. The Bun runtime version is pinned only in `package.json`'s `packageManager` field. `mise.toml` enables Bun's idiomatic version-file discovery so local development and CI read that same pin.
 
 ## Checks
 
@@ -59,7 +59,7 @@ Individual checks: `bun run lint`, `bun run fmt:check`, `bun run typecheck`, `bu
 
 VS Code/Cursor users: install the recommended [Oxc extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode). Workspace settings enable formatting on save and safe lint fixes on explicit save; type-aware linting comes from the shared config. Other editors can use the [official editor setup](https://oxc.rs/docs/guide/usage/linter/editors.html).
 
-GitHub Actions runs `bun run check` on pull requests and pushes to `main`, using the Bun version from `mise.toml`, a frozen lockfile, SHA-pinned actions, and read-only repository permissions. No credentials or game installation are needed. Git hooks are not installed; CI enforces the checks without another dependency.
+GitHub Actions runs `bun run check` on pull requests and pushes to `main`, using mise to read the Bun version from `package.json`'s `packageManager`, a frozen lockfile, SHA-pinned actions, and read-only repository permissions. No credentials or game installation are needed. Git hooks are not installed; CI enforces the checks without another dependency.
 
 `test/main.test.ts` spawns the real CLI against a local fake bridge; its deadline check preloads `test/deadline-preload.ts`, which shrinks only the 5-minute timer delay to 100 ms in that child process.
 
