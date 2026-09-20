@@ -7,6 +7,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Nodes.Events;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -130,6 +131,10 @@ public static partial class McpMod
             || scene.CustomEventNode != null || scene.EmbeddedCombatRoom != null)
             throw new NotSupportedException("event_identity_changed");
     }
+    // Native BeforeOptionChosen and the shared vote label branch on Players.Count; the synchronizer closes the vote on the non-Client type.
+    private static bool SoleLocalPlayer(EventEntry entry)
+        => entry.Run is RunState run && run.Players.Count == 1 && ReferenceEquals(run.Players[0], entry.Player)
+            && RunManager.Instance.NetService?.Type == NetGameType.Singleplayer;
     private static bool EventInputsReady(EventEntry entry)
     {
         RequireEventIdentity(entry);
@@ -140,7 +145,7 @@ public static partial class McpMod
         if (layout is NAncientEventLayout ancient && ancient.GetNodeOrNull<NClickableControl>("%DialogueHitbox") is { } hitbox
             && IsControlVisibleOrActionable(hitbox)) return OrdinaryInput(hitbox);
         var model = (EventModel)entry.Model!;
-        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null);
+        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null, SoleLocalPlayer(entry));
         var buttons = layout.OptionButtons.ToArray();
         return buttons.Length > 0 && buttons.All(button => button.Option.IsLocked || entry.InputReady(button, button.Option, entry.Generation,
             button.MouseFilter == Control.MouseFilterEnum.Stop && button.IsEnabled, layout is NAncientEventLayout));
@@ -149,7 +154,7 @@ public static partial class McpMod
     {
         RequireEventIdentity(entry); entry.RequireGeneration(generation);
         var model = (EventModel)entry.Model!;
-        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null);
+        BridgeProtocol.RequireEventPolicy(model.IsShared, model.CanonicalEncounter != null, SoleLocalPlayer(entry));
         if (!ReferenceEquals(button.Event, model) || !((NEventLayout)entry.Layout!).OptionButtons.Contains(button)
             || button.Option.IsLocked || OrdinaryBool(button.Option, "<DisableOnChosen>k__BackingField") && button.Option.WasChosen)
             throw new NotSupportedException("event_option_identity_changed");
@@ -172,11 +177,15 @@ public static partial class McpMod
         {
             var sync = RunManager.Instance.EventSynchronizer;
             int index = EventOptionIndex(button);
-            if (sync.IsShared || sync.Events.Count != 1 || !ReferenceEquals(sync.Events[0], model)
+            if (sync.Events.Count != 1 || !ReferenceEquals(sync.Events[0], model)
+                || !ReferenceEquals(GetInstanceFieldValue(sync, "_canonicalEvent"), model.CanonicalInstance)
                 || !ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), entry.Run)
                 || !Equals(GetInstanceFieldValue(sync, "_localPlayerId"), model.Owner!.NetId)
+                || !ReferenceEquals(GetInstanceFieldValue(sync, "_netService"), RunManager.Instance.NetService)
+                || GetInstanceFieldValue(sync, "_playerVotes") is not List<uint?> votes
                 || index < 0 || index >= model.CurrentOptions.Count || !ReferenceEquals(model.CurrentOptions[index], button.Option))
                 throw new NotSupportedException("event_synchronizer_identity_unverified");
+            BridgeProtocol.RequireEventSynchronizer(model.IsShared, sync.IsShared, votes.Count, votes.Count(vote => vote.HasValue));
             // Native Chosen awaits whatever single callback the model supplied; a multicast Func<Task> returns only its last task.
             if (GetInstanceFieldValue(button.Option, "<OnChosen>k__BackingField") is not Delegate chosen || chosen.GetInvocationList().Length != 1)
                 throw new NotSupportedException("event_option_callback_unverified");
@@ -263,9 +272,13 @@ public static partial class McpMod
         else
         {
             var sync = RunManager.Instance.EventSynchronizer;
-            if (!sync.Events.Contains((EventModel)entry.Model!) || GetInstanceFieldValue(sync, "_pendingOptionTasks") is not List<Task> tasks)
+            bool shared = ((EventModel)entry.Model!).IsShared;
+            if (!sync.Events.Contains((EventModel)entry.Model!) || GetInstanceFieldValue(sync, "_pendingOptionTasks") is not List<Task> tasks
+                || GetInstanceFieldValue(sync, "_playerVotes") is not List<uint?> votes || GetInstanceFieldValue(sync, "_pageIndex") is not uint page)
                 throw new NotSupportedException("event_task_list_identity_unavailable");
             operation.Root = BridgeProtocol.CaptureAppendedTask(tasks, () => button.ForceClick());
+            if (!BridgeProtocol.EventChoiceCompleted(shared, page, (uint)GetInstanceFieldValue(sync, "_pageIndex")!, votes.Count(vote => vote.HasValue)))
+                throw new NotSupportedException("event_choice_receipt_unverified");
         }
         return true;
     }

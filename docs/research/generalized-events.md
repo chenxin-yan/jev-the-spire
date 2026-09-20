@@ -13,6 +13,8 @@ No event-effect reimplementation, per-event strategy, event/relic allowlist, new
 
 **This generalizes a shared interaction protocol, not every possible game interface.** Custom minigames, shared voting and event-to-combat transitions are different interaction/lifecycle shapes. Add a reusable handler only when a concrete missing shape warrants it; do not claim universal event support from generic option clicking.
 
+Update (owner-approved after the floor-5 Morphic Grove halt): `IsShared` models in a native **singleplayer** run are now admitted for the sole local player only. Native v0.111 `MorphicGrove.IsShared` is constant true even alone, and the native chain (`ChooseLocalOption -> PlayerVotedForSharedOptionIndex -> ChooseSharedEventOption -> ChooseOptionForSharedEvent -> ChooseOptionForEvent`) closes synchronously inside the click when the single vote slot is filled and the service is `Singleplayer`, so the bridge keeps clicking the original button and additionally verifies the synchronizer's canonical event, service, single empty vote slot and a one-page receipt (`mod/STS2MCP/BridgeProtocol.cs`). Multiplayer voting remains unsupported.
+
 ## What the research established
 
 The game already implements the ordinary route:

@@ -32,8 +32,11 @@ process-scoped and is replaced only at the native new-run boundary (`RunManager.
 failures within a run, on Continue/saved runs or on CLI reconnect stay latched. Deck grid screens
 (select/upgrade/transform/enchant) expose a decision only when every native candidate has an
 allocated holder: v0.111 `NCardGrid` allocates a sliding window of rows, so a deck larger than that
-window halts as `grid_candidates_incomplete` instead of offering a partial set. Build success is not
-permission to install: live work remains separately approved and restricted to profile 2.
+window halts as `grid_candidates_incomplete` instead of offering a partial set. Events flagged `IsShared`
+(v0.111 Morphic Grove is constant true, singleplayer included) are supported only for the sole local player of a
+native singleplayer run: the bridge clicks the original button and the unchanged native vote chain closes
+synchronously, appending one task and advancing one page. Multiplayer voting stays `shared_event_unverified`.
+Build success is not permission to install: live work remains separately approved and restricted to profile 2.
 See [current scope](../../docs/minimal-demo.md) and
 [the offline review](../../docs/evidence/m3/crust-neow-review.md).
 

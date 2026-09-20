@@ -139,11 +139,29 @@ internal static class BridgeProtocol
 
     // The ordinary native option protocol is generic: no event-name or callback-name admission.
     // Certifies the current decision only; an unsupported later surface halts through existing diagnostics.
-    internal static void RequireEventPolicy(bool shared, bool embeddedCombat)
+    // A shared model (v0.111 MorphicGrove.IsShared is constant true, singleplayer included) reuses the unchanged native vote chain:
+    // NEventRoom.OptionButtonClicked (shared keeps its buttons) -> EventSynchronizer.ChooseLocalOption -> PlayerVotedForSharedOptionIndex
+    // (page-matched vote; every slot voted and not Client) -> ChooseSharedEventOption -> ChooseOptionForSharedEvent (votes cleared, page++)
+    // -> ChooseOptionForEvent per player -> _pendingOptionTasks.Add(RunSafely(option.Chosen())). NetSingleplayerGameService reports
+    // Singleplayer with empty SendMessage bodies, and BeforeOptionChosen/AddOptions take the ordinary branch at Players.Count <= 1, so the
+    // sole player's click completes that chain synchronously and appends exactly one task. Multiplayer voting stays unsupported.
+    internal static void RequireEventPolicy(bool shared, bool embeddedCombat, bool soleLocalPlayer)
     {
-        if (shared) throw new NotSupportedException("shared_event_unverified");
+        if (shared && !soleLocalPlayer) throw new NotSupportedException("shared_event_unverified");
         if (embeddedCombat) throw new NotSupportedException("event_embedded_combat_unverified");
     }
+
+    // The synchronizer's canonical flag must agree with the bound model, and no vote may be pending (only shared voting ever sets one).
+    // BeginEvent only grows _playerVotes, so a shared vote needs exactly the sole player's slot; a second slot could never close the vote.
+    internal static void RequireEventSynchronizer(bool shared, bool synchronizerShared, int voteSlots, int pendingVotes)
+    {
+        if (shared != synchronizerShared) throw new NotSupportedException("event_synchronizer_identity_unverified");
+        if (pendingVotes != 0 || shared && voteSlots != 1) throw new NotSupportedException("shared_event_vote_state_unverified");
+    }
+
+    // Post-click receipt beside the appended task: a shared choice advanced exactly one page and left no vote; an ordinary choice touched neither.
+    internal static bool EventChoiceCompleted(bool shared, uint pageBefore, uint pageAfter, int pendingVotes)
+        => pageAfter == pageBefore + (shared ? 1u : 0u) && pendingVotes == 0;
 
     internal static void RequireRewardProceed(bool terminal, bool actTransition, bool skip, bool ftueSeen, bool debugOverride)
     {
