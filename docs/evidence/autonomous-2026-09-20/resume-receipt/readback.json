@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "duplicate_or_late_execution_receipt",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "5d5fb3ecc3024cc8b97f36e52a0f2424:225",
+  "mutation_pending": true
+}

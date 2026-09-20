@@ -1,0 +1,467 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=unlimited log=/tmp/jev-autonomous-2026-09-20/run-3b.jsonl
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:76 act 1 floor 3 actions=10
+[action 1] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Twig Slime (M) (2)
+  play_card:0:3  Play hand[0] Strike targeting Leaf Slime (S) (3)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:2  Play hand[2] Strike targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:2  Play hand[3] Bash targeting Twig Slime (M) (2)
+  play_card:3:3  Play hand[3] Bash targeting Leaf Slime (S) (3)
+  play_card:4:2  Play hand[4] Strike targeting Twig Slime (M) (2)
+  play_card:4:3  Play hand[4] Strike targeting Leaf Slime (S) (3)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:2  confidence=not returned
+  distribution: play_card:3:2=0.55 play_card:0:2=0.13 play_card:4:2=0.06 play_card:3:3=0.06 play_card:2:2=0.05 play_card:2:3=0.04 play_card:0:3=0.04 play_card:1:none=0.03 play_card:4:3=0.02 end_turn=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:76","label":"play_card:3:2"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:77 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:79 act 1 floor 3 actions=8
+[action 2] legal actions:
+  play_card:0:2  Play hand[0] Strike targeting Twig Slime (M) (2)
+  play_card:0:3  Play hand[0] Strike targeting Leaf Slime (S) (3)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:2  Play hand[2] Strike targeting Twig Slime (M) (2)
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:2  Play hand[3] Strike targeting Twig Slime (M) (2)
+  play_card:3:3  Play hand[3] Strike targeting Leaf Slime (S) (3)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:2  confidence=not returned
+  distribution: play_card:0:2=0.48 play_card:2:2=0.21 play_card:0:3=0.07 play_card:1:none=0.07 play_card:3:2=0.07 end_turn=0.06 play_card:2:3=0.02 play_card:3:3=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:79","label":"play_card:0:2"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:80 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:82 act 1 floor 3 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:82","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:83 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:85 act 1 floor 3 actions=6
+[action 4] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Flame Barrier
+  play_card:2:3  Play hand[2] Taunt targeting Leaf Slime (S) (3)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:none  Play hand[4] Armaments
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:none  confidence=not returned
+  distribution: play_card:1:none=0.37 play_card:2:3=0.36 end_turn=0.13 play_card:0:none=0.09 play_card:4:none=0.03 play_card:3:none=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:85","label":"play_card:1:none"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:86 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:88 act 1 floor 3 actions=5
+[action 5] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:3  Play hand[1] Taunt targeting Leaf Slime (S) (3)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:none  Play hand[3] Armaments
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:3  confidence=not returned
+  distribution: play_card:1:3=0.35 end_turn=0.3 play_card:0:none=0.3 play_card:3:none=0.03 play_card:2:none=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:88","label":"play_card:1:3"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:89 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:91 act 1 floor 3 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:91","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:92 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:94 act 1 floor 3 actions=6
+[action 7] legal actions:
+  play_card:0:3  Play hand[0] Strike targeting Leaf Slime (S) (3)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:3  Play hand[2] Strike targeting Leaf Slime (S) (3)
+  play_card:3:none  Play hand[3] Slimed
+  play_card:4:none  Play hand[4] Slimed
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:3  confidence=not returned
+  distribution: play_card:0:3=0.48 play_card:2:3=0.18 play_card:3:none=0.11 end_turn=0.11 play_card:1:none=0.1 play_card:4:none=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:94","label":"play_card:0:3"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:95 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:97 act 1 floor 3 actions=5
+[action 8] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:3  Play hand[1] Strike targeting Leaf Slime (S) (3)
+  play_card:2:none  Play hand[2] Slimed
+  play_card:3:none  Play hand[3] Slimed
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:3  confidence=not returned
+  distribution: play_card:1:3=0.83 end_turn=0.07 play_card:0:none=0.06 play_card:2:none=0.03 play_card:3:none=0.01
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:97","label":"play_card:1:3"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:98 actions=0
+observed: rewards 5d5fb3ecc3024cc8b97f36e52a0f2424:99 act 1 floor 3 actions=4
+[action 9] legal actions:
+  claim_reward:0  18 Gold
+  claim_reward:1  Regen Potion
+  claim_reward:2  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): proceed  confidence=not returned
+  distribution: proceed=0.43 claim_reward:0=0.28 claim_reward:2=0.21 claim_reward:1=0.08
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:99","label":"proceed"}
+waiting: map 5d5fb3ecc3024cc8b97f36e52a0f2424:100 actions=0
+observed: map 5d5fb3ecc3024cc8b97f36e52a0f2424:101 act 1 floor 3 actions=1
+singleton legal set: choose_map_node:0  Travel to Unknown at (0,3) (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:101","label":"choose_map_node:0"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:102 actions=0
+observed: event 5d5fb3ecc3024cc8b97f36e52a0f2424:104 act 1 floor 4 actions=2
+[action 11] legal actions:
+  choose_event_option:0  Solo Quest: Gain 148 Gold. Lose 18 HP.
+  choose_event_option:1  Join Forces: Gain 46 Gold.
+Jev (typesafe-ai/jev): choose_event_option:0  confidence=not returned
+  distribution: choose_event_option:0=0.58 choose_event_option:1=0.42
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:104","label":"choose_event_option:0"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:105 actions=0
+observed: event 5d5fb3ecc3024cc8b97f36e52a0f2424:107 act 1 floor 4 actions=1
+singleton legal set: choose_event_option:0  Proceed:  (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:107","label":"choose_event_option:0"}
+waiting: map 5d5fb3ecc3024cc8b97f36e52a0f2424:109 actions=0
+observed: map 5d5fb3ecc3024cc8b97f36e52a0f2424:110 act 1 floor 4 actions=2
+[action 13] legal actions:
+  choose_map_node:0  Travel to Monster at (0,4)
+  choose_map_node:1  Travel to Unknown at (1,4)
+Jev (typesafe-ai/jev): choose_map_node:0  confidence=not returned
+  distribution: choose_map_node:0=0.6 choose_map_node:1=0.4
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:110","label":"choose_map_node:0"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:111 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:113 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:114 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:115 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:116 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:117 act 1 floor 5 actions=6
+[action 14] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Shrinker Beetle (1)
+  play_card:2:1  Play hand[2] Bash targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:1  Play hand[4] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.5599999999999999 play_card:1:1=0.19 play_card:0:none=0.15 end_turn=0.06 play_card:3:none=0.02 play_card:4:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:117","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:118 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:120 act 1 floor 5 actions=5
+[action 15] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Shrinker Beetle (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.84 play_card:0:none=0.07 play_card:3:1=0.05 end_turn=0.03 play_card:2:none=0.01
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:120","label":"play_card:1:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:121 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:123 act 1 floor 5 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:123","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:124 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:126 act 1 floor 5 actions=6
+[action 17] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Flame Barrier
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:1  Play hand[4] Taunt targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:1  confidence=not returned
+  distribution: play_card:4:1=0.41 play_card:0:1=0.25 play_card:1:none=0.17 play_card:2:1=0.07 end_turn=0.07 play_card:3:none=0.03
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:126","label":"play_card:4:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:127 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:129 act 1 floor 5 actions=5
+[action 18] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Flame Barrier
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:none  confidence=not returned
+  distribution: play_card:1:none=0.42 play_card:0:1=0.32 play_card:2:1=0.11 end_turn=0.09 play_card:3:none=0.06
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:129","label":"play_card:1:none"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:130 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:132 act 1 floor 5 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:132","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:133 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:135 act 1 floor 5 actions=6
+[action 20] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Armaments
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  play_card:4:none  Play hand[4] Flame Barrier
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:none  confidence=not returned
+  distribution: play_card:4:none=0.43 play_card:0:1=0.29 play_card:3:1=0.14 play_card:2:none=0.06 end_turn=0.05 play_card:1:none=0.03
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:135","label":"play_card:4:none"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:136 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:138 act 1 floor 5 actions=5
+[action 21] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Armaments
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.52 end_turn=0.23 play_card:3:1=0.11 play_card:2:none=0.08 play_card:1:none=0.06
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:138","label":"play_card:0:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:139 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:141 act 1 floor 5 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:141","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:142 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:144 act 1 floor 5 actions=6
+[action 23] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:1  Play hand[3] Taunt targeting Shrinker Beetle (1)
+  play_card:4:1  Play hand[4] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:1  confidence=not returned
+  distribution: play_card:3:1=0.64 play_card:0:1=0.17 play_card:1:none=0.09 end_turn=0.06 play_card:2:1=0.02 play_card:4:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:144","label":"play_card:3:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:145 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:147 act 1 floor 5 actions=5
+[action 24] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.4 play_card:2:1=0.31 end_turn=0.12 play_card:1:none=0.11 play_card:3:1=0.06
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:147","label":"play_card:0:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:148 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:150 act 1 floor 5 actions=4
+[action 25] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:1  Play hand[1] Strike targeting Shrinker Beetle (1)
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.69 play_card:0:none=0.11 end_turn=0.11 play_card:2:1=0.09
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:150","label":"play_card:1:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:151 actions=0
+observed: rewards 5d5fb3ecc3024cc8b97f36e52a0f2424:152 act 1 floor 5 actions=3
+[action 26] legal actions:
+  claim_reward:0  15 Gold
+  claim_reward:1  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): proceed  confidence=not returned
+  distribution: proceed=0.38 claim_reward:0=0.37 claim_reward:1=0.25
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:152","label":"proceed"}
+waiting: map 5d5fb3ecc3024cc8b97f36e52a0f2424:153 actions=0
+observed: map 5d5fb3ecc3024cc8b97f36e52a0f2424:154 act 1 floor 5 actions=1
+singleton legal set: choose_map_node:0  Travel to Monster at (0,5) (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:154","label":"choose_map_node:0"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:155 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:157 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:158 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:159 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:160 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:161 act 1 floor 6 actions=6
+[action 28] legal actions:
+  play_card:0:1  Play hand[0] Taunt targeting Mawler (1)
+  play_card:1:1  Play hand[1] Strike targeting Mawler (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Mawler (1)
+  play_card:4:none  Play hand[4] Flame Barrier
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:none  confidence=not returned
+  distribution: play_card:4:none=0.33999999999999997 play_card:0:1=0.31 play_card:1:1=0.19 play_card:2:none=0.1 end_turn=0.04 play_card:3:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:161","label":"play_card:4:none"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:162 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:164 act 1 floor 6 actions=5
+[action 29] legal actions:
+  play_card:0:1  Play hand[0] Taunt targeting Mawler (1)
+  play_card:1:1  Play hand[1] Strike targeting Mawler (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Mawler (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.46 play_card:0:1=0.28 end_turn=0.17 play_card:2:none=0.07 play_card:3:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:164","label":"play_card:1:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:165 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:167 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:167","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:168 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:170 act 1 floor 6 actions=6
+[action 31] legal actions:
+  play_card:0:1  Play hand[0] Bash targeting Mawler (1)
+  play_card:1:1  Play hand[1] Strike targeting Mawler (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Mawler (1)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.49 play_card:2:none=0.29 play_card:1:1=0.13 end_turn=0.05 play_card:4:none=0.02 play_card:3:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:170","label":"play_card:0:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:171 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:173 act 1 floor 6 actions=5
+[action 32] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Mawler (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Mawler (1)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.69 play_card:1:none=0.12 play_card:2:1=0.1 end_turn=0.08 play_card:3:none=0.01
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:173","label":"play_card:0:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:174 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:176 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:176","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:177 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:179 act 1 floor 6 actions=6
+[action 34] legal actions:
+  play_card:0:none  Play hand[0] Armaments
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Mawler (1)
+  play_card:3:1  Play hand[3] Strike targeting Mawler (1)
+  play_card:4:1  Play hand[4] Strike targeting Mawler (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.59 play_card:4:1=0.15 play_card:1:none=0.1 play_card:0:none=0.06 play_card:3:1=0.05 end_turn=0.05
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:179","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:180 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:182 act 1 floor 6 actions=5
+[action 35] legal actions:
+  play_card:0:none  Play hand[0] Armaments
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Mawler (1)
+  play_card:3:1  Play hand[3] Strike targeting Mawler (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.62 play_card:3:1=0.13 play_card:1:none=0.11 play_card:0:none=0.09 end_turn=0.05
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:182","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:183 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:185 act 1 floor 6 actions=4
+[action 36] legal actions:
+  play_card:0:none  Play hand[0] Armaments
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Mawler (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.7 play_card:1:none=0.16 play_card:0:none=0.08 end_turn=0.06
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:185","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:186 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:188 act 1 floor 6 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:188","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:189 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:191 act 1 floor 6 actions=6
+[action 38] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Mawler (1)
+  play_card:1:1  Play hand[1] Bash targeting Mawler (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Taunt targeting Mawler (1)
+  play_card:4:none  Play hand[4] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.35 play_card:3:1=0.31 play_card:2:none=0.13 play_card:0:1=0.12 end_turn=0.07 play_card:4:none=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:191","label":"play_card:1:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:192 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:194 act 1 floor 6 actions=5
+[action 39] legal actions:
+  play_card:0:1  Play hand[0] Strike targeting Mawler (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Taunt targeting Mawler (1)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.64 play_card:2:1=0.16 play_card:1:none=0.1 end_turn=0.08 play_card:3:none=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:194","label":"play_card:0:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:195 actions=0
+observed: rewards 5d5fb3ecc3024cc8b97f36e52a0f2424:196 act 1 floor 6 actions=3
+[action 40] legal actions:
+  claim_reward:0  15 Gold
+  claim_reward:1  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.37 proceed=0.36 claim_reward:1=0.27
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:196","label":"claim_reward:0"}
+observed: rewards 5d5fb3ecc3024cc8b97f36e52a0f2424:197 act 1 floor 6 actions=2
+[action 41] legal actions:
+  claim_reward:0  Add a card to your deck.
+  proceed  Leave rewards
+Jev (typesafe-ai/jev): claim_reward:0  confidence=not returned
+  distribution: claim_reward:0=0.78 proceed=0.22
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:197","label":"claim_reward:0"}
+waiting: card_reward 5d5fb3ecc3024cc8b97f36e52a0f2424:198 actions=0
+observed: card_reward 5d5fb3ecc3024cc8b97f36e52a0f2424:199 act 1 floor 6 actions=4
+[action 42] legal actions:
+  select_card_reward:0  Take Headbutt
+  select_card_reward:1  Take Howl from Beyond
+  select_card_reward:2  Take Thunderclap
+  card_reward_alternative:0  Skip
+Jev (typesafe-ai/jev): select_card_reward:0  confidence=not returned
+  distribution: select_card_reward:0=0.29 card_reward_alternative:0=0.25 select_card_reward:1=0.24 select_card_reward:2=0.22
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:199","label":"select_card_reward:0"}
+observed: rewards 5d5fb3ecc3024cc8b97f36e52a0f2424:200 act 1 floor 6 actions=1
+singleton legal set: proceed  Leave rewards (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:200","label":"proceed"}
+waiting: map 5d5fb3ecc3024cc8b97f36e52a0f2424:202 actions=0
+observed: map 5d5fb3ecc3024cc8b97f36e52a0f2424:203 act 1 floor 6 actions=1
+singleton legal set: choose_map_node:0  Travel to Monster at (0,6) (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:203","label":"choose_map_node:0"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:204 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:206 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:207 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:208 actions=0
+waiting: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:209 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:210 act 1 floor 7 actions=6
+[action 45] legal actions:
+  play_card:0:none  Play hand[0] Flame Barrier
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Fogmog (1)
+  play_card:3:1  Play hand[3] Strike targeting Fogmog (1)
+  play_card:4:1  Play hand[4] Taunt targeting Fogmog (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:1  confidence=not returned
+  distribution: play_card:4:1=0.36 play_card:0:none=0.24 play_card:2:1=0.23 end_turn=0.09 play_card:1:none=0.06 play_card:3:1=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:210","label":"play_card:4:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:211 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:213 act 1 floor 7 actions=5
+[action 46] legal actions:
+  play_card:0:none  Play hand[0] Flame Barrier
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Fogmog (1)
+  play_card:3:1  Play hand[3] Strike targeting Fogmog (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.57 play_card:0:none=0.25 play_card:3:1=0.09 end_turn=0.05 play_card:1:none=0.04
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:213","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:214 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:216 act 1 floor 7 actions=3
+[action 47] legal actions:
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Fogmog (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:2:1  confidence=not returned
+  distribution: play_card:2:1=0.73 play_card:1:none=0.19 end_turn=0.08
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:216","label":"play_card:2:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:217 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:219 act 1 floor 7 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:219","label":"end_turn"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:220 actions=0
+observed: monster 5d5fb3ecc3024cc8b97f36e52a0f2424:222 act 1 floor 7 actions=8
+[action 49] legal actions:
+  play_card:0:none  Play hand[0] Defend
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:2  Play hand[3] Headbutt targeting Eye with Teeth (2)
+  play_card:3:1  Play hand[3] Headbutt targeting Fogmog (1)
+  play_card:4:2  Play hand[4] Strike targeting Eye with Teeth (2)
+  play_card:4:1  Play hand[4] Strike targeting Fogmog (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:3:1  confidence=not returned
+  distribution: play_card:3:1=0.39 play_card:3:2=0.31 play_card:0:none=0.09 play_card:4:2=0.09 end_turn=0.06 play_card:4:1=0.03 play_card:1:none=0.02 play_card:2:none=0.01
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:222","label":"play_card:3:1"}
+waiting: waiting 5d5fb3ecc3024cc8b97f36e52a0f2424:223 actions=0
+observed: card_select 5d5fb3ecc3024cc8b97f36e52a0f2424:224 act 1 floor 7 actions=5
+[action 50] legal actions:
+  select_card:0  Select Taunt
+  select_card:1  Select Strike
+  select_card:2  Select Strike
+  select_card:3  Select Flame Barrier
+  select_card:4  Select Defend
+Jev (typesafe-ai/jev): select_card:0  confidence=not returned
+  distribution: select_card:0=0.41000000000000003 select_card:3=0.3 select_card:4=0.15 select_card:1=0.12 select_card:2=0.02
+POST 202 {"status":"dispatched","state_version":"5d5fb3ecc3024cc8b97f36e52a0f2424:224","label":"select_card:0"}
+observed: unsupported 5d5fb3ecc3024cc8b97f36e52a0f2424:225 actions=0
+summary: {"outcome":"halted","halt_reason":"duplicate_or_late_execution_receipt","dispatched":50,"model_calls":36,"forced":14,"last_state_type":"unsupported","input_tokens":114985,"output_tokens":2751,"wall_ms":125980}

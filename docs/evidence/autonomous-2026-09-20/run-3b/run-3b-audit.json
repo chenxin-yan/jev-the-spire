@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "type": "summary",
+    "ts": "2026-09-20T23:48:02.256Z",
+    "outcome": "halted",
+    "halt_reason": "duplicate_or_late_execution_receipt",
+    "dispatched": 50,
+    "model_calls": 36,
+    "forced": 14,
+    "last_state_type": "unsupported",
+    "input_tokens": 114985,
+    "output_tokens": 2751,
+    "wall_ms": 125980
+  },
+  "all_dispatches_accepted_once": true,
+  "decision_sources": {
+    "model": 36,
+    "singleton_only": 14
+  },
+  "decision_states": {
+    "monster": 37,
+    "rewards": 5,
+    "map": 4,
+    "event": 2,
+    "card_reward": 1,
+    "card_select": 1
+  },
+  "action_families": {
+    "play_card": 28,
+    "end_turn": 9,
+    "proceed": 3,
+    "choose_map_node": 4,
+    "choose_event_option": 2,
+    "claim_reward": 2,
+    "select_card_reward": 1,
+    "select_card": 1
+  },
+  "failed_inferences": []
+}

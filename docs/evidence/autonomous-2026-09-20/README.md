@@ -4,7 +4,7 @@
 
 The user authorized full takeover, installation, testing and iteration after quitting the game. Scope remains modded **Profile 2, Standard Ironclad A0**, Jev-owned strategy and complete legal choices. No forced reward claims, model-policy changes, hidden information, credential inspection or uncertain mutation retries.
 
-This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 hit an adapter rounding mismatch and is now resuming after a separately approved repair. Later recorded outcomes supersede only status, not earlier failure evidence.
+This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 hit an adapter rounding mismatch, then a separate native receipt halt during its post-fix continuation. Later recorded outcomes supersede only status, not earlier failure evidence.
 
 ## Installations and setup
 
@@ -72,7 +72,17 @@ After upstream-first disclosure, the user explicitly selected **Use SDK validati
 
 Fresh reviewer `7a658af0-abb7-4f55-a2bb-ef2631fed3b0`: **OK**, no issues. New rounded/tied-label test failed before implementation; all **57 tests / 210 assertions**, lint, format and typecheck pass afterward. Negative tests cover undeclared rounding, invalid precision, excess error, missing and extra labels. Evidence: `provider/`; exact gates: `provider/gates/commands.jsonl`. Native checks were not rerun for this app-only change; the unchanged installed DLL retains the earlier 2,770-check gate. No upstream issue was published.
 
-Before resuming, readback confirmed the exact same ready combat version `:76`, complete legal set and **no pending mutation**. A new unlimited CLI segment logs to `run-3b.jsonl`, with normal fresh inference and pre-dispatch re-observation. The diagnostic answer was not reused. This is a post-fix continuation after a recorded failure, **not an uninterrupted successful run or a retry of an uncertain POST**. No native reinstall/restart or saved-event adoption occurred. Its outcome is pending at this checkpoint.
+Before resuming, readback confirmed the exact same ready combat version `:76`, complete legal set and **no pending mutation**. A new unlimited CLI segment logs to `run-3b.jsonl`, with normal fresh inference and pre-dispatch re-observation. The diagnostic answer was not reused. This is a post-fix continuation after a recorded failure, **not an uninterrupted successful run or a retry of an uncertain POST**. No native reinstall/restart or saved-event adoption occurred. The continuation subsequently halted; details follow.
+
+### Run 3b: Headbutt selection accepted, resumed execution receipt rejected
+
+The continuation ended with **50 dispatches / 36 successful model calls / 14 forced singletons**, 114,985 input / 2,751 output tokens, 125,980 ms. All 50 consumed distinct versions and received exactly one 202. There were no inference errors; these 36 live distributions all sum to 1 within `1e-6`, so rounded non-unit acceptance remains proven offline rather than by this sample.
+
+At floor 7, action 49 played Headbutt against Fogmog (`:222`). The repaired ownership/grid path exposed all five discard candidates at `:224`: Taunt, Strike, Strike, Flame Barrier, Defend. Jev chose Taunt (`select_card:0`, probability 0.41000000000000003); action 50 received 202. The next observation `:225` was **`duplicate_or_late_execution_receipt`**, unsupported, pending, no legal actions. The game visibly returned to combat after selection (41/80 HP, 262 gold, 14 cards); this does **not** clear the native ownership failure or authorize another action.
+
+The guard originates at `CombatExitOperation.BindExecutionReceipt`, called on each exact owner's native `BeforeActionExecuted` by `RegisterCombatExit`. A legitimate pause/resume re-emission is the hypothesis under investigation, **not yet a proven causal diagnosis**. No guard was weakened, no repeated POST sent, and no failed session reset/adoption occurred. `resume-receipt/live-red.log` is the exact saved symptom RED; `run-3b/` contains accounting and logs; `resume-receipt/readback.json` and screenshot preserve the stopped state.
+
+Combined run 3 segments: **75 accepted dispatches on 75 distinct versions, 56 inference attempts (54 successful choices), 21 forced**, 172,841 reported input / 4,225 reported output tokens. This excludes the separately accounted diagnostic. Run 3 remains a technical failure, not terminal success. The Headbutt selector is now live-observed through acceptance, but its complete causal lifecycle still fails; shared-event and rest coverage remain open.
 
 ## Remaining live checks
 

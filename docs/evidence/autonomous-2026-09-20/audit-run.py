@@ -1,7 +1,7 @@
 import collections, json, sys
 from pathlib import Path
 root=Path(__file__).parent
-number=int(sys.argv[1])
+number=sys.argv[1]
 root=root/f'run-{number}'
 rows=[json.loads(line) for line in (root/f'run-{number}.jsonl').read_text().splitlines()]
 summaries=[r for r in rows if r['type']=='summary']
