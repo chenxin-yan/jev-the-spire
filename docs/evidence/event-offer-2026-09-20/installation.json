@@ -1,0 +1,18 @@
+{
+  "utc": "2026-09-20T20:07:00.631066+00:00",
+  "old_sha256": "9bcaa0b1d837f390d7a82662f441c8c8157752468d994cdc8d2ae98be187c09a",
+  "installed_sha256": "e6bb7a56538052408fb8fb62086fb9f7de401630b55c21f16de9da288b2bf598",
+  "destination": "/Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll",
+  "backup": "/tmp/jev-event-offer-2026-09-20/previous-install/STS2_MCP.dll",
+  "process_absent": true,
+  "listener_absent": true,
+  "method": "normal main-menu Quit with confirmation; replace nested DLL only",
+  "source_commit": "4e245af",
+  "built_from": "3c3f8cf plus reviewed patch",
+  "user_approved_quit_install_reopen": true,
+  "new_run_started": false,
+  "reopened_pid": 92124,
+  "profile": 2,
+  "loaded_mods": 1,
+  "menu_readback": "no_active_run"
+}

@@ -21,6 +21,10 @@ Source fix: **`4e245af`** (local commit). Both owned non-combat branches now cal
 - Independent review: **OK with notes**. The reviewer identified foreign-run tests that were also failing player identity. The parent replaced those cases with the same player/set but a different expected run; deleting **only** the run guard then fails the isolated regression. The original guard was restored and the source compared with the saved green copy.
 - Final parent verification: zero-warning build, **2,042 native checks**, **50 app tests / 193 assertions**, lint, format and typecheck all exit 0. Commands/exits are retained under `parent-gates/`. Final candidate SHA-256: `e6bb7a56538052408fb8fb62086fb9f7de401630b55c21f16de9da288b2bf598`. Source patch is `final.diff`, built from `3c3f8cf` plus the patch; embedded revision is that base rather than the later commit.
 
-These tests execute the compiled predicate using native pure-CLR fixtures and inspect call wiring. They do **not** initialize Godot, invoke the full live reward prefix, or certify the reward screen interaction. The user's current game remains unchanged. The candidate is not installed as part of this evidence capture; installation requires a normal game exit, and testing requires a fresh run rather than adopting this halted selection.
+These tests execute the compiled predicate using native pure-CLR fixtures and inspect call wiring. They do **not** initialize Godot, invoke the full live reward prefix, or certify the reward screen interaction. The user's game was left unchanged during diagnosis and verification.
+
+## Installation follow-up
+
+With explicit user approval, the parent quit normally from the main menu, verified process/listener absence, backed up the old `9bcaa0b1…` DLL, installed the verified `e6bb7a56…` candidate into the nested mod directory only, and reopened through Steam. See `installation.json`. No new run or gameplay action was started. Live verification still requires the user to start a fresh Profile-2 Standard Ironclad A0 run; do not adopt the halted selection through saved-run Continue.
 
 `SHA256SUMS` covers all retained evidence except the manifest itself. Raw logs and the original review/handoff are preserved, including qualifications above; no binaries, credentials or save files are committed.
