@@ -1,0 +1,104 @@
+bridge=http://127.0.0.1:15526/api/v1/singleplayer model=typesafe-ai/jev max-actions=unlimited log=/tmp/jev-autonomous-2026-09-20/run-1.jsonl
+observed: event c2a3073294f1400c8e2b7e8d92e35e5b:1 act 1 floor 1 actions=3
+[action 1] legal actions:
+  choose_event_option:0  Scroll Boxes: Choose 1 of 2 packs of cards to add to your Deck.
+  choose_event_option:1  Fishing Rod: Every 3 normal combats, Upgrade a random card in your Deck.
+  choose_event_option:2  Neow's Sacrifice: Procure 1 Ambergris and add 1 Guilty to your Deck.
+Jev (typesafe-ai/jev): choose_event_option:0  confidence=not returned
+  distribution: choose_event_option:0=0.62 choose_event_option:1=0.27 choose_event_option:2=0.11
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:1","label":"choose_event_option:0"}
+observed: bundle_select c2a3073294f1400c8e2b7e8d92e35e5b:2 act 1 floor 1 actions=2
+[action 2] legal actions:
+  select_bundle:0  Select bundle[0]: Twin Strike
+Attack
+1
+Headbutt
+Attack
+1
+Colossus
+Skill
+1
+Deal 5 damage twice.
+Deal 9 damage.
+Put a card from your Discard Pile on top of your Draw Pile.
+Gain 4 Block.
+You receive 50% less damage from Vulnerable enemies this turn.
+  select_bundle:1  Select bundle[1]: Thunderclap
+Attack
+1
+Sword Boomerang
+Attack
+1
+Vicious
+Power
+1
+Deal 4 damage and apply 1 Vulnerable to ALL enemies.
+Deal 3 damage to a random enemy 3 times.
+Whenever you apply Vulnerable, draw 1 card.
+Jev (typesafe-ai/jev): select_bundle:0  confidence=not returned
+  distribution: select_bundle:0=0.51 select_bundle:1=0.49
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:2","label":"select_bundle:0"}
+observed: bundle_select c2a3073294f1400c8e2b7e8d92e35e5b:3 act 1 floor 1 actions=2
+[action 3] legal actions:
+  confirm_bundle_selection  Take selected bundle
+  cancel_bundle_selection  Cancel bundle preview
+Jev (typesafe-ai/jev): confirm_bundle_selection  confidence=not returned
+  distribution: confirm_bundle_selection=0.94 cancel_bundle_selection=0.06
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:3","label":"confirm_bundle_selection"}
+observed: event c2a3073294f1400c8e2b7e8d92e35e5b:5 act 1 floor 1 actions=1
+singleton legal set: choose_event_option:0  Proceed:  (no inference)
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:5","label":"choose_event_option:0"}
+observed: map c2a3073294f1400c8e2b7e8d92e35e5b:7 act 1 floor 1 actions=3
+[action 5] legal actions:
+  choose_map_node:0  Travel to Monster at (2,1)
+  choose_map_node:1  Travel to Monster at (3,1)
+  choose_map_node:2  Travel to Monster at (5,1)
+Jev (typesafe-ai/jev): choose_map_node:1  confidence=not returned
+  distribution: choose_map_node:1=0.56 choose_map_node:0=0.42 choose_map_node:2=0.02
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:7","label":"choose_map_node:1"}
+waiting: waiting c2a3073294f1400c8e2b7e8d92e35e5b:8 actions=0
+waiting: monster c2a3073294f1400c8e2b7e8d92e35e5b:10 actions=0
+waiting: monster c2a3073294f1400c8e2b7e8d92e35e5b:11 actions=0
+waiting: monster c2a3073294f1400c8e2b7e8d92e35e5b:12 actions=0
+waiting: monster c2a3073294f1400c8e2b7e8d92e35e5b:13 actions=0
+observed: monster c2a3073294f1400c8e2b7e8d92e35e5b:14 act 1 floor 2 actions=6
+[action 6] legal actions:
+  play_card:0:1  Play hand[0] Twin Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  play_card:4:1  Play hand[4] Bash targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:4:1  confidence=not returned
+  distribution: play_card:4:1=0.62 play_card:0:1=0.15 play_card:1:none=0.09 end_turn=0.07 play_card:2:1=0.06 play_card:3:none=0.01
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:14","label":"play_card:4:1"}
+waiting: waiting c2a3073294f1400c8e2b7e8d92e35e5b:15 actions=0
+observed: monster c2a3073294f1400c8e2b7e8d92e35e5b:17 act 1 floor 2 actions=5
+[action 7] legal actions:
+  play_card:0:1  Play hand[0] Twin Strike targeting Shrinker Beetle (1)
+  play_card:1:none  Play hand[1] Defend
+  play_card:2:1  Play hand[2] Strike targeting Shrinker Beetle (1)
+  play_card:3:none  Play hand[3] Defend
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:0:1  confidence=not returned
+  distribution: play_card:0:1=0.52 play_card:2:1=0.33 end_turn=0.08 play_card:1:none=0.05 play_card:3:none=0.02
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:17","label":"play_card:0:1"}
+waiting: waiting c2a3073294f1400c8e2b7e8d92e35e5b:18 actions=0
+observed: monster c2a3073294f1400c8e2b7e8d92e35e5b:20 act 1 floor 2 actions=1
+singleton legal set: end_turn  End turn (no inference)
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:20","label":"end_turn"}
+waiting: waiting c2a3073294f1400c8e2b7e8d92e35e5b:21 actions=0
+observed: monster c2a3073294f1400c8e2b7e8d92e35e5b:23 act 1 floor 2 actions=6
+[action 9] legal actions:
+  play_card:0:none  Play hand[0] Colossus
+  play_card:1:1  Play hand[1] Headbutt targeting Shrinker Beetle (1)
+  play_card:2:none  Play hand[2] Defend
+  play_card:3:1  Play hand[3] Strike targeting Shrinker Beetle (1)
+  play_card:4:1  Play hand[4] Strike targeting Shrinker Beetle (1)
+  end_turn  End turn
+Jev (typesafe-ai/jev): play_card:1:1  confidence=not returned
+  distribution: play_card:1:1=0.54 play_card:0:none=0.24 play_card:3:1=0.09 play_card:2:none=0.07 play_card:4:1=0.03 end_turn=0.03
+POST 202 {"status":"dispatched","state_version":"c2a3073294f1400c8e2b7e8d92e35e5b:23","label":"play_card:1:1"}
+waiting: waiting c2a3073294f1400c8e2b7e8d92e35e5b:24 actions=0
+observed: unsupported c2a3073294f1400c8e2b7e8d92e35e5b:25 actions=0
+summary: {"outcome":"halted","halt_reason":"unowned_selection_continuation","dispatched":9,"model_calls":7,"forced":2,"last_state_type":"unsupported","input_tokens":21468,"output_tokens":437,"wall_ms":16108}

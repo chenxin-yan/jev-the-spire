@@ -1,0 +1,374 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.GameActions.PlayCardAction <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: switch switch 3
+ 0032: ldloc.1 
+ 0033: ldloc.1 
+ 0034: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard get_NetCombatCard()
+ 0039: stloc.s 8
+ 0041: ldloca.s 8
+ 0043: call method:MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard.MegaCrit.Sts2.Core.Models.CardModel ToCardModel()
+ 0048: stfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0053: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue.MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue get_Instance()
+ 0058: dup 
+ 0059: brtrue.s 64
+ 0061: pop 
+ 0062: br.s 70
+ 0064: ldloc.1 
+ 0065: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue.Void UpdateCardBeforeExecution(MegaCrit.Sts2.Core.GameActions.PlayCardAction)
+ 0070: ldloc.1 
+ 0071: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+ 0076: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0081: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.ICombatState get_CombatState()
+ 0086: ldloc.1 
+ 0087: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.System.Nullable`1[System.UInt32] get_TargetId()
+ 0092: ldc.r8 10
+ 0101: callvirt method:MegaCrit.Sts2.Core.Combat.ICombatState.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] GetCreatureAsync(System.Nullable`1[System.UInt32], Double)
+ 0106: callvirt method:System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] GetAwaiter()
+ 0111: stloc.s 10
+ 0113: ldloca.s 10
+ 0115: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].Boolean get_IsCompleted()
+ 0120: brtrue.s 187
+ 0122: ldarg.0 
+ 0123: ldc.i4.0 
+ 0124: dup 
+ 0125: stloc.0 
+ 0126: stfld field:Int32 <>1__state
+ 0131: ldarg.0 
+ 0132: ldloc.s 10
+ 0134: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] <>u__1
+ 0139: ldarg.0 
+ 0140: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0145: ldloca.s 10
+ 0147: ldarg.0 
+ 0148: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<ExecuteAction>d__25](System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] ByRef, <ExecuteAction>d__25 ByRef)
+ 0153: leave 1054
+ 0158: ldarg.0 
+ 0159: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] <>u__1
+ 0164: stloc.s 10
+ 0166: ldarg.0 
+ 0167: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] <>u__1
+ 0172: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]
+ 0178: ldarg.0 
+ 0179: ldc.i4.m1 
+ 0180: dup 
+ 0181: stloc.0 
+ 0182: stfld field:Int32 <>1__state
+ 0187: ldloca.s 10
+ 0189: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].MegaCrit.Sts2.Core.Entities.Creatures.Creature GetResult()
+ 0194: stloc.s 9
+ 0196: ldarg.0 
+ 0197: ldloc.s 9
+ 0199: stfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0204: ldloc.1 
+ 0205: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0210: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Cards.CardPile get_Pile()
+ 0215: dup 
+ 0216: brtrue.s 222
+ 0218: pop 
+ 0219: ldc.i4.1 
+ 0220: br.s 233
+ 0222: call method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.MegaCrit.Sts2.Core.Entities.Cards.PileType get_Type()
+ 0227: ldc.i4.2 
+ 0228: ceq 
+ 0230: ldc.i4.0 
+ 0231: ceq 
+ 0233: brfalse.s 257
+ 0235: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue.MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue get_Instance()
+ 0240: dup 
+ 0241: brtrue.s 246
+ 0243: pop 
+ 0244: br.s 252
+ 0246: ldloc.1 
+ 0247: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCardPlayQueue.Void RemoveCardFromQueueForCancellation(MegaCrit.Sts2.Core.GameActions.PlayCardAction)
+ 0252: leave 1028
+ 0257: ldarg.0 
+ 0258: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0263: ldnull 
+ 0264: ceq 
+ 0266: stloc.s 11
+ 0268: ldloc.s 11
+ 0270: stloc.s 12
+ 0272: ldloc.s 12
+ 0274: brfalse.s 311
+ 0276: ldloc.1 
+ 0277: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0282: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0287: stloc.s 13
+ 0289: ldloc.s 13
+ 0291: ldc.i4.2 
+ 0292: beq.s 299
+ 0294: ldloc.s 13
+ 0296: ldc.i4.6 
+ 0297: bne.un.s 304
+ 0299: ldc.i4.1 
+ 0300: stloc.s 14
+ 0302: br.s 307
+ 0304: ldc.i4.0 
+ 0305: stloc.s 14
+ 0307: ldloc.s 14
+ 0309: stloc.s 12
+ 0311: ldloc.s 12
+ 0313: brfalse.s 375
+ 0315: ldc.i4.s 104
+ 0317: ldc.i4.1 
+ 0318: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0323: stloc.s 15
+ 0325: ldloca.s 15
+ 0327: ldstr str:Attempted to play card 
+ 0332: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0337: ldloca.s 15
+ 0339: ldloc.1 
+ 0340: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0345: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[CardModel](MegaCrit.Sts2.Core.Models.CardModel)
+ 0350: ldloca.s 15
+ 0352: ldstr str: with TargetType of type 'Any', but no target was passed to the play card action!
+ 0357: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0362: ldloca.s 15
+ 0364: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0369: ldc.i4.2 
+ 0370: call method:MegaCrit.Sts2.Core.Logging.Log.Void Warn(System.String, Int32)
+ 0375: ldloc.1 
+ 0376: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0381: ldloca.s 2
+ 0383: ldloca.s 3
+ 0385: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.Boolean CanPlay(MegaCrit.Sts2.Core.Entities.Cards.UnplayableReason ByRef, MegaCrit.Sts2.Core.Models.AbstractModel ByRef)
+ 0390: brfalse.s 411
+ 0392: ldloc.1 
+ 0393: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0398: ldarg.0 
+ 0399: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0404: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.Boolean IsValidTarget(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0409: brtrue.s 422
+ 0411: ldloc.1 
+ 0412: call method:MegaCrit.Sts2.Core.GameActions.GameAction.Void Cancel()
+ 0417: leave 1028
+ 0422: ldarg.0 
+ 0423: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0428: brtrue.s 440
+ 0430: ldstr str:no target
+ 0435: br 571
+ 0440: ldc.i4.s 19
+ 0442: ldc.i4.2 
+ 0443: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0448: stloc.s 15
+ 0450: ldloca.s 15
+ 0452: ldstr str:targeting 
+ 0457: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0462: ldloca.s 15
+ 0464: ldarg.0 
+ 0465: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0470: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.System.String get_LogName()
+ 0475: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0480: ldloca.s 15
+ 0482: ldstr str: (index 
+ 0487: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0492: ldloca.s 15
+ 0494: ldloc.1 
+ 0495: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+ 0500: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0505: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.ICombatState get_CombatState()
+ 0510: dup 
+ 0511: brtrue.s 526
+ 0513: pop 
+ 0514: ldloca.s 16
+ 0516: initobj type:System.Nullable`1[System.Int32]
+ 0522: ldloc.s 16
+ 0524: br.s 547
+ 0526: callvirt method:MegaCrit.Sts2.Core.Combat.ICombatState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] get_Creatures()
+ 0531: ldarg.0 
+ 0532: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0537: call method:MegaCrit.Sts2.Core.Extensions.ListExtensions.Int32 IndexOf[Creature](System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature], MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0542: newobj method:System.Nullable`1[System.Int32].Void .ctor(Int32)
+ 0547: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[Nullable`1](System.Nullable`1[System.Int32])
+ 0552: ldloca.s 15
+ 0554: ldstr str:)
+ 0559: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0564: ldloca.s 15
+ 0566: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0571: stloc.s 4
+ 0573: ldc.i4.s 24
+ 0575: ldc.i4.3 
+ 0576: newobj method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0581: stloc.s 15
+ 0583: ldloca.s 15
+ 0585: ldstr str:Player 
+ 0590: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0595: ldloca.s 15
+ 0597: ldloc.1 
+ 0598: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0603: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0608: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0613: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[UInt64](UInt64)
+ 0618: ldloca.s 15
+ 0620: ldstr str: playing card 
+ 0625: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0630: ldloca.s 15
+ 0632: ldloc.1 
+ 0633: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0638: callvirt method:MegaCrit.Sts2.Core.Models.AbstractModel.MegaCrit.Sts2.Core.Models.ModelId get_Id()
+ 0643: callvirt method:MegaCrit.Sts2.Core.Models.ModelId.System.String get_Entry()
+ 0648: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0653: ldloca.s 15
+ 0655: ldstr str: (
+ 0660: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0665: ldloca.s 15
+ 0667: ldloc.s 4
+ 0669: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0674: ldloca.s 15
+ 0676: ldstr str:)
+ 0681: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0686: ldloca.s 15
+ 0688: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0693: ldc.i4.2 
+ 0694: call method:MegaCrit.Sts2.Core.Logging.Log.Void Info(System.String, Int32)
+ 0699: ldloc.1 
+ 0700: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0705: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.System.Threading.Tasks.Task`1[System.ValueTuple`2[System.Int32,System.Int32]] SpendResources()
+ 0710: callvirt method:System.Threading.Tasks.Task`1[System.ValueTuple`2[System.Int32,System.Int32]].System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]] GetAwaiter()
+ 0715: stloc.s 19
+ 0717: ldloca.s 19
+ 0719: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]].Boolean get_IsCompleted()
+ 0724: brtrue.s 791
+ 0726: ldarg.0 
+ 0727: ldc.i4.1 
+ 0728: dup 
+ 0729: stloc.0 
+ 0730: stfld field:Int32 <>1__state
+ 0735: ldarg.0 
+ 0736: ldloc.s 19
+ 0738: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]] <>u__2
+ 0743: ldarg.0 
+ 0744: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0749: ldloca.s 19
+ 0751: ldarg.0 
+ 0752: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<ExecuteAction>d__25](System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]] ByRef, <ExecuteAction>d__25 ByRef)
+ 0757: leave 1054
+ 0762: ldarg.0 
+ 0763: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]] <>u__2
+ 0768: stloc.s 19
+ 0770: ldarg.0 
+ 0771: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]] <>u__2
+ 0776: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]]
+ 0782: ldarg.0 
+ 0783: ldc.i4.m1 
+ 0784: dup 
+ 0785: stloc.0 
+ 0786: stfld field:Int32 <>1__state
+ 0791: ldloca.s 19
+ 0793: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.ValueTuple`2[System.Int32,System.Int32]].System.ValueTuple`2[System.Int32,System.Int32] GetResult()
+ 0798: stloc.s 17
+ 0800: ldloc.s 17
+ 0802: stloc.s 18
+ 0804: ldloc.s 18
+ 0806: ldfld field:Int32 Item1
+ 0811: stloc.s 5
+ 0813: ldloc.s 18
+ 0815: ldfld field:Int32 Item2
+ 0820: stloc.s 6
+ 0822: ldloca.s 20
+ 0824: initobj type:MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo
+ 0830: ldloca.s 20
+ 0832: ldloc.s 5
+ 0834: call method:MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo.Void set_EnergySpent(Int32)
+ 0839: ldloca.s 20
+ 0841: ldloc.s 5
+ 0843: call method:MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo.Void set_EnergyValue(Int32)
+ 0848: ldloca.s 20
+ 0850: ldloc.s 6
+ 0852: call method:MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo.Void set_StarsSpent(Int32)
+ 0857: ldloca.s 20
+ 0859: ldloc.s 6
+ 0861: call method:MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo.Void set_StarValue(Int32)
+ 0866: ldloc.s 20
+ 0868: stloc.s 7
+ 0870: ldloc.1 
+ 0871: ldloc.1 
+ 0872: newobj method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.Void .ctor(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0877: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.Void set_PlayerChoiceContext(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext)
+ 0882: ldloc.1 
+ 0883: ldfld field:MegaCrit.Sts2.Core.Models.CardModel _card
+ 0888: ldloc.1 
+ 0889: call method:MegaCrit.Sts2.Core.GameActions.PlayCardAction.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext get_PlayerChoiceContext()
+ 0894: ldarg.0 
+ 0895: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 0900: ldc.i4.0 
+ 0901: ldloc.s 7
+ 0903: ldc.i4.0 
+ 0904: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.System.Threading.Tasks.Task OnPlayWrapper(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Creatures.Creature, Boolean, MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo, Boolean)
+ 0909: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0914: stloc.s 21
+ 0916: ldloca.s 21
+ 0918: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0923: brtrue.s 987
+ 0925: ldarg.0 
+ 0926: ldc.i4.2 
+ 0927: dup 
+ 0928: stloc.0 
+ 0929: stfld field:Int32 <>1__state
+ 0934: ldarg.0 
+ 0935: ldloc.s 21
+ 0937: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__3
+ 0942: ldarg.0 
+ 0943: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0948: ldloca.s 21
+ 0950: ldarg.0 
+ 0951: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<ExecuteAction>d__25](System.Runtime.CompilerServices.TaskAwaiter ByRef, <ExecuteAction>d__25 ByRef)
+ 0956: leave.s 1054
+ 0958: ldarg.0 
+ 0959: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__3
+ 0964: stloc.s 21
+ 0966: ldarg.0 
+ 0967: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__3
+ 0972: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0978: ldarg.0 
+ 0979: ldc.i4.m1 
+ 0980: dup 
+ 0981: stloc.0 
+ 0982: stfld field:Int32 <>1__state
+ 0987: ldloca.s 21
+ 0989: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0994: leave.s 1028
+ 0996: stloc.s 22
+ 0998: ldarg.0 
+ 0999: ldc.i4.s -2
+ 1001: stfld field:Int32 <>1__state
+ 1006: ldarg.0 
+ 1007: ldnull 
+ 1008: stfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 1013: ldarg.0 
+ 1014: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1019: ldloc.s 22
+ 1021: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 1026: leave.s 1054
+ 1028: ldarg.0 
+ 1029: ldc.i4.s -2
+ 1031: stfld field:Int32 <>1__state
+ 1036: ldarg.0 
+ 1037: ldnull 
+ 1038: stfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature <target>5__2
+ 1043: ldarg.0 
+ 1044: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1049: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 1054: ret 
+METHOD Void .ctor(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard, MegaCrit.Sts2.Core.Models.ModelId, System.Nullable`1[System.UInt32])
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.GameActions.GameAction.Void .ctor()
+ 0006: ldarg.0 
+ 0007: ldarg.1 
+ 0008: stfld field:MegaCrit.Sts2.Core.Entities.Players.Player <Player>k__BackingField
+ 0013: ldarg.0 
+ 0014: ldarg.2 
+ 0015: stfld field:MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard <NetCombatCard>k__BackingField
+ 0020: ldarg.0 
+ 0021: ldarg.3 
+ 0022: stfld field:MegaCrit.Sts2.Core.Models.ModelId <CardModelId>k__BackingField
+ 0027: ldarg.0 
+ 0028: ldarg.s 4
+ 0030: stfld field:System.Nullable`1[System.UInt32] <TargetId>k__BackingField
+ 0035: ret 

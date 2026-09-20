@@ -1,0 +1,11 @@
+{
+  "at": "2026-09-20T23:18:42.848775+00:00",
+  "source_commit": "d0e2944",
+  "build_revision": "3e06aab",
+  "installed_sha256": "37157f738b1b1bcd69d22b8f83c1de087f23c971ca7f1cbd4f6a16986e915e9d",
+  "previous_sha256": "f84591d9a474b13ee3a50531a3b12edf5173815bc971c3bdae20f259b4a757d4",
+  "native_sha256": "9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4",
+  "target": "/Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll",
+  "backup": "/tmp/jev-autonomous-2026-09-20/installation-2/previous.dll",
+  "authorization": "Full takeover/test/iteration user approval."
+}

@@ -1,0 +1,220 @@
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+ModeChangedEventHandler
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+MethodName
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+PropertyName
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+SignalName
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+<>c
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+<>c__DisplayClass64_0
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+<>c__DisplayClass90_0
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+<>c__DisplayClass94_0
+NESTED MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+<SelectCards>d__83
+TYPE MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand
+PROP MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand Instance get=MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand get_Instance()
+PROP Godot.Control CardHolderContainer get=Godot.Control get_CardHolderContainer()
+PROP MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton PeekButton get=MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton get_PeekButton()
+PROP Boolean InCardPlay get=Boolean get_InCardPlay()
+PROP Boolean IsInCardSelection get=Boolean get_IsInCardSelection()
+PROP Mode CurrentMode get=Mode get_CurrentMode()
+PROP Boolean HasDraggedHolder get=Boolean get_HasDraggedHolder()
+PROP System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] SelectModeGoldGlowOverride get=System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] get_SelectModeGoldGlowOverride()
+PROP MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder FocusedHolder get=MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder get_FocusedHolder()
+PROP System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] ActiveHolders get=System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] get_ActiveHolders()
+PROP System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] Holders get=System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] get_Holders()
+PROP Godot.Control DefaultFocusedControl get=Godot.Control get_DefaultFocusedControl()
+PROP Boolean ClipContents get=Boolean get_ClipContents()
+PROP Godot.Vector2 CustomMinimumSize get=Godot.Vector2 get_CustomMinimumSize()
+PROP LayoutDirectionEnum LayoutDirection get=LayoutDirectionEnum get_LayoutDirection()
+PROP Int32 LayoutMode get=Int32 get_LayoutMode()
+PROP Int32 AnchorsPreset get=Int32 get_AnchorsPreset()
+PROP Single AnchorLeft get=Single get_AnchorLeft()
+PROP Single AnchorTop get=Single get_AnchorTop()
+PROP Single AnchorRight get=Single get_AnchorRight()
+PROP Single AnchorBottom get=Single get_AnchorBottom()
+PROP Single OffsetLeft get=Single get_OffsetLeft()
+PROP Single OffsetTop get=Single get_OffsetTop()
+PROP Single OffsetRight get=Single get_OffsetRight()
+PROP Single OffsetBottom get=Single get_OffsetBottom()
+PROP GrowDirection GrowHorizontal get=GrowDirection get_GrowHorizontal()
+PROP GrowDirection GrowVertical get=GrowDirection get_GrowVertical()
+PROP Godot.Vector2 Size get=Godot.Vector2 get_Size()
+PROP Godot.Vector2 Position get=Godot.Vector2 get_Position()
+PROP Godot.Vector2 GlobalPosition get=Godot.Vector2 get_GlobalPosition()
+PROP Single Rotation get=Single get_Rotation()
+PROP Single RotationDegrees get=Single get_RotationDegrees()
+PROP Godot.Vector2 Scale get=Godot.Vector2 get_Scale()
+PROP Godot.Vector2 PivotOffset get=Godot.Vector2 get_PivotOffset()
+PROP SizeFlags SizeFlagsHorizontal get=SizeFlags get_SizeFlagsHorizontal()
+PROP SizeFlags SizeFlagsVertical get=SizeFlags get_SizeFlagsVertical()
+PROP Single SizeFlagsStretchRatio get=Single get_SizeFlagsStretchRatio()
+PROP Boolean LocalizeNumeralSystem get=Boolean get_LocalizeNumeralSystem()
+PROP Boolean AutoTranslate get=Boolean get_AutoTranslate()
+PROP System.String TooltipText get=System.String get_TooltipText()
+PROP AutoTranslateModeEnum TooltipAutoTranslateMode get=AutoTranslateModeEnum get_TooltipAutoTranslateMode()
+PROP Godot.NodePath FocusNeighborLeft get=Godot.NodePath get_FocusNeighborLeft()
+PROP Godot.NodePath FocusNeighborTop get=Godot.NodePath get_FocusNeighborTop()
+PROP Godot.NodePath FocusNeighborRight get=Godot.NodePath get_FocusNeighborRight()
+PROP Godot.NodePath FocusNeighborBottom get=Godot.NodePath get_FocusNeighborBottom()
+PROP Godot.NodePath FocusNext get=Godot.NodePath get_FocusNext()
+PROP Godot.NodePath FocusPrevious get=Godot.NodePath get_FocusPrevious()
+PROP FocusModeEnum FocusMode get=FocusModeEnum get_FocusMode()
+PROP FocusBehaviorRecursiveEnum FocusBehaviorRecursive get=FocusBehaviorRecursiveEnum get_FocusBehaviorRecursive()
+PROP MouseFilterEnum MouseFilter get=MouseFilterEnum get_MouseFilter()
+PROP MouseBehaviorRecursiveEnum MouseBehaviorRecursive get=MouseBehaviorRecursiveEnum get_MouseBehaviorRecursive()
+PROP Boolean MouseForcePassScrollEvents get=Boolean get_MouseForcePassScrollEvents()
+PROP CursorShape MouseDefaultCursorShape get=CursorShape get_MouseDefaultCursorShape()
+PROP Godot.Node ShortcutContext get=Godot.Node get_ShortcutContext()
+PROP System.String AccessibilityName get=System.String get_AccessibilityName()
+PROP System.String AccessibilityDescription get=System.String get_AccessibilityDescription()
+PROP AccessibilityLiveMode AccessibilityLive get=AccessibilityLiveMode get_AccessibilityLive()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityControlsNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityControlsNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityDescribedByNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityDescribedByNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityLabeledByNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityLabeledByNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityFlowToNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityFlowToNodes()
+PROP Godot.Theme Theme get=Godot.Theme get_Theme()
+PROP Godot.StringName ThemeTypeVariation get=Godot.StringName get_ThemeTypeVariation()
+PROP Boolean Visible get=Boolean get_Visible()
+PROP Godot.Color Modulate get=Godot.Color get_Modulate()
+PROP Godot.Color SelfModulate get=Godot.Color get_SelfModulate()
+PROP Boolean ShowBehindParent get=Boolean get_ShowBehindParent()
+PROP Boolean TopLevel get=Boolean get_TopLevel()
+PROP ClipChildrenMode ClipChildren get=ClipChildrenMode get_ClipChildren()
+PROP Int32 LightMask get=Int32 get_LightMask()
+PROP UInt32 VisibilityLayer get=UInt32 get_VisibilityLayer()
+PROP Int32 ZIndex get=Int32 get_ZIndex()
+PROP Boolean ZAsRelative get=Boolean get_ZAsRelative()
+PROP Boolean YSortEnabled get=Boolean get_YSortEnabled()
+PROP TextureFilterEnum TextureFilter get=TextureFilterEnum get_TextureFilter()
+PROP TextureRepeatEnum TextureRepeat get=TextureRepeatEnum get_TextureRepeat()
+PROP Godot.Material Material get=Godot.Material get_Material()
+PROP Boolean UseParentMaterial get=Boolean get_UseParentMaterial()
+PROP Godot.NodePath _ImportPath get=Godot.NodePath get__ImportPath()
+PROP Godot.StringName Name get=Godot.StringName get_Name()
+PROP Boolean UniqueNameInOwner get=Boolean get_UniqueNameInOwner()
+PROP System.String SceneFilePath get=System.String get_SceneFilePath()
+PROP Godot.Node Owner get=Godot.Node get_Owner()
+PROP Godot.MultiplayerApi Multiplayer get=Godot.MultiplayerApi get_Multiplayer()
+PROP ProcessModeEnum ProcessMode get=ProcessModeEnum get_ProcessMode()
+PROP Int32 ProcessPriority get=Int32 get_ProcessPriority()
+PROP Int32 ProcessPhysicsPriority get=Int32 get_ProcessPhysicsPriority()
+PROP ProcessThreadGroupEnum ProcessThreadGroup get=ProcessThreadGroupEnum get_ProcessThreadGroup()
+PROP Int32 ProcessThreadGroupOrder get=Int32 get_ProcessThreadGroupOrder()
+PROP ProcessThreadMessagesEnum ProcessThreadMessages get=ProcessThreadMessagesEnum get_ProcessThreadMessages()
+PROP PhysicsInterpolationModeEnum PhysicsInterpolationMode get=PhysicsInterpolationModeEnum get_PhysicsInterpolationMode()
+PROP AutoTranslateModeEnum AutoTranslateMode get=AutoTranslateModeEnum get_AutoTranslateMode()
+PROP System.String EditorDescription get=System.String get_EditorDescription()
+PROP IntPtr NativeInstance get=IntPtr get_NativeInstance()
+FIELD Godot.StringName[] _selectCardShortcuts
+FIELD Godot.Control <CardHolderContainer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton <PeekButton>k__BackingField
+FIELD Godot.Control _selectModeBackstop
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+FIELD MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+FIELD System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] _selectionCompletionSource
+FIELD Godot.Control _upgradePreviewContainer
+FIELD MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer _selectedHandCardContainer
+FIELD MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview _upgradePreview
+FIELD MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _selectModeConfirmButton
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _selectionHeader
+FIELD MegaCrit.Sts2.Core.Nodes.Combat.NCardPlay _currentCardPlay
+FIELD MegaCrit.Sts2.Core.Combat.CombatState _combatState
+FIELD Mode _currentMode
+FIELD System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] _currentSelectionFilter
+FIELD Int32 _draggedHolderIndex
+FIELD Int32 _lastFocusedHolderIdx
+FIELD System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] _holdersAwaitingQueue
+FIELD Godot.Tween _animEnableTween
+FIELD Boolean _isDisabled
+FIELD Godot.Tween _animInTween
+FIELD Godot.Tween _animOutTween
+FIELD Godot.Tween _selectedCardScaleTween
+FIELD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder <FocusedHolder>k__BackingField
+FIELD ModeChangedEventHandler backing_ModeChanged
+FIELD Godot.Vector2 _disablePosition
+FIELD Godot.Color _disableModulate
+FIELD Godot.Vector2 _showPosition
+FIELD Godot.Vector2 _hidePosition
+FIELD Double _enableDisableDuration = 0.2
+FIELD Single _showHideAnimDuration = 0.8
+FIELD IntPtr NativePtr
+METHOD MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand get_Instance()
+METHOD Godot.Control get_CardHolderContainer()
+METHOD Void set_CardHolderContainer(Godot.Control)
+METHOD MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton get_PeekButton()
+METHOD Void set_PeekButton(MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+METHOD Boolean get_InCardPlay()
+METHOD Boolean get_IsInCardSelection()
+METHOD Mode get_CurrentMode()
+METHOD Void set_CurrentMode(Mode)
+METHOD Boolean get_HasDraggedHolder()
+METHOD System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] get_SelectModeGoldGlowOverride()
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder get_FocusedHolder()
+METHOD Void set_FocusedHolder(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] get_ActiveHolders()
+METHOD System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder] get_Holders()
+METHOD Void _Ready()
+METHOD Void _EnterTree()
+METHOD Void _ExitTree()
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.NCard GetCard(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Boolean IsAwaitingPlay(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder GetCardHolder(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder Add(MegaCrit.Sts2.Core.Nodes.Cards.NCard, Int32)
+METHOD Void Remove(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void AddCardHolder(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, Int32)
+METHOD Int32 GetHandInsertIndex(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void RemoveCardHolder(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Void OnHolderFocused(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD Void OnHolderUnfocused(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD Void TryCancelCardPlay(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void CancelAllCardPlay()
+METHOD Void ReturnHolderToHand(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD Void ForceRefreshCardIndices()
+METHOD Void RefreshLayout()
+METHOD Void OnPlayerUnendedTurn(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD Void OnPlayerActionsDisabledChanged(MegaCrit.Sts2.Core.Combat.CombatState)
+METHOD Void UpdateHandDisabledState(MegaCrit.Sts2.Core.Combat.ICombatState)
+METHOD Void OnCombatStateChanged(MegaCrit.Sts2.Core.Combat.CombatState)
+METHOD Void OnCombatEnded(MegaCrit.Sts2.Core.Rooms.CombatRoom)
+METHOD Void OnPeekButtonToggled(MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] SelectCards(MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], MegaCrit.Sts2.Core.Models.AbstractModel, Mode)
+METHOD Void UpdateSelectModeCardVisibility()
+METHOD Void AfterCardsSelected(MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD Void CancelHandSelectionIfNecessary()
+METHOD Void OnHolderPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Boolean CanPlayCards()
+METHOD Boolean AreCardActionsAllowed()
+METHOD Void StartCardPlay(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, Boolean)
+METHOD Void SelectCardInSimpleMode(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD Void SelectCardInUpgradeMode(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder)
+METHOD Void DeselectCard(MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+METHOD Void RevalidateSelectionAfterStateChange()
+METHOD Void OnSelectModeConfirmButtonPressed(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+METHOD Void CheckIfSelectionComplete()
+METHOD Void RefreshSelectModeConfirmButton()
+METHOD Void OnSelectModeSourceFinished(MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD Void AnimIn()
+METHOD Void AnimOut()
+METHOD Void AnimDisable()
+METHOD Void AnimEnable()
+METHOD Void FlashPlayableHolders()
+METHOD Void OnCardSelected(Godot.Node)
+METHOD Void OnCardDeselected(Godot.Node)
+METHOD Void UpdateSelectedCardContainer(Int32)
+METHOD Godot.Control get_DefaultFocusedControl()
+METHOD Void EnableControllerNavigation()
+METHOD Void DisableControllerNavigation()
+METHOD Void _UnhandledInput(Godot.InputEvent)
+METHOD System.Collections.Generic.List`1[Godot.Bridge.MethodInfo] GetGodotMethodList()
+METHOD Boolean InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant ByRef)
+METHOD Boolean HasGodotClassMethod(Godot.NativeInterop.godot_string_name ByRef)
+METHOD Boolean SetGodotClassPropertyValue(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.godot_variant ByRef)
+METHOD Boolean GetGodotClassPropertyValue(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.godot_variant ByRef)
+METHOD System.Collections.Generic.List`1[Godot.Bridge.PropertyInfo] GetGodotPropertyList()
+METHOD Void SaveGodotObjectData(Godot.Bridge.GodotSerializationInfo)
+METHOD Void RestoreGodotObjectData(Godot.Bridge.GodotSerializationInfo)
+METHOD System.Collections.Generic.List`1[Godot.Bridge.MethodInfo] GetGodotSignalList()
+METHOD Void add_ModeChanged(ModeChangedEventHandler)
+METHOD Void remove_ModeChanged(ModeChangedEventHandler)
+METHOD Void EmitSignalModeChanged()
+METHOD Void RaiseGodotClassSignalCallbacks(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.NativeVariantPtrArgs)
+METHOD Boolean HasGodotClassSignal(Godot.NativeInterop.godot_string_name ByRef)
+METHOD Void <_Ready>b__59_0()

@@ -1,0 +1,58 @@
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+StackedSelectorScope
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+NoOpScope
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+RestoreSelectorScope
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+SelectorScope
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass17_0
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass17_1
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass18_0
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass24_0
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass25_0
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass25_1
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass26_0
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromChooseABundleScreen>d__31
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromChooseACardScreen>d__16
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromCombatPile>d__19
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromCombatPile>d__20
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForEnchantment>d__23
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForEnchantment>d__24
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForEnchantment>d__25
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForTransformation>d__22
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForUpgrade>d__21
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckGeneric>d__27
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromHand>d__28
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromHandForDiscard>d__29
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromHandForUpgrade>d__30
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromSimpleGrid>d__18
+NESTED MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromSimpleGridForRewards>d__17
+TYPE MegaCrit.Sts2.Core.Commands.CardSelectCmd
+PROP MegaCrit.Sts2.Core.TestSupport.ICardSelector Selector get=MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+PROP MegaCrit.Sts2.Core.TestSupport.ICardSelector LocalSelector get=MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+FIELD System.Collections.Generic.Stack`1[MegaCrit.Sts2.Core.TestSupport.ICardSelector] _selectorStack
+FIELD System.Collections.Generic.Stack`1[MegaCrit.Sts2.Core.TestSupport.ICardSelector] _localSelectorStack
+METHOD Void Reset()
+METHOD MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+METHOD MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+METHOD System.IDisposable UseSelector(MegaCrit.Sts2.Core.TestSupport.ICardSelector, Boolean)
+METHOD System.IDisposable PushSelector(MegaCrit.Sts2.Core.TestSupport.ICardSelector, Boolean)
+METHOD System.IDisposable SuspendSelectorForTest(Boolean)
+METHOD Boolean ShouldSelectLocalCard(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD Void ReportSoftlock()
+METHOD System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Models.CardModel] FromChooseACardScreen(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Players.Player, Boolean)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromSimpleGridForRewards(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult], MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromSimpleGrid(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromCombatPile(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Cards.CardPile, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromCombatPile(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Cards.CardPile, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForUpgrade(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForTransformation(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation])
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForEnchantment(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForEnchantment(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForEnchantment(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForRemoval(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckGeneric(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32])
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromHand(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromHandForDiscard(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Models.CardModel] FromHandForUpgrade(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromChooseABundleScreen(MegaCrit.Sts2.Core.Entities.Players.Player, System.Collections.Generic.IReadOnlyList`1[System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel]])
+METHOD Void LogChoice(MegaCrit.Sts2.Core.Entities.Players.Player, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+METHOD Void UndoEndTurnIfNecessary(MegaCrit.Sts2.Core.Entities.Players.Player)

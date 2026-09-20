@@ -1,0 +1,135 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse.s 97
+ 0017: ldloc.1 
+ 0018: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult] _cardResults
+ 0023: brtrue.s 30
+ 0025: leave 363
+ 0030: ldloc.1 
+ 0031: ldloc.1 
+ 0032: ldfld field:System.Threading.CancellationTokenSource _cts
+ 0037: callvirt method:System.Threading.CancellationTokenSource.System.Threading.CancellationToken get_Token()
+ 0042: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.System.Threading.Tasks.Task`1[System.Single] AwaitProcessFrame(Godot.Node, System.Threading.CancellationToken)
+ 0047: callvirt method:System.Threading.Tasks.Task`1[System.Single].System.Runtime.CompilerServices.TaskAwaiter`1[System.Single] GetAwaiter()
+ 0052: stloc.2 
+ 0053: ldloca.s 2
+ 0055: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single].Boolean get_IsCompleted()
+ 0060: brtrue.s 125
+ 0062: ldarg.0 
+ 0063: ldc.i4.0 
+ 0064: dup 
+ 0065: stloc.0 
+ 0066: stfld field:Int32 <>1__state
+ 0071: ldarg.0 
+ 0072: ldloc.2 
+ 0073: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single] <>u__1
+ 0078: ldarg.0 
+ 0079: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0084: ldloca.s 2
+ 0086: ldarg.0 
+ 0087: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<FlashRelicsOnModifiedCards>d__23](System.Runtime.CompilerServices.TaskAwaiter`1[System.Single] ByRef, <FlashRelicsOnModifiedCards>d__23 ByRef)
+ 0092: leave 382
+ 0097: ldarg.0 
+ 0098: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single] <>u__1
+ 0103: stloc.2 
+ 0104: ldarg.0 
+ 0105: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single] <>u__1
+ 0110: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single]
+ 0116: ldarg.0 
+ 0117: ldc.i4.m1 
+ 0118: dup 
+ 0119: stloc.0 
+ 0120: stfld field:Int32 <>1__state
+ 0125: ldloca.s 2
+ 0127: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Single].Single GetResult()
+ 0132: pop 
+ 0133: ldloc.1 
+ 0134: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult] _cardResults
+ 0139: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult].Enumerator GetEnumerator()
+ 0144: stloc.3 
+ 0145: br 304
+ 0150: newobj method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen+<>c__DisplayClass23_0.Void .ctor()
+ 0155: stloc.s 4
+ 0157: ldloc.s 4
+ 0159: ldloca.s 3
+ 0161: call method:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult].MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult get_Current()
+ 0166: stfld field:MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult result
+ 0171: ldloc.1 
+ 0172: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0177: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_CurrentlyDisplayedCardHolders()
+ 0182: ldloc.s 4
+ 0184: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen+<>c__DisplayClass23_0.Boolean <FlashRelicsOnModifiedCards>b__0(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder)
+ 0190: newobj method:System.Func`2[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder,System.Boolean].Void .ctor(System.Object, IntPtr)
+ 0195: call method:System.Linq.Enumerable.MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder FirstOrDefault[NGridCardHolder](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder], System.Func`2[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder,System.Boolean])
+ 0200: stloc.s 5
+ 0202: ldloc.s 5
+ 0204: brfalse.s 304
+ 0206: ldloc.s 4
+ 0208: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult result
+ 0213: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult.Boolean get_HasBeenModified()
+ 0218: brfalse.s 304
+ 0220: ldloc.s 4
+ 0222: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult result
+ 0227: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.RelicModel] get_ModifyingRelics()
+ 0232: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.RelicModel].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.RelicModel] GetEnumerator()
+ 0237: stloc.s 6
+ 0239: br.s 277
+ 0241: ldloc.s 6
+ 0243: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.RelicModel].MegaCrit.Sts2.Core.Models.RelicModel get_Current()
+ 0248: stloc.s 7
+ 0250: ldloc.s 7
+ 0252: callvirt method:MegaCrit.Sts2.Core.Models.RelicModel.Void Flash()
+ 0257: ldloc.s 5
+ 0259: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder.MegaCrit.Sts2.Core.Nodes.Cards.NCard get_CardNode()
+ 0264: dup 
+ 0265: brtrue.s 270
+ 0267: pop 
+ 0268: br.s 277
+ 0270: ldloc.s 7
+ 0272: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCard.Void FlashRelicOnCard(MegaCrit.Sts2.Core.Models.RelicModel)
+ 0277: ldloc.s 6
+ 0279: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0284: brtrue.s 241
+ 0286: leave.s 304
+ 0288: ldloc.0 
+ 0289: ldc.i4.0 
+ 0290: bge.s 303
+ 0292: ldloc.s 6
+ 0294: brfalse.s 303
+ 0296: ldloc.s 6
+ 0298: callvirt method:System.IDisposable.Void Dispose()
+ 0303: endfinally 
+ 0304: ldloca.s 3
+ 0306: call method:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult].Boolean MoveNext()
+ 0311: brtrue 150
+ 0316: leave.s 336
+ 0318: ldloc.0 
+ 0319: ldc.i4.0 
+ 0320: bge.s 335
+ 0322: ldloca.s 3
+ 0324: constrained. type:System.Collections.Generic.List`1+Enumerator[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult]
+ 0330: callvirt method:System.IDisposable.Void Dispose()
+ 0335: endfinally 
+ 0336: leave.s 363
+ 0338: stloc.s 8
+ 0340: ldarg.0 
+ 0341: ldc.i4.s -2
+ 0343: stfld field:Int32 <>1__state
+ 0348: ldarg.0 
+ 0349: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0354: ldloc.s 8
+ 0356: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0361: leave.s 382
+ 0363: ldarg.0 
+ 0364: ldc.i4.s -2
+ 0366: stfld field:Int32 <>1__state
+ 0371: ldarg.0 
+ 0372: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0377: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0382: ret 

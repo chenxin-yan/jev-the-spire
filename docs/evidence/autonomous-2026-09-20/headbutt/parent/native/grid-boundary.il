@@ -1,0 +1,234 @@
+METHOD System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] CardsSelected()
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen <>4__this
+ 0020: ldloca.s 0
+ 0022: ldc.i4.m1 
+ 0023: stfld field:Int32 <>1__state
+ 0028: ldloca.s 0
+ 0030: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0035: ldloca.s 0
+ 0037: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void Start[<CardsSelected>d__11](<CardsSelected>d__11 ByRef)
+ 0042: ldloca.s 0
+ 0044: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0049: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] get_Task()
+ 0054: ret 
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse.s 77
+ 0017: ldloc.1 
+ 0018: ldfld field:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] _completionSource
+ 0023: callvirt method:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] get_Task()
+ 0028: callvirt method:System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetAwaiter()
+ 0033: stloc.s 4
+ 0035: ldloca.s 4
+ 0037: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Boolean get_IsCompleted()
+ 0042: brtrue.s 106
+ 0044: ldarg.0 
+ 0045: ldc.i4.0 
+ 0046: dup 
+ 0047: stloc.0 
+ 0048: stfld field:Int32 <>1__state
+ 0053: ldarg.0 
+ 0054: ldloc.s 4
+ 0056: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__1
+ 0061: ldarg.0 
+ 0062: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0067: ldloca.s 4
+ 0069: ldarg.0 
+ 0070: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<CardsSelected>d__11](System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] ByRef, <CardsSelected>d__11 ByRef)
+ 0075: leave.s 163
+ 0077: ldarg.0 
+ 0078: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__1
+ 0083: stloc.s 4
+ 0085: ldarg.0 
+ 0086: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__1
+ 0091: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]]
+ 0097: ldarg.0 
+ 0098: ldc.i4.m1 
+ 0099: dup 
+ 0100: stloc.0 
+ 0101: stfld field:Int32 <>1__state
+ 0106: ldloca.s 4
+ 0108: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] GetResult()
+ 0113: stloc.3 
+ 0114: ldloc.3 
+ 0115: stloc.2 
+ 0116: leave.s 143
+ 0118: stloc.s 5
+ 0120: ldarg.0 
+ 0121: ldc.i4.s -2
+ 0123: stfld field:Int32 <>1__state
+ 0128: ldarg.0 
+ 0129: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0134: ldloc.s 5
+ 0136: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void SetException(System.Exception)
+ 0141: leave.s 163
+ 0143: ldarg.0 
+ 0144: ldc.i4.s -2
+ 0146: stfld field:Int32 <>1__state
+ 0151: ldarg.0 
+ 0152: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>t__builder
+ 0157: ldloc.2 
+ 0158: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void SetResult(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0163: ret 
+METHOD Void _Ready()
+ 0000: ldarg.0 
+ 0001: call method:System.Object.System.Type GetType()
+ 0006: ldtoken tok#33557726
+ 0011: call method:System.Type.System.Type GetTypeFromHandle(System.RuntimeTypeHandle)
+ 0016: call method:System.Type.Boolean op_Inequality(System.Type, System.Type)
+ 0021: brfalse.s 69
+ 0023: ldloca.s 0
+ 0025: ldc.i4.0 
+ 0026: ldc.i4.1 
+ 0027: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0032: ldloca.s 0
+ 0034: ldarg.0 
+ 0035: call method:System.Object.System.Type GetType()
+ 0040: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[Type](System.Type)
+ 0045: ldloca.s 0
+ 0047: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0052: ldc.i4.2 
+ 0053: call method:MegaCrit.Sts2.Core.Logging.Log.Void Error(System.String, Int32)
+ 0058: ldstr str:Don't call base._Ready()! Call ConnectSignals() instead.
+ 0063: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0068: throw 
+ 0069: ldarg.0 
+ 0070: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void ConnectSignalsAndInitGrid()
+ 0075: ret 
+METHOD Void ConnectSignalsAndInitGrid()
+ 0000: ldarg.0 
+ 0001: ldarg.0 
+ 0002: ldstr str:%CardGrid
+ 0007: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0012: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid GetNode[NCardGrid](Godot.NodePath)
+ 0017: stfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0022: ldarg.0 
+ 0023: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0028: ldarg.0 
+ 0029: ldfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+ 0034: ldc.i4.0 
+ 0035: ldc.i4.1 
+ 0036: stloc.0 
+ 0037: ldloc.0 
+ 0038: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].Void .ctor(Int32)
+ 0043: dup 
+ 0044: ldloc.0 
+ 0045: call method:System.Runtime.InteropServices.CollectionsMarshal.Void SetCount[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], Int32)
+ 0050: dup 
+ 0051: call method:System.Runtime.InteropServices.CollectionsMarshal.System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] AsSpan[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders])
+ 0056: stloc.1 
+ 0057: ldc.i4.0 
+ 0058: stloc.2 
+ 0059: ldloca.s 1
+ 0061: ldloc.2 
+ 0062: call method:System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders& get_Item(Int32)
+ 0067: ldc.i4.8 
+ 0068: stind.i4 
+ 0069: ldnull 
+ 0070: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void SetCards(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Cards.PileType, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], System.Threading.Tasks.Task)
+ 0075: ldarg.0 
+ 0076: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0081: ldsfld field:Godot.StringName HolderPressed
+ 0086: ldarg.0 
+ 0087: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void <ConnectSignalsAndInitGrid>b__7_0(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+ 0093: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder].Void .ctor(System.Object, IntPtr)
+ 0098: call method:Godot.Callable.Godot.Callable From[NCardHolder](System.Action`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder])
+ 0103: ldc.i4.0 
+ 0104: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0109: pop 
+ 0110: ldarg.0 
+ 0111: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0116: ldsfld field:Godot.StringName HolderAltPressed
+ 0121: ldarg.0 
+ 0122: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void <ConnectSignalsAndInitGrid>b__7_1(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+ 0128: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder].Void .ctor(System.Object, IntPtr)
+ 0133: call method:Godot.Callable.Godot.Callable From[NCardHolder](System.Action`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder])
+ 0138: ldc.i4.0 
+ 0139: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0144: pop 
+ 0145: ldarg.0 
+ 0146: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0151: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void InsetForTopBar()
+ 0156: ldarg.0 
+ 0157: ldarg.0 
+ 0158: ldstr str:%PeekButton
+ 0163: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0168: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton GetNode[NPeekButton](Godot.NodePath)
+ 0173: stfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0178: ldarg.0 
+ 0179: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0184: ldsfld field:Godot.StringName Toggled
+ 0189: ldarg.0 
+ 0190: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void <ConnectSignalsAndInitGrid>b__7_2(MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+ 0196: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton].Void .ctor(System.Object, IntPtr)
+ 0201: call method:Godot.Callable.Godot.Callable From[NPeekButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton])
+ 0206: ldc.i4.0 
+ 0207: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0212: pop 
+ 0213: ldarg.0 
+ 0214: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void SetPeekButtonTargets()
+ 0220: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0225: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0230: stloc.3 
+ 0231: ldloca.s 3
+ 0233: call method:System.Array.Godot.Variant[] Empty[Variant]()
+ 0238: call method:Godot.Callable.Void CallDeferred(Godot.Variant[])
+ 0243: ret 
+METHOD Void <ConnectSignalsAndInitGrid>b__7_0(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+ 0000: ldarg.0 
+ 0001: ldarg.1 
+ 0002: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder.MegaCrit.Sts2.Core.Models.CardModel get_CardModel()
+ 0007: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void OnCardClicked(MegaCrit.Sts2.Core.Models.CardModel)
+ 0012: ret 
+METHOD Void <ConnectSignalsAndInitGrid>b__7_1(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+ 0000: ldarg.0 
+ 0001: ldarg.1 
+ 0002: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder.MegaCrit.Sts2.Core.Models.CardModel get_CardModel()
+ 0007: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void ShowCardDetail(MegaCrit.Sts2.Core.Models.CardModel)
+ 0012: ret 
+METHOD Void _ExitTree()
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] _completionSource
+ 0006: callvirt method:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Boolean TrySetCanceled()
+ 0011: pop 
+ 0012: ret 
+METHOD Void AfterOverlayOpened()
+ 0000: ret 
+METHOD Void AfterOverlayClosed()
+ 0000: ldarg.0 
+ 0001: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0006: ldc.i4.0 
+ 0007: callvirt method:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton.Void SetPeeking(Boolean)
+ 0012: ldarg.0 
+ 0013: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void QueueFreeSafely(Godot.Node)
+ 0018: ret 
+METHOD Void AfterOverlayShown()
+ 0000: ldarg.0 
+ 0001: ldc.i4.1 
+ 0002: call method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0007: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0012: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_IsInProgress()
+ 0017: brfalse.s 30
+ 0019: ldarg.0 
+ 0020: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0025: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0030: ret 
+METHOD Void AfterOverlayHidden()
+ 0000: ldarg.0 
+ 0001: ldc.i4.0 
+ 0002: call method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0013: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0018: ret 

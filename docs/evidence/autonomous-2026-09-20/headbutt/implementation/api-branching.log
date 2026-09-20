@@ -1,0 +1,21 @@
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext+<AssignTaskAndWaitForPauseOrCompletion>d__16
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext+<SignalPlayerChoiceBegun>d__15
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext
+PROP MegaCrit.Sts2.Core.Models.AbstractModel Source get=MegaCrit.Sts2.Core.Models.AbstractModel get_Source()
+PROP System.Nullable`1[System.UInt64] OwnerId get=System.Nullable`1[System.UInt64] get_OwnerId()
+PROP System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] ModelStack get=System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.AbstractModel] get_ModelStack()
+PROP MegaCrit.Sts2.Core.Models.AbstractModel LastInvolvedModel get=MegaCrit.Sts2.Core.Models.AbstractModel get_LastInvolvedModel()
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext _originalContext
+FIELD MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType _gameActionType
+FIELD UInt64 _localPlayerId
+FIELD MegaCrit.Sts2.Core.Models.AbstractModel <Source>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext _createdContext
+FIELD System.Threading.Tasks.TaskCompletionSource _pausedCompletionSource
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext] AfterBranched
+METHOD MegaCrit.Sts2.Core.Models.AbstractModel get_Source()
+METHOD Void add_AfterBranched(System.Action`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext])
+METHOD Void remove_AfterBranched(System.Action`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext])
+METHOD System.Nullable`1[System.UInt64] get_OwnerId()
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task AssignTaskAndWaitForPauseOrCompletion(System.Threading.Tasks.Task)
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceEnded()

@@ -1,0 +1,555 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Models.PotionModel <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: switch switch 7
+ 0048: ldloc.1 
+ 0049: call method:MegaCrit.Sts2.Core.Models.PotionModel.Void RemoveBeforeUse()
+ 0054: ldarg.0 
+ 0055: ldloc.1 
+ 0056: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0061: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0066: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.MegaCrit.Sts2.Core.Combat.ICombatState get_CombatState()
+ 0071: stfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 0076: ldarg.0 
+ 0077: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 0082: ldloc.1 
+ 0083: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.Void PushModel(MegaCrit.Sts2.Core.Models.AbstractModel)
+ 0088: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0093: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.System.Threading.Tasks.Task WaitForUnpause()
+ 0098: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0103: stloc.2 
+ 0104: ldloca.s 2
+ 0106: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0111: brtrue.s 176
+ 0113: ldarg.0 
+ 0114: ldc.i4.0 
+ 0115: dup 
+ 0116: stloc.0 
+ 0117: stfld field:Int32 <>1__state
+ 0122: ldarg.0 
+ 0123: ldloc.2 
+ 0124: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0129: ldarg.0 
+ 0130: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0135: ldloca.s 2
+ 0137: ldarg.0 
+ 0138: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 0143: leave 1621
+ 0148: ldarg.0 
+ 0149: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0154: stloc.2 
+ 0155: ldarg.0 
+ 0156: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0161: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0167: ldarg.0 
+ 0168: ldc.i4.m1 
+ 0169: dup 
+ 0170: stloc.0 
+ 0171: stfld field:Int32 <>1__state
+ 0176: ldloca.s 2
+ 0178: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0183: ldloc.1 
+ 0184: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0189: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 0194: ldarg.0 
+ 0195: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 0200: ldloc.1 
+ 0201: ldarg.0 
+ 0202: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature target
+ 0207: call method:MegaCrit.Sts2.Core.Hooks.Hook.System.Threading.Tasks.Task BeforePotionUsed(MegaCrit.Sts2.Core.Runs.IRunState, MegaCrit.Sts2.Core.Combat.ICombatState, MegaCrit.Sts2.Core.Models.PotionModel, MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0212: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0217: stloc.3 
+ 0218: ldloca.s 3
+ 0220: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0225: brtrue.s 290
+ 0227: ldarg.0 
+ 0228: ldc.i4.1 
+ 0229: dup 
+ 0230: stloc.0 
+ 0231: stfld field:Int32 <>1__state
+ 0236: ldarg.0 
+ 0237: ldloc.3 
+ 0238: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0243: ldarg.0 
+ 0244: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0249: ldloca.s 3
+ 0251: ldarg.0 
+ 0252: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 0257: leave 1621
+ 0262: ldarg.0 
+ 0263: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0268: stloc.3 
+ 0269: ldarg.0 
+ 0270: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0275: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0281: ldarg.0 
+ 0282: ldc.i4.m1 
+ 0283: dup 
+ 0284: stloc.0 
+ 0285: stfld field:Int32 <>1__state
+ 0290: ldloca.s 3
+ 0292: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0297: call method:MegaCrit.Sts2.Core.TestSupport.TestMode.Boolean get_IsOff()
+ 0302: brfalse 820
+ 0307: ldarg.0 
+ 0308: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 0313: brfalse 820
+ 0318: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom get_Instance()
+ 0323: dup 
+ 0324: brtrue.s 330
+ 0326: pop 
+ 0327: ldnull 
+ 0328: br.s 346
+ 0330: ldloc.1 
+ 0331: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0336: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0341: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Combat.NCreature GetCreatureNode(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0346: stloc.s 4
+ 0348: call method:Godot.Vector2.Godot.Vector2 get_Zero()
+ 0353: stloc.s 5
+ 0355: ldloc.1 
+ 0356: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0361: call method:MegaCrit.Sts2.Core.Entities.Cards.ActionTargetExtensions.Boolean IsSingleTarget(MegaCrit.Sts2.Core.Entities.Cards.TargetType)
+ 0366: brfalse.s 418
+ 0368: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom get_Instance()
+ 0373: dup 
+ 0374: brtrue.s 380
+ 0376: pop 
+ 0377: ldnull 
+ 0378: br.s 391
+ 0380: ldarg.0 
+ 0381: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature target
+ 0386: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Combat.NCreature GetCreatureNode(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0391: stloc.s 8
+ 0393: ldloc.s 8
+ 0395: brtrue.s 404
+ 0397: call method:Godot.Vector2.Godot.Vector2 get_Zero()
+ 0402: br.s 411
+ 0404: ldloc.s 8
+ 0406: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCreature.Godot.Vector2 GetBottomOfHitbox()
+ 0411: stloc.s 5
+ 0413: br 651
+ 0418: ldloc.1 
+ 0419: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Cards.TargetType get_TargetType()
+ 0424: ldc.i4.3 
+ 0425: bne.un.s 484
+ 0427: ldarg.0 
+ 0428: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 0433: ldc.i4.2 
+ 0434: callvirt method:MegaCrit.Sts2.Core.Combat.ICombatState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] GetCreaturesOnSide(MegaCrit.Sts2.Core.Combat.CombatSide)
+ 0439: ldsfld field:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean] <>9__75_0
+ 0444: dup 
+ 0445: brtrue.s 470
+ 0447: pop 
+ 0448: ldsfld field:<>c <>9
+ 0453: ldftn method:MegaCrit.Sts2.Core.Models.PotionModel+<>c.Boolean <OnUseWrapper>b__75_0(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0459: newobj method:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean].Void .ctor(System.Object, IntPtr)
+ 0464: dup 
+ 0465: stsfld field:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean] <>9__75_0
+ 0470: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] Where[Creature](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature], System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean])
+ 0475: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] ToList[Creature](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature])
+ 0480: stloc.s 9
+ 0482: br.s 539
+ 0484: ldarg.0 
+ 0485: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 0490: ldc.i4.1 
+ 0491: callvirt method:MegaCrit.Sts2.Core.Combat.ICombatState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] GetCreaturesOnSide(MegaCrit.Sts2.Core.Combat.CombatSide)
+ 0496: ldsfld field:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean] <>9__75_1
+ 0501: dup 
+ 0502: brtrue.s 527
+ 0504: pop 
+ 0505: ldsfld field:<>c <>9
+ 0510: ldftn method:MegaCrit.Sts2.Core.Models.PotionModel+<>c.Boolean <OnUseWrapper>b__75_1(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0516: newobj method:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean].Void .ctor(System.Object, IntPtr)
+ 0521: dup 
+ 0522: stsfld field:System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean] <>9__75_1
+ 0527: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] Where[Creature](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature], System.Func`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean])
+ 0532: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] ToList[Creature](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature])
+ 0537: stloc.s 9
+ 0539: ldloc.s 9
+ 0541: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature] GetEnumerator()
+ 0546: stloc.s 10
+ 0548: br.s 607
+ 0550: ldloc.s 10
+ 0552: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Current()
+ 0557: stloc.s 11
+ 0559: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom get_Instance()
+ 0564: dup 
+ 0565: brtrue.s 571
+ 0567: pop 
+ 0568: ldnull 
+ 0569: br.s 578
+ 0571: ldloc.s 11
+ 0573: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Combat.NCreature GetCreatureNode(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0578: stloc.s 12
+ 0580: ldloc.s 5
+ 0582: ldloc.s 12
+ 0584: brtrue.s 593
+ 0586: call method:Godot.Vector2.Godot.Vector2 get_Zero()
+ 0591: br.s 600
+ 0593: ldloc.s 12
+ 0595: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCreature.Godot.Vector2 get_VfxSpawnPosition()
+ 0600: call method:Godot.Vector2.Godot.Vector2 op_Addition(Godot.Vector2, Godot.Vector2)
+ 0605: stloc.s 5
+ 0607: ldloc.s 10
+ 0609: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0614: brtrue.s 550
+ 0616: leave.s 634
+ 0618: ldloc.0 
+ 0619: ldc.i4.0 
+ 0620: bge.s 633
+ 0622: ldloc.s 10
+ 0624: brfalse.s 633
+ 0626: ldloc.s 10
+ 0628: callvirt method:System.IDisposable.Void Dispose()
+ 0633: endfinally 
+ 0634: ldloc.s 5
+ 0636: ldloc.s 9
+ 0638: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature].Int32 get_Count()
+ 0643: conv.r4 
+ 0644: call method:Godot.Vector2.Godot.Vector2 op_Division(Godot.Vector2, Single)
+ 0649: stloc.s 5
+ 0651: ldloc.s 4
+ 0653: brtrue.s 662
+ 0655: call method:Godot.Vector2.Godot.Vector2 get_Zero()
+ 0660: br.s 669
+ 0662: ldloc.s 4
+ 0664: call method:MegaCrit.Sts2.Core.Nodes.Combat.NCreature.Godot.Vector2 get_VfxSpawnPosition()
+ 0669: stloc.s 6
+ 0671: ldloc.s 6
+ 0673: ldloc.s 5
+ 0675: ldloc.1 
+ 0676: call method:MegaCrit.Sts2.Core.Models.PotionModel.Godot.Texture2D get_Image()
+ 0681: ldloca.s 13
+ 0683: initobj type:System.Nullable`1[Godot.Vector2]
+ 0689: ldloc.s 13
+ 0691: call method:MegaCrit.Sts2.Core.Nodes.Vfx.NItemThrowVfx.MegaCrit.Sts2.Core.Nodes.Vfx.NItemThrowVfx Create(Godot.Vector2, Godot.Vector2, Godot.Texture2D, System.Nullable`1[Godot.Vector2])
+ 0696: stloc.s 7
+ 0698: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom get_Instance()
+ 0703: dup 
+ 0704: brtrue.s 709
+ 0706: pop 
+ 0707: br.s 721
+ 0709: call method:MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom.Godot.Control get_CombatVfxContainer()
+ 0714: ldloc.s 7
+ 0716: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0721: ldc.r4 0.5
+ 0726: ldc.i4.0 
+ 0727: call method:MegaCrit.Sts2.Core.Commands.Cmd.System.Threading.Tasks.Task Wait(Single, Boolean)
+ 0732: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0737: stloc.s 14
+ 0739: ldloca.s 14
+ 0741: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0746: brtrue.s 813
+ 0748: ldarg.0 
+ 0749: ldc.i4.2 
+ 0750: dup 
+ 0751: stloc.0 
+ 0752: stfld field:Int32 <>1__state
+ 0757: ldarg.0 
+ 0758: ldloc.s 14
+ 0760: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0765: ldarg.0 
+ 0766: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0771: ldloca.s 14
+ 0773: ldarg.0 
+ 0774: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 0779: leave 1621
+ 0784: ldarg.0 
+ 0785: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0790: stloc.s 14
+ 0792: ldarg.0 
+ 0793: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0798: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0804: ldarg.0 
+ 0805: ldc.i4.m1 
+ 0806: dup 
+ 0807: stloc.0 
+ 0808: stfld field:Int32 <>1__state
+ 0813: ldloca.s 14
+ 0815: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0820: ldarg.0 
+ 0821: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0826: ldloc.1 
+ 0827: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0832: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId] BeginCardOrPotionEffect(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0837: stfld field:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId] <effectCombatId>5__3
+ 0842: ldarg.0 
+ 0843: ldnull 
+ 0844: stfld field:System.Object <>7__wrap3
+ 0849: ldarg.0 
+ 0850: ldc.i4.0 
+ 0851: stfld field:Int32 <>7__wrap4
+ 0856: nop 
+ 0857: ldloc.0 
+ 0858: ldc.i4.3 
+ 0859: beq.s 975
+ 0861: ldloc.1 
+ 0862: call method:MegaCrit.Sts2.Core.Context.LocalContext.System.Nullable`1[System.UInt64] get_NetId()
+ 0867: stloc.s 17
+ 0869: ldloca.s 17
+ 0871: call method:System.Nullable`1[System.UInt64].UInt64 get_Value()
+ 0876: ldc.i4.1 
+ 0877: ldarg.0 
+ 0878: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 0883: newobj method:MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext.Void .ctor(MegaCrit.Sts2.Core.Models.AbstractModel, UInt64, MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType, MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext)
+ 0888: stloc.s 15
+ 0890: ldloc.s 15
+ 0892: ldloc.1 
+ 0893: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.Void PushModel(MegaCrit.Sts2.Core.Models.AbstractModel)
+ 0898: ldloc.1 
+ 0899: ldloc.s 15
+ 0901: ldarg.0 
+ 0902: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature target
+ 0907: callvirt method:MegaCrit.Sts2.Core.Models.PotionModel.System.Threading.Tasks.Task OnUse(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0912: stloc.s 16
+ 0914: ldloc.s 15
+ 0916: ldloc.s 16
+ 0918: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.BranchingPlayerChoiceContext.System.Threading.Tasks.Task AssignTaskAndWaitForPauseOrCompletion(System.Threading.Tasks.Task)
+ 0923: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0928: stloc.s 18
+ 0930: ldloca.s 18
+ 0932: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0937: brtrue.s 1004
+ 0939: ldarg.0 
+ 0940: ldc.i4.3 
+ 0941: dup 
+ 0942: stloc.0 
+ 0943: stfld field:Int32 <>1__state
+ 0948: ldarg.0 
+ 0949: ldloc.s 18
+ 0951: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0956: ldarg.0 
+ 0957: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0962: ldloca.s 18
+ 0964: ldarg.0 
+ 0965: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 0970: leave 1621
+ 0975: ldarg.0 
+ 0976: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0981: stloc.s 18
+ 0983: ldarg.0 
+ 0984: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0989: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0995: ldarg.0 
+ 0996: ldc.i4.m1 
+ 0997: dup 
+ 0998: stloc.0 
+ 0999: stfld field:Int32 <>1__state
+ 1004: ldloca.s 18
+ 1006: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 1011: leave.s 1025
+ 1013: stloc.s 19
+ 1015: ldarg.0 
+ 1016: ldloc.s 19
+ 1018: stfld field:System.Object <>7__wrap3
+ 1023: leave.s 1025
+ 1025: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 1030: ldarg.0 
+ 1031: ldfld field:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId] <effectCombatId>5__3
+ 1036: ldloc.1 
+ 1037: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1042: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.System.Threading.Tasks.Task EndCardOrPotionEffect(System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId], MegaCrit.Sts2.Core.Entities.Players.Player)
+ 1047: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 1052: stloc.s 20
+ 1054: ldloca.s 20
+ 1056: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 1061: brtrue.s 1128
+ 1063: ldarg.0 
+ 1064: ldc.i4.4 
+ 1065: dup 
+ 1066: stloc.0 
+ 1067: stfld field:Int32 <>1__state
+ 1072: ldarg.0 
+ 1073: ldloc.s 20
+ 1075: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1080: ldarg.0 
+ 1081: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1086: ldloca.s 20
+ 1088: ldarg.0 
+ 1089: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 1094: leave 1621
+ 1099: ldarg.0 
+ 1100: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1105: stloc.s 20
+ 1107: ldarg.0 
+ 1108: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1113: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 1119: ldarg.0 
+ 1120: ldc.i4.m1 
+ 1121: dup 
+ 1122: stloc.0 
+ 1123: stfld field:Int32 <>1__state
+ 1128: ldloca.s 20
+ 1130: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 1135: ldarg.0 
+ 1136: ldfld field:System.Object <>7__wrap3
+ 1141: stloc.s 19
+ 1143: ldloc.s 19
+ 1145: brfalse.s 1175
+ 1147: ldloc.s 19
+ 1149: isinst type:System.Exception
+ 1154: stloc.s 21
+ 1156: ldloc.s 21
+ 1158: brtrue.s 1163
+ 1160: ldloc.s 19
+ 1162: throw 
+ 1163: ldloc.s 21
+ 1165: call method:System.Runtime.ExceptionServices.ExceptionDispatchInfo.System.Runtime.ExceptionServices.ExceptionDispatchInfo Capture(System.Exception)
+ 1170: callvirt method:System.Runtime.ExceptionServices.ExceptionDispatchInfo.Void Throw()
+ 1175: ldarg.0 
+ 1176: ldnull 
+ 1177: stfld field:System.Object <>7__wrap3
+ 1182: ldloc.1 
+ 1183: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1188: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 1193: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 1198: brfalse.s 1205
+ 1200: leave 1595
+ 1205: ldloc.1 
+ 1206: call method:MegaCrit.Sts2.Core.Models.AbstractModel.Void InvokeExecutionFinished()
+ 1211: ldarg.0 
+ 1212: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 1217: brfalse.s 1265
+ 1219: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 1224: ldarg.0 
+ 1225: ldfld field:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId] <effectCombatId>5__3
+ 1230: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean IsCurrentLiveCombat(System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId])
+ 1235: brfalse.s 1265
+ 1237: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 1242: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.History.CombatHistory get_History()
+ 1247: ldarg.0 
+ 1248: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 1253: ldloc.1 
+ 1254: ldarg.0 
+ 1255: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature target
+ 1260: callvirt method:MegaCrit.Sts2.Core.Combat.History.CombatHistory.Void PotionUsed(MegaCrit.Sts2.Core.Combat.ICombatState, MegaCrit.Sts2.Core.Models.PotionModel, MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 1265: ldloc.1 
+ 1266: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1271: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 1276: ldarg.0 
+ 1277: ldfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 1282: ldloc.1 
+ 1283: ldarg.0 
+ 1284: ldfld field:MegaCrit.Sts2.Core.Entities.Creatures.Creature target
+ 1289: call method:MegaCrit.Sts2.Core.Hooks.Hook.System.Threading.Tasks.Task AfterPotionUsed(MegaCrit.Sts2.Core.Runs.IRunState, MegaCrit.Sts2.Core.Combat.ICombatState, MegaCrit.Sts2.Core.Models.PotionModel, MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 1294: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 1299: stloc.s 22
+ 1301: ldloca.s 22
+ 1303: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 1308: brtrue.s 1375
+ 1310: ldarg.0 
+ 1311: ldc.i4.5 
+ 1312: dup 
+ 1313: stloc.0 
+ 1314: stfld field:Int32 <>1__state
+ 1319: ldarg.0 
+ 1320: ldloc.s 22
+ 1322: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1327: ldarg.0 
+ 1328: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1333: ldloca.s 22
+ 1335: ldarg.0 
+ 1336: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 1341: leave 1621
+ 1346: ldarg.0 
+ 1347: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1352: stloc.s 22
+ 1354: ldarg.0 
+ 1355: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1360: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 1366: ldarg.0 
+ 1367: ldc.i4.m1 
+ 1368: dup 
+ 1369: stloc.0 
+ 1370: stfld field:Int32 <>1__state
+ 1375: ldloca.s 22
+ 1377: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 1382: ldloc.1 
+ 1383: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1388: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 1393: callvirt method:MegaCrit.Sts2.Core.Runs.IRunState.MegaCrit.Sts2.Core.Runs.History.MapPointHistoryEntry get_CurrentMapPointHistoryEntry()
+ 1398: dup 
+ 1399: brtrue.s 1404
+ 1401: pop 
+ 1402: br.s 1436
+ 1404: ldloc.1 
+ 1405: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1410: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 1415: call method:MegaCrit.Sts2.Core.Runs.History.MapPointHistoryEntry.MegaCrit.Sts2.Core.Runs.PlayerMapPointHistoryEntry GetEntry(UInt64)
+ 1420: callvirt method:MegaCrit.Sts2.Core.Runs.PlayerMapPointHistoryEntry.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId] get_PotionUsed()
+ 1425: ldloc.1 
+ 1426: call method:MegaCrit.Sts2.Core.Models.AbstractModel.MegaCrit.Sts2.Core.Models.ModelId get_Id()
+ 1431: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ModelId].Void Add(MegaCrit.Sts2.Core.Models.ModelId)
+ 1436: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 1441: ldarg.0 
+ 1442: ldfld field:System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId] <effectCombatId>5__3
+ 1447: ldarg.0 
+ 1448: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 1453: ldloc.1 
+ 1454: call method:MegaCrit.Sts2.Core.Models.PotionModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1459: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.System.Threading.Tasks.Task CheckForEmptyHand(System.Nullable`1[MegaCrit.Sts2.Core.Combat.CombatId], MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 1464: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 1469: stloc.s 23
+ 1471: ldloca.s 23
+ 1473: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 1478: brtrue.s 1542
+ 1480: ldarg.0 
+ 1481: ldc.i4.6 
+ 1482: dup 
+ 1483: stloc.0 
+ 1484: stfld field:Int32 <>1__state
+ 1489: ldarg.0 
+ 1490: ldloc.s 23
+ 1492: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1497: ldarg.0 
+ 1498: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1503: ldloca.s 23
+ 1505: ldarg.0 
+ 1506: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<OnUseWrapper>d__75](System.Runtime.CompilerServices.TaskAwaiter ByRef, <OnUseWrapper>d__75 ByRef)
+ 1511: leave.s 1621
+ 1513: ldarg.0 
+ 1514: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1519: stloc.s 23
+ 1521: ldarg.0 
+ 1522: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 1527: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 1533: ldarg.0 
+ 1534: ldc.i4.m1 
+ 1535: dup 
+ 1536: stloc.0 
+ 1537: stfld field:Int32 <>1__state
+ 1542: ldloca.s 23
+ 1544: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 1549: ldarg.0 
+ 1550: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 1555: ldloc.1 
+ 1556: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.Void PopModel(MegaCrit.Sts2.Core.Models.AbstractModel)
+ 1561: leave.s 1595
+ 1563: stloc.s 21
+ 1565: ldarg.0 
+ 1566: ldc.i4.s -2
+ 1568: stfld field:Int32 <>1__state
+ 1573: ldarg.0 
+ 1574: ldnull 
+ 1575: stfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 1580: ldarg.0 
+ 1581: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1586: ldloc.s 21
+ 1588: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 1593: leave.s 1621
+ 1595: ldarg.0 
+ 1596: ldc.i4.s -2
+ 1598: stfld field:Int32 <>1__state
+ 1603: ldarg.0 
+ 1604: ldnull 
+ 1605: stfld field:MegaCrit.Sts2.Core.Combat.ICombatState <combatState>5__2
+ 1610: ldarg.0 
+ 1611: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 1616: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 1621: ret 

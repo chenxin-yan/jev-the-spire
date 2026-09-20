@@ -1,0 +1,5 @@
+SentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.
+Unhandled exception. System.Exception: an unbranched Branching wrapper over a registered GameAction context installs exactly that registered owner (live Headbutt unowned_selection_continuation)
+   at Program.<>c__DisplayClass0_0.<<Main>$>g__Check|0(Boolean passed, String message) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.ZfQG6bqE7k/Program.cs:line 17
+   at Program.<Main>$(String[] args) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.ZfQG6bqE7k/Program.cs:line 1539
+   at Program.<Main>(String[] args)

@@ -1,0 +1,178 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Models.Cards.Headbutt <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: switch switch 3
+ 0032: ldarg.0 
+ 0033: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPlay cardPlay
+ 0038: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPlay.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Target()
+ 0043: ldstr str:cardPlay.Target
+ 0048: call method:System.ArgumentNullException.Void ThrowIfNull(System.Object, System.String)
+ 0053: ldloc.1 
+ 0054: call method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Localization.DynamicVars.DynamicVarSet get_DynamicVars()
+ 0059: callvirt method:MegaCrit.Sts2.Core.Localization.DynamicVars.DynamicVarSet.MegaCrit.Sts2.Core.Localization.DynamicVars.DamageVar get_Damage()
+ 0064: callvirt method:MegaCrit.Sts2.Core.Localization.DynamicVars.DynamicVar.System.Decimal get_BaseValue()
+ 0069: call method:MegaCrit.Sts2.Core.Commands.DamageCmd.MegaCrit.Sts2.Core.Commands.Builders.AttackCommand Attack(System.Decimal)
+ 0074: ldloc.1 
+ 0075: ldarg.0 
+ 0076: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPlay cardPlay
+ 0081: callvirt method:MegaCrit.Sts2.Core.Commands.Builders.AttackCommand.MegaCrit.Sts2.Core.Commands.Builders.AttackCommand FromCard(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Entities.Cards.CardPlay)
+ 0086: ldarg.0 
+ 0087: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPlay cardPlay
+ 0092: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPlay.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Target()
+ 0097: callvirt method:MegaCrit.Sts2.Core.Commands.Builders.AttackCommand.MegaCrit.Sts2.Core.Commands.Builders.AttackCommand Targeting(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
+ 0102: ldstr str:vfx/vfx_attack_blunt
+ 0107: ldnull 
+ 0108: ldstr str:blunt_attack.mp3
+ 0113: callvirt method:MegaCrit.Sts2.Core.Commands.Builders.AttackCommand.MegaCrit.Sts2.Core.Commands.Builders.AttackCommand WithHitFx(System.String, System.String, System.String)
+ 0118: ldarg.0 
+ 0119: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 0124: callvirt method:MegaCrit.Sts2.Core.Commands.Builders.AttackCommand.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] Execute(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext)
+ 0129: callvirt method:System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand].System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] GetAwaiter()
+ 0134: stloc.s 5
+ 0136: ldloca.s 5
+ 0138: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand].Boolean get_IsCompleted()
+ 0143: brtrue.s 210
+ 0145: ldarg.0 
+ 0146: ldc.i4.0 
+ 0147: dup 
+ 0148: stloc.0 
+ 0149: stfld field:Int32 <>1__state
+ 0154: ldarg.0 
+ 0155: ldloc.s 5
+ 0157: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] <>u__1
+ 0162: ldarg.0 
+ 0163: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0168: ldloca.s 5
+ 0170: ldarg.0 
+ 0171: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<OnPlay>d__3](System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] ByRef, <OnPlay>d__3 ByRef)
+ 0176: leave 510
+ 0181: ldarg.0 
+ 0182: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] <>u__1
+ 0187: stloc.s 5
+ 0189: ldarg.0 
+ 0190: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand] <>u__1
+ 0195: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand]
+ 0201: ldarg.0 
+ 0202: ldc.i4.m1 
+ 0203: dup 
+ 0204: stloc.0 
+ 0205: stfld field:Int32 <>1__state
+ 0210: ldloca.s 5
+ 0212: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Commands.Builders.AttackCommand].MegaCrit.Sts2.Core.Commands.Builders.AttackCommand GetResult()
+ 0217: pop 
+ 0218: ldloca.s 2
+ 0220: ldloc.1 
+ 0221: call method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Localization.LocString get_SelectionScreenPrompt()
+ 0226: ldc.i4.1 
+ 0227: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Void .ctor(MegaCrit.Sts2.Core.Localization.LocString, Int32)
+ 0232: ldarg.0 
+ 0233: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext choiceContext
+ 0238: ldc.i4.3 
+ 0239: ldloc.1 
+ 0240: call method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0245: call method:MegaCrit.Sts2.Core.Entities.Cards.PileTypeExtensions.MegaCrit.Sts2.Core.Entities.Cards.CardPile GetPile(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0250: ldloc.1 
+ 0251: call method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0256: ldloc.2 
+ 0257: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromCombatPile(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext, MegaCrit.Sts2.Core.Entities.Cards.CardPile, MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+ 0262: callvirt method:System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetAwaiter()
+ 0267: stloc.s 7
+ 0269: ldloca.s 7
+ 0271: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Boolean get_IsCompleted()
+ 0276: brtrue.s 343
+ 0278: ldarg.0 
+ 0279: ldc.i4.1 
+ 0280: dup 
+ 0281: stloc.0 
+ 0282: stfld field:Int32 <>1__state
+ 0287: ldarg.0 
+ 0288: ldloc.s 7
+ 0290: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__2
+ 0295: ldarg.0 
+ 0296: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0301: ldloca.s 7
+ 0303: ldarg.0 
+ 0304: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<OnPlay>d__3](System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] ByRef, <OnPlay>d__3 ByRef)
+ 0309: leave 510
+ 0314: ldarg.0 
+ 0315: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__2
+ 0320: stloc.s 7
+ 0322: ldarg.0 
+ 0323: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] <>u__2
+ 0328: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]]
+ 0334: ldarg.0 
+ 0335: ldc.i4.m1 
+ 0336: dup 
+ 0337: stloc.0 
+ 0338: stfld field:Int32 <>1__state
+ 0343: ldloca.s 7
+ 0345: call method:System.Runtime.CompilerServices.TaskAwaiter`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] GetResult()
+ 0350: stloc.s 6
+ 0352: ldloc.s 6
+ 0354: stloc.3 
+ 0355: ldloc.3 
+ 0356: call method:System.Linq.Enumerable.MegaCrit.Sts2.Core.Models.CardModel FirstOrDefault[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0361: stloc.s 4
+ 0363: ldloc.s 4
+ 0365: brfalse.s 464
+ 0367: ldloc.s 4
+ 0369: ldc.i4.1 
+ 0370: ldc.i4.2 
+ 0371: ldnull 
+ 0372: ldc.i4.0 
+ 0373: call method:MegaCrit.Sts2.Core.Commands.CardPileCmd.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] Add(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Cards.CardPilePosition, MegaCrit.Sts2.Core.Models.AbstractModel, Boolean)
+ 0378: callvirt method:System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult].System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] GetAwaiter()
+ 0383: stloc.s 8
+ 0385: ldloca.s 8
+ 0387: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult].Boolean get_IsCompleted()
+ 0392: brtrue.s 456
+ 0394: ldarg.0 
+ 0395: ldc.i4.2 
+ 0396: dup 
+ 0397: stloc.0 
+ 0398: stfld field:Int32 <>1__state
+ 0403: ldarg.0 
+ 0404: ldloc.s 8
+ 0406: stfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] <>u__3
+ 0411: ldarg.0 
+ 0412: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0417: ldloca.s 8
+ 0419: ldarg.0 
+ 0420: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter`1,<OnPlay>d__3](System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] ByRef, <OnPlay>d__3 ByRef)
+ 0425: leave.s 510
+ 0427: ldarg.0 
+ 0428: ldfld field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] <>u__3
+ 0433: stloc.s 8
+ 0435: ldarg.0 
+ 0436: ldflda field:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult] <>u__3
+ 0441: initobj type:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult]
+ 0447: ldarg.0 
+ 0448: ldc.i4.m1 
+ 0449: dup 
+ 0450: stloc.0 
+ 0451: stfld field:Int32 <>1__state
+ 0456: ldloca.s 8
+ 0458: call method:System.Runtime.CompilerServices.TaskAwaiter`1[MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult].MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult GetResult()
+ 0463: pop 
+ 0464: leave.s 491
+ 0466: stloc.s 9
+ 0468: ldarg.0 
+ 0469: ldc.i4.s -2
+ 0471: stfld field:Int32 <>1__state
+ 0476: ldarg.0 
+ 0477: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0482: ldloc.s 9
+ 0484: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0489: leave.s 510
+ 0491: ldarg.0 
+ 0492: ldc.i4.s -2
+ 0494: stfld field:Int32 <>1__state
+ 0499: ldarg.0 
+ 0500: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0505: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0510: ret 

@@ -1,0 +1,6 @@
+Confirmed exact Headbutt continuation halt; bridge must retain ownership of this native owned selection.
+Traceback (most recent call last):
+  File "/tmp/jev-autonomous-2026-09-20/headbutt/check-halt.py", line 9, in <module>
+    assert s['halt_reason']!='unowned_selection_continuation', 'RED: accepted Headbutt play yielded unowned_selection_continuation'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RED: accepted Headbutt play yielded unowned_selection_continuation

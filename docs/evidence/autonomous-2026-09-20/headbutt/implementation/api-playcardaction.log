@@ -1,0 +1,34 @@
+NESTED MegaCrit.Sts2.Core.GameActions.PlayCardAction+<ExecuteAction>d__25
+TYPE MegaCrit.Sts2.Core.GameActions.PlayCardAction
+PROP UInt64 OwnerId get=UInt64 get_OwnerId()
+PROP MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType ActionType get=MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType get_ActionType()
+PROP MegaCrit.Sts2.Core.Entities.Players.Player Player get=MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+PROP MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard NetCombatCard get=MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard get_NetCombatCard()
+PROP MegaCrit.Sts2.Core.Models.ModelId CardModelId get=MegaCrit.Sts2.Core.Models.ModelId get_CardModelId()
+PROP System.Nullable`1[System.UInt32] TargetId get=System.Nullable`1[System.UInt32] get_TargetId()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext PlayerChoiceContext get=MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext get_PlayerChoiceContext()
+PROP MegaCrit.Sts2.Core.Entities.Creatures.Creature Target get=MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Target()
+PROP MegaCrit.Sts2.Core.Entities.Actions.GameActionState State get=MegaCrit.Sts2.Core.Entities.Actions.GameActionState get_State()
+PROP System.Nullable`1[System.UInt32] Id get=System.Nullable`1[System.UInt32] get_Id()
+PROP System.Threading.Tasks.Task CompletionTask get=System.Threading.Tasks.Task get_CompletionTask()
+PROP System.Exception Exception get=System.Exception get_Exception()
+PROP Boolean RecordableToReplay get=Boolean get_RecordableToReplay()
+FIELD MegaCrit.Sts2.Core.Entities.Players.Player <Player>k__BackingField
+FIELD MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard <NetCombatCard>k__BackingField
+FIELD MegaCrit.Sts2.Core.Models.ModelId <CardModelId>k__BackingField
+FIELD System.Nullable`1[System.UInt32] <TargetId>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext <PlayerChoiceContext>k__BackingField
+FIELD MegaCrit.Sts2.Core.Models.CardModel _card
+METHOD UInt64 get_OwnerId()
+METHOD MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType get_ActionType()
+METHOD MegaCrit.Sts2.Core.Entities.Players.Player get_Player()
+METHOD MegaCrit.Sts2.Core.Entities.Multiplayer.NetCombatCard get_NetCombatCard()
+METHOD MegaCrit.Sts2.Core.Models.ModelId get_CardModelId()
+METHOD System.Nullable`1[System.UInt32] get_TargetId()
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext get_PlayerChoiceContext()
+METHOD Void set_PlayerChoiceContext(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext)
+METHOD MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Target()
+METHOD System.Threading.Tasks.Task ExecuteAction()
+METHOD Void CancelAction()
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.INetAction ToNetAction()
+METHOD System.String ToString()

@@ -1,0 +1,31 @@
+{
+  "record_types": {
+    "inference": 7,
+    "decision": 9,
+    "dispatch": 9,
+    "wait": 9,
+    "summary": 1
+  },
+  "summary": {
+    "type": "summary",
+    "ts": "2026-09-20T22:48:17.405Z",
+    "outcome": "halted",
+    "halt_reason": "unowned_selection_continuation",
+    "dispatched": 9,
+    "model_calls": 7,
+    "forced": 2,
+    "last_state_type": "unsupported",
+    "input_tokens": 21468,
+    "output_tokens": 437,
+    "wall_ms": 16108
+  },
+  "opening_seed": "5P4NPFRRCJY6",
+  "profile": 2,
+  "mode": "Standard",
+  "character": "Ironclad",
+  "ascension": 0,
+  "technical_stop": "unowned_selection_continuation after accepted Headbutt play",
+  "historical_halt_preserved": true,
+  "bundle_live_path": "Scroll Boxes: selected bundle0, confirmed, returned to Neow Proceed and map",
+  "subsequent_gameplay": "none"
+}

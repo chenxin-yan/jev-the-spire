@@ -1,0 +1,178 @@
+METHOD System.Threading.Tasks.Task SignalPlayerChoiceBegun(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+ 0000: ldarg.1 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0006: ldarg.0 
+ 0007: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.System.Nullable`1[System.UInt64] get_OwnerId()
+ 0012: stloc.0 
+ 0013: ldloca.s 0
+ 0015: call method:System.Nullable`1[System.UInt64].UInt64 GetValueOrDefault()
+ 0020: ceq 
+ 0022: ldloca.s 0
+ 0024: call method:System.Nullable`1[System.UInt64].Boolean get_HasValue()
+ 0029: and 
+ 0030: brtrue 183
+ 0035: ldloca.s 1
+ 0037: ldc.i4 180
+ 0042: ldc.i4.4 
+ 0043: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0048: ldloca.s 1
+ 0050: ldstr str:GameActionPlayerChoiceContext
+ 0055: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0060: ldloca.s 1
+ 0062: ldstr str: is executing player choice owned by 
+ 0067: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0072: ldloca.s 1
+ 0074: ldarg.1 
+ 0075: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.UInt64 get_NetId()
+ 0080: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[UInt64](UInt64)
+ 0085: ldloca.s 1
+ 0087: ldstr str:, but 
+ 0092: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0097: ldloca.s 1
+ 0099: ldstr str:the player choice began with owner 
+ 0104: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0109: ldloca.s 1
+ 0111: ldarg.0 
+ 0112: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext.System.Nullable`1[System.UInt64] get_OwnerId()
+ 0117: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[Nullable`1](System.Nullable`1[System.UInt64])
+ 0122: ldloca.s 1
+ 0124: ldstr str:! This will work, but will likely result in some weird-looking 
+ 0129: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0134: ldloca.s 1
+ 0136: ldstr str:user experience. See 
+ 0141: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0146: ldloca.s 1
+ 0148: ldstr str:BlockingPlayerChoiceContext
+ 0153: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted(System.String)
+ 0158: ldloca.s 1
+ 0160: ldstr str: for a resolution.
+ 0165: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0170: ldloca.s 1
+ 0172: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0177: ldc.i4.2 
+ 0178: call method:MegaCrit.Sts2.Core.Logging.Log.Void Warn(System.String, Int32)
+ 0183: ldarg.0 
+ 0184: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0189: brfalse.s 306
+ 0191: ldarg.0 
+ 0192: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0197: callvirt method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.MegaCrit.Sts2.Core.GameActions.GameAction get_CurrentlyRunningAction()
+ 0202: ldarg.0 
+ 0203: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0208: beq.s 306
+ 0210: ldloca.s 1
+ 0212: ldc.i4.s 82
+ 0214: ldc.i4.2 
+ 0215: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void .ctor(Int32, Int32)
+ 0220: ldloca.s 1
+ 0222: ldstr str:Tried to interrupt shared queue action 
+ 0227: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0232: ldloca.s 1
+ 0234: ldarg.0 
+ 0235: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0240: callvirt method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.MegaCrit.Sts2.Core.GameActions.GameAction get_CurrentlyRunningAction()
+ 0245: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[GameAction](MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0250: ldloca.s 1
+ 0252: ldstr str: with a player choice context with action 
+ 0257: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0262: ldloca.s 1
+ 0264: ldarg.0 
+ 0265: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0270: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendFormatted[GameAction](MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0275: ldloca.s 1
+ 0277: ldstr str:!
+ 0282: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.Void AppendLiteral(System.String)
+ 0287: ldloca.s 1
+ 0289: call method:System.Runtime.CompilerServices.DefaultInterpolatedStringHandler.System.String ToStringAndClear()
+ 0294: ldc.i4.2 
+ 0295: call method:MegaCrit.Sts2.Core.Logging.Log.Void Error(System.String, Int32)
+ 0300: call method:System.Threading.Tasks.Task.System.Threading.Tasks.Task get_CompletedTask()
+ 0305: ret 
+ 0306: ldarg.0 
+ 0307: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+ 0312: ldarg.0 
+ 0313: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0318: ldarg.2 
+ 0319: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.Void PauseActionForPlayerChoice(MegaCrit.Sts2.Core.GameActions.GameAction, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+ 0324: call method:System.Threading.Tasks.Task.System.Threading.Tasks.Task get_CompletedTask()
+ 0329: ret 
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse.s 135
+ 0017: ldloc.1 
+ 0018: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0023: callvirt method:MegaCrit.Sts2.Core.GameActions.GameAction.UInt64 get_OwnerId()
+ 0028: call method:MegaCrit.Sts2.Core.Context.LocalContext.System.Nullable`1[System.UInt64] get_NetId()
+ 0033: stloc.2 
+ 0034: ldloca.s 2
+ 0036: call method:System.Nullable`1[System.UInt64].UInt64 GetValueOrDefault()
+ 0041: ceq 
+ 0043: ldloca.s 2
+ 0045: call method:System.Nullable`1[System.UInt64].Boolean get_HasValue()
+ 0050: and 
+ 0051: brtrue.s 60
+ 0053: call method:MegaCrit.Sts2.Core.TestSupport.TestFlags.Boolean get_ShouldSendResumeForRemotePlayers()
+ 0058: brfalse.s 77
+ 0060: ldloc.1 
+ 0061: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0066: ldloc.1 
+ 0067: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0072: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.Void RequestResumeActionAfterPlayerChoice(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0077: ldloc.1 
+ 0078: call method:MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.MegaCrit.Sts2.Core.GameActions.GameAction get_Action()
+ 0083: callvirt method:MegaCrit.Sts2.Core.GameActions.GameAction.System.Threading.Tasks.Task WaitForActionToResumeExecutingAfterPlayerChoice()
+ 0088: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0093: stloc.3 
+ 0094: ldloca.s 3
+ 0096: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0101: brtrue.s 163
+ 0103: ldarg.0 
+ 0104: ldc.i4.0 
+ 0105: dup 
+ 0106: stloc.0 
+ 0107: stfld field:Int32 <>1__state
+ 0112: ldarg.0 
+ 0113: ldloc.3 
+ 0114: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0119: ldarg.0 
+ 0120: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0125: ldloca.s 3
+ 0127: ldarg.0 
+ 0128: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<SignalPlayerChoiceEnded>d__16](System.Runtime.CompilerServices.TaskAwaiter ByRef, <SignalPlayerChoiceEnded>d__16 ByRef)
+ 0133: leave.s 216
+ 0135: ldarg.0 
+ 0136: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0141: stloc.3 
+ 0142: ldarg.0 
+ 0143: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0148: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0154: ldarg.0 
+ 0155: ldc.i4.m1 
+ 0156: dup 
+ 0157: stloc.0 
+ 0158: stfld field:Int32 <>1__state
+ 0163: ldloca.s 3
+ 0165: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0170: leave.s 197
+ 0172: stloc.s 4
+ 0174: ldarg.0 
+ 0175: ldc.i4.s -2
+ 0177: stfld field:Int32 <>1__state
+ 0182: ldarg.0 
+ 0183: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0188: ldloc.s 4
+ 0190: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0195: leave.s 216
+ 0197: ldarg.0 
+ 0198: ldc.i4.s -2
+ 0200: stfld field:Int32 <>1__state
+ 0205: ldarg.0 
+ 0206: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0211: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0216: ret 

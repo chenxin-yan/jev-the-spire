@@ -1,0 +1,396 @@
+METHOD MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen Create(MegaCrit.Sts2.Core.Entities.Cards.CardPile, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0000: call method:MegaCrit.Sts2.Core.Assets.PreloadManager.MegaCrit.Sts2.Core.Assets.AssetCache get_Cache()
+ 0005: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.System.String get_ScenePath()
+ 0010: callvirt method:MegaCrit.Sts2.Core.Assets.AssetCache.Godot.PackedScene GetScene(System.String)
+ 0015: ldc.i4.0 
+ 0016: conv.i8 
+ 0017: callvirt method:Godot.PackedScene.MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen Instantiate[NCombatPileCardSelectScreen](GenEditState)
+ 0022: stloc.0 
+ 0023: ldloc.0 
+ 0024: ldstr str:NCombatPileCardSelectScreen
+ 0029: call method:Godot.StringName.Godot.StringName op_Implicit(System.String)
+ 0034: callvirt method:Godot.Node.Void set_Name(Godot.StringName)
+ 0039: ldloc.0 
+ 0040: ldnull 
+ 0041: stfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Entities.Cards.CardCreationResult] _cardResults
+ 0046: ldloc.0 
+ 0047: ldarg.1 
+ 0048: stfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0053: ldloc.0 
+ 0054: call method:System.Array.MegaCrit.Sts2.Core.Models.CardModel[] Empty[CardModel]()
+ 0059: stfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+ 0064: ldloc.0 
+ 0065: ldarg.0 
+ 0066: stfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0071: ldloc.0 
+ 0072: ldarg.2 
+ 0073: stfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] _filter
+ 0078: ldloc.0 
+ 0079: ret 
+METHOD Void _Ready()
+ 0000: ldarg.0 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void ConnectSignalsAndInitGrid()
+ 0006: ldarg.0 
+ 0007: ldarg.0 
+ 0008: ldstr str:%Confirm
+ 0013: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0018: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton GetNode[NConfirmButton](Godot.NodePath)
+ 0023: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0028: ldarg.0 
+ 0029: ldarg.0 
+ 0030: ldstr str:%BottomText
+ 0035: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0040: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0045: stfld field:Godot.Control _bottomTextContainer
+ 0050: ldarg.0 
+ 0051: ldarg.0 
+ 0052: ldfld field:Godot.Control _bottomTextContainer
+ 0057: ldstr str:%BottomLabel
+ 0062: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0067: callvirt method:Godot.Node.MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel GetNode[MegaRichTextLabel](Godot.NodePath)
+ 0072: stfld field:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _infoLabel
+ 0077: ldarg.0 
+ 0078: ldfld field:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _infoLabel
+ 0083: ldarg.0 
+ 0084: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0089: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.MegaCrit.Sts2.Core.Localization.LocString get_Prompt()
+ 0094: callvirt method:MegaCrit.Sts2.Core.Localization.LocString.System.String GetFormattedText()
+ 0099: callvirt method:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel.Void set_Text(System.String)
+ 0104: ldarg.0 
+ 0105: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UpdatePileContents()
+ 0110: ldarg.0 
+ 0111: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0116: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0121: brtrue.s 136
+ 0123: ldarg.0 
+ 0124: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0129: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0134: br.s 147
+ 0136: ldarg.0 
+ 0137: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0142: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0147: ldarg.0 
+ 0148: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0153: ldsfld field:Godot.StringName Released
+ 0158: ldarg.0 
+ 0159: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void <_Ready>b__16_0(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0165: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0170: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0175: ldc.i4.0 
+ 0176: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0181: pop 
+ 0182: ret 
+METHOD Void _EnterTree()
+ 0000: ldarg.0 
+ 0001: newobj method:System.Threading.CancellationTokenSource.Void .ctor()
+ 0006: stfld field:System.Threading.CancellationTokenSource _cts
+ 0011: ldarg.0 
+ 0012: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0017: ldarg.0 
+ 0018: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UpdatePileContents()
+ 0024: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0029: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.Void add_ContentsChanged(System.Action)
+ 0034: ldarg.0 
+ 0035: ldc.i4.1 
+ 0036: stfld field:Boolean _isSubscribedToPile
+ 0041: ret 
+METHOD Void _ExitTree()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void _ExitTree()
+ 0006: ldarg.0 
+ 0007: ldfld field:System.Threading.CancellationTokenSource _cts
+ 0012: callvirt method:System.Threading.CancellationTokenSource.Void Cancel()
+ 0017: ldarg.0 
+ 0018: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UnsubscribeFromPile()
+ 0023: ret 
+METHOD Void ConnectSignalsAndInitGrid()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void ConnectSignalsAndInitGrid()
+ 0006: ldarg.0 
+ 0007: ldarg.0 
+ 0008: ldstr str:%CombatPiles
+ 0013: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0018: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer GetNode[NCombatPilesContainer](Godot.NodePath)
+ 0023: stfld field:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer _combatPiles
+ 0028: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0033: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Boolean get_IsInProgress()
+ 0038: brfalse.s 72
+ 0040: ldarg.0 
+ 0041: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer _combatPiles
+ 0046: ldarg.0 
+ 0047: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0052: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0057: call method:System.Linq.Enumerable.MegaCrit.Sts2.Core.Models.CardModel First[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0062: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0067: callvirt method:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer.Void Initialize(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0072: ldarg.0 
+ 0073: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer _combatPiles
+ 0078: callvirt method:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer.Void Disable()
+ 0083: ldarg.0 
+ 0084: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NCombatPilesContainer _combatPiles
+ 0089: ldc.i4.0 
+ 0090: callvirt method:Godot.CanvasItem.Void SetVisible(Boolean)
+ 0095: ldarg.0 
+ 0096: ldfld field:MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton _peekButton
+ 0101: ldsfld field:Godot.StringName Toggled
+ 0106: ldarg.0 
+ 0107: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void <ConnectSignalsAndInitGrid>b__19_0(MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+ 0113: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton].Void .ctor(System.Object, IntPtr)
+ 0118: call method:Godot.Callable.Godot.Callable From[NPeekButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton])
+ 0123: ldc.i4.0 
+ 0124: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0129: pop 
+ 0130: ret 
+METHOD Void OnCardClicked(MegaCrit.Sts2.Core.Models.CardModel)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0006: ldarg.1 
+ 0007: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Boolean Contains(MegaCrit.Sts2.Core.Models.CardModel)
+ 0012: brfalse.s 41
+ 0014: ldarg.0 
+ 0015: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0020: ldarg.1 
+ 0021: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0026: ldarg.0 
+ 0027: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0032: ldarg.1 
+ 0033: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Boolean Remove(MegaCrit.Sts2.Core.Models.CardModel)
+ 0038: pop 
+ 0039: br.s 109
+ 0041: ldarg.0 
+ 0042: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0047: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0052: ldarg.0 
+ 0053: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0058: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0063: bge.s 90
+ 0065: ldarg.0 
+ 0066: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0071: ldarg.1 
+ 0072: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void HighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0077: ldarg.0 
+ 0078: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0083: ldarg.1 
+ 0084: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Boolean Add(MegaCrit.Sts2.Core.Models.CardModel)
+ 0089: pop 
+ 0090: ldarg.0 
+ 0091: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0096: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_RequireManualConfirmation()
+ 0101: brtrue.s 109
+ 0103: ldarg.0 
+ 0104: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void CheckIfSelectionComplete()
+ 0109: ldarg.0 
+ 0110: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UpdateConfirmButton()
+ 0115: ret 
+METHOD Void UpdateConfirmButton()
+ 0000: ldarg.0 
+ 0001: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0006: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0011: ldarg.0 
+ 0012: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0017: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] get_CurrentlyDisplayedCards()
+ 0022: call method:System.Linq.Enumerable.Int32 Count[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0027: call method:Godot.Mathf.Int32 Min(Int32, Int32)
+ 0032: stloc.0 
+ 0033: ldarg.0 
+ 0034: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0039: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0044: ldloc.0 
+ 0045: blt.s 72
+ 0047: ldarg.0 
+ 0048: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0053: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_RequireManualConfirmation()
+ 0058: brfalse.s 72
+ 0060: ldarg.0 
+ 0061: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0066: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0071: ret 
+ 0072: ldarg.0 
+ 0073: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0078: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0083: ret 
+METHOD Void CheckIfSelectionComplete()
+ 0000: ldarg.0 
+ 0001: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0006: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0011: ldarg.0 
+ 0012: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0017: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] get_CurrentlyDisplayedCards()
+ 0022: call method:System.Linq.Enumerable.Int32 Count[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0027: call method:Godot.Mathf.Int32 Min(Int32, Int32)
+ 0032: stloc.0 
+ 0033: ldarg.0 
+ 0034: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0039: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0044: ldloc.0 
+ 0045: blt.s 53
+ 0047: ldarg.0 
+ 0048: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void CompleteSelection()
+ 0053: ret 
+METHOD Void CompleteSelection()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UnsubscribeFromPile()
+ 0006: ldarg.0 
+ 0007: ldfld field:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] _completionSource
+ 0012: ldarg.0 
+ 0013: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0018: callvirt method:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void SetResult(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0023: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack get_Instance()
+ 0028: ldarg.0 
+ 0029: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.Void Remove(MegaCrit.Sts2.Core.Nodes.Screens.Overlays.IOverlayScreen)
+ 0034: ret 
+METHOD Void UpdatePileContents()
+ 0000: newobj method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen+<>c__DisplayClass29_0.Void .ctor()
+ 0005: stloc.0 
+ 0006: ldloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] _filter
+ 0013: brtrue.s 28
+ 0015: ldarg.0 
+ 0016: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0021: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0026: br.s 57
+ 0028: ldarg.0 
+ 0029: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0034: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0039: ldarg.0 
+ 0040: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] _filter
+ 0045: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] Where[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0050: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] ToList[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0055: stloc.1 
+ 0056: ldloc.1 
+ 0057: stfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] validPileCards
+ 0062: ldarg.0 
+ 0063: ldarg.0 
+ 0064: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0069: ldloc.0 
+ 0070: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen+<>c__DisplayClass29_0.Boolean <UpdatePileContents>b__0(MegaCrit.Sts2.Core.Models.CardModel)
+ 0076: newobj method:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean].Void .ctor(System.Object, IntPtr)
+ 0081: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] Where[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0086: call method:System.Linq.Enumerable.System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] ToHashSet[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0091: stfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0096: ldloc.0 
+ 0097: ldfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] validPileCards
+ 0102: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0107: brtrue.s 127
+ 0109: ldarg.0 
+ 0110: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0115: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0120: ldarg.0 
+ 0121: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void CompleteSelection()
+ 0126: ret 
+ 0127: ldloc.0 
+ 0128: ldfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] validPileCards
+ 0133: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0138: ldarg.0 
+ 0139: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0144: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0149: bne.un.s 158
+ 0151: ldarg.0 
+ 0152: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void CompleteSelection()
+ 0157: ret 
+ 0158: ldarg.0 
+ 0159: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0164: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.MegaCrit.Sts2.Core.Entities.Cards.PileType get_Type()
+ 0169: ldc.i4.1 
+ 0170: beq.s 211
+ 0172: ldc.i4.1 
+ 0173: stloc.3 
+ 0174: ldloc.3 
+ 0175: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].Void .ctor(Int32)
+ 0180: dup 
+ 0181: ldloc.3 
+ 0182: call method:System.Runtime.InteropServices.CollectionsMarshal.Void SetCount[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], Int32)
+ 0187: dup 
+ 0188: call method:System.Runtime.InteropServices.CollectionsMarshal.System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] AsSpan[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders])
+ 0193: stloc.s 4
+ 0195: ldc.i4.0 
+ 0196: stloc.s 5
+ 0198: ldloca.s 4
+ 0200: ldloc.s 5
+ 0202: call method:System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders& get_Item(Int32)
+ 0207: ldc.i4.8 
+ 0208: stind.i4 
+ 0209: br.s 263
+ 0211: ldc.i4.2 
+ 0212: stloc.s 5
+ 0214: ldloc.s 5
+ 0216: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].Void .ctor(Int32)
+ 0221: dup 
+ 0222: ldloc.s 5
+ 0224: call method:System.Runtime.InteropServices.CollectionsMarshal.Void SetCount[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], Int32)
+ 0229: dup 
+ 0230: call method:System.Runtime.InteropServices.CollectionsMarshal.System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] AsSpan[SortingOrders](System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders])
+ 0235: stloc.s 4
+ 0237: ldc.i4.0 
+ 0238: stloc.3 
+ 0239: ldloca.s 4
+ 0241: ldloc.3 
+ 0242: call method:System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders& get_Item(Int32)
+ 0247: ldc.i4.0 
+ 0248: stind.i4 
+ 0249: ldloc.3 
+ 0250: ldc.i4.1 
+ 0251: add 
+ 0252: stloc.3 
+ 0253: ldloca.s 4
+ 0255: ldloc.3 
+ 0256: call method:System.Span`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders& get_Item(Int32)
+ 0261: ldc.i4.3 
+ 0262: stind.i4 
+ 0263: stloc.2 
+ 0264: ldarg.0 
+ 0265: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0270: ldloc.0 
+ 0271: ldfld field:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] validPileCards
+ 0276: ldarg.0 
+ 0277: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0282: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.MegaCrit.Sts2.Core.Entities.Cards.PileType get_Type()
+ 0287: ldloc.2 
+ 0288: ldnull 
+ 0289: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void SetCards(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Cards.PileType, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], System.Threading.Tasks.Task)
+ 0294: ldarg.0 
+ 0295: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UpdateConfirmButton()
+ 0300: ldarg.0 
+ 0301: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0306: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Enumerator GetEnumerator()
+ 0311: stloc.s 6
+ 0313: br.s 337
+ 0315: ldloca.s 6
+ 0317: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Current()
+ 0322: stloc.s 7
+ 0324: ldarg.0 
+ 0325: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0330: ldloc.s 7
+ 0332: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void HighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0337: ldloca.s 6
+ 0339: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].Boolean MoveNext()
+ 0344: brtrue.s 315
+ 0346: leave.s 362
+ 0348: ldloca.s 6
+ 0350: constrained. type:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel]
+ 0356: callvirt method:System.IDisposable.Void Dispose()
+ 0361: endfinally 
+ 0362: ret 
+METHOD Void UnsubscribeFromPile()
+ 0000: ldarg.0 
+ 0001: ldfld field:Boolean _isSubscribedToPile
+ 0006: brfalse.s 38
+ 0008: ldarg.0 
+ 0009: ldfld field:MegaCrit.Sts2.Core.Entities.Cards.CardPile _pile
+ 0014: ldarg.0 
+ 0015: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.Void UpdatePileContents()
+ 0021: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0026: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.Void remove_ContentsChanged(System.Action)
+ 0031: ldarg.0 
+ 0032: ldc.i4.0 
+ 0033: stfld field:Boolean _isSubscribedToPile
+ 0038: ret 
+METHOD Void AfterOverlayOpened()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void AfterOverlayOpened()
+ 0006: ldarg.0 
+ 0007: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCombatPileCardSelectScreen.System.Threading.Tasks.Task FlashRelicsOnModifiedCards()
+ 0012: call method:MegaCrit.Sts2.Core.Helpers.TaskHelper.System.Threading.Tasks.Task RunSafely(System.Threading.Tasks.Task)
+ 0017: pop 
+ 0018: ret 
