@@ -1,0 +1,247 @@
+[
+  {
+    "log": "run-2026-09-20T20-32-14-851Z.jsonl",
+    "summary": {
+      "type": "summary",
+      "ts": "2026-09-20T20:34:00.572Z",
+      "outcome": "aborted",
+      "halt_reason": "SIGINT",
+      "dispatched": 27,
+      "model_calls": 20,
+      "forced": 7,
+      "last_state_type": "waiting",
+      "input_tokens": 57660,
+      "output_tokens": 1718,
+      "wall_ms": 105718
+    },
+    "rewards": [
+      {
+        "floor": 2,
+        "version": "47a84889a2dc413c84fa13fceefac643:56",
+        "type": "rewards",
+        "source": "model",
+        "choice": "proceed",
+        "probabilities": {
+          "claim_reward:0": 0.27,
+          "claim_reward:1": 0.06,
+          "claim_reward:2": 0.25,
+          "proceed": 0.42
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "13 Gold"
+          },
+          {
+            "label": "claim_reward:1",
+            "description": "Energy Potion"
+          },
+          {
+            "label": "claim_reward:2",
+            "description": "Add a card to your deck."
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": true
+      }
+    ]
+  },
+  {
+    "log": "run-2026-09-20T20-35-24-506Z.jsonl",
+    "summary": {
+      "type": "summary",
+      "ts": "2026-09-20T20:37:05.908Z",
+      "outcome": "halted",
+      "halt_reason": "unverified_grid_subclass:NDeckEnchantSelectScreen",
+      "dispatched": 44,
+      "model_calls": 33,
+      "forced": 12,
+      "last_state_type": "unsupported",
+      "input_tokens": 88328,
+      "output_tokens": 2311,
+      "wall_ms": 101401
+    },
+    "rewards": [
+      {
+        "floor": 1,
+        "version": "d780453c901a41918e1ff6b699a92678:3",
+        "type": "rewards",
+        "source": "model",
+        "choice": "claim_reward:0",
+        "probabilities": {
+          "claim_reward:0": 0.7,
+          "proceed": 0.3
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "Juzu Bracelet"
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": false
+      },
+      {
+        "floor": 2,
+        "version": "d780453c901a41918e1ff6b699a92678:41",
+        "type": "rewards",
+        "source": "model",
+        "choice": "claim_reward:0",
+        "probabilities": {
+          "claim_reward:0": 0.35,
+          "claim_reward:1": 0.33,
+          "proceed": 0.32
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "15 Gold"
+          },
+          {
+            "label": "claim_reward:1",
+            "description": "Add a card to your deck."
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": false
+      },
+      {
+        "floor": 2,
+        "version": "d780453c901a41918e1ff6b699a92678:42",
+        "type": "rewards",
+        "source": "model",
+        "choice": "claim_reward:0",
+        "probabilities": {
+          "claim_reward:0": 0.68,
+          "proceed": 0.32
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "Add a card to your deck."
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": false
+      },
+      {
+        "floor": 2,
+        "version": "d780453c901a41918e1ff6b699a92678:44",
+        "type": "card_reward",
+        "source": "model",
+        "choice": "select_card_reward:0",
+        "probabilities": {
+          "select_card_reward:0": 0.31,
+          "select_card_reward:1": 0.26,
+          "select_card_reward:2": 0.16,
+          "card_reward_alternative:0": 0.27
+        },
+        "actions": [
+          {
+            "label": "select_card_reward:0",
+            "description": "Take Taunt"
+          },
+          {
+            "label": "select_card_reward:1",
+            "description": "Take Rupture"
+          },
+          {
+            "label": "select_card_reward:2",
+            "description": "Take Burning Pact"
+          },
+          {
+            "label": "card_reward_alternative:0",
+            "description": "Skip"
+          }
+        ],
+        "leaves_unclaimed_rewards": false
+      },
+      {
+        "floor": 2,
+        "version": "d780453c901a41918e1ff6b699a92678:45",
+        "type": "rewards",
+        "source": "singleton_only",
+        "choice": "proceed",
+        "probabilities": null,
+        "actions": [
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": false
+      },
+      {
+        "floor": 3,
+        "version": "d780453c901a41918e1ff6b699a92678:87",
+        "type": "rewards",
+        "source": "model",
+        "choice": "proceed",
+        "probabilities": {
+          "claim_reward:0": 0.35,
+          "claim_reward:1": 0.25,
+          "proceed": 0.39999999999999997
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "12 Gold"
+          },
+          {
+            "label": "claim_reward:1",
+            "description": "Add a card to your deck."
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": true
+      },
+      {
+        "floor": 4,
+        "version": "d780453c901a41918e1ff6b699a92678:125",
+        "type": "rewards",
+        "source": "model",
+        "choice": "proceed",
+        "probabilities": {
+          "claim_reward:0": 0.27,
+          "claim_reward:1": 0.05,
+          "claim_reward:2": 0.22,
+          "proceed": 0.46
+        },
+        "actions": [
+          {
+            "label": "claim_reward:0",
+            "description": "14 Gold"
+          },
+          {
+            "label": "claim_reward:1",
+            "description": "Speed Potion"
+          },
+          {
+            "label": "claim_reward:2",
+            "description": "Add a card to your deck."
+          },
+          {
+            "label": "proceed",
+            "description": "Leave rewards"
+          }
+        ],
+        "leaves_unclaimed_rewards": true
+      }
+    ]
+  }
+]

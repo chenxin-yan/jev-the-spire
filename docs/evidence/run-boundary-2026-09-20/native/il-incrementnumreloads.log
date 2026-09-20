@@ -1,0 +1,209 @@
+METHOD System.Threading.Tasks.Task IncrementNumReloads(MegaCrit.Sts2.Core.Saves.SerializableRun, MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType, Boolean)
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Runtime.CompilerServices.AsyncTaskMethodBuilder Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Saves.SaveManager <>4__this
+ 0020: ldloca.s 0
+ 0022: ldarg.1 
+ 0023: stfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0028: ldloca.s 0
+ 0030: ldarg.2 
+ 0031: stfld field:MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType type
+ 0036: ldloca.s 0
+ 0038: ldarg.3 
+ 0039: stfld field:Boolean forceInTest
+ 0044: ldloca.s 0
+ 0046: ldc.i4.m1 
+ 0047: stfld field:Int32 <>1__state
+ 0052: ldloca.s 0
+ 0054: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0059: ldloca.s 0
+ 0061: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void Start[<IncrementNumReloads>d__54](<IncrementNumReloads>d__54 ByRef)
+ 0066: ldloca.s 0
+ 0068: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0073: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Threading.Tasks.Task get_Task()
+ 0078: ret 
+Unhandled exception. System.Exception: not found <IncrementNumReloads>d__62
+   at IlProbe.Main(String[] args)
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Saves.SaveManager <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse 172
+ 0020: ldloc.0 
+ 0021: ldc.i4.1 
+ 0022: beq 220
+ 0027: ldarg.0 
+ 0028: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0033: dup 
+ 0034: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Int32 get_NumReloads()
+ 0039: stloc.2 
+ 0040: ldloc.2 
+ 0041: ldc.i4.1 
+ 0042: add 
+ 0043: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Void set_NumReloads(Int32)
+ 0048: ldarg.0 
+ 0049: ldfld field:Boolean forceInTest
+ 0054: brtrue.s 63
+ 0056: call method:MegaCrit.Sts2.Core.TestSupport.TestMode.Boolean get_IsOff()
+ 0061: br.s 64
+ 0063: ldc.i4.1 
+ 0064: stloc.3 
+ 0065: ldloc.3 
+ 0066: stloc.s 4
+ 0068: ldloc.s 4
+ 0070: brfalse.s 99
+ 0072: ldarg.0 
+ 0073: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType type
+ 0078: stloc.s 6
+ 0080: ldloc.s 6
+ 0082: ldc.i4.1 
+ 0083: sub 
+ 0084: ldc.i4.1 
+ 0085: bgt.un.s 92
+ 0087: ldc.i4.1 
+ 0088: stloc.s 5
+ 0090: br.s 95
+ 0092: ldc.i4.0 
+ 0093: stloc.s 5
+ 0095: ldloc.s 5
+ 0097: stloc.s 4
+ 0099: ldloc.s 4
+ 0101: brfalse 408
+ 0106: ldloc.1 
+ 0107: call method:MegaCrit.Sts2.Core.Saves.SaveManager.System.Threading.Tasks.Task get_CurrentRunSaveTask()
+ 0112: brfalse.s 208
+ 0114: ldloc.1 
+ 0115: call method:MegaCrit.Sts2.Core.Saves.SaveManager.System.Threading.Tasks.Task get_CurrentRunSaveTask()
+ 0120: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0125: stloc.s 7
+ 0127: ldloca.s 7
+ 0129: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0134: brtrue.s 201
+ 0136: ldarg.0 
+ 0137: ldc.i4.0 
+ 0138: dup 
+ 0139: stloc.0 
+ 0140: stfld field:Int32 <>1__state
+ 0145: ldarg.0 
+ 0146: ldloc.s 7
+ 0148: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0153: ldarg.0 
+ 0154: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0159: ldloca.s 7
+ 0161: ldarg.0 
+ 0162: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<IncrementNumReloads>d__54](System.Runtime.CompilerServices.TaskAwaiter ByRef, <IncrementNumReloads>d__54 ByRef)
+ 0167: leave 454
+ 0172: ldarg.0 
+ 0173: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0178: stloc.s 7
+ 0180: ldarg.0 
+ 0181: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0186: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0192: ldarg.0 
+ 0193: ldc.i4.m1 
+ 0194: dup 
+ 0195: stloc.0 
+ 0196: stfld field:Int32 <>1__state
+ 0201: ldloca.s 7
+ 0203: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0208: ldarg.0 
+ 0209: ldloc.1 
+ 0210: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.SaveBatchScope BeginSaveBatch()
+ 0215: stfld field:MegaCrit.Sts2.Core.Saves.SaveBatchScope <>7__wrap1
+ 0220: nop 
+ 0221: ldloc.0 
+ 0222: ldc.i4.1 
+ 0223: pop 
+ 0224: pop 
+ 0225: nop 
+ 0226: ldloc.0 
+ 0227: ldc.i4.1 
+ 0228: beq.s 322
+ 0230: ldloc.1 
+ 0231: ldloc.1 
+ 0232: ldfld field:MegaCrit.Sts2.Core.Saves.Managers.RunSaveManager _runSaveManager
+ 0237: ldarg.0 
+ 0238: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0243: ldarg.0 
+ 0244: ldfld field:MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType type
+ 0249: call method:MegaCrit.Sts2.Core.Multiplayer.Game.NetGameTypeExtensions.Boolean IsMultiplayer(MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType)
+ 0254: callvirt method:MegaCrit.Sts2.Core.Saves.Managers.RunSaveManager.System.Threading.Tasks.Task SaveRun(MegaCrit.Sts2.Core.Saves.SerializableRun, Boolean)
+ 0259: call method:MegaCrit.Sts2.Core.Saves.SaveManager.Void set_CurrentRunSaveTask(System.Threading.Tasks.Task)
+ 0264: ldloc.1 
+ 0265: call method:MegaCrit.Sts2.Core.Saves.SaveManager.System.Threading.Tasks.Task get_CurrentRunSaveTask()
+ 0270: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0275: stloc.s 8
+ 0277: ldloca.s 8
+ 0279: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0284: brtrue.s 351
+ 0286: ldarg.0 
+ 0287: ldc.i4.1 
+ 0288: dup 
+ 0289: stloc.0 
+ 0290: stfld field:Int32 <>1__state
+ 0295: ldarg.0 
+ 0296: ldloc.s 8
+ 0298: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0303: ldarg.0 
+ 0304: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0309: ldloca.s 8
+ 0311: ldarg.0 
+ 0312: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<IncrementNumReloads>d__54](System.Runtime.CompilerServices.TaskAwaiter ByRef, <IncrementNumReloads>d__54 ByRef)
+ 0317: leave 454
+ 0322: ldarg.0 
+ 0323: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0328: stloc.s 8
+ 0330: ldarg.0 
+ 0331: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0336: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0342: ldarg.0 
+ 0343: ldc.i4.m1 
+ 0344: dup 
+ 0345: stloc.0 
+ 0346: stfld field:Int32 <>1__state
+ 0351: ldloca.s 8
+ 0353: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0358: leave.s 372
+ 0360: ldloc.0 
+ 0361: ldc.i4.0 
+ 0362: bge.s 371
+ 0364: ldloc.1 
+ 0365: ldnull 
+ 0366: call method:MegaCrit.Sts2.Core.Saves.SaveManager.Void set_CurrentRunSaveTask(System.Threading.Tasks.Task)
+ 0371: endfinally 
+ 0372: leave.s 396
+ 0374: ldloc.0 
+ 0375: ldc.i4.0 
+ 0376: bge.s 395
+ 0378: ldarg.0 
+ 0379: ldflda field:MegaCrit.Sts2.Core.Saves.SaveBatchScope <>7__wrap1
+ 0384: constrained. type:MegaCrit.Sts2.Core.Saves.SaveBatchScope
+ 0390: callvirt method:System.IDisposable.Void Dispose()
+ 0395: endfinally 
+ 0396: ldarg.0 
+ 0397: ldflda field:MegaCrit.Sts2.Core.Saves.SaveBatchScope <>7__wrap1
+ 0402: initobj type:MegaCrit.Sts2.Core.Saves.SaveBatchScope
+ 0408: leave.s 435
+ 0410: stloc.s 9
+ 0412: ldarg.0 
+ 0413: ldc.i4.s -2
+ 0415: stfld field:Int32 <>1__state
+ 0420: ldarg.0 
+ 0421: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0426: ldloc.s 9
+ 0428: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0433: leave.s 454
+ 0435: ldarg.0 
+ 0436: ldc.i4.s -2
+ 0438: stfld field:Int32 <>1__state
+ 0443: ldarg.0 
+ 0444: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0449: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0454: ret 

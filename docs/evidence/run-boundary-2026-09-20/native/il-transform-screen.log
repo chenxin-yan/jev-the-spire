@@ -1,0 +1,390 @@
+METHOD Void _Ready()
+ 0000: ldarg.0 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.Void ConnectSignalsAndInitGrid()
+ 0006: ldarg.0 
+ 0007: ldarg.0 
+ 0008: ldstr str:Confirm
+ 0013: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0018: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton GetNode[NConfirmButton](Godot.NodePath)
+ 0023: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0028: ldarg.0 
+ 0029: ldarg.0 
+ 0030: ldstr str:%PreviewContainer
+ 0035: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0040: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0045: stfld field:Godot.Control _previewContainer
+ 0050: ldarg.0 
+ 0051: ldarg.0 
+ 0052: ldfld field:Godot.Control _previewContainer
+ 0057: ldstr str:TransformPreview
+ 0062: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0067: callvirt method:Godot.Node.MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview GetNode[NTransformPreview](Godot.NodePath)
+ 0072: stfld field:MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview _transformPreview
+ 0077: ldarg.0 
+ 0078: ldarg.0 
+ 0079: ldfld field:Godot.Control _previewContainer
+ 0084: ldstr str:Cancel
+ 0089: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0094: callvirt method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton GetNode[NBackButton](Godot.NodePath)
+ 0099: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _previewCancelButton
+ 0104: ldarg.0 
+ 0105: ldarg.0 
+ 0106: ldfld field:Godot.Control _previewContainer
+ 0111: ldstr str:Confirm
+ 0116: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0121: callvirt method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton GetNode[NConfirmButton](Godot.NodePath)
+ 0126: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _previewConfirmButton
+ 0131: ldarg.0 
+ 0132: ldarg.0 
+ 0133: ldstr str:%Close
+ 0138: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0143: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton GetNode[NBackButton](Godot.NodePath)
+ 0148: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0153: ldarg.0 
+ 0154: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _previewCancelButton
+ 0159: ldsfld field:Godot.StringName Released
+ 0164: ldarg.0 
+ 0165: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void CancelSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0171: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0176: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0181: ldc.i4.0 
+ 0182: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0187: pop 
+ 0188: ldarg.0 
+ 0189: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _previewConfirmButton
+ 0194: ldsfld field:Godot.StringName Released
+ 0199: ldarg.0 
+ 0200: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void CompleteSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0206: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0211: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0216: ldc.i4.0 
+ 0217: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0222: pop 
+ 0223: ldarg.0 
+ 0224: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0229: ldsfld field:Godot.StringName Released
+ 0234: ldarg.0 
+ 0235: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void CloseSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0241: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0246: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0251: ldc.i4.0 
+ 0252: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0257: pop 
+ 0258: ldarg.0 
+ 0259: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0264: ldsfld field:Godot.StringName Released
+ 0269: ldarg.0 
+ 0270: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void ConfirmSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0276: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton].Void .ctor(System.Object, IntPtr)
+ 0281: call method:Godot.Callable.Godot.Callable From[NButton](System.Action`1[MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton])
+ 0286: ldc.i4.0 
+ 0287: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0292: pop 
+ 0293: ldarg.0 
+ 0294: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0299: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_Cancelable()
+ 0304: brfalse.s 319
+ 0306: ldarg.0 
+ 0307: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0312: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0317: br.s 330
+ 0319: ldarg.0 
+ 0320: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0325: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0330: ldarg.0 
+ 0331: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void RefreshConfirmButtonVisibility()
+ 0336: ldarg.0 
+ 0337: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _previewCancelButton
+ 0342: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0347: ldarg.0 
+ 0348: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _previewConfirmButton
+ 0353: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0358: ldarg.0 
+ 0359: ldarg.0 
+ 0360: ldstr str:%BottomText
+ 0365: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0370: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0375: stfld field:Godot.Control _bottomTextContainer
+ 0380: ldarg.0 
+ 0381: ldarg.0 
+ 0382: ldfld field:Godot.Control _bottomTextContainer
+ 0387: ldstr str:%BottomLabel
+ 0392: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0397: callvirt method:Godot.Node.MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel GetNode[MegaRichTextLabel](Godot.NodePath)
+ 0402: stfld field:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _infoLabel
+ 0407: ldarg.0 
+ 0408: ldfld field:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _infoLabel
+ 0413: ldarg.0 
+ 0414: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0419: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.MegaCrit.Sts2.Core.Localization.LocString get_Prompt()
+ 0424: callvirt method:MegaCrit.Sts2.Core.Localization.LocString.System.String GetFormattedText()
+ 0429: callvirt method:MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel.Void set_Text(System.String)
+ 0434: ldarg.0 
+ 0435: ldarg.0 
+ 0436: ldstr str:%Upgrades
+ 0441: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0446: call method:Godot.Node.MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox GetNode[NTickbox](Godot.NodePath)
+ 0451: stfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox _viewUpgrades
+ 0456: ldarg.0 
+ 0457: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox _viewUpgrades
+ 0462: ldc.i4.0 
+ 0463: callvirt method:MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox.Void set_IsTicked(Boolean)
+ 0468: ldarg.0 
+ 0469: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox _viewUpgrades
+ 0474: ldsfld field:Godot.StringName Toggled
+ 0479: ldarg.0 
+ 0480: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void ToggleShowUpgrades(MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox)
+ 0486: newobj method:System.Action`1[MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox].Void .ctor(System.Object, IntPtr)
+ 0491: call method:Godot.Callable.Godot.Callable From[NTickbox](System.Action`1[MegaCrit.Sts2.Core.Nodes.CommonUi.NTickbox])
+ 0496: ldc.i4.0 
+ 0497: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0502: pop 
+ 0503: ldarg.0 
+ 0504: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OnControllerStateUpdated()
+ 0509: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager.MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager get_Instance()
+ 0514: ldsfld field:Godot.StringName MouseDetected
+ 0519: ldarg.0 
+ 0520: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OnControllerStateUpdated()
+ 0526: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0531: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0536: ldc.i4.0 
+ 0537: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0542: pop 
+ 0543: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager.MegaCrit.Sts2.Core.Nodes.CommonUi.NControllerManager get_Instance()
+ 0548: ldsfld field:Godot.StringName ControllerDetected
+ 0553: ldarg.0 
+ 0554: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OnControllerStateUpdated()
+ 0560: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0565: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0570: ldc.i4.0 
+ 0571: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0576: pop 
+ 0577: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NInputManager.MegaCrit.Sts2.Core.Nodes.CommonUi.NInputManager get_Instance()
+ 0582: ldsfld field:Godot.StringName InputRebound
+ 0587: ldarg.0 
+ 0588: ldftn method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OnControllerStateUpdated()
+ 0594: newobj method:System.Action.Void .ctor(System.Object, IntPtr)
+ 0599: call method:Godot.Callable.Godot.Callable From(System.Action)
+ 0604: ldc.i4.0 
+ 0605: callvirt method:Godot.GodotObject.Godot.Error Connect(Godot.StringName, Godot.Callable, UInt32)
+ 0610: pop 
+ 0611: ldarg.0 
+ 0612: ldstr str:%ViewUpgradesLabel
+ 0617: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0622: call method:Godot.Node.MegaCrit.Sts2.addons.mega_text.MegaLabel GetNode[MegaLabel](Godot.NodePath)
+ 0627: ldstr str:card_selection
+ 0632: ldstr str:VIEW_UPGRADES
+ 0637: newobj method:MegaCrit.Sts2.Core.Localization.LocString.Void .ctor(System.String, System.String)
+ 0642: call method:MegaCrit.Sts2.Core.Localization.LocString.System.String GetFormattedText()
+ 0647: callvirt method:MegaCrit.Sts2.addons.mega_text.MegaLabel.Void SetTextAutoSize(System.String)
+ 0652: ret 
+METHOD Void OnCardClicked(MegaCrit.Sts2.Core.Models.CardModel)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0006: ldarg.1 
+ 0007: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Boolean Add(MegaCrit.Sts2.Core.Models.CardModel)
+ 0012: brfalse.s 58
+ 0014: ldarg.0 
+ 0015: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0020: ldarg.1 
+ 0021: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void HighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0026: ldarg.0 
+ 0027: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0032: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0037: ldarg.0 
+ 0038: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0043: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0048: bne.un.s 83
+ 0050: ldarg.0 
+ 0051: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OpenPreviewScreen()
+ 0056: br.s 83
+ 0058: ldarg.0 
+ 0059: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0064: ldarg.1 
+ 0065: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Boolean Remove(MegaCrit.Sts2.Core.Models.CardModel)
+ 0070: pop 
+ 0071: ldarg.0 
+ 0072: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0077: ldarg.1 
+ 0078: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0083: ldarg.0 
+ 0084: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void RefreshConfirmButtonVisibility()
+ 0089: ret 
+METHOD Void OpenPreviewScreen()
+ 0000: ldarg.0 
+ 0001: call method:Godot.Node.Godot.Viewport GetViewport()
+ 0006: callvirt method:Godot.Viewport.Void GuiReleaseFocus()
+ 0011: ldarg.0 
+ 0012: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0017: ldc.i4.1 
+ 0018: conv.i8 
+ 0019: callvirt method:Godot.Control.Void set_FocusBehaviorRecursive(FocusBehaviorRecursiveEnum)
+ 0024: ldarg.0 
+ 0025: ldfld field:Godot.Control _previewContainer
+ 0030: ldc.i4.1 
+ 0031: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0036: ldarg.0 
+ 0037: ldfld field:Godot.Control _previewContainer
+ 0042: ldc.i4.0 
+ 0043: conv.i8 
+ 0044: callvirt method:Godot.Control.Void set_MouseFilter(MouseFilterEnum)
+ 0049: ldarg.0 
+ 0050: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _previewCancelButton
+ 0055: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0060: ldarg.0 
+ 0061: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _previewConfirmButton
+ 0066: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0071: ldarg.0 
+ 0072: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0077: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Enumerator GetEnumerator()
+ 0082: stloc.0 
+ 0083: br.s 105
+ 0085: ldloca.s 0
+ 0087: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Current()
+ 0092: stloc.1 
+ 0093: ldarg.0 
+ 0094: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0099: ldloc.1 
+ 0100: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0105: ldloca.s 0
+ 0107: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].Boolean MoveNext()
+ 0112: brtrue.s 85
+ 0114: leave.s 130
+ 0116: ldloca.s 0
+ 0118: constrained. type:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel]
+ 0124: callvirt method:System.IDisposable.Void Dispose()
+ 0129: endfinally 
+ 0130: ldarg.0 
+ 0131: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview _transformPreview
+ 0136: ldarg.0 
+ 0137: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0142: ldarg.0 
+ 0143: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation] _cardToTransformation
+ 0148: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Cards.CardTransformation] Select[CardModel,CardTransformation](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation])
+ 0153: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview.Void Initialize(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Cards.CardTransformation])
+ 0158: ldarg.0 
+ 0159: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0164: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0169: ret 
+METHOD Void CancelSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0000: ldarg.0 
+ 0001: ldfld field:Godot.Control _previewContainer
+ 0006: ldc.i4.0 
+ 0007: callvirt method:Godot.CanvasItem.Void set_Visible(Boolean)
+ 0012: ldarg.0 
+ 0013: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0018: ldc.i4.0 
+ 0019: conv.i8 
+ 0020: callvirt method:Godot.Control.Void set_FocusBehaviorRecursive(FocusBehaviorRecursiveEnum)
+ 0025: ldarg.0 
+ 0026: ldfld field:Godot.Control _previewContainer
+ 0031: ldc.i4.2 
+ 0032: conv.i8 
+ 0033: callvirt method:Godot.Control.Void set_MouseFilter(MouseFilterEnum)
+ 0038: ldarg.0 
+ 0039: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview _transformPreview
+ 0044: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NTransformPreview.Void Uninitialize()
+ 0049: ldarg.0 
+ 0050: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _previewCancelButton
+ 0055: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0060: ldarg.0 
+ 0061: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _previewConfirmButton
+ 0066: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0071: ldarg.0 
+ 0072: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0077: ldc.i4.1 
+ 0078: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void SetCanScroll(Boolean)
+ 0083: ldarg.0 
+ 0084: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0089: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_Cancelable()
+ 0094: brfalse.s 107
+ 0096: ldarg.0 
+ 0097: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _closeButton
+ 0102: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0107: ldarg.0 
+ 0108: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0113: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Enumerator GetEnumerator()
+ 0118: stloc.0 
+ 0119: br.s 141
+ 0121: ldloca.s 0
+ 0123: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Current()
+ 0128: stloc.1 
+ 0129: ldarg.0 
+ 0130: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0135: ldloc.1 
+ 0136: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0141: ldloca.s 0
+ 0143: call method:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel].Boolean MoveNext()
+ 0148: brtrue.s 121
+ 0150: leave.s 166
+ 0152: ldloca.s 0
+ 0154: constrained. type:System.Collections.Generic.HashSet`1+Enumerator[MegaCrit.Sts2.Core.Models.CardModel]
+ 0160: callvirt method:System.IDisposable.Void Dispose()
+ 0165: endfinally 
+ 0166: ldarg.0 
+ 0167: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid _grid
+ 0172: ldarg.0 
+ 0173: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0178: call method:System.Linq.Enumerable.MegaCrit.Sts2.Core.Models.CardModel Last[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0183: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder GetCardHolder(MegaCrit.Sts2.Core.Models.CardModel)
+ 0188: dup 
+ 0189: brtrue.s 194
+ 0191: pop 
+ 0192: br.s 199
+ 0194: call method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NodeUtil.Void TryGrabFocus(Godot.Control)
+ 0199: ldarg.0 
+ 0200: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0205: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0210: ret 
+METHOD Void ConfirmSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0006: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0011: ldarg.0 
+ 0012: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0017: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0022: blt.s 51
+ 0024: ldarg.0 
+ 0025: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0030: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_RequireManualConfirmation()
+ 0035: brfalse.s 44
+ 0037: ldarg.0 
+ 0038: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void OpenPreviewScreen()
+ 0043: ret 
+ 0044: ldarg.0 
+ 0045: ldarg.1 
+ 0046: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.Void CompleteSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0051: ret 
+METHOD Void CompleteSelection(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] _completionSource
+ 0006: ldarg.0 
+ 0007: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0012: callvirt method:System.Threading.Tasks.TaskCompletionSource`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]].Void SetResult(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0017: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack get_Instance()
+ 0022: ldarg.0 
+ 0023: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.Void Remove(MegaCrit.Sts2.Core.Nodes.Screens.Overlays.IOverlayScreen)
+ 0028: ret 
+METHOD Void RefreshConfirmButtonVisibility()
+ 0000: ldarg.0 
+ 0001: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0006: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0011: ldarg.0 
+ 0012: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0017: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0022: beq.s 60
+ 0024: ldarg.0 
+ 0025: ldfld field:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel] _selectedCards
+ 0030: callvirt method:System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0035: ldarg.0 
+ 0036: ldflda field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs _prefs
+ 0041: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0046: blt.s 60
+ 0048: ldarg.0 
+ 0049: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0054: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Enable()
+ 0059: ret 
+ 0060: ldarg.0 
+ 0061: ldfld field:MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _confirmButton
+ 0066: callvirt method:MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl.Void Disable()
+ 0071: ret 

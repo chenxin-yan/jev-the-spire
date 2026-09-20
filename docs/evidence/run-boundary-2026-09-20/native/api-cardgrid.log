@@ -1,0 +1,136 @@
+FIELD System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders,System.Func`3[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel,System.Int32]] _sortingAlgorithms
+FIELD Single _startDrag
+FIELD Single _targetDrag
+FIELD Boolean _isDragging
+FIELD Boolean _scrollingEnabled
+FIELD Int32 <DisplayedRows>k__BackingField
+FIELD Boolean _scrollbarPressed
+FIELD MegaCrit.Sts2.Core.Nodes.GodotExtensions.NScrollbar _scrollbar
+FIELD Int32 _slidingWindowCardIndex
+FIELD MegaCrit.Sts2.Core.Entities.Cards.PileType _pileType
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+FIELD System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _highlightedCards
+FIELD System.Threading.Tasks.Task _animatingOutTask
+FIELD Boolean _cardsAnimatingOutForSetCards
+FIELD System.Threading.CancellationTokenSource _cts
+FIELD System.Threading.CancellationTokenSource _setCardsCancellation
+FIELD Boolean _isShowingUpgrades
+FIELD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder _lastFocusedHolder
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _sortedCardsCache
+FIELD Boolean _needsReinit
+FIELD Int32 <YOffset>k__BackingField
+FIELD HolderPressedEventHandler backing_HolderPressed
+FIELD HolderAltPressedEventHandler backing_HolderAltPressed
+FIELD Single _topMargin = 80
+FIELD Single _bottomMargin = 320
+METHOD System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders,System.Func`3[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel,System.Int32]] get_SortingAlgorithms()
+METHOD Int32 CompareCardVisibility(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 GetCardRarityComparisonValue(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Boolean get_CanScroll()
+METHOD Int32 get_DisplayedRows()
+METHOD Void set_DisplayedRows(Int32)
+METHOD Int32 get_Columns()
+METHOD Single get_CardPadding()
+METHOD Boolean get_IsCardLibrary()
+METHOD Single get_ScrollLimitBottom()
+METHOD Single get_ScrollLimitTop()
+METHOD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_CurrentlyDisplayedCardHolders()
+METHOD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] get_CurrentlyDisplayedCards()
+METHOD Boolean get_IsAnimatingOut()
+METHOD Boolean get_IsShowingUpgrades()
+METHOD Void set_IsShowingUpgrades(Boolean)
+METHOD Int32 get_YOffset()
+METHOD Void set_YOffset(Int32)
+METHOD Boolean get_CenterGrid()
+METHOD Void _Ready()
+METHOD Void ConnectSignals()
+METHOD Void _EnterTree()
+METHOD Void _ExitTree()
+METHOD Void UpdateScrollLimitBottom()
+METHOD Void _Process(Double)
+METHOD Void _Notification(Int32)
+METHOD Void SetScrollPosition(Single)
+METHOD Void SetCanScroll(Boolean)
+METHOD Void InsetForTopBar()
+METHOD Void UpdateScrollPosition(Double)
+METHOD Void ClearGrid()
+METHOD Void SetCards(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Cards.PileType, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], System.Threading.Tasks.Task)
+METHOD System.Threading.Tasks.Task AnimateOut()
+METHOD System.Threading.Tasks.Task AnimateOutInternal()
+METHOD System.Threading.Tasks.Task AnimateIn()
+METHOD System.Threading.Tasks.Task InitGrid(System.Threading.Tasks.Task)
+METHOD Int32 CalculateRowsNeeded()
+METHOD Void InitGrid()
+METHOD Void ReflowColumns()
+METHOD Void UpdateGridPositions(Int32)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder GetCardHolder(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.NCard GetCardNode(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] GetTopRowOfCardNodes()
+METHOD Void OnHolderPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Void OnHolderAltPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Int32 GetTotalRowCount()
+METHOD Void AllocateCardHolders()
+METHOD Void ReallocateAll()
+METHOD Void ReallocateAbove(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+METHOD Void ReallocateBelow(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+METHOD Void HighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void AssignCardsToRow(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder], Int32)
+METHOD MegaCrit.Sts2.Core.Entities.UI.ModelVisibility GetCardVisibility(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void UpdateGridNavigation()
+METHOD Void add_HolderPressed(HolderPressedEventHandler)
+METHOD Void remove_HolderPressed(HolderPressedEventHandler)
+METHOD Void EmitSignalHolderPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Void add_HolderAltPressed(HolderAltPressedEventHandler)
+METHOD Void remove_HolderAltPressed(HolderAltPressedEventHandler)
+METHOD Void EmitSignalHolderAltPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Int32 <get_SortingAlgorithms>b__2_0(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 <get_SortingAlgorithms>b__2_4(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 <get_SortingAlgorithms>b__2_8(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 <get_SortingAlgorithms>b__2_9(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 CompareCardVisibility(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Int32 GetCardRarityComparisonValue(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void _Ready()
+METHOD Void ConnectSignals()
+METHOD Void _EnterTree()
+METHOD Void _ExitTree()
+METHOD Void UpdateScrollLimitBottom()
+METHOD Void _Process(Double)
+METHOD Void _Notification(Int32)
+METHOD Void SetScrollPosition(Single)
+METHOD Void SetCanScroll(Boolean)
+METHOD Void InsetForTopBar()
+METHOD Void UpdateScrollPosition(Double)
+METHOD Void ClearGrid()
+METHOD Void SetCards(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Cards.PileType, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], System.Threading.Tasks.Task)
+METHOD System.Threading.Tasks.Task AnimateOut()
+METHOD System.Threading.Tasks.Task AnimateOutInternal()
+METHOD System.Threading.Tasks.Task AnimateIn()
+METHOD System.Threading.Tasks.Task InitGrid(System.Threading.Tasks.Task)
+METHOD Int32 CalculateRowsNeeded()
+METHOD Void InitGrid()
+METHOD Void ReflowColumns()
+METHOD Void UpdateGridPositions(Int32)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder GetCardHolder(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD MegaCrit.Sts2.Core.Nodes.Cards.NCard GetCardNode(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] GetTopRowOfCardNodes()
+METHOD Void OnHolderPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Void OnHolderAltPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Int32 GetTotalRowCount()
+METHOD Void AllocateCardHolders()
+METHOD Void ReallocateAll()
+METHOD Void ReallocateAbove(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+METHOD Void ReallocateBelow(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+METHOD Void HighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void UnhighlightCard(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void AssignCardsToRow(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder], Int32)
+METHOD MegaCrit.Sts2.Core.Entities.UI.ModelVisibility GetCardVisibility(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void UpdateGridNavigation()
+METHOD Void add_HolderPressed(HolderPressedEventHandler)
+METHOD Void remove_HolderPressed(HolderPressedEventHandler)
+METHOD Void EmitSignalHolderPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)
+METHOD Void add_HolderAltPressed(HolderAltPressedEventHandler)
+METHOD Void remove_HolderAltPressed(HolderAltPressedEventHandler)
+METHOD Void EmitSignalHolderAltPressed(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)

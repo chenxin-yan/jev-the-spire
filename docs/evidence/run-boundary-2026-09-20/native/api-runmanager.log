@@ -1,0 +1,261 @@
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<>c
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<>c__DisplayClass173_0
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<>c__DisplayClass174_0
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<>c__DisplayClass181_0
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<>c__DisplayClass186_0
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<AbandonInternal>d__216
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterAct>d__208
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterMapCoordDebug>d__199
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterMapPointInternal>d__192
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterNextAct>d__206
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterRoom>d__204
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterRoomDebug>d__200
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterRoomInternal>d__203
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<EnterRoomWithoutExitingCurrentRoom>d__205
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<ExitCurrentRoom>d__202
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<ExitCurrentRooms>d__201
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<FadeIn>d__196
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<FadeOut>d__197
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<FinalizeStartingRelics>d__185
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<GenerateMap>d__188
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<GuaranteeKillAllPlayers>d__217
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<LoadIntoLatestMapCoord>d__190
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<ProceedFromTerminalRewardsScreen>d__211
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<ResumePreviousRoom>d__212
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<ReturnToMainMenuWithError>d__229
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<SetActInternal>d__209
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<SetUpSavedMultiplayer>d__172
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<SetUpSavedSingleplayer>d__171
+NESTED MegaCrit.Sts2.Core.Runs.RunManager+<WinRun>d__207
+TYPE MegaCrit.Sts2.Core.Runs.RunManager
+PROP MegaCrit.Sts2.Core.Runs.RunManager Instance get=MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+PROP MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager AscensionManager get=MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager get_AscensionManager()
+PROP Boolean ShouldSave get=Boolean get_ShouldSave()
+PROP System.Nullable`1[System.DateTimeOffset] DailyTime get=System.Nullable`1[System.DateTimeOffset] get_DailyTime()
+PROP Boolean IsInProgress get=Boolean get_IsInProgress()
+PROP Boolean IsCleaningUp get=Boolean get_IsCleaningUp()
+PROP Boolean ForceDiscoveryOrderModifications get=Boolean get_ForceDiscoveryOrderModifications()
+PROP Boolean IsGameOver get=Boolean get_IsGameOver()
+PROP Boolean IsAbandoned get=Boolean get_IsAbandoned()
+PROP Boolean IsPaused get=Boolean get_IsPaused()
+PROP MegaCrit.Sts2.Core.Runs.RunHistory History get=MegaCrit.Sts2.Core.Runs.RunHistory get_History()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService NetService get=MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker ChecksumTracker get=MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer RunLocationTargetedBuffer get=MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter CombatReplayWriter get=MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter get_CombatReplayWriter()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby RunLobby get=MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby get_RunLobby()
+PROP MegaCrit.Sts2.Core.Multiplayer.CombatStateSynchronizer CombatStateSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.CombatStateSynchronizer get_CombatStateSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer MapSelectionSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer get_MapSelectionSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer ActChangeSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer get_ActChangeSynchronizer()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer PlayerChoiceSynchronizer get=MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer EventSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer RewardSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer get_RewardSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer RewardsSetSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer get_RewardsSetSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer RestSiteSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer get_RestSiteSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer OneOffSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer get_OneOffSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer TreasureRoomRelicSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer get_TreasureRoomRelicSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer FlavorSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer get_FlavorSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer InputSynchronizer get=MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer get_InputSynchronizer()
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker HoveredModelTracker get=MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker get_HoveredModelTracker()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet ActionQueueSet get=MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+PROP MegaCrit.Sts2.Core.GameActions.ActionExecutor ActionExecutor get=MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+PROP MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer ActionQueueSynchronizer get=MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+PROP Int64 WinTime get=Int64 get_WinTime()
+PROP Int64 RunTime get=Int64 get_RunTime()
+PROP Boolean IsSingleplayerOrFakeMultiplayer get=Boolean get_IsSingleplayerOrFakeMultiplayer()
+PROP MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings MapDrawingsToLoad get=MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings get_MapDrawingsToLoad()
+PROP System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] SavedMapsToLoad get=System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] get_SavedMapsToLoad()
+PROP MegaCrit.Sts2.Core.Runs.RunState State get=MegaCrit.Sts2.Core.Runs.RunState get_State()
+FIELD MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager <AscensionManager>k__BackingField
+FIELD Boolean <ShouldSave>k__BackingField
+FIELD System.Nullable`1[System.DateTimeOffset] <DailyTime>k__BackingField
+FIELD Boolean <IsCleaningUp>k__BackingField
+FIELD Boolean <ForceDiscoveryOrderModifications>k__BackingField
+FIELD Boolean <IsAbandoned>k__BackingField
+FIELD Int64 _startTime
+FIELD Int64 _prevSessionRunTime
+FIELD Int64 _activeRunTime
+FIELD Int64 _startOfCurrentActiveRunTime
+FIELD Boolean _isPaused
+FIELD Boolean _runHistoryWasUploaded
+FIELD Int32 _numReloads
+FIELD MegaCrit.Sts2.Core.Runs.RunHistory <History>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService <NetService>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker <ChecksumTracker>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer <RunLocationTargetedBuffer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter <CombatReplayWriter>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby <RunLobby>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.CombatStateSynchronizer <CombatStateSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer <MapSelectionSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer <ActChangeSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer <PlayerChoiceSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer <EventSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer <RewardSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer <RewardsSetSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer <RestSiteSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer <OneOffSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer <TreasureRoomRelicSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer <FlavorSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer <InputSynchronizer>k__BackingField
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker <HoveredModelTracker>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet <ActionQueueSet>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.ActionExecutor <ActionExecutor>k__BackingField
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer <ActionQueueSynchronizer>k__BackingField
+FIELD Int64 <WinTime>k__BackingField
+FIELD System.Action debugAfterCombatRewardsOverride
+FIELD MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings <MapDrawingsToLoad>k__BackingField
+FIELD System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] <SavedMapsToLoad>k__BackingField
+FIELD System.Action`1[MegaCrit.Sts2.Core.Runs.RunState] RunStarted
+FIELD System.Action RoomEntered
+FIELD System.Action RoomExited
+FIELD System.Action ActEntered
+FIELD System.Func`1[System.Threading.Tasks.Task] TestFadeOut
+FIELD System.Func`1[System.Threading.Tasks.Task] TestFadeIn
+FIELD MegaCrit.Sts2.Core.Runs.RunState <State>k__BackingField
+FIELD MegaCrit.Sts2.Core.Runs.RunManager <Instance>k__BackingField
+METHOD MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+METHOD MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager get_AscensionManager()
+METHOD Void set_AscensionManager(MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager)
+METHOD Boolean get_ShouldSave()
+METHOD Void set_ShouldSave(Boolean)
+METHOD System.Nullable`1[System.DateTimeOffset] get_DailyTime()
+METHOD Void set_DailyTime(System.Nullable`1[System.DateTimeOffset])
+METHOD Boolean get_IsInProgress()
+METHOD Boolean get_IsCleaningUp()
+METHOD Void set_IsCleaningUp(Boolean)
+METHOD Boolean get_ForceDiscoveryOrderModifications()
+METHOD Void set_ForceDiscoveryOrderModifications(Boolean)
+METHOD Boolean get_IsGameOver()
+METHOD Boolean get_IsAbandoned()
+METHOD Void set_IsAbandoned(Boolean)
+METHOD Boolean get_IsPaused()
+METHOD Void set_IsPaused(Boolean)
+METHOD MegaCrit.Sts2.Core.Runs.RunHistory get_History()
+METHOD Void set_History(MegaCrit.Sts2.Core.Runs.RunHistory)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+METHOD Void set_NetService(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+METHOD Void set_ChecksumTracker(MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+METHOD Void set_RunLocationTargetedBuffer(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter get_CombatReplayWriter()
+METHOD Void set_CombatReplayWriter(MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby get_RunLobby()
+METHOD Void set_RunLobby(MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby)
+METHOD MegaCrit.Sts2.Core.Multiplayer.CombatStateSynchronizer get_CombatStateSynchronizer()
+METHOD Void set_CombatStateSynchronizer(MegaCrit.Sts2.Core.Multiplayer.CombatStateSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer get_MapSelectionSynchronizer()
+METHOD Void set_MapSelectionSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer get_ActChangeSynchronizer()
+METHOD Void set_ActChangeSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer)
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+METHOD Void set_PlayerChoiceSynchronizer(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer get_EventSynchronizer()
+METHOD Void set_EventSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer get_RewardSynchronizer()
+METHOD Void set_RewardSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer get_RewardsSetSynchronizer()
+METHOD Void set_RewardsSetSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer get_RestSiteSynchronizer()
+METHOD Void set_RestSiteSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer get_OneOffSynchronizer()
+METHOD Void set_OneOffSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer get_TreasureRoomRelicSynchronizer()
+METHOD Void set_TreasureRoomRelicSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer get_FlavorSynchronizer()
+METHOD Void set_FlavorSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer get_InputSynchronizer()
+METHOD Void set_InputSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker get_HoveredModelTracker()
+METHOD Void set_HoveredModelTracker(MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker)
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+METHOD Void set_ActionQueueSet(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet)
+METHOD MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+METHOD Void set_ActionExecutor(MegaCrit.Sts2.Core.GameActions.ActionExecutor)
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+METHOD Void set_ActionQueueSynchronizer(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer)
+METHOD Int64 get_WinTime()
+METHOD Void set_WinTime(Int64)
+METHOD Int64 get_RunTime()
+METHOD Boolean get_IsSingleplayerOrFakeMultiplayer()
+METHOD MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings get_MapDrawingsToLoad()
+METHOD Void set_MapDrawingsToLoad(MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings)
+METHOD System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] get_SavedMapsToLoad()
+METHOD Void set_SavedMapsToLoad(System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap])
+METHOD Void add_RunStarted(System.Action`1[MegaCrit.Sts2.Core.Runs.RunState])
+METHOD Void remove_RunStarted(System.Action`1[MegaCrit.Sts2.Core.Runs.RunState])
+METHOD Void add_RoomEntered(System.Action)
+METHOD Void remove_RoomEntered(System.Action)
+METHOD Void add_RoomExited(System.Action)
+METHOD Void remove_RoomExited(System.Action)
+METHOD Void add_ActEntered(System.Action)
+METHOD Void remove_ActEntered(System.Action)
+METHOD Void add_TestFadeOut(System.Func`1[System.Threading.Tasks.Task])
+METHOD Void remove_TestFadeOut(System.Func`1[System.Threading.Tasks.Task])
+METHOD Void add_TestFadeIn(System.Func`1[System.Threading.Tasks.Task])
+METHOD Void remove_TestFadeIn(System.Func`1[System.Threading.Tasks.Task])
+METHOD MegaCrit.Sts2.Core.Runs.RunState get_State()
+METHOD Void set_State(MegaCrit.Sts2.Core.Runs.RunState)
+METHOD Void SetUpNewSingleplayer(MegaCrit.Sts2.Core.Runs.RunState, Boolean, System.Nullable`1[System.DateTimeOffset])
+METHOD Void SetUpNewMultiplayer(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby, Boolean, System.Nullable`1[System.DateTimeOffset])
+METHOD System.Threading.Tasks.Task SetUpSavedSingleplayer(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Saves.SerializableRun)
+METHOD System.Threading.Tasks.Task SetUpSavedMultiplayer(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.LoadRunLobby)
+METHOD Void SetUpReplay(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplay, UInt64)
+METHOD Void SetUpTest(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, Boolean, Boolean)
+METHOD Void InitializeShared(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer, Boolean, System.Nullable`1[System.DateTimeOffset], Int64, Int64, Int64, Int32)
+METHOD Void InitializeRunLobby(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.RunState, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer])
+METHOD Void InitializeNewRun()
+METHOD Void InitializeSavedRun(MegaCrit.Sts2.Core.Saves.SerializableRun)
+METHOD Void SendPostActionChecksum(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Void SetStartedWithNeowFlag()
+METHOD MegaCrit.Sts2.Core.Saves.SerializableRun CanonicalizeSave(MegaCrit.Sts2.Core.Saves.SerializableRun, UInt64)
+METHOD System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Rooms.RoomType] BuildRoomTypeBlacklist(MegaCrit.Sts2.Core.Runs.History.MapPointHistoryEntry, System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Map.MapPoint])
+METHOD MegaCrit.Sts2.Core.Saves.SerializableRun ToSave(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD MegaCrit.Sts2.Core.Runs.RunState Launch()
+METHOD System.Threading.Tasks.Task FinalizeStartingRelics()
+METHOD Void GenerateRooms()
+METHOD Boolean ShouldApplyTutorialModifications()
+METHOD System.Threading.Tasks.Task GenerateMap()
+METHOD System.Threading.Tasks.Task EnterMapCoord(MegaCrit.Sts2.Core.Map.MapCoord)
+METHOD System.Threading.Tasks.Task LoadIntoLatestMapCoord(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD System.Threading.Tasks.Task EnterMapCoordInternal(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Rooms.AbstractRoom, Boolean)
+METHOD System.Threading.Tasks.Task EnterMapPointInternal(Int32, MegaCrit.Sts2.Core.Map.MapPointType, MegaCrit.Sts2.Core.Rooms.AbstractRoom, Boolean)
+METHOD MegaCrit.Sts2.Core.Rooms.AbstractRoom CreateRoom(MegaCrit.Sts2.Core.Rooms.RoomType, MegaCrit.Sts2.Core.Map.MapPointType, MegaCrit.Sts2.Core.Models.AbstractModel)
+METHOD MegaCrit.Sts2.Core.Rooms.RoomType RollRoomTypeFor(MegaCrit.Sts2.Core.Map.MapPointType, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Rooms.RoomType])
+METHOD Boolean TryGetRoomTypeForTutorial(MegaCrit.Sts2.Core.Map.MapPointType, MegaCrit.Sts2.Core.Rooms.RoomType ByRef)
+METHOD System.Threading.Tasks.Task FadeIn(Boolean)
+METHOD System.Threading.Tasks.Task FadeOut()
+METHOD Void ClearScreens()
+METHOD System.Threading.Tasks.Task EnterMapCoordDebug(MegaCrit.Sts2.Core.Map.MapCoord, MegaCrit.Sts2.Core.Rooms.RoomType, MegaCrit.Sts2.Core.Map.MapPointType, MegaCrit.Sts2.Core.Models.AbstractModel, Boolean)
+METHOD System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Rooms.AbstractRoom] EnterRoomDebug(MegaCrit.Sts2.Core.Rooms.RoomType, MegaCrit.Sts2.Core.Map.MapPointType, MegaCrit.Sts2.Core.Models.AbstractModel, Boolean)
+METHOD System.Threading.Tasks.Task ExitCurrentRooms()
+METHOD System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.Rooms.AbstractRoom] ExitCurrentRoom()
+METHOD System.Threading.Tasks.Task EnterRoomInternal(MegaCrit.Sts2.Core.Rooms.AbstractRoom, Boolean)
+METHOD System.Threading.Tasks.Task EnterRoom(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
+METHOD System.Threading.Tasks.Task EnterRoomWithoutExitingCurrentRoom(MegaCrit.Sts2.Core.Rooms.AbstractRoom, Boolean)
+METHOD System.Threading.Tasks.Task EnterNextAct()
+METHOD System.Threading.Tasks.Task WinRun()
+METHOD System.Threading.Tasks.Task EnterAct(Int32, Boolean)
+METHOD System.Threading.Tasks.Task SetActInternal(Int32)
+METHOD Void UpdateRichPresence()
+METHOD System.Threading.Tasks.Task ProceedFromTerminalRewardsScreen()
+METHOD System.Threading.Tasks.Task ResumePreviousRoom()
+METHOD Void AfterMapLocationChanged()
+METHOD Void Abandon()
+METHOD Void MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.IRunLobbyListener.RunAbandoned()
+METHOD System.Threading.Tasks.Task AbandonInternal()
+METHOD System.Threading.Tasks.Task GuaranteeKillAllPlayers()
+METHOD Void StateDiverged(UInt64, MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState)
+METHOD Void WriteReplay(Boolean)
+METHOD Void CleanUp(Boolean)
+METHOD MegaCrit.Sts2.Core.Saves.SerializableRun OnEnded(Boolean)
+METHOD Void CheckUpdateEnemyDiscoveryAfterLoss(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Models.ModelId)
+METHOD Void UpdatePlayerStatsInMapPointHistory()
+METHOD Boolean HasAscension(MegaCrit.Sts2.Core.Entities.Ascension.AscensionLevel)
+METHOD Void ApplyAscensionEffects(MegaCrit.Sts2.Core.Entities.Players.Player)
+METHOD MegaCrit.Sts2.Core.Multiplayer.Messages.Lobby.ClientRejoinResponseMessage GetRejoinMessage()
+METHOD Void LocalPlayerDisconnected(MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo)
+METHOD Void RemotePlayerDisconnected(UInt64)
+METHOD System.Threading.Tasks.Task ReturnToMainMenuWithError(MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo)
+METHOD System.String GetLocalCharacterEnergyIconPrefix()
+METHOD MegaCrit.Sts2.Core.Runs.RunState DebugOnlyGetState()

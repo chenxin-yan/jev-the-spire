@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "unverified_grid_subclass:NDeckEnchantSelectScreen",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "d780453c901a41918e1ff6b699a92678:131",
+  "mutation_pending": true
+}

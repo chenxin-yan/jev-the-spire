@@ -1,0 +1,633 @@
+METHOD Void SetUpNewSingleplayer(MegaCrit.Sts2.Core.Runs.RunState, Boolean, System.Nullable`1[System.DateTimeOffset])
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0006: brfalse.s 19
+ 0008: ldstr str:State is already set.
+ 0013: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0018: throw 
+ 0019: ldarg.0 
+ 0020: ldarg.1 
+ 0021: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_State(MegaCrit.Sts2.Core.Runs.RunState)
+ 0026: newobj method:MegaCrit.Sts2.Core.Multiplayer.NetSingleplayerGameService.Void .ctor()
+ 0031: stloc.0 
+ 0032: ldarg.0 
+ 0033: ldloc.0 
+ 0034: ldloc.0 
+ 0035: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+ 0040: ldarg.2 
+ 0041: ldarg.3 
+ 0042: call method:System.DateTimeOffset.System.DateTimeOffset get_UtcNow()
+ 0047: stloc.2 
+ 0048: ldloca.s 2
+ 0050: call method:System.DateTimeOffset.Int64 ToUnixTimeSeconds()
+ 0055: ldc.i4.0 
+ 0056: conv.i8 
+ 0057: ldc.i4.0 
+ 0058: conv.i8 
+ 0059: ldc.i4.0 
+ 0060: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeShared(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer, Boolean, System.Nullable`1[System.DateTimeOffset], Int64, Int64, Int64, Int32)
+ 0065: ldloca.s 3
+ 0067: initobj type:MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer
+ 0073: ldloca.s 3
+ 0075: ldloc.0 
+ 0076: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.UInt64 get_NetId()
+ 0081: stfld field:UInt64 id
+ 0086: ldloca.s 3
+ 0088: ldloc.0 
+ 0089: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.MegaCrit.Sts2.Core.Multiplayer.PeerVersionInfo get_LocalVersion()
+ 0094: stloc.s 4
+ 0096: ldloca.s 4
+ 0098: call method:MegaCrit.Sts2.Core.Multiplayer.PeerVersionInfo.Boolean IsModded()
+ 0103: stfld field:Boolean isModded
+ 0108: ldloc.3 
+ 0109: newobj method:<>z__ReadOnlySingleElementList`1[MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer].Void .ctor(MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer)
+ 0114: stloc.1 
+ 0115: ldarg.0 
+ 0116: ldloc.0 
+ 0117: ldarg.1 
+ 0118: ldloc.1 
+ 0119: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeRunLobby(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.RunState, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer])
+ 0124: ldarg.0 
+ 0125: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeNewRun()
+ 0130: ldarg.0 
+ 0131: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void GenerateRooms()
+ 0136: ret 
+METHOD System.Threading.Tasks.Task SetUpSavedSingleplayer(MegaCrit.Sts2.Core.Runs.RunState, MegaCrit.Sts2.Core.Saves.SerializableRun)
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Runtime.CompilerServices.AsyncTaskMethodBuilder Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Runs.RunManager <>4__this
+ 0020: ldloca.s 0
+ 0022: ldarg.1 
+ 0023: stfld field:MegaCrit.Sts2.Core.Runs.RunState state
+ 0028: ldloca.s 0
+ 0030: ldarg.2 
+ 0031: stfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0036: ldloca.s 0
+ 0038: ldc.i4.m1 
+ 0039: stfld field:Int32 <>1__state
+ 0044: ldloca.s 0
+ 0046: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0051: ldloca.s 0
+ 0053: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void Start[<SetUpSavedSingleplayer>d__171](<SetUpSavedSingleplayer>d__171 ByRef)
+ 0058: ldloca.s 0
+ 0060: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0065: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Threading.Tasks.Task get_Task()
+ 0070: ret 
+METHOD Void InitializeShared(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer, Boolean, System.Nullable`1[System.DateTimeOffset], Int64, Int64, Int64, Int32)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0006: brtrue.s 19
+ 0008: ldstr str:State is not set.
+ 0013: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0018: throw 
+ 0019: ldarg.0 
+ 0020: ldarg.1 
+ 0021: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_NetService(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+ 0026: ldarg.0 
+ 0027: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0032: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.UInt64 get_NetId()
+ 0037: stloc.0 
+ 0038: ldarg.0 
+ 0039: ldarg.0 
+ 0040: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0045: ldarg.0 
+ 0046: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0051: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IRunState)
+ 0056: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ChecksumTracker(MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker)
+ 0061: ldarg.0 
+ 0062: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+ 0067: call method:MegaCrit.Sts2.Core.TestSupport.TestMode.Boolean get_IsOn()
+ 0072: ldc.i4.0 
+ 0073: ceq 
+ 0075: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker.Void set_IsEnabled(Boolean)
+ 0080: ldarg.0 
+ 0081: ldarg.0 
+ 0082: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0087: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+ 0092: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_RunLocationTargetedBuffer(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer)
+ 0097: ldarg.0 
+ 0098: ldarg.0 
+ 0099: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0104: ldarg.0 
+ 0105: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0110: ldloc.0 
+ 0111: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, UInt64)
+ 0116: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_FlavorSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer)
+ 0121: ldarg.0 
+ 0122: ldarg.0 
+ 0123: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0128: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0133: newobj method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.Void .ctor(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player])
+ 0138: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ActionQueueSet(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet)
+ 0143: ldarg.0 
+ 0144: ldarg.0 
+ 0145: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+ 0150: newobj method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.Void .ctor(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet)
+ 0155: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ActionExecutor(MegaCrit.Sts2.Core.GameActions.ActionExecutor)
+ 0160: ldarg.0 
+ 0161: ldarg.0 
+ 0162: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0167: ldarg.0 
+ 0168: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+ 0173: ldarg.0 
+ 0174: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+ 0179: ldarg.0 
+ 0180: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0185: newobj method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Runs.IPlayerCollection, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet, MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+ 0190: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ActionQueueSynchronizer(MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer)
+ 0195: ldarg.0 
+ 0196: ldarg.0 
+ 0197: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0202: ldarg.0 
+ 0203: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0208: newobj method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection)
+ 0213: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_PlayerChoiceSynchronizer(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer)
+ 0218: ldarg.0 
+ 0219: ldarg.0 
+ 0220: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0225: ldarg.0 
+ 0226: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0231: ldarg.0 
+ 0232: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0237: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.Runs.RunState)
+ 0242: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_MapSelectionSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.MapSelectionSynchronizer)
+ 0247: ldarg.0 
+ 0248: ldarg.0 
+ 0249: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0254: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Runs.RunState)
+ 0259: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ActChangeSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.ActChangeSynchronizer)
+ 0264: ldarg.0 
+ 0265: ldarg.0 
+ 0266: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+ 0271: ldarg.0 
+ 0272: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0277: ldarg.0 
+ 0278: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0283: ldarg.0 
+ 0284: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0289: ldloc.0 
+ 0290: ldarg.0 
+ 0291: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0296: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RunRngSet get_Rng()
+ 0301: callvirt method:MegaCrit.Sts2.Core.Runs.RunRngSet.UInt64 get_Seed()
+ 0306: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, MegaCrit.Sts2.Core.Runs.IRunState, UInt64, UInt64)
+ 0311: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_EventSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.EventSynchronizer)
+ 0316: ldarg.0 
+ 0317: ldarg.0 
+ 0318: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+ 0323: ldarg.0 
+ 0324: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0329: ldarg.0 
+ 0330: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0335: ldloc.0 
+ 0336: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, UInt64)
+ 0341: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_RewardSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer)
+ 0346: ldarg.0 
+ 0347: ldarg.0 
+ 0348: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+ 0353: ldarg.0 
+ 0354: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0359: ldarg.0 
+ 0360: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0365: ldloc.0 
+ 0366: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, UInt64)
+ 0371: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_RewardsSetSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer)
+ 0376: ldarg.0 
+ 0377: ldarg.0 
+ 0378: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer get_RunLocationTargetedBuffer()
+ 0383: ldarg.0 
+ 0384: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0389: ldarg.0 
+ 0390: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0395: ldloc.0 
+ 0396: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer, MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.IPlayerCollection, UInt64)
+ 0401: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_OneOffSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.OneOffSynchronizer)
+ 0406: ldarg.0 
+ 0407: ldarg.0 
+ 0408: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0413: ldloc.0 
+ 0414: ldarg.0 
+ 0415: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0420: ldarg.0 
+ 0421: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0426: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RelicGrabBag get_SharedRelicGrabBag()
+ 0431: ldarg.0 
+ 0432: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0437: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RunRngSet get_Rng()
+ 0442: callvirt method:MegaCrit.Sts2.Core.Runs.RunRngSet.MegaCrit.Sts2.Core.Random.Rng get_TreasureRoomRelics()
+ 0447: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Runs.IPlayerCollection, UInt64, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.Runs.RelicGrabBag, MegaCrit.Sts2.Core.Random.Rng)
+ 0452: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_TreasureRoomRelicSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer)
+ 0457: ldarg.0 
+ 0458: ldarg.0 
+ 0459: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0464: ldarg.0 
+ 0465: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer get_RewardsSetSynchronizer()
+ 0470: ldarg.0 
+ 0471: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+ 0476: ldarg.0 
+ 0477: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0482: ldarg.0 
+ 0483: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+ 0488: newobj method:MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter.Void .ctor(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer, MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet, MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer, MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker)
+ 0493: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_CombatReplayWriter(MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter)
+ 0498: ldarg.0 
+ 0499: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter get_CombatReplayWriter()
+ 0504: call method:MegaCrit.Sts2.Core.TestSupport.TestMode.Boolean get_IsOn()
+ 0509: ldc.i4.0 
+ 0510: ceq 
+ 0512: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter.Void set_IsEnabled(Boolean)
+ 0517: ldarg.0 
+ 0518: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0523: ldarg.0 
+ 0524: ldftn method:MegaCrit.Sts2.Core.Runs.RunManager.Void SendPostActionChecksum(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0530: newobj method:System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction].Void .ctor(System.Object, IntPtr)
+ 0535: callvirt method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.Void add_JustBeforeActionFinishedExecuting(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+ 0540: ldarg.0 
+ 0541: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+ 0546: ldarg.0 
+ 0547: ldftn method:MegaCrit.Sts2.Core.Runs.RunManager.Void StateDiverged(UInt64, MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState)
+ 0553: newobj method:System.Action`2[System.UInt64,MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState].Void .ctor(System.Object, IntPtr)
+ 0558: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker.Void add_StateDiverged(System.Action`2[System.UInt64,MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState])
+ 0563: ldarg.0 
+ 0564: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0569: callvirt method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.Void Pause()
+ 0574: ldarg.0 
+ 0575: ldc.i4.0 
+ 0576: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_IsAbandoned(Boolean)
+ 0581: ldarg.0 
+ 0582: ldarg.0 
+ 0583: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0588: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.Int32 get_AscensionLevel()
+ 0593: newobj method:MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager.Void .ctor(Int32)
+ 0598: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_AscensionManager(MegaCrit.Sts2.Core.Entities.Ascension.AscensionManager)
+ 0603: ldarg.0 
+ 0604: ldarg.3 
+ 0605: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ShouldSave(Boolean)
+ 0610: ldarg.0 
+ 0611: ldarg.s 4
+ 0613: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_DailyTime(System.Nullable`1[System.DateTimeOffset])
+ 0618: ldarg.0 
+ 0619: ldarg.s 5
+ 0621: stfld field:Int64 _startTime
+ 0626: ldarg.0 
+ 0627: ldarg.s 6
+ 0629: stfld field:Int64 _prevSessionRunTime
+ 0634: ldarg.0 
+ 0635: ldc.i4.0 
+ 0636: conv.i8 
+ 0637: stfld field:Int64 _activeRunTime
+ 0642: ldarg.0 
+ 0643: ldarg.s 7
+ 0645: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_WinTime(Int64)
+ 0650: ldarg.0 
+ 0651: ldarg.s 8
+ 0653: stfld field:Int32 _numReloads
+ 0658: ldarg.0 
+ 0659: call method:System.DateTimeOffset.System.DateTimeOffset get_UtcNow()
+ 0664: stloc.1 
+ 0665: ldloca.s 1
+ 0667: call method:System.DateTimeOffset.Int64 ToUnixTimeSeconds()
+ 0672: stfld field:Int64 _startOfCurrentActiveRunTime
+ 0677: ldarg.0 
+ 0678: ldarg.2 
+ 0679: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_InputSynchronizer(MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer)
+ 0684: ldarg.0 
+ 0685: ldarg.0 
+ 0686: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer get_InputSynchronizer()
+ 0691: ldarg.0 
+ 0692: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0697: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer, MegaCrit.Sts2.Core.Runs.IPlayerCollection)
+ 0702: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_HoveredModelTracker(MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.HoveredModelTracker)
+ 0707: ret 
+METHOD Void InitializeNewRun()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0006: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RelicGrabBag get_SharedRelicGrabBag()
+ 0011: call method:MegaCrit.Sts2.Core.Models.ModelDb.MegaCrit.Sts2.Core.Models.RelicPools.SharedRelicPool RelicPool[SharedRelicPool]()
+ 0016: ldarg.0 
+ 0017: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0022: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Unlocks.UnlockState get_UnlockState()
+ 0027: callvirt method:MegaCrit.Sts2.Core.Models.RelicPoolModel.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.RelicModel] GetUnlockedRelics(MegaCrit.Sts2.Core.Unlocks.UnlockState)
+ 0032: ldarg.0 
+ 0033: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0038: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RunRngSet get_Rng()
+ 0043: callvirt method:MegaCrit.Sts2.Core.Runs.RunRngSet.MegaCrit.Sts2.Core.Random.Rng get_UpFront()
+ 0048: callvirt method:MegaCrit.Sts2.Core.Runs.RelicGrabBag.Void Populate(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.RelicModel], MegaCrit.Sts2.Core.Random.Rng)
+ 0053: ldarg.0 
+ 0054: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0059: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0064: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Players.Player].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player] GetEnumerator()
+ 0069: stloc.0 
+ 0070: br.s 101
+ 0072: ldloc.0 
+ 0073: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player].MegaCrit.Sts2.Core.Entities.Players.Player get_Current()
+ 0078: stloc.1 
+ 0079: ldloc.1 
+ 0080: ldarg.0 
+ 0081: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0086: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RunRngSet get_Rng()
+ 0091: callvirt method:MegaCrit.Sts2.Core.Runs.RunRngSet.MegaCrit.Sts2.Core.Random.Rng get_UpFront()
+ 0096: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.Void PopulateRelicGrabBagIfNecessary(MegaCrit.Sts2.Core.Random.Rng)
+ 0101: ldloc.0 
+ 0102: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0107: brtrue.s 72
+ 0109: leave.s 121
+ 0111: ldloc.0 
+ 0112: brfalse.s 120
+ 0114: ldloc.0 
+ 0115: callvirt method:System.IDisposable.Void Dispose()
+ 0120: endfinally 
+ 0121: ldarg.0 
+ 0122: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void SetStartedWithNeowFlag()
+ 0127: ldarg.0 
+ 0128: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0133: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.ModifierModel] get_Modifiers()
+ 0138: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.ModifierModel].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ModifierModel] GetEnumerator()
+ 0143: stloc.2 
+ 0144: br.s 165
+ 0146: ldloc.2 
+ 0147: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ModifierModel].MegaCrit.Sts2.Core.Models.ModifierModel get_Current()
+ 0152: stloc.3 
+ 0153: ldloc.3 
+ 0154: ldarg.0 
+ 0155: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0160: callvirt method:MegaCrit.Sts2.Core.Models.ModifierModel.Void OnRunCreated(MegaCrit.Sts2.Core.Runs.RunState)
+ 0165: ldloc.2 
+ 0166: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0171: brtrue.s 146
+ 0173: leave.s 185
+ 0175: ldloc.2 
+ 0176: brfalse.s 184
+ 0178: ldloc.2 
+ 0179: callvirt method:System.IDisposable.Void Dispose()
+ 0184: endfinally 
+ 0185: ldarg.0 
+ 0186: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0191: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Players.Player] get_Players()
+ 0196: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Players.Player].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player] GetEnumerator()
+ 0201: stloc.s 4
+ 0203: br.s 222
+ 0205: ldloc.s 4
+ 0207: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Entities.Players.Player].MegaCrit.Sts2.Core.Entities.Players.Player get_Current()
+ 0212: stloc.s 5
+ 0214: ldarg.0 
+ 0215: ldloc.s 5
+ 0217: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void ApplyAscensionEffects(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0222: ldloc.s 4
+ 0224: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0229: brtrue.s 205
+ 0231: leave.s 245
+ 0233: ldloc.s 4
+ 0235: brfalse.s 244
+ 0237: ldloc.s 4
+ 0239: callvirt method:System.IDisposable.Void Dispose()
+ 0244: endfinally 
+ 0245: ret 
+METHOD Void InitializeSavedRun(MegaCrit.Sts2.Core.Saves.SerializableRun)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0006: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.ActModel] get_Acts()
+ 0011: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.ActModel].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ActModel] GetEnumerator()
+ 0016: stloc.0 
+ 0017: br.s 48
+ 0019: ldloc.0 
+ 0020: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ActModel].MegaCrit.Sts2.Core.Models.ActModel get_Current()
+ 0025: stloc.1 
+ 0026: ldloc.1 
+ 0027: ldarg.0 
+ 0028: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0033: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.MegaCrit.Sts2.Core.Runs.RunRngSet get_Rng()
+ 0038: callvirt method:MegaCrit.Sts2.Core.Runs.RunRngSet.MegaCrit.Sts2.Core.Random.Rng get_UpFront()
+ 0043: callvirt method:MegaCrit.Sts2.Core.Models.ActModel.Void ValidateRoomsAfterLoad(MegaCrit.Sts2.Core.Random.Rng)
+ 0048: ldloc.0 
+ 0049: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0054: brtrue.s 19
+ 0056: leave.s 68
+ 0058: ldloc.0 
+ 0059: brfalse.s 67
+ 0061: ldloc.0 
+ 0062: callvirt method:System.IDisposable.Void Dispose()
+ 0067: endfinally 
+ 0068: ldarg.0 
+ 0069: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void AfterMapLocationChanged()
+ 0074: ldarg.0 
+ 0075: ldarg.1 
+ 0076: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings get_MapDrawings()
+ 0081: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_MapDrawingsToLoad(MegaCrit.Sts2.Core.Saves.MapDrawing.SerializableMapDrawings)
+ 0086: ldarg.0 
+ 0087: ldnull 
+ 0088: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_SavedMapsToLoad(System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap])
+ 0093: ldc.i4.0 
+ 0094: stloc.2 
+ 0095: br.s 157
+ 0097: ldarg.1 
+ 0098: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel] get_Acts()
+ 0103: ldloc.2 
+ 0104: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel].MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel get_Item(Int32)
+ 0109: callvirt method:MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel.MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap get_SavedMap()
+ 0114: stloc.3 
+ 0115: ldloc.3 
+ 0116: brfalse.s 153
+ 0118: ldarg.0 
+ 0119: call method:MegaCrit.Sts2.Core.Runs.RunManager.System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] get_SavedMapsToLoad()
+ 0124: brtrue.s 140
+ 0126: ldarg.0 
+ 0127: newobj method:System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap].Void .ctor()
+ 0132: dup 
+ 0133: stloc.s 4
+ 0135: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_SavedMapsToLoad(System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap])
+ 0140: ldarg.0 
+ 0141: call method:MegaCrit.Sts2.Core.Runs.RunManager.System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap] get_SavedMapsToLoad()
+ 0146: ldloc.2 
+ 0147: ldloc.3 
+ 0148: callvirt method:System.Collections.Generic.Dictionary`2[System.Int32,MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap].Void set_Item(Int32, MegaCrit.Sts2.Core.Saves.Runs.SerializableActMap)
+ 0153: ldloc.2 
+ 0154: ldc.i4.1 
+ 0155: add 
+ 0156: stloc.2 
+ 0157: ldloc.2 
+ 0158: ldarg.1 
+ 0159: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel] get_Acts()
+ 0164: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Saves.Runs.SerializableActModel].Int32 get_Count()
+ 0169: blt.s 97
+ 0171: ldarg.0 
+ 0172: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0177: callvirt method:MegaCrit.Sts2.Core.Runs.RunState.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.ModifierModel] get_Modifiers()
+ 0182: callvirt method:System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.ModifierModel].System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ModifierModel] GetEnumerator()
+ 0187: stloc.s 5
+ 0189: br.s 213
+ 0191: ldloc.s 5
+ 0193: callvirt method:System.Collections.Generic.IEnumerator`1[MegaCrit.Sts2.Core.Models.ModifierModel].MegaCrit.Sts2.Core.Models.ModifierModel get_Current()
+ 0198: stloc.s 6
+ 0200: ldloc.s 6
+ 0202: ldarg.0 
+ 0203: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0208: callvirt method:MegaCrit.Sts2.Core.Models.ModifierModel.Void OnRunLoaded(MegaCrit.Sts2.Core.Runs.RunState)
+ 0213: ldloc.s 5
+ 0215: callvirt method:System.Collections.IEnumerator.Boolean MoveNext()
+ 0220: brtrue.s 191
+ 0222: leave.s 236
+ 0224: ldloc.s 5
+ 0226: brfalse.s 235
+ 0228: ldloc.s 5
+ 0230: callvirt method:System.IDisposable.Void Dispose()
+ 0235: endfinally 
+ 0236: ret 
+METHOD MegaCrit.Sts2.Core.Runs.RunState Launch()
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0006: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.UInt64 get_NetId()
+ 0011: newobj method:System.Nullable`1[System.UInt64].Void .ctor(UInt64)
+ 0016: call method:MegaCrit.Sts2.Core.Context.LocalContext.Void set_NetId(System.Nullable`1[System.UInt64])
+ 0021: ldarg.0 
+ 0022: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0027: ldc.i4.0 
+ 0028: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.Void SetBufferMessages(Boolean)
+ 0033: ldarg.0 
+ 0034: ldfld field:System.Action`1[MegaCrit.Sts2.Core.Runs.RunState] RunStarted
+ 0039: dup 
+ 0040: brtrue.s 45
+ 0042: pop 
+ 0043: br.s 56
+ 0045: ldarg.0 
+ 0046: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0051: callvirt method:System.Action`1[MegaCrit.Sts2.Core.Runs.RunState].Void Invoke(MegaCrit.Sts2.Core.Runs.RunState)
+ 0056: ldarg.0 
+ 0057: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void UpdateRichPresence()
+ 0062: ldarg.0 
+ 0063: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0068: ret 
+METHOD Void CleanUp(Boolean)
+ 0000: ldarg.0 
+ 0001: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0006: brtrue.s 9
+ 0008: ret 
+ 0009: ldarg.0 
+ 0010: ldc.i4.0 
+ 0011: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_ShouldSave(Boolean)
+ 0016: ldarg.0 
+ 0017: ldc.i4.1 
+ 0018: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_IsCleaningUp(Boolean)
+ 0023: ldarg.0 
+ 0024: ldc.i4.0 
+ 0025: stfld field:Boolean _runHistoryWasUploaded
+ 0030: ldarg.0 
+ 0031: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet get_ActionQueueSet()
+ 0036: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.Void Reset()
+ 0041: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Void Reset()
+ 0046: call method:MegaCrit.Sts2.Core.Nodes.Audio.NAudioManager.MegaCrit.Sts2.Core.Nodes.Audio.NAudioManager get_Instance()
+ 0051: dup 
+ 0052: brtrue.s 57
+ 0054: pop 
+ 0055: br.s 62
+ 0057: call method:MegaCrit.Sts2.Core.Nodes.Audio.NAudioManager.Void StopAllLoops()
+ 0062: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack get_Instance()
+ 0067: dup 
+ 0068: brtrue.s 73
+ 0070: pop 
+ 0071: br.s 78
+ 0073: call method:MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack.Void Clear()
+ 0078: call method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer get_Instance()
+ 0083: dup 
+ 0084: brtrue.s 89
+ 0086: pop 
+ 0087: br.s 94
+ 0089: call method:MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.Void CleanUp()
+ 0094: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen get_Instance()
+ 0099: dup 
+ 0100: brtrue.s 105
+ 0102: pop 
+ 0103: br.s 110
+ 0105: call method:MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.Void CleanUp()
+ 0110: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer.MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer get_Instance()
+ 0115: dup 
+ 0116: brtrue.s 121
+ 0118: pop 
+ 0119: br.s 126
+ 0121: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NModalContainer.Void Clear()
+ 0126: call method:MegaCrit.Sts2.Core.Combat.CombatManager.MegaCrit.Sts2.Core.Combat.CombatManager get_Instance()
+ 0131: ldarg.1 
+ 0132: callvirt method:MegaCrit.Sts2.Core.Combat.CombatManager.Void Reset(Boolean)
+ 0137: ldarg.0 
+ 0138: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter get_CombatReplayWriter()
+ 0143: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter.Boolean get_IsRecordingReplay()
+ 0148: brfalse.s 157
+ 0150: ldarg.0 
+ 0151: ldc.i4.1 
+ 0152: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void WriteReplay(Boolean)
+ 0157: ldarg.0 
+ 0158: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.ActionExecutor get_ActionExecutor()
+ 0163: ldarg.0 
+ 0164: ldftn method:MegaCrit.Sts2.Core.Runs.RunManager.Void SendPostActionChecksum(MegaCrit.Sts2.Core.GameActions.GameAction)
+ 0170: newobj method:System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction].Void .ctor(System.Object, IntPtr)
+ 0175: callvirt method:MegaCrit.Sts2.Core.GameActions.ActionExecutor.Void remove_JustBeforeActionFinishedExecuting(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+ 0180: ldarg.0 
+ 0181: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter get_CombatReplayWriter()
+ 0186: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Replay.CombatReplayWriter.Void Dispose()
+ 0191: ldarg.0 
+ 0192: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer get_ActionQueueSynchronizer()
+ 0197: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.Void Dispose()
+ 0202: ldarg.0 
+ 0203: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0208: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void Dispose()
+ 0213: ldarg.0 
+ 0214: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer get_RewardSynchronizer()
+ 0219: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RewardSynchronizer.Void Dispose()
+ 0224: ldarg.0 
+ 0225: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer get_RewardsSetSynchronizer()
+ 0230: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RewardsSetSynchronizer.Void Dispose()
+ 0235: ldarg.0 
+ 0236: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer get_RestSiteSynchronizer()
+ 0241: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.RestSiteSynchronizer.Void Dispose()
+ 0246: ldarg.0 
+ 0247: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer get_FlavorSynchronizer()
+ 0252: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.FlavorSynchronizer.Void Dispose()
+ 0257: ldarg.0 
+ 0258: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker get_ChecksumTracker()
+ 0263: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.ChecksumTracker.Void Dispose()
+ 0268: ldarg.0 
+ 0269: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby get_RunLobby()
+ 0274: brfalse.s 310
+ 0276: ldarg.0 
+ 0277: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby get_RunLobby()
+ 0282: ldarg.0 
+ 0283: ldftn method:MegaCrit.Sts2.Core.Runs.RunManager.Void RemotePlayerDisconnected(UInt64)
+ 0289: newobj method:System.Action`1[System.UInt64].Void .ctor(System.Object, IntPtr)
+ 0294: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby.Void remove_RemotePlayerDisconnected(System.Action`1[System.UInt64])
+ 0299: ldarg.0 
+ 0300: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby get_RunLobby()
+ 0305: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.RunLobby.Void Dispose()
+ 0310: ldarg.0 
+ 0311: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService get_NetService()
+ 0316: ldc.i4.1 
+ 0317: ldarg.1 
+ 0318: ldc.i4.0 
+ 0319: ceq 
+ 0321: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.Void Disconnect(MegaCrit.Sts2.Core.Entities.Multiplayer.NetError, Boolean)
+ 0326: leave.s 388
+ 0328: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NHotkeyManager.MegaCrit.Sts2.Core.Nodes.CommonUi.NHotkeyManager get_Instance()
+ 0333: dup 
+ 0334: brtrue.s 339
+ 0336: pop 
+ 0337: br.s 344
+ 0339: call method:MegaCrit.Sts2.Core.Nodes.CommonUi.NHotkeyManager.Void ClearHotkeys()
+ 0344: ldarg.0 
+ 0345: ldc.i4.0 
+ 0346: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_IsCleaningUp(Boolean)
+ 0351: ldloca.s 0
+ 0353: initobj type:System.Nullable`1[System.UInt64]
+ 0359: ldloc.0 
+ 0360: call method:MegaCrit.Sts2.Core.Context.LocalContext.Void set_NetId(System.Nullable`1[System.UInt64])
+ 0365: ldarg.0 
+ 0366: ldnull 
+ 0367: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_State(MegaCrit.Sts2.Core.Runs.RunState)
+ 0372: ldarg.0 
+ 0373: ldloca.s 1
+ 0375: initobj type:System.Nullable`1[System.DateTimeOffset]
+ 0381: ldloc.1 
+ 0382: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_DailyTime(System.Nullable`1[System.DateTimeOffset])
+ 0387: endfinally 
+ 0388: ret 

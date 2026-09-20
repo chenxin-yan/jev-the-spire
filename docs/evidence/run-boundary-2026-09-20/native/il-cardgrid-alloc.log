@@ -1,0 +1,127 @@
+METHOD Void AllocateCardHolders()
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+ 0006: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].Int32 get_Count()
+ 0011: brtrue.s 14
+ 0013: ret 
+ 0014: ldarg.0 
+ 0015: call method:Godot.CanvasItem.Godot.Rect2 GetViewportRect()
+ 0020: stloc.0 
+ 0021: ldloca.s 0
+ 0023: call method:Godot.Rect2.Godot.Vector2 get_Size()
+ 0028: ldfld field:Single Y
+ 0033: stloc.1 
+ 0034: ldloc.1 
+ 0035: stloc.2 
+ 0036: ldarg.0 
+ 0037: ldfld field:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+ 0042: ldc.i4.0 
+ 0043: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_Item(Int32)
+ 0048: stloc.3 
+ 0049: ldloc.3 
+ 0050: ldc.i4.0 
+ 0051: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder].MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder get_Item(Int32)
+ 0056: callvirt method:Godot.Control.Godot.Vector2 get_GlobalPosition()
+ 0061: ldfld field:Single Y
+ 0066: stloc.s 4
+ 0068: ldarg.0 
+ 0069: ldfld field:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+ 0074: dup 
+ 0075: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].Int32 get_Count()
+ 0080: ldc.i4.1 
+ 0081: sub 
+ 0082: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_Item(Int32)
+ 0087: stloc.s 5
+ 0089: ldloc.s 5
+ 0091: ldc.i4.0 
+ 0092: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder].MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder get_Item(Int32)
+ 0097: callvirt method:Godot.Control.Godot.Vector2 get_GlobalPosition()
+ 0102: ldfld field:Single Y
+ 0107: stloc.s 6
+ 0109: ldloc.s 4
+ 0111: ldc.r4 0
+ 0116: sub 
+ 0117: call method:Godot.Mathf.Single Abs(Single)
+ 0122: ldarg.0 
+ 0123: call method:Godot.Control.Godot.Vector2 get_Size()
+ 0128: ldfld field:Single Y
+ 0133: ldc.r4 2
+ 0138: mul 
+ 0139: ble.un.s 148
+ 0141: ldarg.0 
+ 0142: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void ReallocateAll()
+ 0147: ret 
+ 0148: ldloc.s 4
+ 0150: ldc.r4 0
+ 0155: ble.un.s 183
+ 0157: ldarg.0 
+ 0158: ldarg.0 
+ 0159: ldfld field:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+ 0164: dup 
+ 0165: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].Int32 get_Count()
+ 0170: ldc.i4.1 
+ 0171: sub 
+ 0172: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_Item(Int32)
+ 0177: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void ReallocateAbove(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+ 0182: ret 
+ 0183: ldloc.s 6
+ 0185: ldloc.2 
+ 0186: bge.un.s 206
+ 0188: ldarg.0 
+ 0189: ldarg.0 
+ 0190: ldfld field:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]] _cardRows
+ 0195: ldc.i4.0 
+ 0196: callvirt method:System.Collections.Generic.List`1[System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder]].System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder] get_Item(Int32)
+ 0201: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void ReallocateBelow(System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder])
+ 0206: ret 
+METHOD Int32 GetTotalRowCount()
+ 0000: ldarg.0 
+ 0001: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+ 0006: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0011: conv.r4 
+ 0012: ldarg.0 
+ 0013: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Int32 get_Columns()
+ 0018: conv.r4 
+ 0019: div 
+ 0020: call method:Godot.Mathf.Int32 CeilToInt(Single)
+ 0025: ret 
+METHOD Int32 CalculateRowsNeeded()
+ 0000: ldarg.0 
+ 0001: call method:Godot.Control.Godot.Vector2 get_Size()
+ 0006: ldfld field:Single Y
+ 0011: ldarg.0 
+ 0012: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Single get_CardPadding()
+ 0017: add 
+ 0018: ldarg.0 
+ 0019: ldflda field:Godot.Vector2 _cardSize
+ 0024: ldfld field:Single Y
+ 0029: ldarg.0 
+ 0030: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Single get_CardPadding()
+ 0035: add 
+ 0036: div 
+ 0037: call method:Godot.Mathf.Int32 CeilToInt(Single)
+ 0042: ldc.i4.2 
+ 0043: add 
+ 0044: stloc.0 
+ 0045: ldloc.0 
+ 0046: ldarg.0 
+ 0047: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Int32 GetTotalRowCount()
+ 0052: call method:Godot.Mathf.Int32 Min(Int32, Int32)
+ 0057: ret 
+METHOD Int32 get_Columns()
+ 0000: ldarg.0 
+ 0001: ldfld field:Godot.Control _scrollContainer
+ 0006: callvirt method:Godot.Control.Godot.Vector2 get_Size()
+ 0011: ldfld field:Single X
+ 0016: ldarg.0 
+ 0017: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Single get_CardPadding()
+ 0022: add 
+ 0023: ldarg.0 
+ 0024: ldflda field:Godot.Vector2 _cardSize
+ 0029: ldfld field:Single X
+ 0034: ldarg.0 
+ 0035: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Single get_CardPadding()
+ 0040: add 
+ 0041: div 
+ 0042: conv.i4 
+ 0043: ret 

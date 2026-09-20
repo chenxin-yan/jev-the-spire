@@ -1,0 +1,12 @@
+TYPE MegaCrit.Sts2.Core.Nodes.Cards.NEnchantPreview
+METHOD Void _Ready()
+METHOD Void Init(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32)
+METHOD Void RemoveExistingCards()
+TYPE MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview
+FIELD MegaCrit.Sts2.Core.Models.CardModel _card
+METHOD MegaCrit.Sts2.Core.Models.CardModel get_Card()
+METHOD Void set_Card(MegaCrit.Sts2.Core.Models.CardModel)
+METHOD Void _Ready()
+METHOD Void Reload()
+METHOD Void RemoveExistingCards()
+METHOD Void ReturnCard(MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder)

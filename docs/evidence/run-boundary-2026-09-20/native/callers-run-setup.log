@@ -1,0 +1,54 @@
+== Launch
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<LoadRun>d__147.MoveNext IL 279 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<StartRun>d__148.MoveNext IL 409 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<StartNewMultiplayerRun>d__56.MoveNext IL 1052 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.NSceneBootstrapper+<StartNewRun>d__3.MoveNext IL 566 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<BeginRunAsync>d__25.MoveNext IL 569 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<RunReplay>d__35.MoveNext IL 518 -> MegaCrit.Sts2.Core.Runs.RunManager.Launch
+== InitializeNewRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewSingleplayer IL 125 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeNewRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewMultiplayer IL 123 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeNewRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.SetUpTest IL 142 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeNewRun
+== InitializeSavedRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.SetUpReplay IL 145 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeSavedRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager+<SetUpSavedMultiplayer>d__172.MoveNext IL 349 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeSavedRun
+CALLER MegaCrit.Sts2.Core.Runs.RunManager+<SetUpSavedSingleplayer>d__171.MoveNext IL 301 -> MegaCrit.Sts2.Core.Runs.RunManager.InitializeSavedRun
+== SetUpNewSingleplayer
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<StartNewSingleplayerRun>d__145.MoveNext IL 155 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewSingleplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.NSceneBootstrapper+<StartNewRun>d__3.MoveNext IL 447 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewSingleplayer
+== SetUpSavedSingleplayer
+CALLER MegaCrit.Sts2.Core.Debug.FileDropHandler+<OnRunHistoryDropped>d__1.MoveNext IL 586 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpSavedSingleplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu+<OnContinueButtonPressedAsync>d__64.MoveNext IL 119 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpSavedSingleplayer
+== SetUpNewMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<StartNewMultiplayerRun>d__146.MoveNext IL 188 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<StartNewMultiplayerRun>d__56.MoveNext IL 804 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<BeginRunAsync>d__25.MoveNext IL 321 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpNewMultiplayer
+== SetUpSavedMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLoadScreen+<StartRun>d__32.MoveNext IL 338 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpSavedMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunLoadScreen+<StartRun>d__27.MoveNext IL 338 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpSavedMultiplayer
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NMultiplayerLoadGameScreen+<StartRun>d__34.MoveNext IL 338 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpSavedMultiplayer
+== SetUpTest
+== SetUpReplay
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<RunReplay>d__35.MoveNext IL 248 -> MegaCrit.Sts2.Core.Runs.RunManager.SetUpReplay
+== CleanUp
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.CleanUp IL 89 -> MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.CleanUp
+CALLER MegaCrit.Sts2.Core.Runs.RunManager.CleanUp IL 105 -> MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.CleanUp
+CALLER MegaCrit.Sts2.Core.Debug.FileDropHandler+<OnRunHistoryDropped>d__1.MoveNext IL 547 -> MegaCrit.Sts2.Core.Runs.RunManager.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<GoToTimeline>d__140.MoveNext IL 246 -> MegaCrit.Sts2.Core.Runs.RunManager.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.NGame+<ReturnToMainMenu>d__141.MoveNext IL 246 -> MegaCrit.Sts2.Core.Runs.RunManager.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.NRun._Notification IL 16 -> MegaCrit.Sts2.Core.Runs.RunManager.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.InvokeGodotClassMethod IL 1891 -> MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu+<OnContinueButtonPressedAsync>d__64.MoveNext IL 732 -> MegaCrit.Sts2.Core.Runs.RunManager.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLoadScreen.CleanUpLobby IL 39 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.LoadRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunScreen.CleanUpLobby IL 39 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunLoadScreen.CleanUpLobby IL 31 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.LoadRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen.CleanUpLobby IL 31 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen.CleanUpLobby IL 31 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NMultiplayerLoadGameScreen.CleanUpLobby IL 31 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.LoadRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.InvokeGodotClassMethod IL 282 -> MegaCrit.Sts2.Core.Nodes.Screens.Capstones.NCapstoneContainer.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest._ExitTree IL 55 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest.Disconnect IL 14 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<BeginRunAsync>d__25.MoveNext IL 809 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<BeginRunAsync>d__25.MoveNext IL 1691 -> MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby.CleanUp
+== add_RunStarted
+CALLER MegaCrit.Sts2.Core.Nodes.Reaction.NReactionWheel._EnterTree IL 17 -> MegaCrit.Sts2.Core.Runs.RunManager.add_RunStarted

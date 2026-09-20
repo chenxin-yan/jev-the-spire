@@ -1,0 +1,224 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: switch switch 5
+ 0040: ldloc.1 
+ 0041: ldfld field:System.Threading.CancellationTokenSource _setCardsCancellation
+ 0046: brfalse.s 144
+ 0048: ldloc.1 
+ 0049: ldfld field:System.Threading.CancellationTokenSource _setCardsCancellation
+ 0054: callvirt method:System.Threading.CancellationTokenSource.System.Threading.Tasks.Task CancelAsync()
+ 0059: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0064: stloc.2 
+ 0065: ldloca.s 2
+ 0067: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0072: brtrue.s 137
+ 0074: ldarg.0 
+ 0075: ldc.i4.0 
+ 0076: dup 
+ 0077: stloc.0 
+ 0078: stfld field:Int32 <>1__state
+ 0083: ldarg.0 
+ 0084: ldloc.2 
+ 0085: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0090: ldarg.0 
+ 0091: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0096: ldloca.s 2
+ 0098: ldarg.0 
+ 0099: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<InitGrid>d__82](System.Runtime.CompilerServices.TaskAwaiter ByRef, <InitGrid>d__82 ByRef)
+ 0104: leave 623
+ 0109: ldarg.0 
+ 0110: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0115: stloc.2 
+ 0116: ldarg.0 
+ 0117: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0122: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0128: ldarg.0 
+ 0129: ldc.i4.m1 
+ 0130: dup 
+ 0131: stloc.0 
+ 0132: stfld field:Int32 <>1__state
+ 0137: ldloca.s 2
+ 0139: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0144: ldloc.1 
+ 0145: ldc.i4.1 
+ 0146: stfld field:Boolean _cardsAnimatingOutForSetCards
+ 0151: ldloc.1 
+ 0152: ldfld field:System.Threading.Tasks.Task _animatingOutTask
+ 0157: stloc.3 
+ 0158: ldloc.3 
+ 0159: brfalse.s 265
+ 0161: ldloc.3 
+ 0162: callvirt method:System.Threading.Tasks.Task.Boolean get_IsCompleted()
+ 0167: brtrue.s 265
+ 0169: ldloc.1 
+ 0170: ldfld field:System.Threading.Tasks.Task _animatingOutTask
+ 0175: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0180: stloc.s 4
+ 0182: ldloca.s 4
+ 0184: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0189: brtrue.s 256
+ 0191: ldarg.0 
+ 0192: ldc.i4.1 
+ 0193: dup 
+ 0194: stloc.0 
+ 0195: stfld field:Int32 <>1__state
+ 0200: ldarg.0 
+ 0201: ldloc.s 4
+ 0203: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0208: ldarg.0 
+ 0209: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0214: ldloca.s 4
+ 0216: ldarg.0 
+ 0217: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<InitGrid>d__82](System.Runtime.CompilerServices.TaskAwaiter ByRef, <InitGrid>d__82 ByRef)
+ 0222: leave 623
+ 0227: ldarg.0 
+ 0228: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0233: stloc.s 4
+ 0235: ldarg.0 
+ 0236: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0241: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0247: ldarg.0 
+ 0248: ldc.i4.m1 
+ 0249: dup 
+ 0250: stloc.0 
+ 0251: stfld field:Int32 <>1__state
+ 0256: ldloca.s 4
+ 0258: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0263: br.s 359
+ 0265: ldloc.1 
+ 0266: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Threading.Tasks.Task AnimateOut()
+ 0271: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0276: stloc.s 5
+ 0278: ldloca.s 5
+ 0280: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0285: brtrue.s 352
+ 0287: ldarg.0 
+ 0288: ldc.i4.2 
+ 0289: dup 
+ 0290: stloc.0 
+ 0291: stfld field:Int32 <>1__state
+ 0296: ldarg.0 
+ 0297: ldloc.s 5
+ 0299: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0304: ldarg.0 
+ 0305: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0310: ldloca.s 5
+ 0312: ldarg.0 
+ 0313: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<InitGrid>d__82](System.Runtime.CompilerServices.TaskAwaiter ByRef, <InitGrid>d__82 ByRef)
+ 0318: leave 623
+ 0323: ldarg.0 
+ 0324: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0329: stloc.s 5
+ 0331: ldarg.0 
+ 0332: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0337: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0343: ldarg.0 
+ 0344: ldc.i4.m1 
+ 0345: dup 
+ 0346: stloc.0 
+ 0347: stfld field:Int32 <>1__state
+ 0352: ldloca.s 5
+ 0354: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0359: ldarg.0 
+ 0360: ldfld field:System.Threading.Tasks.Task taskToWaitOn
+ 0365: brfalse.s 461
+ 0367: ldarg.0 
+ 0368: ldfld field:System.Threading.Tasks.Task taskToWaitOn
+ 0373: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0378: stloc.s 6
+ 0380: ldloca.s 6
+ 0382: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0387: brtrue.s 454
+ 0389: ldarg.0 
+ 0390: ldc.i4.3 
+ 0391: dup 
+ 0392: stloc.0 
+ 0393: stfld field:Int32 <>1__state
+ 0398: ldarg.0 
+ 0399: ldloc.s 6
+ 0401: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0406: ldarg.0 
+ 0407: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0412: ldloca.s 6
+ 0414: ldarg.0 
+ 0415: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<InitGrid>d__82](System.Runtime.CompilerServices.TaskAwaiter ByRef, <InitGrid>d__82 ByRef)
+ 0420: leave 623
+ 0425: ldarg.0 
+ 0426: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0431: stloc.s 6
+ 0433: ldarg.0 
+ 0434: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0439: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0445: ldarg.0 
+ 0446: ldc.i4.m1 
+ 0447: dup 
+ 0448: stloc.0 
+ 0449: stfld field:Int32 <>1__state
+ 0454: ldloca.s 6
+ 0456: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0461: ldloc.1 
+ 0462: ldc.i4.0 
+ 0463: stfld field:Boolean _cardsAnimatingOutForSetCards
+ 0468: ldloc.1 
+ 0469: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void InitGrid()
+ 0474: ldloc.1 
+ 0475: ldloc.1 
+ 0476: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Single get_ScrollLimitTop()
+ 0481: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Void SetScrollPosition(Single)
+ 0486: ldloc.1 
+ 0487: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Threading.Tasks.Task AnimateIn()
+ 0492: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0497: stloc.s 7
+ 0499: ldloca.s 7
+ 0501: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0506: brtrue.s 570
+ 0508: ldarg.0 
+ 0509: ldc.i4.4 
+ 0510: dup 
+ 0511: stloc.0 
+ 0512: stfld field:Int32 <>1__state
+ 0517: ldarg.0 
+ 0518: ldloc.s 7
+ 0520: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0525: ldarg.0 
+ 0526: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0531: ldloca.s 7
+ 0533: ldarg.0 
+ 0534: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<InitGrid>d__82](System.Runtime.CompilerServices.TaskAwaiter ByRef, <InitGrid>d__82 ByRef)
+ 0539: leave.s 623
+ 0541: ldarg.0 
+ 0542: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0547: stloc.s 7
+ 0549: ldarg.0 
+ 0550: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0555: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0561: ldarg.0 
+ 0562: ldc.i4.m1 
+ 0563: dup 
+ 0564: stloc.0 
+ 0565: stfld field:Int32 <>1__state
+ 0570: ldloca.s 7
+ 0572: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0577: leave.s 604
+ 0579: stloc.s 8
+ 0581: ldarg.0 
+ 0582: ldc.i4.s -2
+ 0584: stfld field:Int32 <>1__state
+ 0589: ldarg.0 
+ 0590: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0595: ldloc.s 8
+ 0597: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0602: leave.s 623
+ 0604: ldarg.0 
+ 0605: ldc.i4.s -2
+ 0607: stfld field:Int32 <>1__state
+ 0612: ldarg.0 
+ 0613: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0618: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0623: ret 

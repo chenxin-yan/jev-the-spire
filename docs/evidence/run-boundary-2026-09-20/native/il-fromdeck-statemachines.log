@@ -1,0 +1,167 @@
+=== <FromDeckForEnchantment>d__23
+ 0011: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0017: ldfld field:MegaCrit.Sts2.Core.Models.EnchantmentModel enchantment
+ 0023: ldfld field:Int32 amount
+ 0030: ldfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs prefs
+ 0035: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForEnchantment(MegaCrit.Sts2.Core.Entities.Players.Player, MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean], MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+=== <FromDeckForEnchantment>d__24
+ 0013: newobj method:MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass24_0.Void .ctor()
+ 0021: ldfld field:MegaCrit.Sts2.Core.Models.EnchantmentModel enchantment
+ 0033: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean] additionalFilter
+ 0045: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0050: call method:MegaCrit.Sts2.Core.Entities.Cards.PileTypeExtensions.MegaCrit.Sts2.Core.Entities.Cards.CardPile GetPile(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0055: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0072: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] Where[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0077: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] ToList[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0085: ldfld field:MegaCrit.Sts2.Core.Models.EnchantmentModel enchantment
+ 0091: ldfld field:Int32 amount
+ 0097: ldfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs prefs
+ 0102: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] FromDeckForEnchantment(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+=== <FromDeckForEnchantment>d__25
+ 0029: newobj method:MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass25_0.Void .ctor()
+ 0037: ldfld field:MegaCrit.Sts2.Core.Models.EnchantmentModel enchantment
+ 0065: call method:System.Linq.Enumerable.Boolean Any[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0072: ldstr str:All cards must be in the player's deck and enchantable.
+ 0077: newobj method:System.ArgumentException.Void .ctor(System.String)
+ 0083: newobj method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void .ctor()
+ 0096: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0107: newobj method:MegaCrit.Sts2.Core.Commands.CardSelectCmd+<>c__DisplayClass25_1.Void .ctor()
+ 0121: callvirt method:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Item(Int32)
+ 0126: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0138: call method:MegaCrit.Sts2.Core.Entities.Cards.PileTypeExtensions.MegaCrit.Sts2.Core.Entities.Cards.CardPile GetPile(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0143: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0179: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[<>f__AnonymousType0`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]] Select[CardModel,<>f__AnonymousType0`2](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`3[MegaCrit.Sts2.Core.Models.CardModel,System.Int32,<>f__AnonymousType0`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]])
+ 0246: call method:System.Linq.Enumerable.System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32] ToDictionary[<>f__AnonymousType0`2,CardModel,Int32](System.Collections.Generic.IEnumerable`1[<>f__AnonymousType0`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]], System.Func`2[<>f__AnonymousType0`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32],MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[<>f__AnonymousType0`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32],System.Int32])
+ 0275: call method:System.Linq.Enumerable.System.Linq.IOrderedEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] OrderBy[CardModel,Int32](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32])
+ 0280: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] ToList[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0293: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0304: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0323: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0333: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0346: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0357: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0362: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0473: callvirt method:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Item(Int32)
+ 0478: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 0489: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player <player>5__2
+ 0494: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Entities.Creatures.Creature get_Creature()
+ 0499: callvirt method:MegaCrit.Sts2.Core.Entities.Creatures.Creature.Boolean get_IsDead()
+ 0506: call method:System.Array.MegaCrit.Sts2.Core.Models.CardModel[] Empty[CardModel]()
+ 0518: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0523: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0529: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player <player>5__2
+ 0534: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.UInt32 ReserveChoiceId(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0545: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player <player>5__2
+ 0550: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Boolean ShouldSelectLocalCard(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0560: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0570: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0583: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0594: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0599: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0705: ldfld field:MegaCrit.Sts2.Core.Models.EnchantmentModel enchantment
+ 0711: ldfld field:Int32 amount
+ 0717: ldfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs prefs
+ 0722: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckEnchantSelectScreen.MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckEnchantSelectScreen ShowScreen(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32, MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+ 0731: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] CardsSelected()
+ 0829: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0834: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0840: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player <player>5__2
+ 0852: call method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult FromMutableDeckCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0857: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void SyncLocalChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32, MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult)
+ 0867: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0872: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0878: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player <player>5__2
+ 0889: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult] WaitForRemoteChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32)
+ 0990: callvirt method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] AsDeckCards()
+ 1009: callvirt method:System.Collections.Generic.IReadOnlyCollection`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 1024: callvirt method:System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel].MegaCrit.Sts2.Core.Models.CardModel get_Item(Int32)
+ 1029: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Players.Player get_Owner()
+ 1035: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Void LogChoice(MegaCrit.Sts2.Core.Entities.Players.Player, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+=== <FromDeckForUpgrade>d__21
+ 0031: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0036: call method:MegaCrit.Sts2.Core.Entities.Cards.PileTypeExtensions.MegaCrit.Sts2.Core.Entities.Cards.CardPile GetPile(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0041: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0077: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] Where[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0082: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] ToList[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0089: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0096: call method:System.Array.MegaCrit.Sts2.Core.Models.CardModel[] Empty[CardModel]()
+ 0108: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0119: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0132: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_RequireManualConfirmation()
+ 0146: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0156: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0168: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0179: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0184: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0288: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0293: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0299: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0304: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.UInt32 ReserveChoiceId(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0315: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0320: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Boolean ShouldSelectLocalCard(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0330: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0340: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0352: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0363: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0368: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0473: ldfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs prefs
+ 0479: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0484: callvirt method:MegaCrit.Sts2.Core.Entities.Players.Player.MegaCrit.Sts2.Core.Runs.IRunState get_RunState()
+ 0489: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckUpgradeSelectScreen.MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckUpgradeSelectScreen ShowScreen(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs, MegaCrit.Sts2.Core.Runs.IRunState)
+ 0498: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] CardsSelected()
+ 0596: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0601: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0607: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0619: call method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult FromMutableDeckCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0624: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void SyncLocalChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32, MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult)
+ 0631: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0636: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0642: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0653: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult] WaitForRemoteChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32)
+ 0751: callvirt method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] AsDeckCards()
+ 0758: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0764: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Void LogChoice(MegaCrit.Sts2.Core.Entities.Players.Player, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+=== <FromDeckForTransformation>d__22
+ 0031: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0036: call method:MegaCrit.Sts2.Core.Entities.Cards.PileTypeExtensions.MegaCrit.Sts2.Core.Entities.Cards.CardPile GetPile(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0041: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel] get_Cards()
+ 0077: call method:System.Linq.Enumerable.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] Where[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean])
+ 0082: call method:System.Linq.Enumerable.System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] ToList[CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0089: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0096: call method:System.Array.MegaCrit.Sts2.Core.Models.CardModel[] Empty[CardModel]()
+ 0108: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Int32 get_Count()
+ 0119: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0132: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Boolean get_RequireManualConfirmation()
+ 0146: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0156: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_Selector()
+ 0168: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0179: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0184: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0288: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0293: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0299: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0304: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.UInt32 ReserveChoiceId(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0315: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0320: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Boolean ShouldSelectLocalCard(MegaCrit.Sts2.Core.Entities.Players.Player)
+ 0330: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0340: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.MegaCrit.Sts2.Core.TestSupport.ICardSelector get_LocalSelector()
+ 0352: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MinSelect()
+ 0363: call method:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs.Int32 get_MaxSelect()
+ 0368: callvirt method:MegaCrit.Sts2.Core.TestSupport.ICardSelector.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] GetSelectedCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], Int32, Int32)
+ 0472: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation] cardToTransformation
+ 0518: ldfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation] cardToTransformation
+ 0524: ldfld field:MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs prefs
+ 0529: call method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen ShowScreen(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardTransformation], MegaCrit.Sts2.Core.CardSelection.CardSelectorPrefs)
+ 0538: callvirt method:MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen.System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel]] CardsSelected()
+ 0636: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0641: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0647: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0659: call method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult FromMutableDeckCards(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0664: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.Void SyncLocalChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32, MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult)
+ 0671: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunManager get_Instance()
+ 0676: callvirt method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer get_PlayerChoiceSynchronizer()
+ 0682: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0693: callvirt method:MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer.System.Threading.Tasks.Task`1[MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult] WaitForRemoteChoice(MegaCrit.Sts2.Core.Entities.Players.Player, UInt32)
+ 0791: callvirt method:MegaCrit.Sts2.Core.GameActions.PlayerChoiceResult.System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] AsDeckCards()
+ 0798: ldfld field:MegaCrit.Sts2.Core.Entities.Players.Player player
+ 0804: call method:MegaCrit.Sts2.Core.Commands.CardSelectCmd.Void LogChoice(MegaCrit.Sts2.Core.Entities.Players.Player, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])

@@ -1,0 +1,4 @@
+Unhandled exception. System.Exception: cleanup failure during successful completion prevents retirement, not only cleanup during Fail
+   at Program.<>c__DisplayClass0_0.<<Main>$>g__Check|0(Boolean passed, String message) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.qV4m7lYIrZ/Program.cs:line 17
+   at Program.<Main>$(String[] args) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.qV4m7lYIrZ/Program.cs:line 636
+   at Program.<Main>(String[] args)

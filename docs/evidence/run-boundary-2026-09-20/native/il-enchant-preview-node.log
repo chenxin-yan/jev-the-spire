@@ -1,0 +1,78 @@
+METHOD Void Init(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.EnchantmentModel, Int32)
+ 0000: ldarg.2 
+ 0001: callvirt method:MegaCrit.Sts2.Core.Models.AbstractModel.Void AssertCanonical()
+ 0006: ldarg.0 
+ 0007: call method:MegaCrit.Sts2.Core.Nodes.Cards.NEnchantPreview.Void RemoveExistingCards()
+ 0012: ldarg.1 
+ 0013: ldc.i4.1 
+ 0014: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCard.MegaCrit.Sts2.Core.Nodes.Cards.NCard Create(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Entities.UI.ModelVisibility)
+ 0019: ldc.i4.1 
+ 0020: ldc.i4.0 
+ 0021: call method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NPreviewCardHolder.MegaCrit.Sts2.Core.Nodes.Cards.Holders.NPreviewCardHolder Create(MegaCrit.Sts2.Core.Nodes.Cards.NCard, Boolean, Boolean)
+ 0026: stloc.0 
+ 0027: ldarg.0 
+ 0028: ldfld field:Godot.Control _before
+ 0033: ldloc.0 
+ 0034: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0039: ldloc.0 
+ 0040: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder.MegaCrit.Sts2.Core.Nodes.Cards.NCard get_CardNode()
+ 0045: ldarg.1 
+ 0046: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Entities.Cards.CardPile get_Pile()
+ 0051: callvirt method:MegaCrit.Sts2.Core.Entities.Cards.CardPile.MegaCrit.Sts2.Core.Entities.Cards.PileType get_Type()
+ 0056: ldc.i4.1 
+ 0057: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCard.Void UpdateVisuals(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Cards.CardPreviewMode)
+ 0062: ldarg.1 
+ 0063: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.MegaCrit.Sts2.Core.Runs.ICardScope get_CardScope()
+ 0068: ldarg.1 
+ 0069: callvirt method:MegaCrit.Sts2.Core.Runs.ICardScope.MegaCrit.Sts2.Core.Models.CardModel CloneCard(MegaCrit.Sts2.Core.Models.CardModel)
+ 0074: stloc.1 
+ 0075: ldarg.2 
+ 0076: callvirt method:MegaCrit.Sts2.Core.Models.EnchantmentModel.MegaCrit.Sts2.Core.Models.EnchantmentModel ToMutable()
+ 0081: stloc.2 
+ 0082: ldloc.1 
+ 0083: ldloc.2 
+ 0084: ldarg.3 
+ 0085: call method:System.Decimal.System.Decimal op_Implicit(Int32)
+ 0090: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.Void EnchantInternal(MegaCrit.Sts2.Core.Models.EnchantmentModel, System.Decimal)
+ 0095: ldloc.1 
+ 0096: ldc.i4.1 
+ 0097: callvirt method:MegaCrit.Sts2.Core.Models.CardModel.Void set_IsEnchantmentPreview(Boolean)
+ 0102: ldloc.2 
+ 0103: callvirt method:MegaCrit.Sts2.Core.Models.EnchantmentModel.Void ModifyCard()
+ 0108: ldloc.1 
+ 0109: ldc.i4.1 
+ 0110: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCard.MegaCrit.Sts2.Core.Nodes.Cards.NCard Create(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Entities.UI.ModelVisibility)
+ 0115: ldc.i4.1 
+ 0116: ldc.i4.0 
+ 0117: call method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NPreviewCardHolder.MegaCrit.Sts2.Core.Nodes.Cards.Holders.NPreviewCardHolder Create(MegaCrit.Sts2.Core.Nodes.Cards.NCard, Boolean, Boolean)
+ 0122: stloc.3 
+ 0123: ldarg.0 
+ 0124: ldfld field:Godot.Control _after
+ 0129: ldloc.3 
+ 0130: call method:MegaCrit.Sts2.Core.Helpers.GodotTreeExtensions.Void AddChildSafely(Godot.Node, Godot.Node)
+ 0135: ldloc.3 
+ 0136: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder.MegaCrit.Sts2.Core.Nodes.Cards.NCard get_CardNode()
+ 0141: ldc.i4.0 
+ 0142: ldc.i4.1 
+ 0143: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCard.Void UpdateVisuals(MegaCrit.Sts2.Core.Entities.Cards.PileType, MegaCrit.Sts2.Core.Entities.Cards.CardPreviewMode)
+ 0148: ret 
+METHOD Void _Ready()
+ 0000: ldarg.0 
+ 0001: ldarg.0 
+ 0002: ldstr str:%Before
+ 0007: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0012: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0017: stfld field:Godot.Control _before
+ 0022: ldarg.0 
+ 0023: ldarg.0 
+ 0024: ldstr str:%After
+ 0029: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0034: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0039: stfld field:Godot.Control _after
+ 0044: ldarg.0 
+ 0045: ldarg.0 
+ 0046: ldstr str:Arrows
+ 0051: call method:Godot.NodePath.Godot.NodePath op_Implicit(System.String)
+ 0056: call method:Godot.Node.Godot.Control GetNode[Control](Godot.NodePath)
+ 0061: stfld field:Godot.Control _arrows
+ 0066: ret 

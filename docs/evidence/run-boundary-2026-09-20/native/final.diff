@@ -1,0 +1,567 @@
+diff --git a/mod/STS2MCP/BridgeProtocol.cs b/mod/STS2MCP/BridgeProtocol.cs
+index e8a359d..a466baf 100644
+--- a/mod/STS2MCP/BridgeProtocol.cs
++++ b/mod/STS2MCP/BridgeProtocol.cs
+@@ -114,6 +114,26 @@ internal static class BridgeProtocol
+         => numReloads == 0 && actIndex == 0 && startedWithNeow && atStartingPoint && ancientPoint && visitedCoords == 1
+             && !preFinished && !finished && !actionRunning;
+ 
++    // Native RunManager.InitializeNewRun is reached only from SetUpNewSingleplayer/SetUpNewMultiplayer/SetUpTest; saved and replay
++    // setups call InitializeSavedRun after IncrementNumReloads. A zero reload count on the live manager with its run present
++    // is therefore a verified NEW game run, never Continue, a CLI reconnect, a room transition or a restored selector.
++    internal static bool FreshRunEpoch(bool currentManager, bool runPresent, int? numReloads)
++        => currentManager && runPresent && numReloads == 0;
++
++    // Exact native candidate list versus the allocated grid holders, by reference and multiplicity. v0.111 NCardGrid allocates
++    // only a sliding window (CalculateRowsNeeded: visible rows + 2), so a mismatch is a virtualized deck the bridge cannot expose.
++    internal static bool SameCards(IEnumerable<object> candidates, IEnumerable<object> shown)
++    {
++        var remaining = new Dictionary<object, int>(ReferenceEqualityComparer.Instance);
++        foreach (var card in candidates) remaining[card] = remaining.GetValueOrDefault(card) + 1;
++        foreach (var card in shown)
++        {
++            if (!remaining.TryGetValue(card, out int count)) return false;
++            if (count == 1) remaining.Remove(card); else remaining[card] = count - 1;
++        }
++        return remaining.Count == 0;
++    }
++
+     internal static bool DialogueAdvanced(int before, int after, bool last, bool visible, bool enabled, bool optionsReady)
+         => after == before + 1 && (last ? !visible && !enabled && optionsReady : visible && enabled);
+ 
+@@ -236,6 +256,9 @@ internal sealed class BridgeSession : IDisposable
+ {
+     private readonly string _epoch = Guid.NewGuid().ToString("N");
+     private long _revision;
++    private bool _cleanupFailed;
++    // The verified new RunState this epoch was opened for; null for the process-start epoch (menus, saved runs).
++    internal object? Run { get; init; }
+     private string? _fingerprint;
+     private bool _pending;
+     private string? _consumedVersion;
+@@ -316,11 +339,19 @@ internal sealed class BridgeSession : IDisposable
+     {
+         Failure = reason;
+         _pending = true;
+-        try { Release(); } catch { Failure = "mutation_cleanup_failed"; }
++        try { Release(); } catch { Failure = "mutation_cleanup_failed"; _cleanupFailed = true; }
+     }
+ 
+     public void Dispose() => Fail("mutation_abandoned");
+ 
++    // Exact-once retirement at a verified fresh-run boundary. False keeps this epoch: a release callback failed now or earlier,
++    // so its retained subscriptions cannot be proven gone and a clean replacement must not hide that.
++    internal bool Retire()
++    {
++        if (!_cleanupFailed) Dispose();
++        return !_cleanupFailed;
++    }
++
+     // Main-thread poll of explicitly retained ownership. Task completion never invokes game APIs off-thread.
+     internal void Refresh()
+     {
+diff --git a/mod/STS2MCP/McpMod.Contract.cs b/mod/STS2MCP/McpMod.Contract.cs
+index e605b6b..76eb3a2 100644
+--- a/mod/STS2MCP/McpMod.Contract.cs
++++ b/mod/STS2MCP/McpMod.Contract.cs
+@@ -31,7 +31,29 @@ namespace STS2_MCP;
+ 
+ public static partial class McpMod
+ {
+-    private static readonly BridgeSession _bridgeSession = new();
++    // Replaced only by BeginRunEpoch; dispatch closures capture the instance they were registered on, never this field.
++    private static BridgeSession _bridgeSession = new();
++
++    // Observation-only postfix on v0.111 RunManager.InitializeNewRun: State is already the new RunState and InitializeShared has
++    // stored the literal zero reload count. Profile/multiplayer gates still apply to every later observation of that run.
++    private static void NewRunPostfix(RunManager __instance)
++    {
++        var run = __instance.DebugOnlyGetState();
++        if (BridgeProtocol.FreshRunEpoch(ReferenceEquals(__instance, RunManager.Instance), run != null,
++                GetInstanceFieldValue(__instance, "_numReloads") as int?))
++            BeginRunEpoch(run!);
++    }
++
++    // Retires the previous epoch's owners and subscriptions exactly once, then every older state_version is rejected.
++    // A repeated boundary for the same run, or a retirement whose cleanup failed, keeps the current (possibly failed) epoch.
++    private static void BeginRunEpoch(object run)
++    {
++        var previous = _bridgeSession;
++        if (ReferenceEquals(previous.Run, run) || !previous.Retire()) return;
++        _eventEntry?.Close(); _eventEntry = null;
++        _restEntry = null;
++        _bridgeSession = new BridgeSession { Run = run };
++    }
+ 
+     private sealed record LegalAction(string Label, string Description,
+         [property: JsonIgnore] Func<bool> Dispatch, [property: JsonIgnore] string Identity);
+diff --git a/mod/STS2MCP/McpMod.EventActions.cs b/mod/STS2MCP/McpMod.EventActions.cs
+index 01c524c..a43234b 100644
+--- a/mod/STS2MCP/McpMod.EventActions.cs
++++ b/mod/STS2MCP/McpMod.EventActions.cs
+@@ -229,16 +229,17 @@ public static partial class McpMod
+     private static bool DispatchEventOption(EventEntry entry, NEventOptionButton button, int generation)
+     {
+         RequireEventOption(entry, button, generation);
++        var session = _bridgeSession;
+         var operation = new EventOperation(new object(), entry, SelectionOwners);
+         _eventOperation = operation; entry.ActiveOwner = operation.Owner;
+         bool proceed = button.Option.IsProceed;
+         var map = NMapScreen.Instance;
+-        _bridgeSession.Track(operation.Owner, Task.CompletedTask, Task.CompletedTask, () => operation.Root, () => false);
+-        _bridgeSession.HoldUntil(() => { RequireEventIdentity(entry); return operation.Poll() && (proceed ? map?.IsOpen == true : EventInputsReady(entry)); });
+-        _bridgeSession.OnRelease(() =>
++        session.Track(operation.Owner, Task.CompletedTask, Task.CompletedTask, () => operation.Root, () => false);
++        session.HoldUntil(() => { RequireEventIdentity(entry); return operation.Poll() && (proceed ? map?.IsOpen == true : EventInputsReady(entry)); });
++        session.OnRelease(() =>
+         {
+             operation.Close(); entry.ActiveOwner = null;
+-            if (_bridgeSession.Failure != null) entry.Fail(_bridgeSession.Failure);
++            if (session.Failure != null) entry.Fail(session.Failure);
+             if (ReferenceEquals(_eventOperation, operation)) _eventOperation = null;
+         });
+         using var selection = SelectionOwners.Enter(operation.Owner);
+diff --git a/mod/STS2MCP/McpMod.LegalActions.cs b/mod/STS2MCP/McpMod.LegalActions.cs
+index 7244b0e..bcaf439 100644
+--- a/mod/STS2MCP/McpMod.LegalActions.cs
++++ b/mod/STS2MCP/McpMod.LegalActions.cs
+@@ -241,15 +241,23 @@ public static partial class McpMod
+ 
+     private static void AddGridActions(Dictionary<string, object?> state, NCardGridSelectionScreen screen, List<LegalAction> actions)
+     {
++        // Exact v0.111 types whose OnCardClicked/Confirm/Cancel/Close handlers and preview containers were inspected; the shared
++        // CardsSelected boundary owns each. Enchant: FromDeckForEnchantment -> ShowScreen(cards, enchantment, amount, prefs) -> CardsSelected.
+         var type = screen.GetType();
+         if (type != typeof(NDeckCardSelectScreen) && type != typeof(NSimpleCardSelectScreen)
+-            && type != typeof(NDeckUpgradeSelectScreen) && type != typeof(NDeckTransformSelectScreen))
++            && type != typeof(NDeckUpgradeSelectScreen) && type != typeof(NDeckTransformSelectScreen) && type != typeof(NDeckEnchantSelectScreen))
+             throw new NotSupportedException($"unverified_grid_subclass:{type.Name}");
+         if (GetInstanceFieldValue(screen, "_selectedCards") is not IEnumerable<CardModel> selection
+-            || GetInstanceFieldValue(screen, "_prefs") is not CardSelectorPrefs prefs)
++            || GetInstanceFieldValue(screen, "_prefs") is not CardSelectorPrefs prefs
++            || GetInstanceFieldValue(screen, "_cards") is not IReadOnlyList<CardModel> candidates)
+             throw new NotSupportedException("grid_selection_predicates_unavailable");
+         var selected = selection.ToHashSet();
+         var holders = FindAllSortedByPosition<NGridCardHolder>(screen);
++        // NCardGrid.InitGrid(Task) awaits cancellation/animate-out before allocating any holder: an empty grid for a non-empty
++        // candidate list is that native window. Any other difference is the sliding-window allocation hiding legal alternatives.
++        var shown = holders.Select(h => h.CardModel).Where(card => card != null).Cast<object>().ToList();
++        if (shown.Count == 0 && candidates.Count > 0) { state["waiting"] = true; return; }
++        if (!BridgeProtocol.SameCards(candidates, shown)) throw new NotSupportedException("grid_candidates_incomplete");
+         var detail = (Dictionary<string, object?>)state["card_select"]!;
+         detail["selected_indices"] = holders.Select((h, i) => (h, i)).Where(x => selected.Contains(x.h.CardModel)).Select(x => x.i).ToList();
+         detail["min_select"] = prefs.MinSelect;
+diff --git a/mod/STS2MCP/McpMod.NativeActions.cs b/mod/STS2MCP/McpMod.NativeActions.cs
+index 328bb0e..1bbbd6b 100644
+--- a/mod/STS2MCP/McpMod.NativeActions.cs
++++ b/mod/STS2MCP/McpMod.NativeActions.cs
+@@ -32,13 +32,14 @@ public static partial class McpMod
+         if (RewardScopes.CurrentOwner is RewardScope child && ReferenceEquals(child.Operation, _combatExit) && child.Screen != null)
+             return DispatchRewardChild(child.Screen, start, false);
+         var owner = new OrdinaryOwner();
++        var session = _bridgeSession;
+         using var scope = SelectionOwners.Enter(owner);
+         try
+         {
+             var task = start() ?? throw new NotSupportedException("native_task_unavailable");
+-            _bridgeSession.Track(owner, task, Task.CompletedTask, () => task, () => false);
+-            _bridgeSession.HoldUntil(() => OrdinaryWorkDone(owner));
+-            _bridgeSession.OnRelease(() => { owner.Closed = true; SelectionOwners.CloseOwner(owner); });
++            session.Track(owner, task, Task.CompletedTask, () => task, () => false);
++            session.HoldUntil(() => OrdinaryWorkDone(owner));
++            session.OnRelease(() => { owner.Closed = true; SelectionOwners.CloseOwner(owner); });
+             return true;
+         }
+         catch { owner.Closed = true; SelectionOwners.CloseOwner(owner); throw; }
+@@ -67,15 +68,16 @@ public static partial class McpMod
+     private static bool DispatchPotion(PotionModel potion, int index, Creature? target)
+     {
+         var queues = RunManager.Instance.ActionQueueSet;
++        var session = _bridgeSession;
+         UsePotionAction? owned = null;
+         void OnEnqueued(GameAction action)
+         {
+             if (action is not UsePotionAction use) return;
+             if (owned != null || !ReferenceEquals(use.Player, potion.Owner) || use.PotionIndex != index
+                 || !ReferenceEquals(potion.Owner.PotionSlots[index], potion))
+-            { _bridgeSession.Fail("unowned_potion_action"); return; }
++            { session.Fail("unowned_potion_action"); return; }
+             owned = use;
+-            TrackGameAction(_bridgeSession, use, Task.CompletedTask);
++            TrackGameAction(session, use, Task.CompletedTask);
+         }
+         queues.ActionEnqueued += OnEnqueued;
+         try { potion.EnqueueManualUse(target); } // Preserve BeforeUse, target normalization and IsQueued.
+@@ -87,6 +89,7 @@ public static partial class McpMod
+     private static bool DispatchMap(NMapScreen screen, NMapPoint point, RunState run, Player player)
+     {
+         var manager = RunManager.Instance;
++        var session = _bridgeSession;
+         _eventEntry?.Close(); _eventEntry = null;
+         EventEntry? eventEntry = null;
+         var destination = point.Point.coord;
+@@ -94,7 +97,7 @@ public static partial class McpMod
+         int generation = manager.MapSelectionSynchronizer.MapGenerationCount;
+         var chain = new QueuedActionChain(destination);
+         var parent = _combatExit;
+-        bool child = parent?.Map != null && ReferenceEquals(parent.Map, screen) && ReferenceEquals(_bridgeSession.OperationOwner, parent.Owner);
++        bool child = parent?.Map != null && ReferenceEquals(parent.Map, screen) && ReferenceEquals(session.OperationOwner, parent.Owner);
+         var owner = child ? parent!.Owner : new object();
+         var actions = new List<GameAction>();
+         bool cancelled = false, dispatching = true;
+@@ -168,7 +171,7 @@ public static partial class McpMod
+                     if (child) parent!.ExpectRoomExit(action, () => ReferenceEquals(manager.DebugOnlyGetState(), run) && run.CurrentMapCoord == destination);
+                     entering = action;
+                     _eventEntry = eventEntry = new EventEntry(action, owner, run, player);
+-                    _bridgeSession.HoldUntil(() =>
++                    session.HoldUntil(() =>
+                     {
+                         eventEntry.Check();
+                         return !eventEntry.Bound || EventInputsReady(eventEntry);
+@@ -177,11 +180,11 @@ public static partial class McpMod
+                     action.AfterFinished += RoomEntered; // Before queue insertion/execution can enter _Ready.
+                 }
+             }
+-            catch { _bridgeSession.Fail("map_action_chain_mismatch"); }
++            catch { session.Fail("map_action_chain_mismatch"); }
+         }
+         void VoteFinished(GameAction vote)
+         {
+-            if (!ReferenceEquals(vote, chain.Root) || !chain.HasChild) _bridgeSession.Fail("map_vote_without_owned_travel");
++            if (!ReferenceEquals(vote, chain.Root) || !chain.HasChild) session.Fail("map_vote_without_owned_travel");
+             manager.ActionQueueSet.ActionEnqueued -= OnEnqueued;
+         }
+         // Existing native RoomExited, scoped to this consumed continuation: after PopCurrentRoom and the old room's Exit,
+@@ -197,13 +200,13 @@ public static partial class McpMod
+             parent.AddMapWork(chain.Poll, () => cancelled);
+             manager.RoomExited += Exited;
+         }
+-        else _bridgeSession.Track(owner, Task.CompletedTask, Task.CompletedTask, chain.Poll, () => cancelled);
+-        _bridgeSession.OnRelease(() =>
++        else session.Track(owner, Task.CompletedTask, Task.CompletedTask, chain.Poll, () => cancelled);
++        session.OnRelease(() =>
+         {
+             manager.ActionQueueSet.ActionEnqueued -= OnEnqueued;
+             if (child) manager.RoomExited -= Exited;
+             if (Godot.GodotObject.IsInstanceValid(tree)) tree.NodeAdded -= NodeAdded;
+-            if (cancelled || _bridgeSession.Failure != null) { entry?.Invalidate(); eventEntry?.Fail("event_movement_failed"); eventEntry?.Close(); }
++            if (cancelled || session.Failure != null) { entry?.Invalidate(); eventEntry?.Fail("event_movement_failed"); eventEntry?.Close(); }
+             if (eventEntry?.Bound == false) eventEntry.Close();
+             foreach (var action in actions) { action.BeforeCancelled -= OnCancelled; action.AfterFinished -= VoteFinished; action.AfterFinished -= RoomEntered; }
+             if (!child) SelectionOwners.CloseOwner(owner);
+@@ -226,6 +229,7 @@ public static partial class McpMod
+     private static bool DispatchEndTurn(NEndTurnButton button, Player player)
+     {
+         var manager = RunManager.Instance;
++        var session = _bridgeSession;
+         var combat = CombatManager.Instance;
+         var playerState = player.PlayerCombatState ?? throw new NotSupportedException("player_combat_state_unavailable");
+         int turn = playerState.TurnNumber;
+@@ -233,7 +237,7 @@ public static partial class McpMod
+         bool nextTurnStarted = false;
+         void OnTurnStarted(CombatState state)
+         {
+-            if (!ReferenceEquals(state, combatState)) { _bridgeSession.Fail("end_turn_combat_changed"); return; }
++            if (!ReferenceEquals(state, combatState)) { session.Fail("end_turn_combat_changed"); return; }
+             if (playerState.TurnNumber > turn && IsPlayPhase(player)) nextTurnStarted = true;
+         }
+         var loop = GetInstanceFieldValue(combat, "_turnLoopTask") as Task ?? throw new NotSupportedException("combat_loop_unavailable");
+@@ -244,12 +248,12 @@ public static partial class McpMod
+             if (action is not EndPlayerTurnAction) return;
+             if (owned != null || !ReferenceEquals(GetInstanceFieldValue(action, "_player"), player)
+                 || GetInstanceFieldValue(action, "_turnNumber") is not int actualTurn || actualTurn != turn)
+-            { _bridgeSession.Fail("unowned_end_turn"); return; }
++            { session.Fail("unowned_end_turn"); return; }
+             owned = (EndPlayerTurnAction)action;
+-            TrackGameAction(_bridgeSession, action, Task.CompletedTask);
++            TrackGameAction(session, action, Task.CompletedTask);
+             combat.TurnStarted += OnTurnStarted;
+-            _bridgeSession.OnRelease(() => combat.TurnStarted -= OnTurnStarted);
+-            _bridgeSession.HoldUntil(() =>
++            session.OnRelease(() => combat.TurnStarted -= OnTurnStarted);
++            session.HoldUntil(() =>
+             {
+                 // The loop spans the entire combat, including future human decision waits: never join it here.
+                 // TurnStarted(player) follows awaited setup, auto-pre-play and CheckWinCondition;
+diff --git a/mod/STS2MCP/McpMod.SelectionHooks.cs b/mod/STS2MCP/McpMod.SelectionHooks.cs
+index 43b25e2..73ff9bc 100644
+--- a/mod/STS2MCP/McpMod.SelectionHooks.cs
++++ b/mod/STS2MCP/McpMod.SelectionHooks.cs
+@@ -88,6 +88,11 @@ public static partial class McpMod
+                 ?? throw new NotSupportedException("rest_post_select_boundary_changed");
+             if (restPostSelect.ReturnType != typeof(Task)) throw new NotSupportedException("rest_post_select_task_api_changed");
+             harmony.Patch(restPostSelect, postfix: Patch(nameof(RestPostSelectPostfix)));
++            // Observation only: the exact fresh-run boundary that opens a new bridge epoch (see NewRunPostfix).
++            var newRun = typeof(RunManager).GetMethod("InitializeNewRun", BindingFlags.Instance | BindingFlags.NonPublic)
++                ?? throw new NotSupportedException("new_run_boundary_changed");
++            if (newRun.ReturnType != typeof(void) || newRun.GetParameters().Length != 0) throw new NotSupportedException("new_run_boundary_api_changed");
++            harmony.Patch(newRun, postfix: Patch(nameof(NewRunPostfix)));
+         }
+         catch { harmony.UnpatchAll("com.sts2mcp.selection-ownership"); throw; }
+     }
+diff --git a/mod/STS2MCP/McpMod.StateBuilder.cs b/mod/STS2MCP/McpMod.StateBuilder.cs
+index 29acc87..f0e2732 100644
+--- a/mod/STS2MCP/McpMod.StateBuilder.cs
++++ b/mod/STS2MCP/McpMod.StateBuilder.cs
+@@ -1831,6 +1831,7 @@ public static partial class McpMod
+         {
+             NDeckTransformSelectScreen => "transform",
+             NDeckUpgradeSelectScreen => "upgrade",
++            NDeckEnchantSelectScreen => "enchant",
+             NDeckCardSelectScreen => "select",
+             NSimpleCardSelectScreen => "simple_select",
+             _ => screen.GetType().Name
+@@ -1862,10 +1863,29 @@ public static partial class McpMod
+         }
+         state["cards"] = cards;
+ 
++        // The decision's rules: v0.111 NDeckEnchantSelectScreen._Ready renders the mutable enchantment at _enchantmentAmount into
++        // these exact labels; the description is required text so a missing/empty rule halts instead of exposing the choice.
++        if (screen is NDeckEnchantSelectScreen)
++        {
++            if (GetInstanceFieldValue(screen, "_enchantmentTitle") is not MegaCrit.Sts2.addons.mega_text.MegaLabel enchantTitle
++                || GetInstanceFieldValue(screen, "_enchantmentDescription") is not MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel enchantDescription
++                || GetInstanceFieldValue(screen, "_enchantmentAmount") is not int enchantAmount)
++                throw new NotSupportedException("enchantment_rules_unavailable");
++            state["enchantment"] = new Dictionary<string, object?>
++            {
++                ["title"] = StripRichTextTags(enchantTitle.Text),
++                ["description"] = StripRichTextTags(enchantDescription.Text),
++                ["amount"] = enchantAmount
++            };
++        }
++
+         // Preview container showing? (selection complete, awaiting confirm)
+-        // Upgrade screens use UpgradeSinglePreviewContainer / UpgradeMultiPreviewContainer
+-        var previewSingle = screen.GetNodeOrNull<Godot.Control>("%UpgradeSinglePreviewContainer");
+-        var previewMulti = screen.GetNodeOrNull<Godot.Control>("%UpgradeMultiPreviewContainer");
++        // Upgrade screens use UpgradeSinglePreviewContainer / UpgradeMultiPreviewContainer;
++        // the enchant screen uses EnchantSinglePreviewContainer / EnchantMultiPreviewContainer (same Cancel/Confirm children).
++        var previewSingle = screen.GetNodeOrNull<Godot.Control>("%UpgradeSinglePreviewContainer")
++                            ?? screen.GetNodeOrNull<Godot.Control>("%EnchantSinglePreviewContainer");
++        var previewMulti = screen.GetNodeOrNull<Godot.Control>("%UpgradeMultiPreviewContainer")
++                           ?? screen.GetNodeOrNull<Godot.Control>("%EnchantMultiPreviewContainer");
+         var previewGeneric = screen.GetNodeOrNull<Godot.Control>("%PreviewContainer");
+         bool previewShowing = (previewSingle?.Visible ?? false)
+                             || (previewMulti?.Visible ?? false)
+diff --git a/mod/STS2MCP/McpMod.TreasureActions.cs b/mod/STS2MCP/McpMod.TreasureActions.cs
+index dbec6c7..7455836 100644
+--- a/mod/STS2MCP/McpMod.TreasureActions.cs
++++ b/mod/STS2MCP/McpMod.TreasureActions.cs
+@@ -211,6 +211,7 @@ public static partial class McpMod
+         if (picking && index.HasValue && !TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(op.Collection, "_openedTicks")!))
+             throw new NotSupportedException("treasure_anti_click_guard");
+         if (picking && !index.HasValue && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_not_ready");
++        var session = _bridgeSession;
+         int receipts = 0;
+         void Enqueued(GameAction action)
+         {
+@@ -224,7 +225,7 @@ public static partial class McpMod
+                 void Canceled(GameAction source) { if (ReferenceEquals(source, pick)) canceled = true; }
+                 void Finished(GameAction source) { if (ReferenceEquals(source, pick)) op.Executing = false; }
+                 pick.BeforeCancelled += Canceled; pick.AfterFinished += Finished;
+-                _bridgeSession.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
++                session.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
+                 Task? joined = null;
+                 op.BindPick(pick, index, () =>
+                 {
+diff --git a/mod/STS2MCP/README.md b/mod/STS2MCP/README.md
+index a393e2b..31a0cf1 100644
+--- a/mod/STS2MCP/README.md
++++ b/mod/STS2MCP/README.md
+@@ -27,7 +27,12 @@ are ignored. Native checks require those assemblies and are separate from the ap
+ 
+ The bridge is pinned to game v0.111.0 (`41cef1ea`), with `sts2.dll` SHA256
+ `9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4`.
+-Unsupported versions or ownership/tutorial states refuse dispatch. Build success is not
++Unsupported versions or ownership/tutorial states refuse dispatch. The bridge session is
++process-scoped and is replaced only at the native new-run boundary (`RunManager.InitializeNewRun`);
++failures within a run, on Continue/saved runs or on CLI reconnect stay latched. Deck grid screens
++(select/upgrade/transform/enchant) expose a decision only when every native candidate has an
++allocated holder: v0.111 `NCardGrid` allocates a sliding window of rows, so a deck larger than that
++window halts as `grid_candidates_incomplete` instead of offering a partial set. Build success is not
+ permission to install: live work remains separately approved and restricted to profile 2.
+ See [current scope](../../docs/minimal-demo.md) and
+ [the offline review](../../docs/evidence/m3/crust-neow-review.md).
+diff --git a/mod/STS2MCP/tests/check-bridge.sh b/mod/STS2MCP/tests/check-bridge.sh
+index af1bc4c..fe4db7a 100644
+--- a/mod/STS2MCP/tests/check-bridge.sh
++++ b/mod/STS2MCP/tests/check-bridge.sh
+@@ -1804,20 +1804,24 @@ if (args.Length > 1)
+     List<MethodBase> CalledInClosures(string name) => bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags))
+         .Where(m => m.Name.StartsWith("<" + name + ">")).SelectMany(CalledBy).ToList();
+     List<MethodBase> CalledBy(MethodBase method) => Operands(method).OfType<MethodBase>().ToList();
+-    // Resolved method, type (typeof/isinst/castclass) and string operands of one compiled method body.
++    // Resolved method, field, type (typeof/isinst/castclass) and string operands of one compiled method body.
+     List<object> Operands(MethodBase method)
+     {
+         var bytes = method.GetMethodBody()!.GetILAsByteArray()!;
+         var operands = new List<object>();
++        var typeArguments = method.DeclaringType?.IsGenericTypeDefinition == true ? method.DeclaringType.GetGenericArguments() : null;
++        var methodArguments = method.IsGenericMethodDefinition ? method.GetGenericArguments() : null;
+         for (int i = 0; i < bytes.Length;)
+         {
+             ushort value = bytes[i++];
+             if (value == 0xfe) value = (ushort)(0xfe00 + bytes[i++]);
+             var op = opcodes[value];
+             if (op.OperandType == OperandType.InlineMethod)
+-                operands.Add(method.Module.ResolveMethod(BitConverter.ToInt32(bytes, i))!);
++                operands.Add(method.Module.ResolveMethod(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments)!);
++            else if (op.OperandType == OperandType.InlineField)
++                operands.Add(method.Module.ResolveField(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments)!);
+             else if (op.OperandType == OperandType.InlineType)
+-                operands.Add(method.Module.ResolveType(BitConverter.ToInt32(bytes, i)));
++                operands.Add(method.Module.ResolveType(BitConverter.ToInt32(bytes, i), typeArguments, methodArguments));
+             else if (op.OperandType == OperandType.InlineTok && method.Module.ResolveMember(BitConverter.ToInt32(bytes, i)) is Type token)
+                 operands.Add(token);
+             else if (op.OperandType == OperandType.InlineString)
+@@ -2060,6 +2064,149 @@ if (args.Length > 1)
+     var savedSetup = GameStateMachineCalls(runManagerType, "SetUpSavedSingleplayer");
+     Check(savedSetup.Any(m => m.Name == "IncrementNumReloads") && savedSetup.Any(m => m.Name == "get_NumReloads") && savedSetup.Any(m => m.Name == "InitializeShared"),
+         "saved singleplayer setup increments and passes the persisted reload count before initializing the run");
++    // Fresh-run epoch: the exact native new-run boundary, its bridge wiring, and the process-scoped session's replacement rules.
++    var initializeNewRun = runManagerType.GetMethod("InitializeNewRun", flags)!;
++    Check(initializeNewRun.IsPrivate && !initializeNewRun.IsStatic && initializeNewRun.ReturnType == typeof(void) && initializeNewRun.GetParameters().Length == 0,
++        "native InitializeNewRun is the parameterless instance boundary the observation-only postfix binds");
++    foreach (string setup in new[] { "SetUpNewSingleplayer", "SetUpNewMultiplayer", "SetUpTest" })
++        Check(CalledBy(runManagerType.GetMethod(setup, flags)!).Any(m => m.Name == "InitializeNewRun"), setup + " reaches the new-run boundary");
++    var newSingleplayer = CalledBy(runManagerType.GetMethod("SetUpNewSingleplayer", flags)!);
++    Check(newSingleplayer.Any(m => m.Name == "InitializeShared") && !newSingleplayer.Any(m => m.Name is "get_NumReloads" or "IncrementNumReloads" or "InitializeSavedRun"),
++        "new singleplayer setup initializes without any persisted reload count");
++    Check(!savedSetup.Any(m => m.Name == "InitializeNewRun") && savedSetup.Any(m => m.Name == "InitializeSavedRun")
++        && !GameStateMachineCalls(runManagerType, "SetUpSavedMultiplayer").Any(m => m.Name == "InitializeNewRun")
++        && !CalledBy(runManagerType.GetMethod("SetUpReplay", flags)!).Any(m => m.Name == "InitializeNewRun"),
++        "Continue/saved/replay setups never reach the new-run boundary: no epoch reset for a restored run");
++    Check(!CalledBy(runManagerType.GetMethod("CleanUp", flags)!).Any(m => m.Name == "InitializeNewRun") && !CalledBy(runManagerType.GetMethod("Launch", flags)!).Any(m => m.Name == "InitializeNewRun"),
++        "main-menu cleanup and Launch (RunStarted for every run kind) are not the boundary");
++    Check(Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("InitializeNewRun")
++        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<string>().Contains("NewRunPostfix")
++        && Operands(bridge.GetMethod("InstallSelectionOwnershipHooks", flags)!).OfType<Type>().Contains(runManagerType),
++        "the pinned hook installer patches RunManager.InitializeNewRun with the observation-only postfix");
++    var newRunCalls = CalledMethods("NewRunPostfix");
++    Check(newRunCalls.Any(m => m.Name == "FreshRunEpoch" && m.DeclaringType == protocol) && newRunCalls.Any(m => m.Name == "BeginRunEpoch" && m.DeclaringType == bridge)
++        && newRunCalls.Any(m => m.Name == "DebugOnlyGetState") && newRunCalls.Any(m => m.Name == "get_Instance" && m.DeclaringType == runManagerType)
++        && Operands(bridge.GetMethod("NewRunPostfix", flags)!).OfType<string>().Contains("_numReloads"),
++        "postfix verifies live manager identity, run presence and the zero reload count before opening an epoch");
++    foreach (bool current in new[] { false, true }) foreach (bool present in new[] { false, true }) foreach (int? reloads in new int?[] { null, 0, 1, 3 })
++        Check((bool)Call(protocol, null, "FreshRunEpoch", current, present, reloads)! == (current && present && reloads == 0),
++            "only the live manager with a present run and zero reloads is a fresh run; saved (>=1) or unreadable counts never reset");
++    foreach (var closure in bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly)).Where(m => m.GetMethodBody() != null))
++        Check(!Operands(closure).OfType<FieldInfo>().Any(f => f.Name == "_bridgeSession"),
++            "late callbacks keep the session they were registered on, never the replaceable static: " + closure.DeclaringType!.Name + "." + closure.Name);
++    var sessionField = bridge.GetField("_bridgeSession", flags)!;
++    var eventEntryField = bridge.GetField("_eventEntry", flags)!;
++    var restEntryField = bridge.GetField("_restEntry", flags)!;
++    var runProperty = sessionType.GetProperty("Run", flags)!;
++    object? Epoch() => sessionField.GetValue(null);
++    void BeginEpoch(object run) => Call(bridge, null, "BeginRunEpoch", run);
++    object PendingSession(object? run, Action? release)
++    {
++        var s = Activator.CreateInstance(sessionType, true)!;
++        if (run != null) runProperty.SetValue(s, run);
++        var version = (string)Call(sessionType, s, "Observe", "combat")!;
++        Check((int)Call(sessionType, s, "Accept", version, "play_card:0:none", new[] { "play_card:0:none" })! == 0, "epoch fixture accepts");
++        Call(sessionType, s, "Track", new object(), new TaskCompletionSource().Task, Task.CompletedTask, (Func<Task?>)(() => null), (Func<bool>)(() => false));
++        if (release != null) Call(sessionType, s, "OnRelease", release);
++        return s;
++    }
++    var originalEpoch = Epoch()!;
++    try
++    {
++        Check(!sessionField.IsInitOnly && runProperty.GetValue(originalEpoch) == null, "process-start epoch has no run and is replaceable only through the boundary");
++        object runA = new(), runB = new(), runC = new();
++        int releases = 0;
++        var poisoned = PendingSession(runA, () => releases++);
++        Call(sessionType, poisoned, "Fail", "combat_loop_cancelled");
++        Check(releases == 1 && Failure(poisoned) == "combat_loop_cancelled", "old failure released its owners once");
++        var laterVersion = (string)Call(sessionType, poisoned, "Observe", "neow with a different offer")!;
++        Check(Failure(poisoned) == "combat_loop_cancelled" && Pending(poisoned) && (int)Call(sessionType, poisoned, "Accept", laterVersion, "a", new[] { "a" })! == 409,
++            "same-run failure stays sticky through later observations, retries and map/room changes");
++        sessionField.SetValue(null, poisoned);
++        BeginEpoch(runA);
++        Check(ReferenceEquals(Epoch(), poisoned) && Failure(poisoned) == "combat_loop_cancelled", "a repeated boundary for the same run keeps its epoch and failure");
++        var staleEvent = Activator.CreateInstance(assembly.GetType("STS2_MCP.EventEntry", true)!, flags, null, new[] { new object(), new object(), runA, new object() }, null)!;
++        var staleRest = Activator.CreateInstance(assembly.GetType("STS2_MCP.OrdinaryRoomEntry", true)!, flags, null, new[] { new object(), new object(), runA, new object() }, null)!;
++        eventEntryField.SetValue(null, staleEvent); restEntryField.SetValue(null, staleRest);
++        BeginEpoch(runB);
++        var fresh = Epoch()!;
++        Check(!ReferenceEquals(fresh, poisoned) && Failure(fresh) == null && !Pending(fresh) && ReferenceEquals(runProperty.GetValue(fresh), runB),
++            "a verified new run opens an independent clean epoch bound to that run");
++        Check(releases == 1 && eventEntryField.GetValue(null) == null && restEntryField.GetValue(null) == null
++            && (bool)staleEvent.GetType().GetField("Closed", flags)!.GetValue(staleEvent)!, "retirement closes stale event/rest entries and runs no cleanup twice");
++        var freshVersion = (string)Call(sessionType, fresh, "Observe", "neow with a different offer")!;
++        Check(freshVersion.Split(':')[0] != laterVersion.Split(':')[0] && (int)Call(sessionType, fresh, "Accept", laterVersion, "a", new[] { "a" })! == 409
++            && (int)Call(sessionType, poisoned, "Accept", freshVersion, "a", new[] { "a" })! == 409, "old-epoch state_versions are rejected by the new epoch and vice versa");
++        Call(sessionType, poisoned, "Fail", "late_stale_callback"); Call(sessionType, poisoned, "Refresh");
++        Check(Failure(fresh) == null && !Pending(fresh) && (int)Call(sessionType, fresh, "Accept", freshVersion, "a", new[] { "a" })! == 0,
++            "stale callbacks into the retired session cannot poison the new epoch");
++        int pendingReleases = 0;
++        var abandoned = PendingSession(runB, () => pendingReleases++);
++        sessionField.SetValue(null, abandoned);
++        BeginEpoch(runC);
++        Check(!ReferenceEquals(Epoch(), abandoned) && pendingReleases == 1 && Failure(abandoned) == "mutation_abandoned" && ReferenceEquals(runProperty.GetValue(Epoch()!), runC),
++            "a still-pending old operation is retired exactly once when a verified new run begins");
++        BeginEpoch(new object()); BeginEpoch(new object());
++        Check(pendingReleases == 1, "later epochs never re-run a retired session's cleanup");
++        var brokenCleanup = PendingSession(runC, () => throw new InvalidOperationException("unsubscribe failed"));
++        sessionField.SetValue(null, brokenCleanup);
++        BeginEpoch(new object());
++        Check(ReferenceEquals(Epoch(), brokenCleanup) && Failure(brokenCleanup) == "mutation_cleanup_failed", "failed retirement keeps the failed epoch instead of a clean replacement");
++        BeginEpoch(new object());
++        Check(ReferenceEquals(Epoch(), brokenCleanup) && Failure(brokenCleanup) == "mutation_cleanup_failed", "a cleanup failure is sticky across further new runs");
++        var idle = Activator.CreateInstance(sessionType, true)!;
++        sessionField.SetValue(null, idle);
++        Check(!(bool)Call(sessionType, PendingSession(null, () => throw new Exception("x")), "Retire")! && (bool)Call(sessionType, PendingSession(null, null), "Retire")!,
++            "Retire reports cleanup outcome");
++    }
++    finally { sessionField.SetValue(null, originalEpoch); eventEntryField.SetValue(null, null); restEntryField.SetValue(null, null); }
++    // Enchant grid: exact native type, shared CardsSelected boundary, preview containers, rules labels and full candidate exposure.
++    var enchantType = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckEnchantSelectScreen", true)!;
++    var gridBaseType = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardGridSelectionScreen", true)!;
++    Check(enchantType.BaseType == gridBaseType && gridBaseType.GetField("_cards", flags)!.FieldType == typeof(IReadOnlyList<>).MakeGenericType(game.GetType("MegaCrit.Sts2.Core.Models.CardModel", true)!),
++        "enchant screen is a direct grid subclass and the base holds the exact candidate list passed to ShowScreen");
++    foreach (string field in new[] { "_selectedCards", "_prefs", "_enchantment", "_enchantmentAmount", "_enchantmentTitle", "_enchantmentDescription", "_enchantSinglePreviewContainer", "_enchantMultiPreviewContainer", "_confirmButton", "_closeButton" })
++        Check(enchantType.GetField(field, flags) != null, "NDeckEnchantSelectScreen." + field);
++    var enchantReady = Operands(enchantType.GetMethod("_Ready", flags)!);
++    Check(enchantReady.OfType<string>().Contains("%EnchantSinglePreviewContainer") && enchantReady.OfType<string>().Contains("%EnchantMultiPreviewContainer")
++        && enchantReady.OfType<string>().Contains("%Close") && enchantReady.OfType<string>().Contains("Confirm") && enchantReady.OfType<string>().Contains("Cancel")
++        && enchantReady.OfType<MethodBase>().Any(m => m.Name is "get_DynamicDescription") && enchantReady.OfType<MethodBase>().Any(m => m.Name == "set_Amount")
++        && enchantReady.OfType<MethodBase>().Count(m => m.Name == "Connect") == 6,
++        "native enchant _Ready wires Close/Confirm/Cancel buttons and renders the amount-adjusted enchantment rules into its labels");
++    var enchantCommand = GameStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Commands.CardSelectCmd", true)!, "FromDeckForEnchantment");
++    Check(enchantCommand.Any(m => m.Name == "ShowScreen" && m.DeclaringType == enchantType) && enchantCommand.Any(m => m.Name == "CardsSelected" && m.DeclaringType == gridBaseType)
++        && enchantCommand.Any(m => m.Name == "SyncLocalChoice") && enchantCommand.Any(m => m.Name == "LogChoice"),
++        "enchant selection awaits the same pinned NCardGridSelectionScreen.CardsSelected boundary as the approved upgrade/transform lanes");
++    foreach (string handler in new[] { "CloseSelection", "CheckIfSelectionComplete" })
++        Check(CalledBy(enchantType.GetMethod(handler, flags)!).Any(m => m.Name == "SetResult") && CalledBy(enchantType.GetMethod(handler, flags)!).Any(m => m.Name == "Remove"),
++            "enchant " + handler + " completes the retained selection task and removes the overlay");
++    Check(CalledBy(enchantType.GetMethod("OnCardClicked", flags)!).Any(m => m.Name == "PreviewSelection") && CalledBy(enchantType.GetMethod("ConfirmSelection", flags)!).Any(m => m.Name == "CheckIfSelectionComplete"),
++        "enchant card click opens the preview and preview Confirm completes");
++    var cardGridType = game.GetType("MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid", true)!;
++    Check(CalledBy(cardGridType.GetMethod("CalculateRowsNeeded", flags)!).Any(m => m.Name == "GetTotalRowCount") && CalledBy(cardGridType.GetMethod("CalculateRowsNeeded", flags)!).Any(m => m.Name == "Min")
++        && cardGridType.GetMethod("ReallocateAbove", flags) != null && cardGridType.GetMethod("ReallocateBelow", flags) != null,
++        "native card grid allocates a sliding window of rows, so allocated holders can be fewer than the candidate list");
++    var gridInit = GameStateMachineCalls(cardGridType, "InitGrid");
++    Check(gridInit.Any(m => m.Name == "CancelAsync") && gridInit.Any(m => m.Name == "InitGrid" && m.GetParameters().Length == 0) && gridInit.Any(m => m.Name == "AnimateIn"),
++        "native InitGrid awaits before allocating holders: an empty grid for a non-empty candidate list is a transient native window");
++    var gridActions = Operands(bridge.GetMethod("AddGridActions", flags)!);
++    Check(gridActions.OfType<Type>().Contains(enchantType) && gridActions.OfType<Type>().Count(t => gridBaseType.IsAssignableFrom(t) && t != gridBaseType) == 5
++        && gridActions.OfType<MethodBase>().Any(m => m.Name == "op_Inequality" && m.DeclaringType == typeof(Type)) && gridActions.OfType<string>().Contains("unverified_grid_subclass:"),
++        "grid actions bind the five inspected exact types (enchant included) and still refuse any other subclass");
++    Check(gridActions.OfType<string>().Contains("_cards") && gridActions.OfType<string>().Contains("grid_candidates_incomplete")
++        && gridActions.OfType<MethodBase>().Any(m => m.Name == "SameCards" && m.DeclaringType == protocol) && gridActions.OfType<string>().Contains("waiting"),
++        "grid actions compare the exact candidate list to allocated holders, wait on the empty native window and halt on a partial window");
++    var cardSelectState = Operands(bridge.GetMethod("BuildCardSelectState", flags)!);
++    Check(cardSelectState.OfType<string>().Contains("%EnchantSinglePreviewContainer") && cardSelectState.OfType<string>().Contains("%EnchantMultiPreviewContainer")
++        && cardSelectState.OfType<string>().Contains("_enchantmentTitle") && cardSelectState.OfType<string>().Contains("_enchantmentDescription") && cardSelectState.OfType<string>().Contains("_enchantmentAmount")
++        && cardSelectState.OfType<string>().Contains("enchantment") && cardSelectState.OfType<string>().Contains("description") && cardSelectState.OfType<Type>().Contains(enchantType),
++        "card_select snapshot detects enchant previews and exposes the required enchantment rules text");
++    object c1 = new(), c2 = new(), c3 = new();
++    Check((bool)Call(protocol, null, "SameCards", new object[] { c1, c2, c3 }, new object[] { c3, c1, c2 })! && (bool)Call(protocol, null, "SameCards", new object[0], new object[0])!
++        && (bool)Call(protocol, null, "SameCards", new object[] { c1, c1, c2 }, new object[] { c2, c1, c1 })!, "identical candidate multiset in grid order is complete");
++    Check(!(bool)Call(protocol, null, "SameCards", new object[] { c1, c2, c3 }, new object[] { c1, c2 })! && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c2 }, new object[] { c1, c2, c3 })!
++        && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c2 }, new object[] { c1, c1 })! && !(bool)Call(protocol, null, "SameCards", new object[] { c1, c1 }, new object[] { c1, c2 })!,
++        "missing, foreign, duplicated or stale holders are not a complete candidate set");
+     Check(GameStateMachineCalls(runManagerType, "SetUpSavedMultiplayer").Any(m => m.Name == "IncrementNumReloads"), "saved multiplayer setup also increments the reload count");
+     var enterAct = GameStateMachineCalls(runManagerType, "EnterAct");
+     Check(enterAct.Any(m => m.Name == "get_StartedWithNeow") && enterAct.Any(m => m.Name == "get_StartingMapPoint") && enterAct.Any(m => m.Name == "EnterMapCoord")

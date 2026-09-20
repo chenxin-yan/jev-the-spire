@@ -1,0 +1,4 @@
+CALLER MegaCrit.Sts2.Core.Models.Relics.PandorasBox+<AfterObtained>d__4.MoveNext IL 245 -> MegaCrit.Sts2.Core.Nodes.Screens.NSimpleCardsViewScreen.ShowScreen
+CALLER MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForEnchantment>d__25.MoveNext IL 722 -> MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckEnchantSelectScreen.ShowScreen
+CALLER MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForTransformation>d__22.MoveNext IL 529 -> MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckTransformSelectScreen.ShowScreen
+CALLER MegaCrit.Sts2.Core.Commands.CardSelectCmd+<FromDeckForUpgrade>d__21.MoveNext IL 489 -> MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NDeckUpgradeSelectScreen.ShowScreen

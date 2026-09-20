@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "combat_loop_cancelled",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "5ee59c8c218547f2a062c56b80b34641:30",
+  "mutation_pending": true
+}

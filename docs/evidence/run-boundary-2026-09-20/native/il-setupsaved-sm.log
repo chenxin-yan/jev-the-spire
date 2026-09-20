@@ -1,0 +1,123 @@
+METHOD Void MoveNext()
+ 0000: ldarg.0 
+ 0001: ldfld field:Int32 <>1__state
+ 0006: stloc.0 
+ 0007: ldarg.0 
+ 0008: ldfld field:MegaCrit.Sts2.Core.Runs.RunManager <>4__this
+ 0013: stloc.1 
+ 0014: ldloc.0 
+ 0015: brfalse.s 118
+ 0017: ldloc.1 
+ 0018: call method:MegaCrit.Sts2.Core.Runs.RunManager.MegaCrit.Sts2.Core.Runs.RunState get_State()
+ 0023: brfalse.s 36
+ 0025: ldstr str:State is already set.
+ 0030: newobj method:System.InvalidOperationException.Void .ctor(System.String)
+ 0035: throw 
+ 0036: ldloc.1 
+ 0037: ldarg.0 
+ 0038: ldfld field:MegaCrit.Sts2.Core.Runs.RunState state
+ 0043: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void set_State(MegaCrit.Sts2.Core.Runs.RunState)
+ 0048: call method:MegaCrit.Sts2.Core.Saves.SaveManager.MegaCrit.Sts2.Core.Saves.SaveManager get_Instance()
+ 0053: ldarg.0 
+ 0054: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0059: ldc.i4.1 
+ 0060: ldc.i4.0 
+ 0061: callvirt method:MegaCrit.Sts2.Core.Saves.SaveManager.System.Threading.Tasks.Task IncrementNumReloads(MegaCrit.Sts2.Core.Saves.SerializableRun, MegaCrit.Sts2.Core.Multiplayer.Game.NetGameType, Boolean)
+ 0066: callvirt method:System.Threading.Tasks.Task.System.Runtime.CompilerServices.TaskAwaiter GetAwaiter()
+ 0071: stloc.s 4
+ 0073: ldloca.s 4
+ 0075: call method:System.Runtime.CompilerServices.TaskAwaiter.Boolean get_IsCompleted()
+ 0080: brtrue.s 147
+ 0082: ldarg.0 
+ 0083: ldc.i4.0 
+ 0084: dup 
+ 0085: stloc.0 
+ 0086: stfld field:Int32 <>1__state
+ 0091: ldarg.0 
+ 0092: ldloc.s 4
+ 0094: stfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0099: ldarg.0 
+ 0100: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0105: ldloca.s 4
+ 0107: ldarg.0 
+ 0108: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void AwaitUnsafeOnCompleted[TaskAwaiter,<SetUpSavedSingleplayer>d__171](System.Runtime.CompilerServices.TaskAwaiter ByRef, <SetUpSavedSingleplayer>d__171 ByRef)
+ 0113: leave 352
+ 0118: ldarg.0 
+ 0119: ldfld field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0124: stloc.s 4
+ 0126: ldarg.0 
+ 0127: ldflda field:System.Runtime.CompilerServices.TaskAwaiter <>u__1
+ 0132: initobj type:System.Runtime.CompilerServices.TaskAwaiter
+ 0138: ldarg.0 
+ 0139: ldc.i4.m1 
+ 0140: dup 
+ 0141: stloc.0 
+ 0142: stfld field:Int32 <>1__state
+ 0147: ldloca.s 4
+ 0149: call method:System.Runtime.CompilerServices.TaskAwaiter.Void GetResult()
+ 0154: newobj method:MegaCrit.Sts2.Core.Multiplayer.NetSingleplayerGameService.Void .ctor()
+ 0159: stloc.2 
+ 0160: ldloc.1 
+ 0161: ldloc.2 
+ 0162: ldloc.2 
+ 0163: newobj method:MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer.Void .ctor(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService)
+ 0168: ldc.i4.1 
+ 0169: ldarg.0 
+ 0170: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0175: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.System.Nullable`1[System.DateTimeOffset] get_DailyTime()
+ 0180: ldarg.0 
+ 0181: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0186: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Int64 get_StartTime()
+ 0191: ldarg.0 
+ 0192: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0197: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Int64 get_RunTime()
+ 0202: ldarg.0 
+ 0203: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0208: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Int64 get_WinTime()
+ 0213: ldarg.0 
+ 0214: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0219: callvirt method:MegaCrit.Sts2.Core.Saves.SerializableRun.Int32 get_NumReloads()
+ 0224: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeShared(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Multiplayer.Game.PeerInput.PeerInputSynchronizer, Boolean, System.Nullable`1[System.DateTimeOffset], Int64, Int64, Int64, Int32)
+ 0229: ldloca.s 5
+ 0231: initobj type:MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer
+ 0237: ldloca.s 5
+ 0239: ldloc.2 
+ 0240: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.UInt64 get_NetId()
+ 0245: stfld field:UInt64 id
+ 0250: ldloca.s 5
+ 0252: ldloc.2 
+ 0253: callvirt method:MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService.MegaCrit.Sts2.Core.Multiplayer.PeerVersionInfo get_LocalVersion()
+ 0258: stloc.s 6
+ 0260: ldloca.s 6
+ 0262: call method:MegaCrit.Sts2.Core.Multiplayer.PeerVersionInfo.Boolean IsModded()
+ 0267: stfld field:Boolean isModded
+ 0272: ldloc.s 5
+ 0274: newobj method:<>z__ReadOnlySingleElementList`1[MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer].Void .ctor(MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer)
+ 0279: stloc.3 
+ 0280: ldloc.1 
+ 0281: ldloc.2 
+ 0282: ldarg.0 
+ 0283: ldfld field:MegaCrit.Sts2.Core.Runs.RunState state
+ 0288: ldloc.3 
+ 0289: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeRunLobby(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Runs.RunState, System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Multiplayer.RunLobbyPlayer])
+ 0294: ldloc.1 
+ 0295: ldarg.0 
+ 0296: ldfld field:MegaCrit.Sts2.Core.Saves.SerializableRun save
+ 0301: call method:MegaCrit.Sts2.Core.Runs.RunManager.Void InitializeSavedRun(MegaCrit.Sts2.Core.Saves.SerializableRun)
+ 0306: leave.s 333
+ 0308: stloc.s 7
+ 0310: ldarg.0 
+ 0311: ldc.i4.s -2
+ 0313: stfld field:Int32 <>1__state
+ 0318: ldarg.0 
+ 0319: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0324: ldloc.s 7
+ 0326: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetException(System.Exception)
+ 0331: leave.s 352
+ 0333: ldarg.0 
+ 0334: ldc.i4.s -2
+ 0336: stfld field:Int32 <>1__state
+ 0341: ldarg.0 
+ 0342: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0347: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void SetResult()
+ 0352: ret 

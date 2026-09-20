@@ -1,0 +1,115 @@
+METHOD Void SetCards(System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel], MegaCrit.Sts2.Core.Entities.Cards.PileType, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders], System.Threading.Tasks.Task)
+ 0000: newobj method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid+<>c__DisplayClass78_0.Void .ctor()
+ 0005: stloc.0 
+ 0006: ldloc.0 
+ 0007: ldarg.3 
+ 0008: stfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] sortingPriority
+ 0013: ldloc.0 
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid <>4__this
+ 0020: ldarg.0 
+ 0021: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0026: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0031: ldarg.0 
+ 0032: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0037: ldarg.1 
+ 0038: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void AddRange(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0043: ldloc.0 
+ 0044: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] sortingPriority
+ 0049: ldc.i4.0 
+ 0050: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders get_Item(Int32)
+ 0055: ldc.i4.s 9
+ 0057: bne.un.s 72
+ 0059: ldarg.0 
+ 0060: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0065: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Reverse()
+ 0070: br.s 110
+ 0072: ldloc.0 
+ 0073: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders] sortingPriority
+ 0078: ldc.i4.0 
+ 0079: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders].MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.SortingOrders get_Item(Int32)
+ 0084: ldc.i4.8 
+ 0085: beq.s 110
+ 0087: ldarg.0 
+ 0088: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0093: ldloc.0 
+ 0094: ldftn method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid+<>c__DisplayClass78_0.Int32 <SetCards>b__0(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+ 0100: newobj method:System.Comparison`1[MegaCrit.Sts2.Core.Models.CardModel].Void .ctor(System.Object, IntPtr)
+ 0105: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Sort(System.Comparison`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0110: ldarg.0 
+ 0111: callvirt method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Boolean get_IsCardLibrary()
+ 0116: brfalse.s 227
+ 0118: ldarg.0 
+ 0119: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _sortedCardsCache
+ 0124: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0129: ldarg.0 
+ 0130: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _sortedCardsCache
+ 0135: ldarg.0 
+ 0136: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0141: ldsfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel] <>9__78_1
+ 0146: dup 
+ 0147: brtrue.s 172
+ 0149: pop 
+ 0150: ldsfld field:<>c <>9
+ 0155: ldftn method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid+<>c.MegaCrit.Sts2.Core.Models.CardModel <SetCards>b__78_1(MegaCrit.Sts2.Core.Models.CardModel)
+ 0161: newobj method:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel].Void .ctor(System.Object, IntPtr)
+ 0166: dup 
+ 0167: stsfld field:System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel] <>9__78_1
+ 0172: ldarg.0 
+ 0173: ldftn method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.Int32 CompareCardVisibility(MegaCrit.Sts2.Core.Models.CardModel, MegaCrit.Sts2.Core.Models.CardModel)
+ 0179: newobj method:System.Comparison`1[MegaCrit.Sts2.Core.Models.CardModel].Void .ctor(System.Object, IntPtr)
+ 0184: call method:System.Collections.Generic.Comparer`1[MegaCrit.Sts2.Core.Models.CardModel].System.Collections.Generic.Comparer`1[MegaCrit.Sts2.Core.Models.CardModel] Create(System.Comparison`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0189: call method:System.Linq.Enumerable.System.Linq.IOrderedEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel] OrderBy[CardModel,CardModel](System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel], System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Models.CardModel], System.Collections.Generic.IComparer`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0194: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void AddRange(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0199: ldarg.0 
+ 0200: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0205: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0210: ldarg.0 
+ 0211: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0216: ldarg.0 
+ 0217: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _sortedCardsCache
+ 0222: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void AddRange(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0227: ldarg.0 
+ 0228: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+ 0233: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void Clear()
+ 0238: ldarg.0 
+ 0239: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cards
+ 0244: ldarg.0 
+ 0245: ldfld field:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel] _cardsCache
+ 0250: callvirt method:System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.CardModel].Void AddRange(System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Models.CardModel])
+ 0255: ldarg.0 
+ 0256: ldarg.2 
+ 0257: stfld field:MegaCrit.Sts2.Core.Entities.Cards.PileType _pileType
+ 0262: ldarg.0 
+ 0263: ldfld field:Boolean _cardsAnimatingOutForSetCards
+ 0268: brfalse.s 271
+ 0270: ret 
+ 0271: ldarg.0 
+ 0272: ldarg.s 4
+ 0274: call method:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid.System.Threading.Tasks.Task InitGrid(System.Threading.Tasks.Task)
+ 0279: call method:MegaCrit.Sts2.Core.Helpers.TaskHelper.System.Threading.Tasks.Task RunSafely(System.Threading.Tasks.Task)
+ 0284: pop 
+ 0285: ret 
+METHOD System.Threading.Tasks.Task InitGrid(System.Threading.Tasks.Task)
+ 0000: ldloca.s 0
+ 0002: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Runtime.CompilerServices.AsyncTaskMethodBuilder Create()
+ 0007: stfld field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0012: ldloca.s 0
+ 0014: ldarg.0 
+ 0015: stfld field:MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid <>4__this
+ 0020: ldloca.s 0
+ 0022: ldarg.1 
+ 0023: stfld field:System.Threading.Tasks.Task taskToWaitOn
+ 0028: ldloca.s 0
+ 0030: ldc.i4.m1 
+ 0031: stfld field:Int32 <>1__state
+ 0036: ldloca.s 0
+ 0038: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0043: ldloca.s 0
+ 0045: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Void Start[<InitGrid>d__82](<InitGrid>d__82 ByRef)
+ 0050: ldloca.s 0
+ 0052: ldflda field:System.Runtime.CompilerServices.AsyncTaskMethodBuilder <>t__builder
+ 0057: call method:System.Runtime.CompilerServices.AsyncTaskMethodBuilder.System.Threading.Tasks.Task get_Task()
+ 0062: ret 
+Unhandled exception. System.Exception: not found <InitGrid>d__75
+   at IlProbe.Main(String[] args)

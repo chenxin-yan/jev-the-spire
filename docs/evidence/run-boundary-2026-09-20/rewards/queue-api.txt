@@ -1,0 +1,47 @@
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionQueue
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionWaitingForResumption
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+<>c
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+<>c__DisplayClass40_0
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet
+PROP Boolean IsEmpty get=Boolean get_IsEmpty()
+PROP UInt32 NextActionId get=UInt32 get_NextActionId()
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionQueue] _actionQueues
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionWaitingForResumption] _actionsWaitingForResumption
+FIELD System.Threading.Tasks.TaskCompletionSource _queuesEmptyCompletionSource
+FIELD UInt32 _nextId
+FIELD Boolean _isInCombat
+FIELD Boolean _wasReset
+FIELD System.Action ActionQueueChanged
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] ActionEnqueued
+FIELD System.Action`1[System.UInt32] ActionResumed
+METHOD Boolean get_IsEmpty()
+METHOD UInt32 get_NextActionId()
+METHOD Void add_ActionQueueChanged(System.Action)
+METHOD Void remove_ActionQueueChanged(System.Action)
+METHOD Void add_ActionEnqueued(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_ActionEnqueued(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_ActionResumed(System.Action`1[System.UInt32])
+METHOD Void remove_ActionResumed(System.Action`1[System.UInt32])
+METHOD Void EnqueueWithoutSynchronizing(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Boolean IsGameActionPlayerDriven(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD MegaCrit.Sts2.Core.GameActions.GameAction GetReadyAction()
+METHOD Void PauseActionForPlayerChoice(MegaCrit.Sts2.Core.GameActions.GameAction, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task BecameEmpty()
+METHOD Void PauseAllPlayerQueues()
+METHOD Void StartCancellingAllPlayerDrivenCombatActions()
+METHOD Boolean ActionQueueIsPaused(UInt64)
+METHOD Void UnpauseAllPlayerQueues()
+METHOD Void CombatEnded()
+METHOD Void SetUpForCombat()
+METHOD Void CombatStarted()
+METHOD Void Reset()
+METHOD Void CancelNonExecutingActionsForPlayer(UInt64)
+METHOD Void CancelNonExecutingActionsOfType[T](UInt64, System.Nullable`1[System.UInt32])
+METHOD Void ResumeActionWithoutSynchronizing(UInt32)
+METHOD Boolean TryGetAction(UInt32, MegaCrit.Sts2.Core.GameActions.GameAction ByRef, ActionQueue ByRef)
+METHOD ActionQueue GetQueue(UInt64)
+METHOD Void PopAction(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Void FastForwardNextActionId(UInt32)
+METHOD Void CheckIfQueuesEmpty()
+METHOD UInt32 GetAndIncrementActionId()

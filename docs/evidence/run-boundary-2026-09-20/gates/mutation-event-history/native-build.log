@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/mod/STS2MCP/EventOperation.cs(18,34): warning CS0649: Field 'EventEntry.CleanupFailed' is never assigned to, and will always have its default value false [/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/mod/STS2MCP/STS2_MCP.csproj]
+  STS2_MCP -> /Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/mod/STS2MCP/bin/Release/net9.0/STS2_MCP.dll
+
+Build succeeded.
+
+/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/mod/STS2MCP/EventOperation.cs(18,34): warning CS0649: Field 'EventEntry.CleanupFailed' is never assigned to, and will always have its default value false [/Users/yanchenxin/dev/github.com/chenxin-yan/jev-slay-the-spire-2/mod/STS2MCP/STS2_MCP.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.93
