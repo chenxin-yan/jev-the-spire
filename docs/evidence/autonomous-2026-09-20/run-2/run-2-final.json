@@ -1,0 +1,10 @@
+{
+  "state_type": "game_over",
+  "terminal": true,
+  "visible_text": "Defeat\nContinue\nView Run\nA familiar feeling.",
+  "seed": "U1R2DVVR8386",
+  "legal_actions_complete": true,
+  "legal_actions": [],
+  "state_version": "a8304fdf49b743f49eb94c3aab9785cb:277",
+  "mutation_pending": false
+}

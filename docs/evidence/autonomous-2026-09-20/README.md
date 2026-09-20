@@ -4,7 +4,7 @@
 
 The user authorized full takeover, installation, testing and iteration after quitting the game. Scope remains modded **Profile 2, Standard Ironclad A0**, Jev-owned strategy and complete legal choices. No forced reward claims, model-policy changes, hidden information, credential inspection or uncertain mutation retries.
 
-This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate is installed and run 2 is underway at this checkpoint. Later recorded outcomes supersede only status, not earlier failure evidence.
+This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 is underway for additional coverage. Later recorded outcomes supersede only status, not earlier failure evidence.
 
 ## Installations and setup
 
@@ -50,6 +50,18 @@ Exact parent commands/exits: `headbutt/parent/initial/commands.jsonl`. Worker st
 
 **Report correction:** the worker inferred non-reproducible builds from differing baseline hashes. That conclusion is unsupported: the earlier installed DLL was built at `58b053a`, whereas the current build embeds `AssemblyInformationalVersion("1.0.0+3e06aab7e3dd42d9924036d8127010f6327f93f9")`. Revision metadata is a known differing input. Parent rebuilt the frozen candidate and obtained the worker's exact final hash.
 
+## Run 2: uninterrupted run to defeat
+
+Seed **`U1R2DVVR8386`**, epoch `a8304fdf49b743f49eb94c3aab9785cb`. The unchanged unlimited CLI exited **0** after **93 dispatches, 69 inference attempts (68 successful model choices plus one invalid distribution), 25 forced singletons; 228,026 input / 5,646 output tokens; 242,359 ms**. The one invalid distribution succeeded on the existing single re-ask; no mutation retry occurred. Every choice matched exactly one accepted 202 dispatch.
+
+Jev died to the floor-7 elite encounter (Phrog Parasite/Wrigglers). The terminal readback at `:277` says **Defeat**, complete legal set, no actions, no pending mutation. Screenshot: 0/80 HP, 130 gold, 16 cards. This is a genuine gameplay loss, not a bridge stop.
+
+Live coverage included combat, map, battle rewards (five total reward-claim dispatches), card rewards, a two-card ordinary-event grid (Gorge), and Brain Leech's nested Colorless reward. The log does not record complete historical snapshots, so inventory deltas are not reconstructed beyond visible evidence. Headbutt, shared events and rest were not reached.
+
+After terminal accounting, the parent used native Continue/Unlock/Confirm/Back to finish the earned Chapter 1 – Preon timeline unlock, then started another Standard Ironclad A0 run. These post-run/menu actions are outside Jev's 93 gameplay actions; no save edit or tutorial bypass occurred. Run 3 seed **`FFJPM9TD41CV`**, fresh epoch `5d5fb3ecc3024cc8b97f36e52a0f2424`, is in progress at this checkpoint.
+
+Recheck accounting offline: `python3 docs/evidence/autonomous-2026-09-20/audit-run.py 2` (exit 0). It verifies one-to-one decision/accepted-dispatch matching, unique consumed versions and exact model/forced counts.
+
 ## Remaining live checks
 
-The repair's managed fixtures and metadata do not certify Godot/Harmony, full holder allocation, auto-confirmation or continued original-task ownership in a running Headbutt encounter. Run 2 starts fresh with seed `U1R2DVVR8386`, epoch `a8304fdf49b743f49eb94c3aab9785cb`; no outcome is claimed here. Shared events and several rest/selector paths still need live coverage. Large/incomplete grids and nested wrappers deliberately remain fail-closed. Ordinary death is a valid terminal outcome; a bridge halt is not.
+The repair's managed fixtures and metadata do not certify full holder allocation, auto-confirmation or continued original-task ownership in a running Headbutt encounter. Shared events and several rest/selector paths still need live coverage. Large/incomplete grids and nested wrappers deliberately remain fail-closed. Ordinary death is a valid terminal outcome; a bridge halt is not.
