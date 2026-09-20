@@ -1,4 +1,4 @@
-# Jev plays Slay the Spire 2 — minimal demo CLI
+# Jev the Spire
 
 One bounded Bun process: observe the STS2MCP bridge → one joint Jev choice over the legal actions → validate freshness → one POST → re-observe. See `docs/minimal-demo.md` for scope.
 
