@@ -1,7 +1,6 @@
-// Jev decider: Effect v4 Decision/DecisionModel over the AI SDK `experimental_evaluate`
-// Gateway evaluation model for `typesafe-ai/jev`. One joint classify decision per call.
+// Jev decider: one joint Gateway choice evaluation, executed with Effect.
 import { Effect, Schema } from "effect";
-import { AiError, Decision, DecisionModel } from "effect/unstable/ai";
+import { AiError } from "effect/unstable/ai";
 import {
   experimental_evaluate,
   InvalidResponseDataError,
@@ -64,17 +63,6 @@ const invalidOutput = (description: string) =>
     reason: new AiError.InvalidOutputError({ description }),
   });
 
-const toQuestion = (decision: Decision.Any): Experimental_EvaluationQuestion => {
-  switch (decision._tag) {
-    case "Classify":
-      return { type: "choice", instructions: decision.instructions, criteria: decision.criteria };
-    case "Rate":
-      return { type: "score", instructions: decision.instructions, criteria: decision.criteria };
-    case "Probability":
-      return { type: "boolean", instructions: decision.instructions, criteria: decision.criteria };
-  }
-};
-
 const checkRequestSize = (
   state: Schema.Json,
   questions: Record<string, Experimental_EvaluationQuestion>,
@@ -96,98 +84,63 @@ export const makeJevDecider =
     const criteria = Object.fromEntries(
       actions.map((action) => [action.label, action.description]),
     );
-    const definition = Decision.make({
-      input: Schema.Json,
-      decisions: { action: Decision.classify({ instructions: INSTRUCTIONS, criteria }) },
-    });
-    let meta: Pick<Decided, "modelId" | "responseId" | "warnings"> | undefined;
-
-    const program = Effect.gen(function* () {
-      const decisionModel = yield* DecisionModel.make({
-        decide: (options) =>
-          Effect.tryPromise({
-            try: async (fiberSignal) => {
-              const questions = Object.fromEntries(
-                Object.entries(options.decisions).map(([key, decision]) => [
-                  key,
-                  toQuestion(decision),
-                ]),
-              );
-              const state = options.state;
-              if (typeof state !== "object" || state === null)
-                throw invalidInput("snapshot context must be a JSON object");
-              checkRequestSize(state, questions);
-              const deadline = new AbortController();
-              const timer = setTimeout(
-                () => deadline.abort(new Error(`inference deadline of ${deadlineMs}ms exceeded`)),
-                deadlineMs,
-              );
-              let result: Awaited<ReturnType<typeof experimental_evaluate<typeof questions>>>;
-              try {
-                result = await experimental_evaluate({
-                  model,
-                  state,
-                  questions,
-                  abortSignal: AbortSignal.any([signal, fiberSignal, deadline.signal]),
-                });
-              } catch (error) {
-                // The SDK's retry backoff reports a generic abort; surface the deadline as the cause.
-                throw deadline.signal.aborted ? deadline.signal.reason : error;
-              } finally {
-                clearTimeout(timer);
-              }
-              // Requested SDK identity (Gateway echoes the configured model id); guards adapter/config mismatch, not server attestation.
-              meta = {
-                modelId: result.response.modelId,
-                responseId: result.response.id,
-                warnings: result.warnings,
-              };
-              if (result.response.modelId !== JEV_MODEL_ID) {
-                throw invalidOutput(`unexpected model id ${result.response.modelId}`);
-              }
-              const answers: Record<string, DecisionModel.ProviderAnswer> = {};
-              for (const [key, answer] of Object.entries(result.answers)) {
-                if (answer.type !== "choice") throw invalidOutput(`answer ${key} is not a choice`);
-                // Gateway may omit probabilities; DecisionModel then rejects the answer (no invented distribution).
-                answers[key] = {
-                  _tag: "Classify",
-                  label: answer.choice,
-                  probabilities: answer.probabilities ?? {},
-                };
-              }
-              return {
-                answers,
-                usage: {
-                  inputTokens: result.usage.inputTokens,
-                  outputTokens: result.usage.outputTokens,
-                },
-              };
-            },
-            catch: (error) => {
-              if (AiError.isAiError(error)) return error;
-              if (InvalidResponseDataError.isInstance(error)) return invalidOutput(error.message);
-              return AiError.make({
-                module: "JevGateway",
-                method: "evaluate",
-                reason: new AiError.UnknownError({
-                  description: error instanceof Error ? error.message : String(error),
-                }),
-              });
-            },
+    const questions = {
+      action: { type: "choice", instructions: INSTRUCTIONS, criteria },
+    } as const;
+    const program = Effect.tryPromise({
+      try: async (fiberSignal) => {
+        if (typeof state !== "object" || state === null)
+          throw invalidInput("snapshot context must be a JSON object");
+        checkRequestSize(state, questions);
+        const deadline = new AbortController();
+        const timer = setTimeout(
+          () => deadline.abort(new Error(`inference deadline of ${deadlineMs}ms exceeded`)),
+          deadlineMs,
+        );
+        let result: Awaited<ReturnType<typeof experimental_evaluate<typeof questions>>>;
+        try {
+          // Effect rc.116 DecisionModel cannot express declared rounding. Use the SDK's validation without
+          // renormalizing; the duplicate validator can return only when upstream supports that metadata.
+          result = await experimental_evaluate({
+            model,
+            state,
+            questions,
+            abortSignal: AbortSignal.any([signal, fiberSignal, deadline.signal]),
+          });
+        } catch (error) {
+          // The SDK's retry backoff reports a generic abort; surface the deadline as the cause.
+          throw deadline.signal.aborted ? deadline.signal.reason : error;
+        } finally {
+          clearTimeout(timer);
+        }
+        // Requested SDK identity (Gateway echoes the configured model id); guards adapter/config mismatch, not server attestation.
+        if (result.response.modelId !== JEV_MODEL_ID)
+          throw invalidOutput(`unexpected model id ${result.response.modelId}`);
+        const answer = result.answers.action;
+        // The SDK allows omitted probabilities; this adapter requires the provider's full distribution.
+        if (answer.probabilities === undefined)
+          throw invalidOutput("answer action has no probability distribution");
+        return {
+          label: answer.choice,
+          probabilities: answer.probabilities,
+          confidence: undefined,
+          modelId: result.response.modelId,
+          responseId: result.response.id,
+          usage: { inputTokens: result.usage.inputTokens, outputTokens: result.usage.outputTokens },
+          warnings: result.warnings,
+        };
+      },
+      catch: (error) => {
+        if (AiError.isAiError(error)) return error;
+        if (InvalidResponseDataError.isInstance(error)) return invalidOutput(error.message);
+        return AiError.make({
+          module: "JevGateway",
+          method: "evaluate",
+          reason: new AiError.UnknownError({
+            description: error instanceof Error ? error.message : String(error),
           }),
-      });
-      return yield* decisionModel.decide(definition, { input: state });
+        });
+      },
     });
-
-    const response = await Effect.runPromise(program, { signal });
-    const answer = response.answers.action;
-    return {
-      label: answer.label,
-      probabilities: answer.probabilities,
-      confidence: answer.confidence,
-      modelId: meta!.modelId,
-      responseId: meta!.responseId,
-      usage: { inputTokens: response.usage.inputTokens, outputTokens: response.usage.outputTokens },
-      warnings: meta!.warnings,
-    };
+    return Effect.runPromise(program, { signal });
   };

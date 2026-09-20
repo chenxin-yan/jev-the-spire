@@ -29,7 +29,7 @@ Exit status (Crust's native contract): 0 on `terminal` or `max_actions`; 130 on 
 ## Behavior
 
 - Ready = `legal_actions_complete && !waiting && legal_actions.length > 0`. Otherwise poll every 500 ms for up to 30 s, then halt `wait_timeout`. `mutation_pending` alone never blocks (owned child decisions are actionable); a version change alone is not completion.
-- ≥2 legal actions: one Effect `Decision.classify` over label→description, answered by `typesafe-ai/jev` through `ai.experimental_evaluate` on the Vercel AI Gateway. The top label is dispatched. Context is the current snapshot minus bridge bookkeeping (`legal_actions`, `legal_actions_complete`, `state_version`, `mutation_pending`); no history, no host scoring/pruning.
+- ≥2 legal actions: one joint choice question over label→description, answered by `typesafe-ai/jev` through `ai.experimental_evaluate` on the Vercel AI Gateway, executed with Effect. The SDK validates the answer, including declared probability rounding; the provider's chosen label and probabilities are preserved without normalization. The adapter still requires a full distribution. Context is the current snapshot minus bridge bookkeeping (`legal_actions`, `legal_actions_complete`, `state_version`, `mutation_pending`); no history, no host scoring/pruning.
 - 1 legal action: dispatched directly without a model call, logged `source: "singleton_only"` (owner decision, see `docs/minimal-demo.md`). No model id/distribution/tokens are invented.
 - Before every POST the state is re-observed; a changed `state_version` discards the choice and goes back through observation. Unknown label, missing/invalid distribution or unexpected model id → one re-ask, then halt. Snapshot + questions over 64k / 32k JSON chars → halt, never truncate.
 - One model call must finish within 60 s or the loop halts (`inference deadline`). GET retries ≤3 on network/429/5xx; `Retry-After` (delta-seconds or HTTP-date) is honored up to 10 s, beyond that the loop halts instead of waiting. POST is sent once; a timeout/network error/abort mid-flight halts as `dispatch_uncertain`. Non-202 halts. `halt_reason`, `terminal` and unsupported states halt/stop cleanly with a summary; no auto-resume.
@@ -41,7 +41,7 @@ Record types: `wait`, `inference` (application attempt, latency, model id, respo
 
 ## Dependencies (pinned)
 
-`effect@4.0.0-rc.116` (`effect/unstable/ai` Decision/DecisionModel), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. The Bun runtime version is pinned only in `package.json`'s `packageManager` field. `mise.toml` enables Bun's idiomatic version-file discovery so local development and CI read that same pin.
+`effect@4.0.0-rc.116` (Effect execution and `effect/unstable/ai` error types; its `DecisionModel` cannot represent the SDK's declared rounding), `ai@7.0.107` (`experimental_evaluate`), `@ai-sdk/gateway@4.0.87` (`gateway.evaluation("typesafe-ai/jev")`), `@crustjs/core@0.3.3` + `@crustjs/effect@0.1.0` (CLI boundary; peer `effect ^4.0.0-rc.115`). Dev: `typescript@7.0.2` (Crust's optional peer `^7`), `@types/bun@1.4.2`. The Bun runtime version is pinned only in `package.json`'s `packageManager` field. `mise.toml` enables Bun's idiomatic version-file discovery so local development and CI read that same pin.
 
 ## Checks
 

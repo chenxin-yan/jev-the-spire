@@ -90,6 +90,51 @@ describe("makeJevDecider", () => {
     expect(decided.usage).toEqual({ inputTokens: 1234, outputTokens: 7 });
   });
 
+  test("preserves SDK-valid rounded probabilities and the provider's chosen tied label", async () => {
+    const probabilities = Object.fromEntries(
+      actions.map((action, i) => [action.label, [0.34, 0.34, 0.08, 0.08, 0.08, 0.07][i]!]),
+    );
+    const { decide, calls } = decider(() =>
+      json({
+        answers: { action: { type: "choice", choice: actions[1]!.label, probabilities } },
+        rounding: { probabilityDecimals: 2 },
+      }),
+    );
+    const decided = await decide(state, actions, new AbortController().signal);
+    expect(calls).toHaveLength(1);
+    expect(decided.label).toBe(actions[1]!.label);
+    expect(decided.probabilities).toEqual(probabilities);
+    expect(Object.values(decided.probabilities).reduce((sum, p) => sum + p, 0)).toBeCloseTo(0.99);
+  });
+
+  for (const kind of [
+    "undeclared",
+    "invalid_precision",
+    "excess_error",
+    "missing_label",
+    "extra_label",
+  ] as const) {
+    test(`rejects invalid distributions: ${kind}`, async () => {
+      const probabilities = Object.fromEntries(
+        actions.map((action, i) => [action.label, [0.34, 0.34, 0.08, 0.08, 0.08, 0.07][i]!]),
+      );
+      if (kind === "excess_error") probabilities.end_turn = 0.27;
+      if (kind === "missing_label") delete probabilities[actions[2]!.label];
+      if (kind === "extra_label") probabilities.foreign = 0;
+      const { decide, calls } = decider(() =>
+        json({
+          answers: { action: { type: "choice", choice: actions[1]!.label, probabilities } },
+          ...(kind === "undeclared"
+            ? {}
+            : { rounding: { probabilityDecimals: kind === "invalid_precision" ? 2.5 : 2 } }),
+        }),
+      );
+      const error = await decide(state, actions, new AbortController().signal).catch((e) => e);
+      expect(isInvalidAnswer(error)).toBe(true);
+      expect(calls).toHaveLength(1);
+    });
+  }
+
   test("unknown label from the provider is an invalid answer (re-askable), never dispatched", async () => {
     const { decide } = decider(() =>
       json({ answers: { action: { type: "choice", choice: "play_card:9:9" } } }),
