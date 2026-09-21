@@ -1,0 +1,18 @@
+{
+  "actor": "parent_targeted_qa",
+  "seed": "Z9HGUUZA1DXW",
+  "epoch": "3eb22b954a2240068ca10044f0baab0d",
+  "accepted_dispatches": 66,
+  "unique_accepted_versions": 66,
+  "model_calls": 0,
+  "bridge_halts": 0,
+  "final_state_version": "3eb22b954a2240068ca10044f0baab0d:202",
+  "classification": "bounded_qa_passed_then_deliberately_ended",
+  "coverage": [
+    "native shared DenseVegetation choice and continuation",
+    "complete treasure catalog after readiness wait",
+    "native Skip without relic acquisition",
+    "subsequent map travel/room exit"
+  ],
+  "note": "Native Save and Quit/Abandon after the ready checkpoint are setup actions for the final fresh-chest claim regression, not natural defeat or bridge failure."
+}

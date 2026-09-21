@@ -1,0 +1,10 @@
+{
+  "ts": "2026-09-21T03:04:18.478535+00:00",
+  "actor": "parent_targeted_qa",
+  "purpose": "one final fresh-chest claim-path regression, then stop",
+  "setup": "Profile2 Standard IroncladA0; healthy QA2 saved/quit then deliberately abandoned natively, not a bridge failure or natural defeat; no Continue/save edits/seed manipulation",
+  "prior_qa_epoch": "3eb22b954a2240068ca10044f0baab0d",
+  "prior_qa_last_ready_version": 202,
+  "installed_sha256": "1ebcd12431dd993eba1c10161412db49bd827a02dc98b6f9a860d0d0f5bb2102",
+  "source_commit": "58197a6"
+}

@@ -1,0 +1,18 @@
+{
+  "actor": "parent_targeted_qa",
+  "seed": "BBK5PF16S0X4",
+  "epoch": "8703e7be650542d2820a473a9fb7e792",
+  "accepted_dispatches": 47,
+  "unique_accepted_versions": 47,
+  "model_calls": 0,
+  "bridge_halts": 0,
+  "final_state_version": "8703e7be650542d2820a473a9fb7e792:140",
+  "classification": "bounded_qa_passed_stopped_at_ready_map",
+  "coverage": [
+    "complete treasure catalog after readiness wait",
+    "explicit HappyFlower claim and ready map",
+    "SapphireSeed upgrade selection/confirmation",
+    "Rest with native StoneHumidifier effect"
+  ],
+  "note": "A local stale136Proceed attempt was refused beforePOST; fresh137still offered onlyProceed and was dispatched once. Snapshot136\u2192137 removed the empty treasure.relics field without changing the complete legal set. No uncertain accepted mutation was retried. No further gameplay after final ready map."
+}

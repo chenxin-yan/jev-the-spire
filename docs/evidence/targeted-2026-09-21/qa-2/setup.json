@@ -1,0 +1,10 @@
+{
+  "ts": "2026-09-21T02:46:56.298958+00:00",
+  "actor": "parent_targeted_qa",
+  "purpose": "bounded live acceptance of complete treasure choices and native Skip ownership; no model calls",
+  "native_setup": "Steam launch; Profile2/one mod; native Abandon failed run then Singleplayer/Standard/IroncladA0; no Continue or save/seed manipulation",
+  "installed_sha256": "1ebcd12431dd993eba1c10161412db49bd827a02dc98b6f9a860d0d0f5bb2102",
+  "source_commit": "58197a6",
+  "game_pid": 25468,
+  "prior_failed_epoch": "162f86c6714243b59889a77c368f733a"
+}

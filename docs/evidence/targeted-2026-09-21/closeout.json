@@ -1,0 +1,28 @@
+{
+  "ts": "2026-09-21T03:21:21.418445+00:00",
+  "source_commit": "58197a6310425c07a4cb4ae76f9f3ad0a2b9a7e5",
+  "installed_sha256": "1ebcd12431dd993eba1c10161412db49bd827a02dc98b6f9a860d0d0f5bb2102",
+  "native_sha256": "9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4",
+  "final_ready_version": "8703e7be650542d2820a473a9fb7e792:140",
+  "final_state": "map",
+  "mutation_pending": false,
+  "qa1_dispatches": 104,
+  "qa1_result": "preserved technical stop",
+  "qa2_dispatches": 66,
+  "qa2_result": "passed, deliberately ended",
+  "qa3_dispatches": 47,
+  "qa3_result": "passed, gameplay stopped",
+  "qa_model_calls": 0,
+  "native_checks": 2949,
+  "application_tests": 57,
+  "application_assertions": 210,
+  "all_final_source_gates_exit": 0,
+  "final_documentation_format_check_exit": 0,
+  "active_managed_processes_at_closeout": 0,
+  "remaining_coverage_limits": [
+    "not exhaustive card/event/relic combinations",
+    "literal Headbutt final-build replay and repeated pauses in one action not directly exercised",
+    "multiplayer and unsupported/unreadable interfaces remain fail-closed"
+  ],
+  "no_strategy_or_prompt_optimization": true
+}

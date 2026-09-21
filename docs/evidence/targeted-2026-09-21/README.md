@@ -4,7 +4,7 @@
 
 The user explicitly approved separately labeled, host-selected **legal-action QA**, then stopping after correctness verification. This is not Jev inference or autonomous gameplay. No gameplay strategy, production prompt, provider settings, probabilities, save data, or unlocks were modified. No uncertain accepted mutation was retried.
 
-**Checkpoint: source repaired, reviewed and installed; corrected-candidate live acceptance is still pending.** The first QA run exposed two treasure defects and stopped technically. Shared-event live coverage remains unobserved. This archive is not a claim of exhaustive game support or playing strength.
+**Bounded correctness verification complete; gameplay stopped.** The first QA run exposed two treasure defects and stopped technically. The repaired, reviewed, installed candidate subsequently passed live whole-choice, Skip, claim and room-exit checks, plus a native shared event. Earlier selector-resume and Smith checks also passed. This archive is not a claim of exhaustive game support or playing strength.
 
 ## QA 1: passing mechanisms, then a preserved technical stop
 
@@ -49,7 +49,7 @@ Native v0.111.0 `sts2.dll` SHA **9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817
 
 Source **58197a6**, three files: `TreasureOperation.cs`, `McpMod.TreasureActions.cs`, `tests/check-bridge.sh`. No TypeScript, prompt, dependency, or gameplay-policy change.
 
-Worker `d2342f61-148e-4875-8a04-0d2f0fd39f2e`, initial reviewer `ac054b78-ebb1-44b4-a820-f17c90d457d9`, timing challenge `c7168c95-9420-4ae8-95b3-7913d840856d`, final review `4d0babcd-6d36-4941-a67c-0f0bc98b72b4`; workflow `1227e62e-e0e4-434a-8048-7c99a71f69c3`. Final verdict **OK with notes, no issues**: timing P1 and diagnosis P2s closed; live acceptance still outstanding.
+Worker `d2342f61-148e-4875-8a04-0d2f0fd39f2e`, initial reviewer `ac054b78-ebb1-44b4-a820-f17c90d457d9`, timing challenge `c7168c95-9420-4ae8-95b3-7913d840856d`, final review `4d0babcd-6d36-4941-a67c-0f0bc98b72b4`; workflow `1227e62e-e0e4-434a-8048-7c99a71f69c3`. Final verdict **OK with notes, no issues**: timing P1 and diagnosis P2s closed. Live acceptance was outstanding at review time and was subsequently completed below.
 
 Original reports are preserved verbatim. The corrected report fixes the worker's exception-swallowing claim and mistaken cancellation source, and qualifies dispatch acceptance and historical coverage. `treasure-skip/parent/review-fixes.md` distinguishes the delivered source from the historical worker candidate.
 
@@ -61,4 +61,37 @@ Original reports are preserved verbatim. The corrected report fixes the worker's
 - These managed/metadata checks do **not** execute Godot/Harmony. The earlier discarded callback fixture's unexplained exit 139 remains a historical limitation, not positive proof.
 - Installed atomically at **2026-09-21T02:41:28.688199Z**, after native close and verified game/listener absence. New DLL **1ebcd12431dd993eba1c10161412db49bd827a02dc98b6f9a860d0d0f5bb2102**, source `58197a6`, embedded build revision `b2046f2`. No rebuild merely to change revision metadata. Receipt/backup paths: `treasure-skip/installation/installation.json`. No binaries are committed.
 
-Remaining: corrected-build chest whole-choice publication, Skip-to-map and subsequent travel, and a claim-path regression check. Shared-event live coverage remains bounded by encounter availability; no indefinite random runs or strategic optimization are authorized by this verification effort.
+## QA 2: corrected Skip and shared event pass live
+
+Same installed candidate, Profile 2 / Standard Ironclad A0. Seed **Z9HGUUZA1DXW**, fresh native epoch `3eb22b954a2240068ca10044f0baab0d`. **66 legal decisions / 66 accepted 202s on unique versions, zero model calls, no bridge halt.**
+
+- **Native shared event:** Dense Vegetation's installed `get_IsShared` returns true (`qa-2/dense-vegetation-shared.il`). Choice `:55` completed with exactly +96 gold / −8 HP, ready event Proceed at `:58`, then ready map at `:61`. Both accepted once, no pending mutation on the ready continuations. This establishes the shared singleplayer choice/task path, not every shared-event-specific interaction.
+- **Whole-choice publication:** chest open `:193` → `:194` waiting, incomplete, no actions → first complete catalog `:195` with **Take Strike Dummy and Skip together**. No observed claim-only complete catalog.
+- **Skip:** `:195 proceed` accepted once → ready map `:198`, no pending mutation, player inventory unchanged and no Strike Dummy acquired.
+- **Room exit:** `:198 choose_map_node:0` → ready rest site `:202`, no pending mutation or halt. This exercises the later native room-exit cleanup after the intentionally parked chest root was released.
+
+`qa-2/check-shared.py`, `check-treasure.py` and `audit-qa.py` all pass. Full journal, command logs and final snapshot/screenshot are retained. The healthy QA run was deliberately saved/quit and abandoned through native menus to start the final claim regression; this is not a natural defeat or technical failure. Setup/menu actions are separate from the 66 gameplay dispatches.
+
+## QA 3: corrected claim path passes live; stop
+
+Same installed candidate and profile/mode. Seed **BBK5PF16S0X4**, fresh native epoch `8703e7be650542d2820a473a9fb7e792`. **47 legal decisions / 47 accepted 202s on unique versions, zero model calls, no bridge halt.**
+
+- Chest open `:133` → `:134` waiting/incomplete → `:135` complete **Take Happy Flower and Skip**.
+- Explicit QA `claim_treasure_relic:0` at `:135` was accepted once. The player's relic list gained exactly Happy Flower; HP, max HP, gold, deck and potions were unchanged. Only Leave treasure room remained.
+- A local attempt to use version `:136` for Proceed was refused **before POST** when a fresh observation returned `:137`. The complete legal set was unchanged; the only payload change was omission of the empty `treasure.relics` field. The parent inspected the fresh state, then sent exactly one legal Proceed at `:137`; no uncertain accepted mutation was retried.
+- Proceed completed at **`:140`, ready map, complete legal set, no pending mutation**. Fresh final readback stayed identical. Gameplay stopped there; no background QA/autonomous driver remains.
+- Transit also completed Sapphire Seed's full ten-card upgrade selection/preview/confirmation and Rest with Stone Humidifier's native max-HP effect. These were legal QA choices, not Jev behavior.
+
+`qa-3/check-claim.py` and `audit-qa.py` pass. All positive live checks can be rerun offline without game/provider access:
+
+```sh
+python3 docs/evidence/targeted-2026-09-21/qa-2/check-shared.py
+python3 docs/evidence/targeted-2026-09-21/qa-2/check-treasure.py
+python3 docs/evidence/targeted-2026-09-21/qa-2/audit-qa.py
+python3 docs/evidence/targeted-2026-09-21/qa-3/check-claim.py
+python3 docs/evidence/targeted-2026-09-21/qa-3/audit-qa.py
+```
+
+## Sign-off boundary
+
+The bridge is ready for autonomous use **within its supported singleplayer boundaries**, with the requested live mechanisms verified and no strategy/prompt optimization. Unsupported or unreadable interfaces remain fail-closed. This is not exhaustive coverage of every card/event/relic combination, repeated pauses in one action, or multiplayer; literal Headbutt on the final build was not replayed, while its shared combat-pile resume mechanism was exercised via Seeker Strike. Historical halts remain failures, and normal autonomous defeats remain gameplay outcomes, not bridge failures. No further play or indefinite encounter hunting was performed after acceptance.

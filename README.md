@@ -63,6 +63,10 @@ GitHub Actions runs `bun run check` on pull requests and pushes to `main`, using
 
 `test/main.test.ts` spawns the real CLI against a local fake bridge. It verifies play beyond ten actions without a flag, explicit action limits, terminal/error exits and Ctrl-C. A test-only preload accelerates the former five-minute timer if it is reintroduced, catching an unintended whole-run deadline without a five-minute test.
 
+## Verified bridge coverage
+
+[Targeted correctness QA](docs/evidence/targeted-2026-09-21/README.md) verified selection resumes, Smith, a native singleplayer shared event, complete treasure choices, and both Skip and claim completion. The installed repair passed 2,949 native checks and 57 app tests. QA actions were separate from Jev; no strategy or prompt optimization was added. This is supported-path verification, not exhaustive game coverage.
+
 ## Limits
 
-Unlimited default runtime does not imply exhaustive bridge coverage. Safety bounds remain: 30 s ready-wait, 60 s per inference and 10 s max server backoff; an optional action count is set with `--max-actions`. Ctrl-C is reported in the summary `halt_reason`. Request-size limits are enforced in JSON characters (not UTF-8 bytes; live provider units unverified). `confidence` is not part of the evaluate answer and is logged as absent. `202` is acceptance, not completion of the last action; the summary at `max_actions` reflects the last pre-dispatch observation. Halts leave the game where it is; restart the CLI manually after fixing the cause.
+Unlimited default runtime does not imply exhaustive bridge coverage. Safety bounds remain: 30 s ready-wait, 60 s per inference and 10 s max server backoff; an optional action count is set with `--max-actions`. Ctrl-C is reported in the summary `halt_reason`. Request-size limits are enforced in JSON characters (not UTF-8 bytes; live provider units unverified). `confidence` is not part of the evaluate answer and is logged as absent. `202` is acceptance, not completion of the last action; the summary at `max_actions` reflects the last pre-dispatch observation. Halts leave the game where it is. Fix the cause before restarting the CLI; ownership-latched native failures require a fresh native run, not reconnecting or using Continue to adopt the failed session.
