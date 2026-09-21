@@ -48,13 +48,19 @@ public static partial class McpMod
         var operation = new CombatExitOperation(action, run, room, state, ui, player, loop,
             action is EndPlayerTurnAction, () => session.PrimarySucceeded, SelectionOwners);
         _combatExit = operation; // Before RequestEnqueue / before the native ActionEnqueued callback returns.
-        // ExecuteActions checks victory AFTER GameAction completion. Its native batch receipt mirrors faults
-        // and is captured at the exact registered action's BeforeActionExecuted, never inferred from idle/current executor.
+        // ExecuteActions checks victory AFTER each GameAction pass. Its native batch receipt mirrors faults and is captured at the
+        // exact registered action's BeforeActionExecuted, never inferred from idle/current executor. GetReadyAction hands the executor
+        // WaitingForExecution once, then ReadyToResumeExecuting after each player choice; any other phase there is not a native pass.
         var executor = RunManager.Instance.ActionExecutor;
         operation.RequireExecutionReceipt();
         void Executing(GameAction source)
         {
-            if (ReferenceEquals(source, action)) { operation.BindExecutionReceipt(source, executor.FinishedExecutingActions()); return; }
+            if (ReferenceEquals(source, action))
+            {
+                if (source.State is not (GameActionState.WaitingForExecution or GameActionState.ReadyToResumeExecuting)) operation.Fail("execution_receipt_phase_unverified");
+                else operation.BindExecutionReceipt(source, executor.FinishedExecutingActions(), source.State == GameActionState.ReadyToResumeExecuting);
+                return;
+            }
             // Same native pre-Execute signal arms the owned map travel's old-room teardown window against current identities.
             var current = RunManager.Instance.DebugOnlyGetState();
             operation.TravelExecuting(source, current, current?.CurrentRoom, () => GetInstanceFieldValue(CombatManager.Instance, "_turnLoopTask"));

@@ -22,7 +22,10 @@ internal sealed class CombatExitOperation(object owner, object run, object room,
     private int _completedChildren;
     internal object? Map;
     internal int TransitionCount { get; private set; }
-    private Task? _executionReceipt;
+    // Distinct batches containing native executor passes over Owner. ExecuteActions emits BeforeActionExecuted for the exact action from
+    // WaitingForExecution first and from ReadyToResumeExecuting after each player choice, each pass ending in CheckWinCondition;
+    // FinishedExecutingActions is that pass's batch (a new _queueTaskCompletionSource per idle restart, or the running one).
+    private readonly List<Task> _executionReceipts = new();
     private Func<Task?>? _roomTransition;
     private object? _travel;
     private Func<bool>? _arrived;
@@ -75,12 +78,23 @@ internal sealed class CombatExitOperation(object owner, object run, object room,
             throw new NotSupportedException("reward_decision_identity_changed");
     }
 
-    internal void RequireExecutionReceipt() => AddWork(() => _executionReceipt, true);
-    internal void BindExecutionReceipt(object source, Task task)
+    internal void RequireExecutionReceipt() => AddWork(() => _executionReceipts.Count == 0 ? null : _executionReceipts[0], true);
+    internal void BindExecutionReceipt(object source, Task task, bool resumedAfterPlayerChoice)
     {
         if (!ReferenceEquals(source, Owner)) return;
-        if (_executionReceipt != null || Closed) { Fail("duplicate_or_late_execution_receipt"); return; }
-        _executionReceipt = task;
+        if (Closed || !resumedAfterPlayerChoice && _executionReceipts.Count != 0 || resumedAfterPlayerChoice && Ended)
+        { Fail("duplicate_or_late_execution_receipt"); return; }
+        if (resumedAfterPlayerChoice)
+        {
+            // A resumed pass can only follow a completed earlier batch (idle executor restarted by ActionQueueChanged) or run inside
+            // the still-running batch that paused it. Earlier failed batches stay in _work as evidence.
+            var previous = _executionReceipts.Count == 0 ? null : _executionReceipts[^1];
+            if (previous == null || !(ReferenceEquals(previous, task) || previous.IsCompletedSuccessfully))
+            { Fail("unproven_execution_resume_receipt"); return; }
+            if (ReferenceEquals(previous, task)) return;
+            AddTask(task, true);
+        }
+        _executionReceipts.Add(task);
     }
 
     internal bool BeginUi()
