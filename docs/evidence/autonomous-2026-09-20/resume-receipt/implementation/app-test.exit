@@ -1,0 +1,1 @@
+bun --no-env-file test exit 0

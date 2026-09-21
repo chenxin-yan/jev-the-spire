@@ -1,0 +1,214 @@
+diff --git a/mod/STS2MCP/CombatExitOperation.cs b/mod/STS2MCP/CombatExitOperation.cs
+index 35b934e..e72ff4c 100644
+--- a/mod/STS2MCP/CombatExitOperation.cs
++++ b/mod/STS2MCP/CombatExitOperation.cs
+@@ -22,7 +22,10 @@ internal sealed class CombatExitOperation(object owner, object run, object room,
+     private int _completedChildren;
+     internal object? Map;
+     internal int TransitionCount { get; private set; }
+-    private Task? _executionReceipt;
++    // One per native executor pass over Owner. ExecuteActions emits BeforeActionExecuted for the exact action from
++    // WaitingForExecution first and from ReadyToResumeExecuting after each player choice, each pass ending in CheckWinCondition;
++    // FinishedExecutingActions is that pass's batch (a new _queueTaskCompletionSource per idle restart, or the running one).
++    private readonly List<Task> _executionReceipts = new();
+     private Func<Task?>? _roomTransition;
+     private object? _travel;
+     private Func<bool>? _arrived;
+@@ -75,12 +78,23 @@ internal sealed class CombatExitOperation(object owner, object run, object room,
+             throw new NotSupportedException("reward_decision_identity_changed");
+     }
+ 
+-    internal void RequireExecutionReceipt() => AddWork(() => _executionReceipt, true);
+-    internal void BindExecutionReceipt(object source, Task task)
++    internal void RequireExecutionReceipt() => AddWork(() => _executionReceipts.Count == 0 ? null : _executionReceipts[0], true);
++    internal void BindExecutionReceipt(object source, Task task, bool resumedAfterPlayerChoice)
+     {
+         if (!ReferenceEquals(source, Owner)) return;
+-        if (_executionReceipt != null || Closed) { Fail("duplicate_or_late_execution_receipt"); return; }
+-        _executionReceipt = task;
++        if (Closed || !resumedAfterPlayerChoice && _executionReceipts.Count != 0 || resumedAfterPlayerChoice && Ended)
++        { Fail("duplicate_or_late_execution_receipt"); return; }
++        if (resumedAfterPlayerChoice)
++        {
++            // A resumed pass can only follow a completed earlier batch (idle executor restarted by ActionQueueChanged) or run inside
++            // the still-running batch that paused it. Earlier failed batches stay in _work as evidence.
++            var previous = _executionReceipts.Count == 0 ? null : _executionReceipts[^1];
++            if (previous == null || !(ReferenceEquals(previous, task) || previous.IsCompletedSuccessfully))
++            { Fail("unproven_execution_resume_receipt"); return; }
++            if (ReferenceEquals(previous, task)) return;
++            AddTask(task, true);
++        }
++        _executionReceipts.Add(task);
+     }
+ 
+     internal bool BeginUi()
+diff --git a/mod/STS2MCP/McpMod.RewardHooks.cs b/mod/STS2MCP/McpMod.RewardHooks.cs
+index 2143da3..1b39d5c 100644
+--- a/mod/STS2MCP/McpMod.RewardHooks.cs
++++ b/mod/STS2MCP/McpMod.RewardHooks.cs
+@@ -48,13 +48,19 @@ public static partial class McpMod
+         var operation = new CombatExitOperation(action, run, room, state, ui, player, loop,
+             action is EndPlayerTurnAction, () => session.PrimarySucceeded, SelectionOwners);
+         _combatExit = operation; // Before RequestEnqueue / before the native ActionEnqueued callback returns.
+-        // ExecuteActions checks victory AFTER GameAction completion. Its native batch receipt mirrors faults
+-        // and is captured at the exact registered action's BeforeActionExecuted, never inferred from idle/current executor.
++        // ExecuteActions checks victory AFTER each GameAction pass. Its native batch receipt mirrors faults and is captured at the
++        // exact registered action's BeforeActionExecuted, never inferred from idle/current executor. GetReadyAction hands the executor
++        // WaitingForExecution once, then ReadyToResumeExecuting after each player choice; any other phase there is not a native pass.
+         var executor = RunManager.Instance.ActionExecutor;
+         operation.RequireExecutionReceipt();
+         void Executing(GameAction source)
+         {
+-            if (ReferenceEquals(source, action)) { operation.BindExecutionReceipt(source, executor.FinishedExecutingActions()); return; }
++            if (ReferenceEquals(source, action))
++            {
++                if (source.State is not (GameActionState.WaitingForExecution or GameActionState.ReadyToResumeExecuting)) operation.Fail("execution_receipt_phase_unverified");
++                else operation.BindExecutionReceipt(source, executor.FinishedExecutingActions(), source.State == GameActionState.ReadyToResumeExecuting);
++                return;
++            }
+             // Same native pre-Execute signal arms the owned map travel's old-room teardown window against current identities.
+             var current = RunManager.Instance.DebugOnlyGetState();
+             operation.TravelExecuting(source, current, current?.CurrentRoom, () => GetInstanceFieldValue(CombatManager.Instance, "_turnLoopTask"));
+diff --git a/mod/STS2MCP/tests/check-bridge.sh b/mod/STS2MCP/tests/check-bridge.sh
+index db4c0db..929ed4d 100644
+--- a/mod/STS2MCP/tests/check-bridge.sh
++++ b/mod/STS2MCP/tests/check-bridge.sh
+@@ -915,21 +915,85 @@ if (args.Length > 1)
+     var lateUi = NewExit(new object(), Task.CompletedTask, false, () => true, Activator.CreateInstance(ownershipType, true)!).Operation;
+     exitType.GetField("Ended", flags)!.SetValue(lateUi, true);
+     Check(!(bool)Call(exitType, lateUi, "BeginUi")!, "source order forbids first reward entry after CombatEnded; terminal/death cannot adopt late UI");
++    // Native ExecuteActions emits BeforeActionExecuted once per executor pass over the exact action: GetReadyAction hands it over
++    // from WaitingForExecution first and from ReadyToResumeExecuting after each player choice (Headbutt -> pile selection -> resume),
++    // each pass ending in CheckWinCondition. FinishedExecutingActions is that pass's batch: a new _queueTaskCompletionSource when
++    // ActionQueueChanged restarted the idle executor, or the still-running batch's own Task. The prior DLL halted the resumed pass as
++    // duplicate_or_late_execution_receipt; its two-argument binding is still exercised so this scenario stays behavioral, not a wiring check.
++    var bindReceipt = exitType.GetMethod("BindExecutionReceipt", flags)!;
++    void BindReceipt(object operation, object source, Task batch, bool resumedAfterPlayerChoice)
++        => bindReceipt.Invoke(operation, bindReceipt.GetParameters().Length == 3 ? new object[] { source, batch, resumedAfterPlayerChoice } : new object[] { source, batch });
++    string? ExitFailure(object operation) => (string?)exitType.GetField("Failure", flags)!.GetValue(operation);
++    bool ExitRefused(object operation)
++    {
++        try { Call(exitType, operation, "Check"); return false; }
++        catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { return true; }
++    }
+     var receiptOwner = new object();
+     var receiptRegistry = Activator.CreateInstance(ownershipType, true)!;
+     var receiptOperation = NewExit(receiptOwner, Task.CompletedTask, false, () => true, receiptRegistry).Operation;
+     Call(exitType, receiptOperation, "RequireExecutionReceipt");
+-    Call(exitType, receiptOperation, "BindExecutionReceipt", new object(), Task.CompletedTask);
++    BindReceipt(receiptOperation, new object(), Task.CompletedTask, false);
+     Check(!(bool)Call(exitType, receiptOperation, "Poll", true)!, "foreign action batch receipt cannot release completed card/potion before post-action win check");
+     var nativeBatch = new TaskCompletionSource();
+-    Call(exitType, receiptOperation, "BindExecutionReceipt", receiptOwner, nativeBatch.Task);
++    BindReceipt(receiptOperation, receiptOwner, nativeBatch.Task, false);
+     Check(!(bool)Call(exitType, receiptOperation, "Poll", true)!, "exact native batch remains pending beyond successful GameAction");
+     nativeBatch.SetResult();
+     Check((bool)Call(exitType, receiptOperation, "Poll", true)!, "only original successful post-action batch receipt permits normal combat continuation");
+-    Call(exitType, receiptOperation, "BindExecutionReceipt", receiptOwner, Task.CompletedTask);
+-    bool duplicateReceiptRefused = false;
+-    try { Call(exitType, receiptOperation, "Check"); } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { duplicateReceiptRefused = true; }
+-    Check(duplicateReceiptRefused, "duplicate receipt cannot replace native task identity");
++    var resumedBatch = new TaskCompletionSource();
++    BindReceipt(receiptOperation, receiptOwner, resumedBatch.Task, true);
++    Check(ExitFailure(receiptOperation) == null, "owned action resuming after its own player choice is a second native pass, not a duplicate or late receipt");
++    Check(!(bool)Call(exitType, receiptOperation, "Poll", true)!, "resumed pass's batch (its post-action win check) remains a blocking receipt");
++    BindReceipt(receiptOperation, receiptOwner, resumedBatch.Task, true);
++    Check(ExitFailure(receiptOperation) == null && !(bool)Call(exitType, receiptOperation, "Poll", true)!, "the same still-running batch picking the resumed action up again is one batch, not a duplicate");
++    BindReceipt(receiptOperation, new object(), new TaskCompletionSource().Task, true);
++    Check(ExitFailure(receiptOperation) == null, "foreign resumed action is ignored, never adopted or halted");
++    resumedBatch.SetResult();
++    Check((bool)Call(exitType, receiptOperation, "Poll", true)!, "combat continuation waits for the resumed pass's batch");
++    BindReceipt(receiptOperation, receiptOwner, Task.CompletedTask, false);
++    Check(ExitRefused(receiptOperation), "duplicate receipt cannot replace native task identity");
++    // Actual BridgeSession readiness across the pause: the paused GameAction's CompletionTask holds the mutation while its
++    // first batch is already complete, and the resumed pass's batch still blocks after the action finishes.
++    var pausedOwner = new object(); var pausedCompletion = new TaskCompletionSource(); var pausedExecution = new TaskCompletionSource();
++    var pausedSession = OwnedSession(pausedOwner, pausedCompletion.Task, Task.CompletedTask, () => pausedExecution.Task);
++    var pausedOperation = NewExit(pausedOwner, Task.CompletedTask, false, () => true, Activator.CreateInstance(ownershipType, true)!).Operation;
++    Call(exitType, pausedOperation, "RequireExecutionReceipt");
++    Call(sessionType, pausedSession, "HoldUntil", (Func<bool>)(() => (bool)Call(exitType, pausedOperation, "Poll", true)!));
++    BindReceipt(pausedOperation, pausedOwner, Task.CompletedTask, false);
++    Call(sessionType, pausedSession, "Refresh");
++    Check(Pending(pausedSession) && Failure(pausedSession) == null, "completed first batch cannot release an action paused for its player choice");
++    var pausedResume = new TaskCompletionSource();
++    BindReceipt(pausedOperation, pausedOwner, pausedResume.Task, true);
++    pausedCompletion.SetResult(); pausedExecution.SetResult(); Call(sessionType, pausedSession, "Refresh");
++    Check(Pending(pausedSession) && Failure(pausedSession) == null, "finished resumed action still waits for its resumed batch's win check, without a duplicate-receipt halt");
++    pausedResume.SetResult(); Call(sessionType, pausedSession, "Refresh");
++    Check(!Pending(pausedSession) && Failure(pausedSession) == null, "resumed pass completes the owned mutation through ordinary receipts");
++    foreach (string scenario in new[] { "resume-without-pass", "resume-during-other-batch", "resume-after-first-fault", "resume-after-first-cancel",
++        "resume-after-ended", "resume-after-close", "resumed-batch-fault", "resumed-batch-cancel", "second-first-pass" })
++    {
++        var op = NewExit(receiptOwner, Task.CompletedTask, false, () => true, Activator.CreateInstance(ownershipType, true)!).Operation;
++        Call(exitType, op, "RequireExecutionReceipt");
++        var first = new TaskCompletionSource();
++        if (scenario != "resume-without-pass") BindReceipt(op, receiptOwner, first.Task, false);
++        if (scenario == "resume-after-first-fault") first.SetException(new InvalidOperationException("batch faulted"));
++        else if (scenario == "resume-after-first-cancel") first.SetCanceled();
++        else if (scenario != "resume-during-other-batch") first.SetResult();
++        if (scenario == "resume-after-ended") exitType.GetField("Ended", flags)!.SetValue(op, true);
++        if (scenario == "resume-after-close") Call(exitType, op, "Close");
++        var resumed = new TaskCompletionSource();
++        BindReceipt(op, receiptOwner, resumed.Task, scenario != "second-first-pass");
++        if (scenario == "resumed-batch-fault") resumed.SetException(new InvalidOperationException("resumed batch faulted"));
++        if (scenario == "resumed-batch-cancel") resumed.SetCanceled();
++        string? failure = ExitFailure(op);
++        Check(ExitRefused(op), scenario + ": unproven/duplicate/late resume or failed batch halts, actual " + (failure ?? "none"));
++        Check(scenario.StartsWith("resumed-batch") ? failure == null : failure != null, scenario + ": batch fault/cancel is retained as work evidence; every other refusal is an explicit receipt failure");
++        Check(scenario is not ("resume-without-pass" or "resume-during-other-batch" or "resume-after-first-fault" or "resume-after-first-cancel")
++            || failure == "unproven_execution_resume_receipt", scenario + ": resume is proven only by a completed or identical prior pass batch, actual " + (failure ?? "none"));
++        Check(scenario is not ("resume-after-ended" or "resume-after-close" or "second-first-pass") || failure == "duplicate_or_late_execution_receipt",
++            scenario + ": late or duplicate first-pass receipts keep their reason, actual " + (failure ?? "none"));
++        resumed.TrySetResult(); first.TrySetResult();
++        Check(ExitRefused(op), scenario + ": later batch completion cannot heal the halt");
++    }
+     var exitRegistry = Activator.CreateInstance(ownershipType, true)!;
+     var exitOwner = new object(); var exitLoop = new TaskCompletionSource(); var exitPrimary = new TaskCompletionSource();
+     var exitSession = OwnedSession(exitOwner, exitPrimary.Task, Task.CompletedTask, () => exitPrimary.Task);
+@@ -1091,7 +1155,7 @@ if (args.Length > 1)
+             currentRun = new object(); Refresh();
+             Check(Failure(teardownSession) == reason && Pending(teardownSession) && releases == 1, scenario + ": later receipts, a restored run or a new run cannot heal the halt; cleanup ran exactly once");
+         }
+-        Op("RequireExecutionReceipt"); Op("BindExecutionReceipt", teardownOwner, Task.CompletedTask);
++        Op("RequireExecutionReceipt"); Op("BindExecutionReceipt", teardownOwner, Task.CompletedTask, false);
+         Call(sessionType, teardownSession, "OnRelease", (Action)(() => { releases++; Op("Close"); }));
+         // Exact RegisterCombatExit callback shape: Poll, then ValidateReadyIdentity against the current run/room.
+         Call(sessionType, teardownSession, "HoldUntil", (Func<bool>)(() => { bool done = (bool)Op("Poll", false)!; Op("ValidateReadyIdentity", currentRun, currentRoom); return done; }));
+@@ -1921,6 +1985,37 @@ if (args.Length > 1)
+     Check(restReady.Any(m => m.Name == "set_Modulate") && restReady.Any(m => m.Name == "AnimateIn") && restReady.Any(m => m.Name == "RunSafely")
+         && animateIn.Any(m => m.Name == "TweenProperty") && animateIn.Any(m => m.Name == "AwaitFinished") && animateIn.Any(m => m.Name == "set_MouseFilter"),
+         "NRestSiteButton._Ready fades in through an unawaited AnimateIn whose tail sets the mouse filter");
++    // Pinned native pause/resume executor lifecycle behind the per-pass batch receipt (metadata/IL only, never instantiated).
++    var nativeExecutor = game.GetType("MegaCrit.Sts2.Core.GameActions.ActionExecutor", true)!;
++    var nativeGameAction = game.GetType("MegaCrit.Sts2.Core.GameActions.GameAction", true)!;
++    var nativeQueueSet = game.GetType("MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet", true)!;
++    var nativeActionState = game.GetType("MegaCrit.Sts2.Core.Entities.Actions.GameActionState", true)!;
++    Check((int)Enum.Parse(nativeActionState, "WaitingForExecution") == 1 && (int)Enum.Parse(nativeActionState, "GatheringPlayerChoice") == 3
++        && (int)Enum.Parse(nativeActionState, "ReadyToResumeExecuting") == 4 && (int)Enum.Parse(nativeActionState, "Finished") == 5,
++        "GameActionState phases the executor and queue compare against are pinned");
++    List<object> NativeStateMachineOperands(Type type, string method) => type.GetNestedTypes(flags).Where(t => t.Name.StartsWith("<" + method + ">"))
++        .SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly)).Where(m => m.Name == "MoveNext").SelectMany(Operands).ToList();
++    var executeActions = NativeStateMachineOperands(nativeExecutor, "ExecuteActions");
++    Check(executeActions.OfType<FieldInfo>().Any(f => f.Name == "BeforeActionExecuted") && executeActions.OfType<FieldInfo>().Any(f => f.Name == "_queueTaskCompletionSource")
++        && executeActions.OfType<MethodBase>().Any(m => m.Name == "GetReadyAction") && executeActions.OfType<MethodBase>().Any(m => m.Name == "Execute" && m.DeclaringType == nativeGameAction)
++        && executeActions.OfType<MethodBase>().Any(m => m.Name == "CheckWinCondition") && executeActions.OfType<string>().Contains("Paused execution of action "),
++        "ExecuteActions loops GetReadyAction -> BeforeActionExecuted -> Execute -> CheckWinCondition per pass, logging a paused pass and completing one _queueTaskCompletionSource per batch");
++    Check(CalledBy(nativeExecutor.GetMethod("FinishedExecutingActions", flags)!).Any(m => m.Name == "get_Task")
++        && Operands(nativeExecutor.GetMethod("FinishedExecutingActions", flags)!).OfType<FieldInfo>().Any(f => f.Name == "_queueTaskCompletionSource")
++        && CalledBy(nativeExecutor.GetMethod("ActionQueueChanged", flags)!).Any(m => m.Name == "get_IsRunning") && CalledBy(nativeExecutor.GetMethod("ActionQueueChanged", flags)!).Any(m => m.Name == "ExecuteActions"),
++        "FinishedExecutingActions is the current batch's Task and ActionQueueChanged restarts ExecuteActions only while not running");
++    var gameActionExecute = NativeStateMachineOperands(nativeGameAction, "Execute");
++    Check(gameActionExecute.OfType<FieldInfo>().Any(f => f.Name == "_executeAfterResumptionTaskSource") && gameActionExecute.OfType<FieldInfo>().Any(f => f.Name == "_pauseForPlayerChoiceTaskSource")
++        && gameActionExecute.OfType<string>().Contains("! Expected WaitingForExecution or ReadyToResumeExecuting") && gameActionExecute.OfType<string>().Contains(" paused execution"),
++        "GameAction.Execute accepts WaitingForExecution or ReadyToResumeExecuting, releases the resumption source, and returns when paused for a player choice");
++    Check(Operands(nativeQueueSet.GetMethod("GetReadyAction", flags)!).OfType<string>().Contains(" is waiting for player choice")
++        && CalledBy(nativeQueueSet.GetMethod("ResumeActionWithoutSynchronizing", flags)!).Any(m => m.Name == "ResumeAfterGatheringPlayerChoice")
++        && Operands(nativeQueueSet.GetMethod("ResumeActionWithoutSynchronizing", flags)!).OfType<FieldInfo>().Any(f => f.Name == "ActionQueueChanged")
++        && CalledBy(nativeGameAction.GetMethod("ResumeAfterGatheringPlayerChoice", flags)!).Any(m => m.Name == "set_State"),
++        "a paused front action is skipped by GetReadyAction and re-enters the executor only through ResumeAfterGatheringPlayerChoice + ActionQueueChanged");
++    var registerExecuting = CalledInClosures("RegisterCombatExit");
++    Check(registerExecuting.Any(m => m.Name == "BindExecutionReceipt") && registerExecuting.Any(m => m.Name == "FinishedExecutingActions") && registerExecuting.Any(m => m.Name == "get_State" && m.DeclaringType == nativeGameAction),
++        "compiled RegisterCombatExit binds each pass's FinishedExecutingActions receipt from the exact action's native phase");
+     IEnumerable<MethodBase> NativeMethods(Type type) => type.GetNestedTypes(flags).Prepend(type).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly).Cast<MethodBase>()
+         .Concat(t.GetConstructors(flags | BindingFlags.DeclaredOnly))).Where(m => m.GetMethodBody() != null);
+     Check(NativeMethods(nativeRestButton).Concat(NativeMethods(nativeRestRoom)).Count(m => CalledBy(m).Any(c => c.Name == "set_MouseFilter")) == 1,

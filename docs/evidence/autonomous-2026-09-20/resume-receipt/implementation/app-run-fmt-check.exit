@@ -1,0 +1,1 @@
+bun --no-env-file run fmt:check exit 0

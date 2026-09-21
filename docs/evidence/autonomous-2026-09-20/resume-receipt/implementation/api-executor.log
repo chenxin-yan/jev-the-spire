@@ -1,0 +1,34 @@
+NESTED MegaCrit.Sts2.Core.GameActions.ActionExecutor+<ExecuteActions>d__28
+NESTED MegaCrit.Sts2.Core.GameActions.ActionExecutor+<WaitForUnpause>d__31
+TYPE MegaCrit.Sts2.Core.GameActions.ActionExecutor
+PROP Boolean IsPaused get=Boolean get_IsPaused()
+PROP Boolean IsRunning get=Boolean get_IsRunning()
+PROP MegaCrit.Sts2.Core.GameActions.GameAction CurrentlyRunningAction get=MegaCrit.Sts2.Core.GameActions.GameAction get_CurrentlyRunningAction()
+FIELD MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet _actionQueueSet
+FIELD Boolean _isPaused
+FIELD System.Threading.CancellationTokenSource _actionCancelToken
+FIELD System.Threading.Tasks.TaskCompletionSource`1[System.Boolean] _queueTaskCompletionSource
+FIELD MegaCrit.Sts2.Core.GameActions.GameAction <CurrentlyRunningAction>k__BackingField
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforeActionExecuted
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] JustBeforeActionFinishedExecuting
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] AfterActionExecuted
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+METHOD Boolean get_IsPaused()
+METHOD Boolean get_IsRunning()
+METHOD MegaCrit.Sts2.Core.GameActions.GameAction get_CurrentlyRunningAction()
+METHOD Void set_CurrentlyRunningAction(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Void add_BeforeActionExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforeActionExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_JustBeforeActionFinishedExecuting(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_JustBeforeActionFinishedExecuting(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_AfterActionExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_AfterActionExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void Pause()
+METHOD Void Unpause()
+METHOD System.Threading.Tasks.Task FinishedExecutingActions()
+METHOD Void Cancel()
+METHOD Void ActionQueueChanged()
+METHOD System.Threading.Tasks.Task ExecuteActions()
+METHOD Void JustBeforeActionFinished(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Void AfterActionFinished(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD System.Threading.Tasks.Task WaitForUnpause()

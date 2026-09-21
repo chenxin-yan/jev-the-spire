@@ -1,0 +1,4 @@
+92c92
+<             if (previous == null || !(ReferenceEquals(previous, task) || previous.IsCompletedSuccessfully))
+---
+>             if (previous == null)

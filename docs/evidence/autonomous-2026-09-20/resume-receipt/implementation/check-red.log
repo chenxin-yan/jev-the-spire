@@ -1,0 +1,4 @@
+Unhandled exception. System.Exception: owned action resuming after its own player choice is a second native pass, not a duplicate or late receipt
+   at Program.<>c__DisplayClass0_0.<<Main>$>g__Check|0(Boolean passed, String message) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.BL395XQMY8/Program.cs:line 17
+   at Program.<Main>$(String[] args) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.BL395XQMY8/Program.cs:line 935
+   at Program.<Main>(String[] args)

@@ -1,0 +1,1 @@
+bun --no-env-file run typecheck exit 0

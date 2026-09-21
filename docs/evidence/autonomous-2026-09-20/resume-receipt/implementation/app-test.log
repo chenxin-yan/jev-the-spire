@@ -1,0 +1,71 @@
+bun test v1.4.2 (744846f84)
+
+test/bridge.test.ts:
+(pass) bridge transport > GET sends no browser origin/fetch-metadata headers and parses the snapshot [12.31ms]
+(pass) bridge transport > GET retries a 5xx a bounded number of times, then succeeds [5.53ms]
+(pass) bridge transport > GET gives up after three transport failures [2015.61ms]
+(pass) bridge transport > GET does not retry a 4xx or a malformed body [3.67ms]
+(pass) bridge transport > POST sends exactly {state_version,label} as JSON once and returns status/body [7.36ms]
+(pass) bridge transport > POST rejection body is returned, not retried [0.99ms]
+(pass) bridge transport > GET halts instead of waiting when Retry-After exceeds the demo budget [0.39ms]
+(pass) bridge transport > GET honors an HTTP-date Retry-After that is already due [2.67ms]
+(pass) bridge transport > parseSnapshot rejects wrongly typed optional fields the loop consumes [2.01ms]
+(pass) bridge transport > parseSnapshot rejects duplicate labels and missing fields [0.16ms]
+
+test/loop.test.ts:
+(pass) runLoop > waits through zero-action observations, decides once, dispatches, then stops on terminal [20.39ms]
+(pass) runLoop > contextOf strips bridge bookkeeping but keeps the snapshot [0.07ms]
+(pass) runLoop > singleton legal set dispatches directly without inference and logs singleton_only [2.63ms]
+(pass) runLoop > singleton that grows to multiple actions before dispatch is re-decided by Jev [5.20ms]
+(pass) runLoop > state change between inference and POST never dispatches the old choice [5.00ms]
+(pass) runLoop > owned child decision is actionable while the parent mutation is pending [2.61ms]
+(pass) runLoop > invalid answer is re-asked once, then dispatched [4.45ms]
+(pass) runLoop > second invalid answer halts without dispatch [1.56ms]
+(pass) runLoop > non-answer model failure halts without re-ask or dispatch [1.36ms]
+(pass) runLoop > unsupported state halts without inference or dispatch [1.32ms]
+(pass) runLoop > bounded wait on persistent waiting halts with wait_timeout [30.58ms]
+(pass) runLoop > dispatch timeout is never retried and halts as uncertain [2.92ms]
+(pass) runLoop > 409 rejection halts after one POST [2.65ms]
+(pass) runLoop > abort while inference is pending prevents dispatch even when the answer arrives [11.91ms]
+(pass) runLoop > abort while waiting stops polling without dispatch and reports the abort reason [16.60ms]
+(pass) runLoop > abort ends repeated stale snapshots even when observe ignores the signal [30.48ms]
+(pass) runLoop > a logging failure before dispatch prevents the POST [2.64ms]
+(pass) runLoop > stops at the action bound counting forced and model actions [5.20ms]
+
+test/jev.test.ts:
+(pass) makeJevDecider > maps a joint classify decision to one Gateway choice question and back [12.18ms]
+(pass) makeJevDecider > preserves SDK-valid rounded probabilities and the provider's chosen tied label [0.97ms]
+(pass) makeJevDecider > rejects invalid distributions: undeclared [1.38ms]
+(pass) makeJevDecider > rejects invalid distributions: invalid_precision [0.38ms]
+(pass) makeJevDecider > rejects invalid distributions: excess_error [0.35ms]
+(pass) makeJevDecider > rejects invalid distributions: missing_label [0.74ms]
+(pass) makeJevDecider > rejects invalid distributions: extra_label [0.47ms]
+(pass) makeJevDecider > unknown label from the provider is an invalid answer (re-askable), never dispatched [0.46ms]
+(pass) makeJevDecider > missing probabilities is an invalid answer rather than an invented distribution [0.45ms]
+(pass) makeJevDecider > malformed response body is not an invalid answer and is not retried as one [2.98ms]
+(pass) makeJevDecider > oversized snapshot halts before any request [0.56ms]
+(pass) makeJevDecider > abort while the provider call is pending rejects without an answer [14.19ms]
+(pass) makeJevDecider > a provider call that never answers is cut off by the inference deadline [33.09ms]
+
+test/main.test.ts:
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions"] (missing value) with exit 1 before any log or bridge request [154.76ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions="] (empty value) with exit 1 before any log or bridge request [125.32ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","0"] (zero) with exit 1 before any log or bridge request [127.37ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","1.5"] (non-integer) with exit 1 before any log or bridge request [122.83ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","-2"] (negative) with exit 1 before any log or bridge request [129.49ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","9007199254740993"] (unsafe integer) with exit 1 before any log or bridge request [125.75ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","1","--unknown"] (unknown flag) with exit 1 before any log or bridge request [122.48ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","1","stray"] (positional) with exit 1 before any log or bridge request [126.45ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--max-actions","1","--","stray"] (raw args after --) with exit 1 before any log or bridge request [129.79ms]
+(pass) main CLI arguments (Crust strict parsing) > rejects ["--help"] (no help extension installed) with exit 1 before any log or bridge request [124.14ms]
+(pass) main CLI arguments (Crust strict parsing) > accepts --max-actions 1 and exits 0 on the terminal snapshot [132.45ms]
+(pass) main CLI arguments (Crust strict parsing) > without --max-actions continues past 10 actions until terminal [430.22ms]
+(pass) main CLI arguments (Crust strict parsing) > --max-actions stops at the explicitly requested count [219.49ms]
+(pass) main CLI exit status > a halted summary exits 1 with the reason on stderr [133.12ms]
+(pass) main CLI exit status > Ctrl-C during a pending bridge read exits 130 with an aborted summary and no POST [135.24ms]
+(pass) main CLI exit status > keeps playing beyond the former whole-run deadline [424.61ms]
+
+ 57 pass
+ 0 fail
+ 210 expect() calls
+Ran 57 tests across 4 files. [5.25s]

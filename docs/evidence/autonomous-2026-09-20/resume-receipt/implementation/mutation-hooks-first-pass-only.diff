@@ -1,0 +1,5 @@
+60,61c60
+<                 if (source.State is not (GameActionState.WaitingForExecution or GameActionState.ReadyToResumeExecuting)) operation.Fail("execution_receipt_phase_unverified");
+<                 else operation.BindExecutionReceipt(source, executor.FinishedExecutingActions(), source.State == GameActionState.ReadyToResumeExecuting);
+---
+>                 operation.BindExecutionReceipt(source, executor.FinishedExecutingActions(), false);

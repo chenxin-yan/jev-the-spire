@@ -1,0 +1,13 @@
+CALLER MegaCrit.Sts2.Core.GameActions.ActionExecutor.ActionQueueChanged IL 26 -> MegaCrit.Sts2.Core.GameActions.ActionExecutor.ExecuteActions
+---
+CALLER MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSynchronizer.ResumeActionAfterPlayerChoice IL 189 -> MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.ResumeActionWithoutSynchronizing
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<RunReplay>d__35.MoveNext IL 1809 -> MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.ResumeActionWithoutSynchronizing
+---
+CALLER MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext.SignalPlayerChoiceBegun IL 319 -> MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.PauseActionForPlayerChoice
+CALLER MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext+<SignalPlayerChoiceBegun>d__37.MoveNext IL 772 -> MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet.PauseActionForPlayerChoice
+---
+CALLER MegaCrit.Sts2.Core.Combat.CombatManager+<StartCombatInternal>d__98.MoveNext IL 100 -> MegaCrit.Sts2.Core.GameActions.ActionExecutor.FinishedExecutingActions
+CALLER MegaCrit.Sts2.Core.Nodes.Debug.Multiplayer.NMultiplayerTest+<RunReplay>d__35.MoveNext IL 1597 -> MegaCrit.Sts2.Core.GameActions.ActionExecutor.FinishedExecutingActions
+---
+CALLER MegaCrit.Sts2.Core.GameActions.Multiplayer.GameActionPlayerChoiceContext+<SignalPlayerChoiceEnded>d__16.MoveNext IL 83 -> MegaCrit.Sts2.Core.GameActions.GameAction.WaitForActionToResumeExecutingAfterPlayerChoice
+CALLER MegaCrit.Sts2.Core.GameActions.Multiplayer.HookPlayerChoiceContext+<SignalPlayerChoiceEnded>d__38.MoveNext IL 66 -> MegaCrit.Sts2.Core.GameActions.GameAction.WaitForActionToResumeExecutingAfterPlayerChoice

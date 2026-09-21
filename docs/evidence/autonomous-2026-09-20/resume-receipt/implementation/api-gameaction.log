@@ -1,0 +1,113 @@
+TYPE MegaCrit.Sts2.Core.Entities.Actions.GameActionState
+FIELD Int32 value__
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState None = 0
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState WaitingForExecution = 1
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState Executing = 2
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState GatheringPlayerChoice = 3
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState ReadyToResumeExecuting = 4
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState Finished = 5
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState Canceled = 6
+NESTED MegaCrit.Sts2.Core.GameActions.GameAction+<Execute>d__45
+NESTED MegaCrit.Sts2.Core.GameActions.GameAction+<WaitForActionToResumeExecutingAfterPlayerChoice>d__47
+TYPE MegaCrit.Sts2.Core.GameActions.GameAction
+PROP MegaCrit.Sts2.Core.Entities.Actions.GameActionState State get=MegaCrit.Sts2.Core.Entities.Actions.GameActionState get_State()
+PROP UInt64 OwnerId get=UInt64 get_OwnerId()
+PROP MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType ActionType get=MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType get_ActionType()
+PROP System.Nullable`1[System.UInt32] Id get=System.Nullable`1[System.UInt32] get_Id()
+PROP System.Threading.Tasks.Task CompletionTask get=System.Threading.Tasks.Task get_CompletionTask()
+PROP System.Exception Exception get=System.Exception get_Exception()
+PROP Boolean RecordableToReplay get=Boolean get_RecordableToReplay()
+FIELD MegaCrit.Sts2.Core.Entities.Actions.GameActionState <State>k__BackingField
+FIELD System.Nullable`1[System.UInt32] <Id>k__BackingField
+FIELD System.Threading.Tasks.TaskCompletionSource _pauseForPlayerChoiceTaskSource
+FIELD System.Threading.Tasks.TaskCompletionSource _executeAfterResumptionTaskSource
+FIELD System.Threading.Tasks.TaskCompletionSource _completionSource
+FIELD System.Threading.Tasks.Task _executionTask
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] JustBeforeFinished
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] AfterFinished
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforeExecuted
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforeCancelled
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforePausedForPlayerChoice
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforeReadyToResumeAfterPlayerChoice
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] BeforeResumedAfterPlayerChoice
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+METHOD MegaCrit.Sts2.Core.Entities.Actions.GameActionState get_State()
+METHOD Void set_State(MegaCrit.Sts2.Core.Entities.Actions.GameActionState)
+METHOD UInt64 get_OwnerId()
+METHOD MegaCrit.Sts2.Core.Entities.Multiplayer.GameActionType get_ActionType()
+METHOD System.Nullable`1[System.UInt32] get_Id()
+METHOD Void set_Id(System.Nullable`1[System.UInt32])
+METHOD Void add_JustBeforeFinished(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_JustBeforeFinished(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_AfterFinished(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_AfterFinished(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_BeforeExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforeExecuted(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_BeforeCancelled(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforeCancelled(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_BeforePausedForPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforePausedForPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_BeforeReadyToResumeAfterPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforeReadyToResumeAfterPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_BeforeResumedAfterPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_BeforeResumedAfterPlayerChoice(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD System.Threading.Tasks.Task get_CompletionTask()
+METHOD System.Exception get_Exception()
+METHOD Boolean get_RecordableToReplay()
+METHOD Void OnEnqueued(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction], UInt32)
+METHOD System.Threading.Tasks.Task Execute()
+METHOD Void ResumeAfterGatheringPlayerChoice(UInt32)
+METHOD System.Threading.Tasks.Task WaitForActionToResumeExecutingAfterPlayerChoice()
+METHOD Void PauseForPlayerChoice()
+METHOD System.Threading.Tasks.Task ExecuteAction()
+METHOD Void Cancel()
+METHOD Void CancelAction()
+METHOD MegaCrit.Sts2.Core.GameActions.Multiplayer.INetAction ToNetAction()
+METHOD Boolean <Cancel>b__50_0()
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionQueue
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionWaitingForResumption
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+<>c
+NESTED MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+<>c__DisplayClass40_0
+TYPE MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet
+PROP Boolean IsEmpty get=Boolean get_IsEmpty()
+PROP UInt32 NextActionId get=UInt32 get_NextActionId()
+FIELD MegaCrit.Sts2.Core.Logging.Logger _logger
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionQueue] _actionQueues
+FIELD System.Collections.Generic.List`1[MegaCrit.Sts2.Core.GameActions.Multiplayer.ActionQueueSet+ActionWaitingForResumption] _actionsWaitingForResumption
+FIELD System.Threading.Tasks.TaskCompletionSource _queuesEmptyCompletionSource
+FIELD UInt32 _nextId
+FIELD Boolean _isInCombat
+FIELD Boolean _wasReset
+FIELD System.Action ActionQueueChanged
+FIELD System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction] ActionEnqueued
+FIELD System.Action`1[System.UInt32] ActionResumed
+METHOD Boolean get_IsEmpty()
+METHOD UInt32 get_NextActionId()
+METHOD Void add_ActionQueueChanged(System.Action)
+METHOD Void remove_ActionQueueChanged(System.Action)
+METHOD Void add_ActionEnqueued(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void remove_ActionEnqueued(System.Action`1[MegaCrit.Sts2.Core.GameActions.GameAction])
+METHOD Void add_ActionResumed(System.Action`1[System.UInt32])
+METHOD Void remove_ActionResumed(System.Action`1[System.UInt32])
+METHOD Void EnqueueWithoutSynchronizing(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Boolean IsGameActionPlayerDriven(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD MegaCrit.Sts2.Core.GameActions.GameAction GetReadyAction()
+METHOD Void PauseActionForPlayerChoice(MegaCrit.Sts2.Core.GameActions.GameAction, MegaCrit.Sts2.Core.Entities.Multiplayer.PlayerChoiceOptions)
+METHOD System.Threading.Tasks.Task BecameEmpty()
+METHOD Void PauseAllPlayerQueues()
+METHOD Void StartCancellingAllPlayerDrivenCombatActions()
+METHOD Boolean ActionQueueIsPaused(UInt64)
+METHOD Void UnpauseAllPlayerQueues()
+METHOD Void CombatEnded()
+METHOD Void SetUpForCombat()
+METHOD Void CombatStarted()
+METHOD Void Reset()
+METHOD Void CancelNonExecutingActionsForPlayer(UInt64)
+METHOD Void CancelNonExecutingActionsOfType[T](UInt64, System.Nullable`1[System.UInt32])
+METHOD Void ResumeActionWithoutSynchronizing(UInt32)
+METHOD Boolean TryGetAction(UInt32, MegaCrit.Sts2.Core.GameActions.GameAction ByRef, ActionQueue ByRef)
+METHOD ActionQueue GetQueue(UInt64)
+METHOD Void PopAction(MegaCrit.Sts2.Core.GameActions.GameAction)
+METHOD Void FastForwardNextActionId(UInt32)
+METHOD Void CheckIfQueuesEmpty()
+METHOD UInt32 GetAndIncrementActionId()

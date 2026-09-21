@@ -1,0 +1,4 @@
+85c85
+<         if (Closed || !resumedAfterPlayerChoice && _executionReceipts.Count != 0 || resumedAfterPlayerChoice && Ended)
+---
+>         if (Closed || resumedAfterPlayerChoice && Ended)
