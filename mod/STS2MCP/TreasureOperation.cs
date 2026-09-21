@@ -16,6 +16,9 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     internal object? Pick, ObtainedRelic;
     internal object[]? Holders;
     internal bool MapOpened, OnlyProceed;
+    // Native singleplayer OnPicked(null) skips awards, leaving OpenChest/Began/Finished permanently pending.
+    // Room exit clears voting state, not these tasks; only the exact pick's AfterFinished receipt authorizes this endpoint.
+    internal bool LocalSkip;
     internal int? Index;
     internal bool Executing, AwardsEntered, ObtainEntered, Closed;
     internal volatile bool ExpectedSkipCancellation;
@@ -34,6 +37,18 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     { if (opened || count <= 0 || began || finished) throw new NotSupportedException("treasure_empty_or_reopened_unverified"); }
     internal void Check()
     {
+        CheckTasks();
+        if (LocalSkip)
+        {
+            if (AwardsEntered || ObtainEntered || Awards != null || Obtain != null || Began.IsCompleted || Finished.IsCompleted || Root?.IsCompleted == true)
+                throw new NotSupportedException("treasure_local_skip_contract_violated");
+        }
+        else if (PickWork?.Invoke()?.IsCompletedSuccessfully == true && !AwardsEntered
+            || Awards?.IsCompletedSuccessfully == true && (!Began.IsCompletedSuccessfully || !Finished.IsCompletedSuccessfully || Index.HasValue && !ObtainEntered))
+            throw new NotSupportedException("treasure_gameplay_receipt_missing");
+    }
+    private void CheckTasks()
+    {
         if (Failure != null || Closed) throw new NotSupportedException(Failure ?? "treasure_owner_closed");
         foreach (var task in new[] { Root, Awards, Obtain, Proceed, PickWork?.Invoke(), Began, Finished }.Concat(_offers.Values).Concat(_children.Select(get => get())))
             if (task?.IsFaulted == true || task?.IsCanceled == true)
@@ -46,10 +61,20 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
             throw new NotSupportedException("treasure_skip_cancel_unverified");
         if (Skip?.IsFaulted == true || Skip?.IsCanceled == true && !ownedCancellation)
         { _ = Skip.Exception; throw new NotSupportedException("treasure_skip_task_failed"); }
-        if (PickWork?.Invoke()?.IsCompletedSuccessfully == true && !AwardsEntered
-            || Awards?.IsCompletedSuccessfully == true && (!Began.IsCompletedSuccessfully || !Finished.IsCompletedSuccessfully || Index.HasValue && !ObtainEntered))
-            throw new NotSupportedException("treasure_gameplay_receipt_missing");
     }
+    // Exact null-index pick whose original CompletionTask/_executionTask finished before any awards; the caller has read the native flag.
+    internal void BeginLocalSkip(object action)
+    {
+        CheckTasks();
+        if (LocalSkip || Pick == null || !ReferenceEquals(action, Pick) || Index.HasValue || AwardsEntered || ObtainEntered || Awards != null || Obtain != null
+            || Began.IsCompleted || Finished.IsCompleted || Root == null || Root.IsCompleted || Skip?.IsCompletedSuccessfully != true
+            || SkipToken.IsCancellationRequested || PickWork?.Invoke()?.IsCompletedSuccessfully != true)
+            throw new NotSupportedException("treasure_local_skip_receipt_unverified");
+        LocalSkip = true;
+    }
+    // The session's execution barrier: the parked root can never complete in the local skip lane, so the exact pick work is primary there.
+    // Root stays retained and fault/cancel/completion-checked by Check() through the Proceed and map receipts.
+    internal Task? Primary => LocalSkip ? PickWork?.Invoke() : Root;
     internal CancellationTokenRegistration RegisterSkipCancellation(CancellationToken token)
     {
         Check();
@@ -82,7 +107,7 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     internal void BeginAwards(object action, object collection)
     {
         Check();
-        if (!ReferenceEquals(action, Pick) || !ReferenceEquals(collection, Collection) || !Executing || AwardsEntered)
+        if (!ReferenceEquals(action, Pick) || !ReferenceEquals(collection, Collection) || !Executing || AwardsEntered || LocalSkip)
             throw new NotSupportedException("treasure_awards_unowned");
         AwardsEntered = true;
         _awardsRegistered = true; // Release-publish only after exact pick/collection/execution validation.
@@ -99,7 +124,7 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     internal void BeginOffer(object set)
     {
         Check();
-        if (_offers.Values.Any(t => t?.IsCompletedSuccessfully != true) || !_offers.TryAdd(set, null))
+        if (LocalSkip || _offers.Values.Any(t => t?.IsCompletedSuccessfully != true) || !_offers.TryAdd(set, null))
             throw new NotSupportedException("nested_treasure_offer_unverified");
     }
     internal void AttachOffer(object set, Task task)
@@ -120,6 +145,9 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     internal bool GameplayDone()
     {
         Check();
+        if (LocalSkip)
+            return PickWork?.Invoke()?.IsCompletedSuccessfully == true && Skip?.IsCompletedSuccessfully == true
+                && _offers.Values.All(t => t?.IsCompletedSuccessfully == true) && ChildrenDone;
         return Root?.IsCompletedSuccessfully == true && Pick != null && PickWork?.Invoke()?.IsCompletedSuccessfully == true
             && Awards?.IsCompletedSuccessfully == true && Finished.IsCompletedSuccessfully
             && (Index.HasValue ? ObtainEntered && Obtain?.IsCompletedSuccessfully == true : !ObtainEntered)
@@ -131,7 +159,8 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
     {
         Check();
         return _screens.Count == 0 && _offers.Values.All(t => t?.IsCompletedSuccessfully == true) && ChildrenDone
-            && (Pick == null ? Root != null && Skip != null && !Began.IsCompleted : GameplayDone());
+            // Claim becomes clickable before native EnableSkipAfterDelay completes; do not publish a temporary singleton.
+            && (Pick == null ? Root != null && Skip?.IsCompletedSuccessfully == true && !Began.IsCompleted : GameplayDone());
     }
     internal bool Poll()
     {

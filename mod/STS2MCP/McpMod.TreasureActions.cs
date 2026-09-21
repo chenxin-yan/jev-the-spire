@@ -38,6 +38,10 @@ public static partial class McpMod
     private static void RequireTreasureIdentity(TreasureOperation op)
     {
         op.Check();
+        if (!TreasureIdentityCurrent(op)) throw new NotSupportedException("treasure_identity_changed");
+    }
+    private static bool TreasureIdentityCurrent(TreasureOperation op)
+    {
         if (op.Run is not RunState run || op.Player is not Player player || !OrdinaryIdentity(run, op.Room, player)
             || run.Players.Count != 1 || player.Creature.IsDead || !ReferenceEquals(NRun.Instance?.TreasureRoom, op.Scene)
             || GetInstanceFieldValue(op.Scene, "_room") is not TreasureRoom room || !ReferenceEquals(room, op.Room)
@@ -46,7 +50,23 @@ public static partial class McpMod
             || !ReferenceEquals(GetInstanceFieldValue(op.Collection, "_runState"), run)
             || op.Collection is not NTreasureRoomRelicCollection collection
             || !ReferenceEquals(collection.RelicPickingBegan(), op.Began) || !ReferenceEquals(collection.RelicPickingFinished(), op.Finished))
-            throw new NotSupportedException("treasure_identity_changed");
+            return false;
+        return true;
+    }
+    // Ordered reference identity of the original relic models against the canonical synchronizer list, never id/value equality.
+    private static bool TreasureRelicsCurrent(IReadOnlyList<RelicModel>? current, RelicModel[] relics)
+        => current != null && current.Count == relics.Length && !current.Where((r, i) => !ReferenceEquals(r, relics[i])).Any();
+    // Native singleplayer Skip receipt on the run's own synchronizer (v0.111 OnPicked null-index branch stores _singleplayerSkipped and
+    // returns; EndRelicVoting resets it and nulls _currentRelics on room exit). Read false before the owned click and true at the exact
+    // PickRelicAction's AfterFinished, both while the original relic list is still current, so a stale flag never admits the lane.
+    private static bool TreasureSkipReceipt(TreasureOperation op, bool skipped)
+    {
+        // Identity only: BeginLocalSkip owns the task/failure checks, since Check()'s awards invariant is what this receipt resolves.
+        var sync = RunManager.Instance.TreasureRoomRelicSynchronizer;
+        return TreasureIdentityCurrent(op) && ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), op.Run)
+            && Equals(GetInstanceFieldValue(sync, "_localPlayerId"), ((Player)op.Player).NetId)
+            && TreasureRelicsCurrent(sync.CurrentRelics, (RelicModel[])op.Relics)
+            && GetInstanceFieldValue(sync, "_singleplayerSkipped") is bool flag && flag == skipped;
     }
     private static bool TreasureCollectionReady(TreasureOperation op)
     {
@@ -175,7 +195,7 @@ public static partial class McpMod
         RequireTreasureIdentity(op);
         if (proceedOnly) { op.OnlyProceed = true; op.Root = Task.CompletedTask; RequireOrdinaryMap(run, NMapScreen.Instance!, run.CurrentRoomCount <= 1); }
         _treasureOperation = op;
-        _bridgeSession.Track(op.Owner, Task.CompletedTask, Task.CompletedTask, () => op.Root, () => false);
+        _bridgeSession.Track(op.Owner, Task.CompletedTask, Task.CompletedTask, () => op.Primary, () => false);
         _bridgeSession.OnRelease(() => { op.Close(); if (ReferenceEquals(_treasureOperation, op)) _treasureOperation = null; });
         var lifetime = new TaskCompletionSource();
         SelectionOwners.BeginContinuation(scene, op.Owner, lifetime.Task, () => TreasureCollectionReady(op));
@@ -214,6 +234,7 @@ public static partial class McpMod
         if (picking && index.HasValue && !TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(op.Collection, "_openedTicks")!))
             throw new NotSupportedException("treasure_anti_click_guard");
         if (picking && !index.HasValue && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_not_ready");
+        if (picking && !index.HasValue && !TreasureSkipReceipt(op, false)) throw new NotSupportedException("treasure_skip_state_unverified");
         var session = _bridgeSession;
         int receipts = 0;
         void Enqueued(GameAction action)
@@ -226,7 +247,19 @@ public static partial class McpMod
                     throw new NotSupportedException("treasure_pick_receipt_unverified");
                 bool canceled = false;
                 void Canceled(GameAction source) { if (ReferenceEquals(source, pick)) canceled = true; }
-                void Finished(GameAction source) { if (ReferenceEquals(source, pick)) op.Executing = false; }
+                void Finished(GameAction source)
+                {
+                    if (!ReferenceEquals(source, pick)) return;
+                    op.Executing = false;
+                    if (index.HasValue) return;
+                    // Native Execute publishes _executionTask completion and CompletionTask before AfterFinished; OnPicked(null) has already stored the flag.
+                    try
+                    {
+                        if (pick.State != GameActionState.Finished || !TreasureSkipReceipt(op, true)) throw new NotSupportedException("treasure_local_skip_receipt_unverified");
+                        op.BeginLocalSkip(pick);
+                    }
+                    catch { op.Fail("treasure_local_skip_receipt_unverified"); }
+                }
                 pick.BeforeCancelled += Canceled; pick.AfterFinished += Finished;
                 session.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
                 Task? joined = null;
@@ -289,8 +322,7 @@ public static partial class McpMod
         if (op.Pick == null)
         {
             var relics = (RelicModel[])op.Relics;
-            var current = RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics;
-            if (current == null || current.Count != relics.Length || current.Where((r, i) => !ReferenceEquals(r, relics[i])).Any()
+            if (!TreasureRelicsCurrent(RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics, relics)
                 || GetInstanceFieldValue(collection, "_holdersInUse") is not List<NTreasureRoomRelicHolder> holders
                 || op.Holders == null || holders.Count != op.Holders.Length || holders.Where((h, i) => !ReferenceEquals(h, op.Holders[i])).Any())
                 throw new NotSupportedException("treasure_collection_generation_changed");
