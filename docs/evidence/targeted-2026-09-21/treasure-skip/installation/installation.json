@@ -1,0 +1,32 @@
+{
+  "ts": "2026-09-21T02:41:28.688199+00:00",
+  "source_commit": "58197a6310425c07a4cb4ae76f9f3ad0a2b9a7e5",
+  "build_revision": "b2046f20cfc3a215df7a807aa54e0bb2f46da265",
+  "previous_sha256": "257294dd1be62a0b7ae85820ca5479a6d0d54bf9f76a764aaf50063fbaa0ab13",
+  "installed_sha256": "1ebcd12431dd993eba1c10161412db49bd827a02dc98b6f9a860d0d0f5bb2102",
+  "destination": "/Users/yanchenxin/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/STS2_MCP/STS2_MCP.dll",
+  "backup_directory": "/tmp/jev-treasure-skip-2026-09-21/installation",
+  "absence_checks": [
+    {
+      "command": [
+        "pgrep",
+        "-x",
+        "SlayTheSpire2"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:15526",
+        "-sTCP:LISTEN"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

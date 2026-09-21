@@ -1,0 +1,9 @@
+{
+  "state_type": "unsupported",
+  "halt_reason": "treasure_proceed_identity_unverified",
+  "terminal": false,
+  "legal_actions_complete": false,
+  "legal_actions": [],
+  "state_version": "162f86c6714243b59889a77c368f733a:298",
+  "mutation_pending": true
+}

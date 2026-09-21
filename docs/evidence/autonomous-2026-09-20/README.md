@@ -2,7 +2,7 @@
 
 ## Authority and status
 
-The user authorized full takeover, installation, testing and iteration after quitting the game. Scope remains modded **Profile 2, Standard Ironclad A0**, Jev-owned strategy and complete legal choices. No forced reward claims, model-policy changes, hidden information, credential inspection or uncertain mutation retries.
+The user authorized full takeover, installation, testing and iteration after quitting the game. Scope remains modded **Profile 2, Standard Ironclad A0**, Jev-owned strategy and complete legal choices. No model-policy changes, hidden information, credential inspection or uncertain mutation retries. The intended no-forced-reward policy was not fully achieved: later [targeted QA](../targeted-2026-09-21/README.md) exposed a temporary claim-only treasure catalog before Skip became ready. Run 4's Regal Pillow claim at `:275` was `singleton_only`, not Jev inference. Its no-halt outcome and raw accounting remain valid, but do not prove complete treasure choice publication.
 
 This archive is a checkpoint, **not a claim of complete autonomous coverage**. Run 1 stopped technically; the repaired candidate completed run 2 to genuine defeat without a bridge halt. Run 3 hit an adapter rounding mismatch, then a separate native receipt halt during its post-fix continuation. Later recorded outcomes supersede only status, not earlier failure evidence.
 

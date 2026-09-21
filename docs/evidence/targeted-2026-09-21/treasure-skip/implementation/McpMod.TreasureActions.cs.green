@@ -1,0 +1,349 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Godot;
+using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Actions;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.TreasureRelicPicking;
+using MegaCrit.Sts2.Core.GameActions;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Screens.TreasureRoomRelic;
+using MegaCrit.Sts2.Core.Nodes.Screens.Map;
+using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Runs;
+using MegaCrit.Sts2.Core.Saves;
+
+namespace STS2_MCP;
+
+public static partial class McpMod
+{
+    private static TreasureOperation? _treasureOperation;
+    private static readonly SelectionOwnership TreasureScopes = new();
+    private sealed record TreasureScope(TreasureOperation Operation, bool Awards = false, bool Obtain = false, bool Proceed = false, object? Set = null, object? Screen = null);
+    private sealed class TreasureCapture(TreasureOperation? operation, int kind, IDisposable selection, IDisposable context) : IDisposable
+    {
+        internal readonly TreasureOperation? Operation = operation;
+        internal readonly int Kind = kind;
+        public void Dispose() { try { context.Dispose(); } finally { selection.Dispose(); } }
+    }
+    private static TreasureCapture TreasureCaptureScope(TreasureOperation? op, int kind)
+        => new(op, kind, SelectionOwners.Enter(op?.Owner), TreasureScopes.Enter(op == null ? null : new TreasureScope(op, Awards: kind == 2, Obtain: kind == 3)));
+
+    private static void RequireTreasureIdentity(TreasureOperation op)
+    {
+        op.Check();
+        if (!TreasureIdentityCurrent(op)) throw new NotSupportedException("treasure_identity_changed");
+    }
+    private static bool TreasureIdentityCurrent(TreasureOperation op)
+    {
+        if (op.Run is not RunState run || op.Player is not Player player || !OrdinaryIdentity(run, op.Room, player)
+            || run.Players.Count != 1 || player.Creature.IsDead || !ReferenceEquals(NRun.Instance?.TreasureRoom, op.Scene)
+            || GetInstanceFieldValue(op.Scene, "_room") is not TreasureRoom room || !ReferenceEquals(room, op.Room)
+            || !ReferenceEquals(GetInstanceFieldValue(op.Scene, "_runState"), run)
+            || !ReferenceEquals(GetInstanceFieldValue(op.Scene, "_relicCollection"), op.Collection)
+            || !ReferenceEquals(GetInstanceFieldValue(op.Collection, "_runState"), run)
+            || op.Collection is not NTreasureRoomRelicCollection collection
+            || !ReferenceEquals(collection.RelicPickingBegan(), op.Began) || !ReferenceEquals(collection.RelicPickingFinished(), op.Finished))
+            return false;
+        return true;
+    }
+    // Ordered reference identity of the original relic models against the canonical synchronizer list, never id/value equality.
+    private static bool TreasureRelicsCurrent(IReadOnlyList<RelicModel>? current, RelicModel[] relics)
+        => current != null && current.Count == relics.Length && !current.Where((r, i) => !ReferenceEquals(r, relics[i])).Any();
+    // Native singleplayer Skip receipt on the run's own synchronizer (v0.111 OnPicked null-index branch stores _singleplayerSkipped and
+    // returns; EndRelicVoting resets it and nulls _currentRelics on room exit). Read false before the owned click and true at the exact
+    // PickRelicAction's AfterFinished, both while the original relic list is still current, so a stale flag never admits the lane.
+    private static bool TreasureSkipReceipt(TreasureOperation op, bool skipped)
+    {
+        // Identity only: BeginLocalSkip owns the task/failure checks, since Check()'s awards invariant is what this receipt resolves.
+        var sync = RunManager.Instance.TreasureRoomRelicSynchronizer;
+        return TreasureIdentityCurrent(op) && ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), op.Run)
+            && Equals(GetInstanceFieldValue(sync, "_localPlayerId"), ((Player)op.Player).NetId)
+            && TreasureRelicsCurrent(sync.CurrentRelics, (RelicModel[])op.Relics)
+            && GetInstanceFieldValue(sync, "_singleplayerSkipped") is bool flag && flag == skipped;
+    }
+    private static bool TreasureCollectionReady(TreasureOperation op)
+    {
+        RequireTreasureIdentity(op);
+        return op.RoomReady() && (op.Pick != null || OrdinaryBool(op.Scene, "_hasChestBeenOpened")
+            && OrdinaryBool(op.Scene, "_isRelicCollectionOpen") && op.Holders is { Length: > 0 } holders
+            && holders.Cast<NTreasureRoomRelicHolder>().Where(h => h.Index < ((RelicModel[])op.Relics).Length).All(h => h.IsEnabled && h.MouseFilter == Control.MouseFilterEnum.Stop));
+    }
+    private static void TreasureOpenPrefix(NTreasureRoom __instance, out TreasureCapture __state)
+    {
+        var scope = TreasureScopes.CurrentOwner as TreasureScope;
+        var op = scope?.Operation;
+        __state = TreasureCaptureScope(null, 0);
+        if (op == null || !ReferenceEquals(op, _treasureOperation))
+        { if (ReferenceEquals(_treasureOperation?.Scene, __instance)) _treasureOperation!.Fail("foreign_treasure_open"); return; }
+        try
+        {
+            RequireTreasureIdentity(op);
+            if (!ReferenceEquals(op.Scene, __instance) || op.Root != null || scope!.Awards || scope.Screen != null)
+                throw new NotSupportedException("treasure_open_unowned");
+            __state.Dispose(); __state = TreasureCaptureScope(op, 0);
+        }
+        catch { op.Fail("treasure_open_unowned"); }
+    }
+    private static void TreasureSkipPrefix(NTreasureRoom __instance, float __0, CancellationToken __1, out TreasureCapture __state)
+    {
+        var op = (TreasureScopes.CurrentOwner as TreasureScope)?.Operation;
+        __state = TreasureCaptureScope(null, 1);
+        if (op == null || !ReferenceEquals(op, _treasureOperation)) return;
+        try
+        {
+            RequireTreasureIdentity(op);
+            if (!ReferenceEquals(op.Scene, __instance) || op.Skip != null || op.SkipToken.CanBeCanceled || __0 != 2.5f || !__1.CanBeCanceled || __1.IsCancellationRequested)
+                throw new NotSupportedException("treasure_skip_entry_unverified");
+            if (GetInstanceFieldValue(op.Collection, "_holdersInUse") is not List<NTreasureRoomRelicHolder> holders
+                || holders.Count < ((RelicModel[])op.Relics).Length || !holders.Select(h => h.Index).OrderBy(i => i).SequenceEqual(Enumerable.Range(0, holders.Count))
+                || holders.Where(h => h.Index < ((RelicModel[])op.Relics).Length).Any(h => h.Index < 0 || !ReferenceEquals(h.Relic?.Model, ((RelicModel[])op.Relics)[h.Index]) || !h.Visible || !h.IsEnabled || h.MouseFilter != Control.MouseFilterEnum.Ignore)
+                || holders.Where(h => h.Index >= ((RelicModel[])op.Relics).Length).Any(h => h.Visible))
+                throw new NotSupportedException("treasure_collection_entry_unverified");
+            op.Holders = holders.Cast<object>().ToArray();
+            var registration = op.RegisterSkipCancellation(__1);
+            _bridgeSession.OnRelease(registration.Dispose);
+            __state.Dispose(); __state = TreasureCaptureScope(op, 1);
+        }
+        catch { op.Fail("treasure_skip_entry_unverified"); }
+    }
+    private static void TreasureAwardsPrefix(NTreasureRoomRelicCollection __instance, List<RelicPickingResult> __0, out TreasureCapture __state)
+    {
+        var op = _treasureOperation;
+        __state = TreasureCaptureScope(null, 2);
+        if (op == null || !ReferenceEquals(op.Collection, __instance)) return;
+        try
+        {
+            RequireTreasureIdentity(op);
+            if (op.Pick is not PickRelicAction action || !ReferenceEquals(RunManager.Instance.ActionExecutor.CurrentlyRunningAction, action))
+                throw new NotSupportedException("treasure_awards_action_unverified");
+            var relics = (RelicModel[])op.Relics;
+            if (__0.Count != relics.Length || __0.Select(r => r.relic).Distinct(ReferenceEqualityComparer.Instance).Count() != relics.Length)
+                throw new NotSupportedException("treasure_awards_results_unverified");
+            foreach (var result in __0)
+            {
+                int index = Array.FindIndex(relics, r => ReferenceEquals(r, result.relic));
+                bool selected = op.Index == index;
+                if (index < 0 || (int)result.type != (selected ? 0 : 3)
+                    || !ReferenceEquals(result.player, selected ? op.Player : null))
+                    throw new NotSupportedException("treasure_awards_results_unverified");
+            }
+            op.BeginAwards(action, __instance);
+            __state.Dispose(); __state = TreasureCaptureScope(op, 2);
+        }
+        catch { op.Fail("treasure_awards_unowned"); }
+    }
+    private static void TreasureObtainPrefix(RelicModel __0, Player __1, int __2, out TreasureCapture? __state)
+    {
+        __state = null;
+        if (TreasureScopes.CurrentOwner is not TreasureScope { Awards: true } scope) return; // Inert for existing reward/event acquisition.
+        var op = scope.Operation;
+        __state = TreasureCaptureScope(null, 3);
+        try
+        {
+            RequireTreasureIdentity(op);
+            var expected = op.Index is int index ? ((RelicModel[])op.Relics)[index] : null;
+            if (!ReferenceEquals(op, _treasureOperation) || expected == null || __0.GetType() != expected.GetType()
+                || __0.Id != expected.Id || ReferenceEquals(__0, expected) || __2 != -1)
+                throw new NotSupportedException("treasure_obtain_identity_unverified");
+            op.BeginObtain(__0, __1); // Before AfterObtained can synchronously create a selector.
+            __state.Dispose(); __state = TreasureCaptureScope(op, 3); // Nested acquisitions are not awards entries.
+        }
+        catch { op.Fail("treasure_obtain_identity_unverified"); }
+    }
+    private static void TreasureTaskPostfix(Task __result, TreasureCapture? __state)
+    {
+        if (__state?.Operation is not { } op) return;
+        switch (__state.Kind)
+        {
+            case 0: op.BindRoot(__result); break;
+            case 1: op.BindSkip(__result); break;
+            case 2: if (op.Awards != null) op.Fail("treasure_awards_duplicate"); else op.Awards = __result; break;
+            case 3: if (op.Obtain != null) op.Fail("treasure_obtain_duplicate"); else op.Obtain = __result; break;
+        }
+    }
+    private static Exception? TreasureTaskFinalizer(Exception? __exception, TreasureCapture? __state)
+    {
+        if (__exception != null) __state?.Operation?.Fail("treasure_native_entry_failed");
+        __state?.Dispose(); return __exception;
+    }
+
+    private static bool DispatchTreasureOpen(RunState run, Player player, NTreasureRoom scene, NClickableControl chest, bool proceedOnly = false)
+    {
+        if (_treasureOperation != null || run.CurrentRoom is not TreasureRoom room || run.Players.Count != 1)
+            throw new NotSupportedException("treasure_owner_unavailable");
+        BridgeProtocol.RequireOrdinaryTutorial(SaveManager.Instance.SeenFtue("obtain_relic_ftue"), "obtain_relic_ftue");
+        var collection = (NTreasureRoomRelicCollection)GetInstanceFieldValue(scene, "_relicCollection")!;
+        var manager = RunManager.Instance;
+        var queue = manager.ActionQueueSet;
+        var executor = manager.ActionExecutor;
+        var sync = manager.TreasureRoomRelicSynchronizer;
+        var relics = sync.CurrentRelics?.ToArray() ?? Array.Empty<RelicModel>();
+        TreasureOperation.RequireFresh(OrdinaryBool(scene, "_hasChestBeenOpened"), relics.Length,
+            collection.RelicPickingBegan().IsCompleted, collection.RelicPickingFinished().IsCompleted);
+        var control = proceedOnly ? scene.ProceedButton : chest;
+        if (!OrdinaryInput(control) || proceedOnly && scene.ProceedButton.IsSkip || !ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), run)
+            || !Equals(GetInstanceFieldValue(sync, "_localPlayerId"), player.NetId)) throw new NotSupportedException("treasure_input_unavailable");
+        var op = new TreasureOperation(new object(), run, room, scene, player, collection, relics,
+            collection.RelicPickingBegan(), collection.RelicPickingFinished(), SelectionOwners);
+        RequireTreasureIdentity(op);
+        if (proceedOnly) { op.OnlyProceed = true; op.Root = Task.CompletedTask; RequireOrdinaryMap(run, NMapScreen.Instance!, run.CurrentRoomCount <= 1); }
+        _treasureOperation = op;
+        _bridgeSession.Track(op.Owner, Task.CompletedTask, Task.CompletedTask, () => op.Primary, () => false);
+        _bridgeSession.OnRelease(() => { op.Close(); if (ReferenceEquals(_treasureOperation, op)) _treasureOperation = null; });
+        var lifetime = new TaskCompletionSource();
+        SelectionOwners.BeginContinuation(scene, op.Owner, lifetime.Task, () => TreasureCollectionReady(op));
+        void Exiting() => op.Fail("treasure_scene_exited");
+        void Input(NClickableControl source)
+        {
+            if (TreasureScopes.CurrentOwner is not TreasureScope scope || !ReferenceEquals(scope.Operation, op)) op.Fail("foreign_treasure_input");
+        }
+        void Executing(GameAction source) { if (ReferenceEquals(source, op.Pick)) op.Executing = true; }
+        void Enqueued(GameAction source) { if (source is PickRelicAction && !ReferenceEquals(source, op.Pick) && TreasureScopes.CurrentOwner is not TreasureScope) op.Fail("foreign_treasure_pick"); }
+        _bridgeSession.HoldUntil(() => { RequireTreasureIdentity(op); return op.Poll(); });
+        _bridgeSession.OnRelease(() => executor.BeforeActionExecuted -= Executing);
+        _bridgeSession.OnRelease(() => queue.ActionEnqueued -= Enqueued);
+        _bridgeSession.OnRelease(() =>
+        {
+            if (GodotObject.IsInstanceValid(scene)) scene.TreeExiting -= Exiting;
+            if (GodotObject.IsInstanceValid(chest)) chest.Released -= Input;
+            if (GodotObject.IsInstanceValid(scene.ProceedButton)) scene.ProceedButton.Released -= Input;
+        });
+        scene.TreeExiting += Exiting; chest.Released += Input; scene.ProceedButton.Released += Input;
+        executor.BeforeActionExecuted += Executing;
+        queue.ActionEnqueued += Enqueued;
+        using var selection = SelectionOwners.Enter(op.Owner);
+        using var context = TreasureScopes.Enter(new TreasureScope(op, Proceed: proceedOnly));
+        control.ForceClick();
+        if (op.Root == null || proceedOnly && op.Proceed == null) throw new NotSupportedException("treasure_open_receipt_missing");
+        return true;
+    }
+
+    private static bool DispatchTreasurePick(TreasureOperation op, NClickableControl control, int? index, bool proceed)
+    {
+        RequireTreasureIdentity(op);
+        if (!TreasureCollectionReady(op) || !OrdinaryInput(control)) throw new NotSupportedException("treasure_choice_not_ready");
+        if (proceed) RequireOrdinaryMap((RunState)op.Run, NMapScreen.Instance!, false);
+        bool picking = op.Pick == null;
+        if (picking && index.HasValue && !TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(op.Collection, "_openedTicks")!))
+            throw new NotSupportedException("treasure_anti_click_guard");
+        if (picking && !index.HasValue && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_not_ready");
+        if (picking && !index.HasValue && !TreasureSkipReceipt(op, false)) throw new NotSupportedException("treasure_skip_state_unverified");
+        var session = _bridgeSession;
+        int receipts = 0;
+        void Enqueued(GameAction action)
+        {
+            if (action is not PickRelicAction pick) return;
+            try
+            {
+                if (++receipts != 1 || !picking || !ReferenceEquals(GetInstanceFieldValue(pick, "_player"), op.Player)
+                    || !Equals(GetInstanceFieldValue(pick, "_relicIndex"), index) || GetInstanceFieldValue(pick, "<TestSynchronizer>k__BackingField") != null)
+                    throw new NotSupportedException("treasure_pick_receipt_unverified");
+                bool canceled = false;
+                void Canceled(GameAction source) { if (ReferenceEquals(source, pick)) canceled = true; }
+                void Finished(GameAction source)
+                {
+                    if (!ReferenceEquals(source, pick)) return;
+                    op.Executing = false;
+                    if (index.HasValue) return;
+                    // Native Execute publishes _executionTask completion and CompletionTask before AfterFinished; OnPicked(null) has already stored the flag.
+                    try
+                    {
+                        if (pick.State != GameActionState.Finished || !TreasureSkipReceipt(op, true)) throw new NotSupportedException("treasure_local_skip_receipt_unverified");
+                        op.BeginLocalSkip(pick);
+                    }
+                    catch { op.Fail("treasure_local_skip_receipt_unverified"); }
+                }
+                pick.BeforeCancelled += Canceled; pick.AfterFinished += Finished;
+                session.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
+                Task? joined = null;
+                op.BindPick(pick, index, () =>
+                {
+                    if (canceled) throw new NotSupportedException("treasure_pick_cancelled");
+                    var execution = GetInstanceFieldValue(pick, "_executionTask") as Task;
+                    foreach (var task in new[] { pick.CompletionTask, execution })
+                        if (task?.IsFaulted == true || task?.IsCanceled == true) return task;
+                    return execution == null ? null : joined ??= Task.WhenAll(pick.CompletionTask, execution);
+                });
+                SelectionOwners.RegisterContext(pick, op.Owner);
+            }
+            catch { op.Fail("treasure_pick_receipt_unverified"); }
+        }
+        RunManager.Instance.ActionQueueSet.ActionEnqueued += Enqueued;
+        try
+        {
+            using var selection = SelectionOwners.Enter(op.Owner);
+            using var scope = TreasureScopes.Enter(new TreasureScope(op, Proceed: proceed));
+            control.ForceClick(); // Native holder PickRelic or actual OnProceedButtonPressed subscription.
+            if (picking && receipts != 1 || proceed && op.Proceed == null || picking && !index.HasValue && !op.LocalSkip) throw new NotSupportedException("treasure_choice_receipt_missing");
+            SelectionOwners.RenewContinuation(op.Scene, op.Owner);
+            return true;
+        }
+        finally { RunManager.Instance.ActionQueueSet.ActionEnqueued -= Enqueued; }
+    }
+    private static bool DispatchTreasureRewardChild(object screen, Func<Task> start)
+    {
+        var op = _treasureOperation ?? throw new NotSupportedException("treasure_reward_unowned");
+        RequireTreasureIdentity(op);
+        if (!op.OwnsDecision(screen) || !(ReferenceEquals(screen, op.Scene) ? op.RoomReady() : op.RewardReady())) throw new NotSupportedException("treasure_reward_not_ready");
+        using var selection = SelectionOwners.Enter(op.Owner);
+        using var scope = TreasureScopes.Enter(new TreasureScope(op, Screen: screen));
+        op.AddChild(start()); return true;
+    }
+    private static void AddTreasureActions(Dictionary<string, object?> state, RunState run, Player player, List<LegalAction> actions)
+    {
+        var scene = NRun.Instance?.TreasureRoom ?? throw new NotSupportedException("treasure_scene_unavailable");
+        var chest = GetInstanceFieldValue(scene, "_chestButton") as NClickableControl ?? throw new NotSupportedException("treasure_chest_unavailable");
+        var collection = (NTreasureRoomRelicCollection)GetInstanceFieldValue(scene, "_relicCollection")!;
+        if (_treasureOperation is not { } op)
+        {
+            BridgeProtocol.RequireOrdinaryTutorial(SaveManager.Instance.SeenFtue("obtain_relic_ftue"), "obtain_relic_ftue");
+            TreasureOperation.RequireFresh(OrdinaryBool(scene, "_hasChestBeenOpened"), RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics?.Count ?? 0,
+                collection.RelicPickingBegan().IsCompleted, collection.RelicPickingFinished().IsCompleted);
+            if (!OrdinaryIdentity(run, GetInstanceFieldValue(scene, "_room"), player) || run.Players.Count != 1) throw new NotSupportedException("treasure_identity_changed");
+            if (!IsControlVisibleOrActionable(chest) && !IsControlVisibleOrActionable(scene.ProceedButton)) throw new NotSupportedException("treasure_input_unowned");
+            if (OrdinaryInput(scene.ProceedButton))
+            {
+                if (scene.ProceedButton.IsSkip) throw new NotSupportedException("treasure_unowned_skip");
+                RequireOrdinaryMap(run, NMapScreen.Instance!, run.CurrentRoomCount <= 1);
+                actions.Add(new("proceed", "Leave unopened chest", () => DispatchTreasureOpen(run, player, scene, chest, true), scene.ProceedButton.GetInstanceId().ToString()));
+            }
+            if (OrdinaryInput(chest)) actions.Add(new("open_treasure", "Open visible chest", () => DispatchTreasureOpen(run, player, scene, chest), chest.GetInstanceId().ToString()));
+            return;
+        }
+        RequireTreasureIdentity(op);
+        if (!TreasureCollectionReady(op)) { state["waiting"] = true; return; }
+        if (op.Pick == null)
+        {
+            var relics = (RelicModel[])op.Relics;
+            if (!TreasureRelicsCurrent(RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics, relics)
+                || GetInstanceFieldValue(collection, "_holdersInUse") is not List<NTreasureRoomRelicHolder> holders
+                || op.Holders == null || holders.Count != op.Holders.Length || holders.Where((h, i) => !ReferenceEquals(h, op.Holders[i])).Any())
+                throw new NotSupportedException("treasure_collection_generation_changed");
+            if (!TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(collection, "_openedTicks")!)) { state["waiting"] = true; return; }
+            foreach (var holder in holders)
+            {
+                int index = holder.Index;
+                if (index >= relics.Length && !IsNodeVisible(holder)) continue; // Native unused prefab slots are hidden, not legal alternatives.
+                if (index < 0 || index >= relics.Length || !ReferenceEquals(holder.Relic?.Model, relics[index])) throw new NotSupportedException("treasure_holder_identity_unverified");
+                if (OrdinaryInput(holder)) actions.Add(new($"claim_treasure_relic:{index}", $"Take {SafeGetText(() => relics[index].Title)}",
+                    () => DispatchTreasurePick(op, holder, index, false), holder.GetInstanceId().ToString()));
+            }
+            if (IsControlVisibleOrActionable(scene.ProceedButton) && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_receipt_unverified");
+        }
+        else if (IsControlVisibleOrActionable(chest)) throw new NotSupportedException("treasure_reopened_collection_unverified");
+        if (OrdinaryInput(scene.ProceedButton))
+        {
+            if (scene.ProceedButton.IsSkip != (op.Pick == null)) throw new NotSupportedException("treasure_proceed_generation_changed");
+            RequireOrdinaryMap(run, NMapScreen.Instance!, false);
+            actions.Add(new("proceed", scene.ProceedButton.IsSkip ? "Skip treasure relic" : "Leave treasure room",
+                () => DispatchTreasurePick(op, scene.ProceedButton, null, true), scene.ProceedButton.GetInstanceId().ToString()));
+        }
+    }
+}

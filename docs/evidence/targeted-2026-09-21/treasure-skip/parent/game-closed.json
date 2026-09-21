@@ -1,0 +1,39 @@
+{
+  "ts": "2026-09-21T02:40:04.588229+00:00",
+  "method": "observed native window Close button",
+  "checks": [
+    {
+      "command": [
+        "ps",
+        "-p",
+        "19418",
+        "-o",
+        "pid=,comm="
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "pgrep",
+        "-x",
+        "SlayTheSpire2"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:15526",
+        "-sTCP:LISTEN"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "actor": "parent_targeted_qa",
+  "classification": "technical_stop_not_terminal_game_result",
+  "seed": "5Q4V83QRSFPV",
+  "epoch": "162f86c6714243b59889a77c368f733a",
+  "accepted_dispatches": 104,
+  "unique_accepted_versions": 104,
+  "model_calls": 0,
+  "expected_rejections": {
+    "unknown_label_422": 2,
+    "stale_version_409": 1
+  },
+  "halt_reason": "treasure_proceed_identity_unverified",
+  "final_state_version": "162f86c6714243b59889a77c368f733a:298",
+  "action_counts": {
+    "cancel_selection": 2,
+    "card_reward_alternative": 1,
+    "choose_event_option": 4,
+    "choose_map_node": 9,
+    "choose_rest_option": 2,
+    "claim_reward": 2,
+    "close_shop": 1,
+    "confirm_selection": 1,
+    "end_turn": 15,
+    "open_shop": 1,
+    "open_treasure": 1,
+    "play_card": 50,
+    "proceed": 9,
+    "select_card": 4,
+    "shop_purchase": 1,
+    "use_potion": 1
+  },
+  "notes": [
+    "Three rejected requests include the first scratch test with an incorrect expected409 for unknown label; corrected to native422, then passed.",
+    "Stale local296claim was refused beforePOST; no accepted version was retried.",
+    "Chest296claim-only complete catalog later addedSkip at297 without dispatch; separate readiness defect.",
+    "Final legal Skip accepted202 thenownershiphalt; native map screenshot does not prove bridge completion.",
+    "Smith and equivalent combat-pile/potion resume checks are separate passing assertions; shared event not encountered."
+  ]
+}

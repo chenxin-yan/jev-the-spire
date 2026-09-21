@@ -1,0 +1,370 @@
+diff --git a/mod/STS2MCP/McpMod.TreasureActions.cs b/mod/STS2MCP/McpMod.TreasureActions.cs
+index f1b03d7..5c31b46 100644
+--- a/mod/STS2MCP/McpMod.TreasureActions.cs
++++ b/mod/STS2MCP/McpMod.TreasureActions.cs
+@@ -38,6 +38,10 @@ public static partial class McpMod
+     private static void RequireTreasureIdentity(TreasureOperation op)
+     {
+         op.Check();
++        if (!TreasureIdentityCurrent(op)) throw new NotSupportedException("treasure_identity_changed");
++    }
++    private static bool TreasureIdentityCurrent(TreasureOperation op)
++    {
+         if (op.Run is not RunState run || op.Player is not Player player || !OrdinaryIdentity(run, op.Room, player)
+             || run.Players.Count != 1 || player.Creature.IsDead || !ReferenceEquals(NRun.Instance?.TreasureRoom, op.Scene)
+             || GetInstanceFieldValue(op.Scene, "_room") is not TreasureRoom room || !ReferenceEquals(room, op.Room)
+@@ -46,7 +50,23 @@ public static partial class McpMod
+             || !ReferenceEquals(GetInstanceFieldValue(op.Collection, "_runState"), run)
+             || op.Collection is not NTreasureRoomRelicCollection collection
+             || !ReferenceEquals(collection.RelicPickingBegan(), op.Began) || !ReferenceEquals(collection.RelicPickingFinished(), op.Finished))
+-            throw new NotSupportedException("treasure_identity_changed");
++            return false;
++        return true;
++    }
++    // Ordered reference identity of the original relic models against the canonical synchronizer list, never id/value equality.
++    private static bool TreasureRelicsCurrent(IReadOnlyList<RelicModel>? current, RelicModel[] relics)
++        => current != null && current.Count == relics.Length && !current.Where((r, i) => !ReferenceEquals(r, relics[i])).Any();
++    // Native singleplayer Skip receipt on the run's own synchronizer (v0.111 OnPicked null-index branch stores _singleplayerSkipped and
++    // returns; EndRelicVoting resets it and nulls _currentRelics on room exit). Read false before the owned click and true at the exact
++    // PickRelicAction's AfterFinished, both while the original relic list is still current, so a stale flag never admits the lane.
++    private static bool TreasureSkipReceipt(TreasureOperation op, bool skipped)
++    {
++        // Identity only: BeginLocalSkip owns the task/failure checks, since Check()'s awards invariant is what this receipt resolves.
++        var sync = RunManager.Instance.TreasureRoomRelicSynchronizer;
++        return TreasureIdentityCurrent(op) && ReferenceEquals(GetInstanceFieldValue(sync, "_playerCollection"), op.Run)
++            && Equals(GetInstanceFieldValue(sync, "_localPlayerId"), ((Player)op.Player).NetId)
++            && TreasureRelicsCurrent(sync.CurrentRelics, (RelicModel[])op.Relics)
++            && GetInstanceFieldValue(sync, "_singleplayerSkipped") is bool flag && flag == skipped;
+     }
+     private static bool TreasureCollectionReady(TreasureOperation op)
+     {
+@@ -175,7 +195,7 @@ public static partial class McpMod
+         RequireTreasureIdentity(op);
+         if (proceedOnly) { op.OnlyProceed = true; op.Root = Task.CompletedTask; RequireOrdinaryMap(run, NMapScreen.Instance!, run.CurrentRoomCount <= 1); }
+         _treasureOperation = op;
+-        _bridgeSession.Track(op.Owner, Task.CompletedTask, Task.CompletedTask, () => op.Root, () => false);
++        _bridgeSession.Track(op.Owner, Task.CompletedTask, Task.CompletedTask, () => op.Primary, () => false);
+         _bridgeSession.OnRelease(() => { op.Close(); if (ReferenceEquals(_treasureOperation, op)) _treasureOperation = null; });
+         var lifetime = new TaskCompletionSource();
+         SelectionOwners.BeginContinuation(scene, op.Owner, lifetime.Task, () => TreasureCollectionReady(op));
+@@ -214,6 +234,7 @@ public static partial class McpMod
+         if (picking && index.HasValue && !TreasureOperation.ClaimInput(Time.GetTicksMsec(), (ulong)GetInstanceFieldValue(op.Collection, "_openedTicks")!))
+             throw new NotSupportedException("treasure_anti_click_guard");
+         if (picking && !index.HasValue && op.Skip?.IsCompletedSuccessfully != true) throw new NotSupportedException("treasure_skip_not_ready");
++        if (picking && !index.HasValue && !TreasureSkipReceipt(op, false)) throw new NotSupportedException("treasure_skip_state_unverified");
+         var session = _bridgeSession;
+         int receipts = 0;
+         void Enqueued(GameAction action)
+@@ -226,7 +247,19 @@ public static partial class McpMod
+                     throw new NotSupportedException("treasure_pick_receipt_unverified");
+                 bool canceled = false;
+                 void Canceled(GameAction source) { if (ReferenceEquals(source, pick)) canceled = true; }
+-                void Finished(GameAction source) { if (ReferenceEquals(source, pick)) op.Executing = false; }
++                void Finished(GameAction source)
++                {
++                    if (!ReferenceEquals(source, pick)) return;
++                    op.Executing = false;
++                    if (index.HasValue) return;
++                    // Native Execute publishes _executionTask completion and CompletionTask before AfterFinished; OnPicked(null) has already stored the flag.
++                    try
++                    {
++                        if (pick.State != GameActionState.Finished || !TreasureSkipReceipt(op, true)) throw new NotSupportedException("treasure_local_skip_receipt_unverified");
++                        op.BeginLocalSkip(pick);
++                    }
++                    catch { op.Fail("treasure_local_skip_receipt_unverified"); }
++                }
+                 pick.BeforeCancelled += Canceled; pick.AfterFinished += Finished;
+                 session.OnRelease(() => { pick.BeforeCancelled -= Canceled; pick.AfterFinished -= Finished; });
+                 Task? joined = null;
+@@ -248,7 +281,7 @@ public static partial class McpMod
+             using var selection = SelectionOwners.Enter(op.Owner);
+             using var scope = TreasureScopes.Enter(new TreasureScope(op, Proceed: proceed));
+             control.ForceClick(); // Native holder PickRelic or actual OnProceedButtonPressed subscription.
+-            if (picking && receipts != 1 || proceed && op.Proceed == null) throw new NotSupportedException("treasure_choice_receipt_missing");
++            if (picking && receipts != 1 || proceed && op.Proceed == null || picking && !index.HasValue && !op.LocalSkip) throw new NotSupportedException("treasure_choice_receipt_missing");
+             SelectionOwners.RenewContinuation(op.Scene, op.Owner);
+             return true;
+         }
+@@ -289,8 +322,7 @@ public static partial class McpMod
+         if (op.Pick == null)
+         {
+             var relics = (RelicModel[])op.Relics;
+-            var current = RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics;
+-            if (current == null || current.Count != relics.Length || current.Where((r, i) => !ReferenceEquals(r, relics[i])).Any()
++            if (!TreasureRelicsCurrent(RunManager.Instance.TreasureRoomRelicSynchronizer.CurrentRelics, relics)
+                 || GetInstanceFieldValue(collection, "_holdersInUse") is not List<NTreasureRoomRelicHolder> holders
+                 || op.Holders == null || holders.Count != op.Holders.Length || holders.Where((h, i) => !ReferenceEquals(h, op.Holders[i])).Any())
+                 throw new NotSupportedException("treasure_collection_generation_changed");
+diff --git a/mod/STS2MCP/TreasureOperation.cs b/mod/STS2MCP/TreasureOperation.cs
+index 1307b0b..902e277 100644
+--- a/mod/STS2MCP/TreasureOperation.cs
++++ b/mod/STS2MCP/TreasureOperation.cs
+@@ -16,6 +16,10 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     internal object? Pick, ObtainedRelic;
+     internal object[]? Holders;
+     internal bool MapOpened, OnlyProceed;
++    // Native singleplayer Skip (v0.111 TreasureRoomRelicSynchronizer.OnPicked, null index, Players.Count == 1) sets _singleplayerSkipped and
++    // returns: no RelicsAwarded, so AnimateRelicAwards never completes Began/Finished and OpenChest stays parked at await RelicPickingBegan()
++    // until TreasureRoom.Exit -> OnRoomExited -> EndRelicVoting. Only the exact pick's AfterFinished receipt may enter this lane.
++    internal bool LocalSkip;
+     internal int? Index;
+     internal bool Executing, AwardsEntered, ObtainEntered, Closed;
+     internal volatile bool ExpectedSkipCancellation;
+@@ -33,6 +37,18 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     internal static void RequireFresh(bool opened, int count, bool began, bool finished)
+     { if (opened || count <= 0 || began || finished) throw new NotSupportedException("treasure_empty_or_reopened_unverified"); }
+     internal void Check()
++    {
++        CheckTasks();
++        if (LocalSkip)
++        {
++            if (AwardsEntered || ObtainEntered || Awards != null || Obtain != null || Began.IsCompleted || Finished.IsCompleted || Root?.IsCompleted == true)
++                throw new NotSupportedException("treasure_local_skip_contract_violated");
++        }
++        else if (PickWork?.Invoke()?.IsCompletedSuccessfully == true && !AwardsEntered
++            || Awards?.IsCompletedSuccessfully == true && (!Began.IsCompletedSuccessfully || !Finished.IsCompletedSuccessfully || Index.HasValue && !ObtainEntered))
++            throw new NotSupportedException("treasure_gameplay_receipt_missing");
++    }
++    private void CheckTasks()
+     {
+         if (Failure != null || Closed) throw new NotSupportedException(Failure ?? "treasure_owner_closed");
+         foreach (var task in new[] { Root, Awards, Obtain, Proceed, PickWork?.Invoke(), Began, Finished }.Concat(_offers.Values).Concat(_children.Select(get => get())))
+@@ -46,10 +62,20 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+             throw new NotSupportedException("treasure_skip_cancel_unverified");
+         if (Skip?.IsFaulted == true || Skip?.IsCanceled == true && !ownedCancellation)
+         { _ = Skip.Exception; throw new NotSupportedException("treasure_skip_task_failed"); }
+-        if (PickWork?.Invoke()?.IsCompletedSuccessfully == true && !AwardsEntered
+-            || Awards?.IsCompletedSuccessfully == true && (!Began.IsCompletedSuccessfully || !Finished.IsCompletedSuccessfully || Index.HasValue && !ObtainEntered))
+-            throw new NotSupportedException("treasure_gameplay_receipt_missing");
+     }
++    // Exact null-index pick whose original CompletionTask/_executionTask finished before any awards; the caller has read the native flag.
++    internal void BeginLocalSkip(object action)
++    {
++        CheckTasks();
++        if (LocalSkip || Pick == null || !ReferenceEquals(action, Pick) || Index.HasValue || AwardsEntered || ObtainEntered || Awards != null || Obtain != null
++            || Began.IsCompleted || Finished.IsCompleted || Root == null || Root.IsCompleted || Skip?.IsCompletedSuccessfully != true
++            || SkipToken.IsCancellationRequested || PickWork?.Invoke()?.IsCompletedSuccessfully != true)
++            throw new NotSupportedException("treasure_local_skip_receipt_unverified");
++        LocalSkip = true;
++    }
++    // The session's execution barrier: the parked root can never complete in the local skip lane, so the exact pick work is primary there.
++    // Root stays retained and fault/cancel/completion-checked by Check() through the Proceed and map receipts.
++    internal Task? Primary => LocalSkip ? PickWork?.Invoke() : Root;
+     internal CancellationTokenRegistration RegisterSkipCancellation(CancellationToken token)
+     {
+         Check();
+@@ -82,7 +108,7 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     internal void BeginAwards(object action, object collection)
+     {
+         Check();
+-        if (!ReferenceEquals(action, Pick) || !ReferenceEquals(collection, Collection) || !Executing || AwardsEntered)
++        if (!ReferenceEquals(action, Pick) || !ReferenceEquals(collection, Collection) || !Executing || AwardsEntered || LocalSkip)
+             throw new NotSupportedException("treasure_awards_unowned");
+         AwardsEntered = true;
+         _awardsRegistered = true; // Release-publish only after exact pick/collection/execution validation.
+@@ -99,7 +125,7 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     internal void BeginOffer(object set)
+     {
+         Check();
+-        if (_offers.Values.Any(t => t?.IsCompletedSuccessfully != true) || !_offers.TryAdd(set, null))
++        if (LocalSkip || _offers.Values.Any(t => t?.IsCompletedSuccessfully != true) || !_offers.TryAdd(set, null))
+             throw new NotSupportedException("nested_treasure_offer_unverified");
+     }
+     internal void AttachOffer(object set, Task task)
+@@ -120,6 +146,9 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     internal bool GameplayDone()
+     {
+         Check();
++        if (LocalSkip)
++            return PickWork?.Invoke()?.IsCompletedSuccessfully == true && Skip?.IsCompletedSuccessfully == true
++                && _offers.Values.All(t => t?.IsCompletedSuccessfully == true) && ChildrenDone;
+         return Root?.IsCompletedSuccessfully == true && Pick != null && PickWork?.Invoke()?.IsCompletedSuccessfully == true
+             && Awards?.IsCompletedSuccessfully == true && Finished.IsCompletedSuccessfully
+             && (Index.HasValue ? ObtainEntered && Obtain?.IsCompletedSuccessfully == true : !ObtainEntered)
+@@ -131,7 +160,8 @@ internal sealed class TreasureOperation(object owner, object run, object room, o
+     {
+         Check();
+         return _screens.Count == 0 && _offers.Values.All(t => t?.IsCompletedSuccessfully == true) && ChildrenDone
+-            && (Pick == null ? Root != null && Skip != null && !Began.IsCompleted : GameplayDone());
++            // Claim becomes clickable before native EnableSkipAfterDelay completes; do not publish a temporary singleton.
++            && (Pick == null ? Root != null && Skip?.IsCompletedSuccessfully == true && !Began.IsCompleted : GameplayDone());
+     }
+     internal bool Poll()
+     {
+diff --git a/mod/STS2MCP/tests/check-bridge.sh b/mod/STS2MCP/tests/check-bridge.sh
+index a690ff1..fe0efac 100644
+--- a/mod/STS2MCP/tests/check-bridge.sh
++++ b/mod/STS2MCP/tests/check-bridge.sh
+@@ -302,11 +302,35 @@ void CheckTreasureReceipts()
+     var registryType = assembly.GetType("STS2_MCP.SelectionOwnership", true)!;
+     bool Reject(Action f) { try { f(); return false; } catch (TargetInvocationException e) when (e.InnerException is NotSupportedException) { return true; } }
+     void Set(object op, string field, object? value) => type!.GetField(field, flags)!.SetValue(op, value);
++    object? Get(object op, string field) => type!.GetField(field, flags)!.GetValue(op);
+     foreach (ulong elapsed in new ulong[] { 0, 199, 200, 201, 400 })
+         Check((bool)Call(type!, null, "ClaimInput", 1000UL + elapsed, 1000UL)! == (elapsed > 200), "native anti-click guard is strict input validation, not completion");
+     foreach (var state in new[] { (false, 1, false, false), (true, 1, false, false), (false, 0, false, false), (false, 1, true, false), (false, 1, false, true) })
+         Check(Reject(() => Call(type!, null, "RequireFresh", state.Item1, state.Item2, state.Item3, state.Item4))
+             == (state.Item1 || state.Item2 == 0 || state.Item3 || state.Item4), "empty/reopened/completed collection cannot be adopted");
++    foreach (string outcome in new[] { "success", "fault", "cancel" })
++    {
++        var registry = Activator.CreateInstance(registryType, true)!;
++        var root = new TaskCompletionSource(); var began = new TaskCompletionSource(); var skip = new TaskCompletionSource();
++        var op = Activator.CreateInstance(type!, flags, null, new object[] { new object(), new object(), new object(), new object(), new object(), new object(), new object(), began.Task, new TaskCompletionSource().Task, registry }, null)!;
++        Call(type!, op, "BindRoot", root.Task); Call(type!, op, "BindSkip", skip.Task);
++        Check((bool)Call(type!, null, "ClaimInput", 1500UL, 1000UL)!, "relic anti-click delay can finish before native Skip becomes available");
++        Check(!(bool)Call(type!, op, "RoomReady")!, "treasure whole-choice readiness waits for native Skip task, not merely its registration");
++        if (outcome == "success")
++        {
++            skip.SetResult();
++            Check((bool)Call(type!, op, "RoomReady")! && !root.Task.IsCompleted, "complete treasure choices become available while the owned chest root awaits selection");
++            began.SetResult();
++            Check(!(bool)Call(type!, op, "RoomReady")!, "begun picking cannot reopen the unpicked treasure decision");
++        }
++        else
++        {
++            if (outcome == "fault") skip.SetException(new Exception("skip")); else skip.SetCanceled();
++            Check(Reject(() => Call(type!, op, "RoomReady")), "Skip failure does not expose a claim-only fallback: " + outcome);
++            root.SetResult();
++            Check(Reject(() => Call(type!, op, "RoomReady")), "later chest completion cannot hide Skip failure: " + outcome);
++        }
++    }
+     foreach (string branch in new[] { "claim", "skip", "obtain_fault", "obtain_cancel", "awards_fault", "awards_cancel", "unexpected_cancel", "duplicate", "foreign" })
+     {
+         object owner = new(), run = new(), room = new(), scene = new(), player = new(), collection = new(), action = new();
+@@ -346,6 +370,80 @@ void CheckTreasureReceipts()
+         Call(type!, op, "Close");
+         Check(Reject(() => Call(type!, op, "RoomReady")), "closed owner cannot leave orphan room permission");
+     }
++    // Native singleplayer Skip lane (sts2 TreasureRoomRelicSynchronizer.OnPicked null index, Players.Count == 1): the PickRelicAction
++    // finishes synchronously inside the click with _singleplayerSkipped set and no RelicsAwarded, so AnimateRelicAwards never runs,
++    // Began/Finished never complete and the OpenChest root stays parked at await RelicPickingBegan(). Live halt 2026-09-21: Check()
++    // refused that completed pick as treasure_gameplay_receipt_missing inside RewardProceedPrefix.
++    var sessionType = assembly.GetType("STS2_MCP.BridgeSession", true)!;
++    var localSkipReceipt = type!.GetMethod("BeginLocalSkip", flags);
++    foreach (string lane in new[] { "release", "no_receipt", "pending_pick", "pick_fault", "foreign_receipt", "indexed_receipt", "late_receipt", "duplicate_receipt",
++        "awards_after", "offer_after", "root_fault", "root_cancel", "root_complete", "skip_cancel", "proceed_fault", "proceed_cancel", "child_pending" })
++    {
++        object owner = new(), collection = new(), pick = new(), player = new();
++        var registry = Activator.CreateInstance(registryType, true)!;
++        var began = new TaskCompletionSource(); var finished = new TaskCompletionSource(); var root = new TaskCompletionSource();
++        var skip = new TaskCompletionSource(); var pickWork = new TaskCompletionSource();
++        var op = Activator.CreateInstance(type!, flags, null, new object[] { owner, new object(), new object(), new object(), player, collection, new object(), began.Task, finished.Task, registry }, null)!;
++        Call(type!, op, "BindRoot", root.Task); Call(type!, op, "BindSkip", skip.Task); skip.SetResult();
++        using var cts = new CancellationTokenSource(); Set(op, "SkipToken", cts.Token);
++        using var registration = cts.Token.Register(() => Call(type!, op, "CancelObserved"));
++        var session = Activator.CreateInstance(sessionType, true)!;
++        bool Pending() => (bool)sessionType.GetProperty("Pending", flags)!.GetValue(session)!;
++        string? Failure() => (string?)sessionType.GetProperty("Failure", flags)!.GetValue(session);
++        var version = Call(sessionType, session, "Observe", "owned treasure");
++        Call(sessionType, session, "Accept", version, "proceed", new[] { "proceed" });
++        var primary = type!.GetProperty("Primary", flags);
++        Call(sessionType, session, "Track", owner, Task.CompletedTask, Task.CompletedTask, (Func<Task?>)(() => (Task?)(primary?.GetValue(op) ?? Get(op, "Root"))), (Func<bool>)(() => false));
++        Call(sessionType, session, "HoldUntil", (Func<bool>)(() => (bool)Call(type!, op, "Poll")!));
++        Call(sessionType, session, "OnRelease", (Action)(() => Call(type!, op, "Close")));
++        int? index = lane == "indexed_receipt" ? 0 : null;
++        Call(type!, op, "BindPick", pick, index, (Func<Task?>)(() => pickWork.Task)); Set(op, "Executing", true);
++        if (lane == "late_receipt") began.SetResult(); // Awards began first: this is the claim/multiplayer lane, never a local skip.
++        if (lane == "pick_fault") pickWork.SetException(new Exception("pick")); else if (lane != "pending_pick") pickWork.SetResult();
++        Set(op, "Executing", false); // Native AfterFinished follows _executionTask completion and CompletionTask TrySetResult.
++        bool admit = lane is not ("no_receipt" or "pending_pick" or "pick_fault" or "foreign_receipt" or "indexed_receipt" or "late_receipt");
++        bool refusedReceipt = lane != "no_receipt" && localSkipReceipt != null
++            && Reject(() => localSkipReceipt.Invoke(op, new object?[] { lane == "foreign_receipt" ? new object() : pick }));
++        Check(localSkipReceipt == null || lane == "no_receipt" || refusedReceipt == !admit, "native local-skip receipt admits only the exact null-index pick whose original work finished successfully before any awards: " + lane);
++        if (!admit)
++        {
++            if (lane != "pending_pick") Check(Reject(() => Call(type!, op, "Check")), "completed pick without awards or receipt still refuses: " + lane);
++            if (lane == "pending_pick") { Check(!(bool)Call(type!, op, "Poll")!, "pending original pick work cannot release"); pickWork.SetResult(); }
++            Call(type!, op, "Fail", "treasure_local_skip_receipt_unverified"); // Production callback latches every refused receipt.
++            Call(sessionType, session, "Refresh");
++            Check(Failure() != null && Pending(), "refused receipt stays latched: " + lane);
++            continue;
++        }
++        Check(!Reject(() => Call(type!, op, "Check")), "production Check accepts the receipted singleplayer skip whose pick finished with no awards (live treasure_gameplay_receipt_missing)");
++        Check(!root.Task.IsCompleted && ReferenceEquals(primary!.GetValue(op), pickWork.Task), "receipted local skip makes the exact pick work primary while the parked root stays retained");
++        if (lane == "duplicate_receipt") { Check(Reject(() => localSkipReceipt!.Invoke(op, new object?[] { pick })), "duplicate local-skip receipt refused"); continue; }
++        Check(Reject(() => Call(type!, op, "BeginAwards", pick, collection)) && Reject(() => Call(type!, op, "BeginOffer", new object())),
++            "receipted local skip acquires no awards/offer capability");
++        if (lane == "awards_after") { began.SetResult(); Check(Reject(() => Call(type!, op, "Poll")), "awards beginning after a local skip violates the native contract"); continue; }
++        if (lane == "offer_after") { Check(Reject(() => Call(type!, op, "BeginOffer", new object())), "offers after a local skip refused"); Check(!Reject(() => Call(type!, op, "Check")), "refused offer does not fault the owner"); continue; }
++        if (lane == "child_pending") { var child = new TaskCompletionSource(); Call(type!, op, "AddChild", child.Task); Set(op, "Proceed", Task.CompletedTask); Set(op, "MapOpened", true);
++            Call(sessionType, session, "Refresh"); Check(Pending() && Failure() == null, "pending child work holds a receipted local skip"); child.SetResult(); Call(sessionType, session, "Refresh"); Check(!Pending(), "child completion releases"); continue; }
++        Call(sessionType, session, "Refresh");
++        Check(Pending() && Failure() == null, "receipted local skip does not release before the exact Proceed receipt");
++        if (lane == "proceed_fault") Set(op, "Proceed", Task.FromException(new Exception("proceed")));
++        else if (lane == "proceed_cancel") Set(op, "Proceed", Task.FromCanceled(new CancellationToken(true)));
++        else Set(op, "Proceed", Task.CompletedTask);
++        Call(sessionType, session, "Refresh");
++        if (lane.StartsWith("proceed_")) { Check(Failure() != null && Pending(), "Proceed failure refused after local skip: " + lane); continue; }
++        Check(Pending() && Failure() == null, "receipted local skip does not release before the exact map receipt");
++        Set(op, "MapOpened", true);
++        if (lane == "root_fault") Set(op, "Root", Task.FromException(new Exception("root")));
++        else if (lane == "root_cancel") Set(op, "Root", Task.FromCanceled(new CancellationToken(true)));
++        else if (lane == "root_complete") root.SetResult();
++        else if (lane == "skip_cancel") cts.Cancel();
++        Call(sessionType, session, "Refresh");
++        if (lane == "release")
++        {
++            Check(!Pending() && Failure() == null && !root.Task.IsCompleted && (bool)type!.GetField("Closed", flags)!.GetValue(op)!,
++                "exact pick, Proceed and map receipts release the singleplayer skip while the native root stays parked");
++        }
++        else Check(Failure() != null && Pending(), "parked-root lane keeps original root/skip failure evidence: " + lane);
++    }
+     {
+         var registry = Activator.CreateInstance(registryType, true)!;
+         var op = Activator.CreateInstance(type!, flags, null, new object[] { new object(), new object(), new object(), new object(), new object(), new object(), new object(), new TaskCompletionSource().Task, new TaskCompletionSource().Task, registry }, null)!;
+@@ -1979,6 +2077,14 @@ if (args.Length > 1)
+     var nativeRestRoom = game.GetType("MegaCrit.Sts2.Core.Nodes.Rooms.NRestSiteRoom", true)!;
+     List<MethodBase> NativeStateMachineCalls(Type type, string method) => type.GetNestedTypes(flags).Where(t => t.Name.StartsWith("<" + method + ">"))
+         .SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly)).Where(m => m.Name == "MoveNext").SelectMany(CalledBy).ToList();
++    var skipEnableCalls = NativeStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Nodes.Rooms.NTreasureRoom", true)!, "EnableSkipAfterDelay");
++    Check(skipEnableCalls.FindIndex(m => m.Name == "Wait") >= 0
++        && skipEnableCalls.FindIndex(m => m.Name == "Enable") > skipEnableCalls.FindIndex(m => m.Name == "Wait")
++        && skipEnableCalls.FindIndex(m => m.Name == "SetResult") > skipEnableCalls.FindIndex(m => m.Name == "Enable")
++        && CalledMethods("TreasureCollectionReady").Any(m => m.Name == "RoomReady")
++        && CalledMethods("AddTreasureActions").Any(m => m.Name == "TreasureCollectionReady")
++        && CalledMethods("DispatchTreasurePick").Any(m => m.Name == "TreasureCollectionReady"),
++        "captured native Skip task enables the alternative before completion; both observation and dispatch use the shared treasure readiness gate");
+     var restReady = CalledBy(nativeRestButton.GetMethod("_Ready", flags)!);
+     var animateIn = NativeStateMachineCalls(nativeRestButton, "AnimateIn");
+     Check(restReady.Any(m => m.Name == "set_Modulate") && restReady.Any(m => m.Name == "AnimateIn") && restReady.Any(m => m.Name == "RunSafely")
+@@ -2030,6 +2136,40 @@ if (args.Length > 1)
+         .Concat(t.GetConstructors(flags | BindingFlags.DeclaredOnly))).Where(m => m.GetMethodBody() != null);
+     Check(NativeMethods(nativeRestButton).Concat(NativeMethods(nativeRestRoom)).Count(m => CalledBy(m).Any(c => c.Name == "set_MouseFilter")) == 1,
+         "AnimateIn's tail is the only rest button/room mouse-filter write, so Ignore means the fade has not finished");
++    // Pinned native singleplayer Skip lane (metadata/IL only): OnPicked(null) stores _singleplayerSkipped after the single-player count test and
++    // returns before any vote/AwardRelics; only AnimateRelicAwards completes the collection's Began/Finished sources; OpenChest awaits
++    // RelicPickingBegan; OnRoomExited -> EndRelicVoting is the only reset. Execute publishes CompletionTask before AfterFinished.
++    var nativeSynchronizer = game.GetType("MegaCrit.Sts2.Core.Multiplayer.Game.TreasureRoomRelicSynchronizer", true)!;
++    var nativeCollection = game.GetType("MegaCrit.Sts2.Core.Nodes.Screens.TreasureRoomRelic.NTreasureRoomRelicCollection", true)!;
++    var onPicked = Operands(nativeSynchronizer.GetMethod("OnPicked", flags)!);
++    int skipStore = onPicked.FindIndex(o => o is FieldInfo f && f.Name == "_singleplayerSkipped");
++    int awardRelics = onPicked.FindIndex(o => o is MethodBase m && m.Name == "AwardRelics");
++    Check(skipStore > onPicked.FindIndex(o => o is MethodBase m && m.Name == "get_Count") && awardRelics > skipStore
++        && onPicked[skipStore - 2].Equals(OpCodes.Ldc_I4_1) && onPicked[skipStore - 1].Equals(OpCodes.Stfld) && onPicked[skipStore + 1].Equals(OpCodes.Ret)
++        && CalledBy(nativeSynchronizer.GetMethod("SkipRelicLocally", flags)!).Any(m => m.Name == "PickRelicLocally")
++        && CalledBy(game.GetType("MegaCrit.Sts2.Core.GameActions.PickRelicAction", true)!.GetMethod("ExecuteAction", flags)!).Any(m => m.Name == "OnPicked")
++        && CalledBy(nativeSynchronizer.GetMethod("OnRoomExited", flags)!).Any(m => m.Name == "EndRelicVoting")
++        && Operands(nativeSynchronizer.GetMethod("EndRelicVoting", flags)!).OfType<FieldInfo>().Any(f => f.Name == "_singleplayerSkipped")
++        && NativeMethods(nativeSynchronizer).Count(m => Operands(m).OfType<FieldInfo>().Any(f => f.Name == "_singleplayerSkipped")) == 3
++        && NativeMethods(nativeCollection).Count(m => CalledBy(m).Any(c => c.Name == "SetResult" && c.DeclaringType == typeof(TaskCompletionSource))) == 1
++        && NativeStateMachineCalls(nativeCollection, "AnimateRelicAwards").Any(m => m.Name == "SetResult" && m.DeclaringType == typeof(TaskCompletionSource))
++        && NativeStateMachineCalls(game.GetType("MegaCrit.Sts2.Core.Nodes.Rooms.NTreasureRoom", true)!, "OpenChest").Any(m => m.Name == "RelicPickingBegan")
++        && gameActionExecute.FindIndex(o => o is FieldInfo f && f.Name == "AfterFinished") > gameActionExecute.FindIndex(o => o is MethodBase m && m.Name == "TrySetResult"),
++        "singleplayer Skip: OnPicked(null) sets _singleplayerSkipped and returns without awards; AnimateRelicAwards alone completes Began/Finished; OpenChest awaits RelicPickingBegan; AfterFinished follows CompletionTask");
++    var skipReceiptCallback = bridge.GetNestedTypes(flags).SelectMany(t => t.GetMethods(flags | BindingFlags.DeclaredOnly))
++        .Single(m => m.Name.Contains("<DispatchTreasurePick>g__Finished|"));
++    var skipReceiptBody = Operands(skipReceiptCallback);
++    Check(skipReceiptBody.OfType<MethodBase>().Any(m => m.Name == "BeginLocalSkip") && skipReceiptBody.OfType<MethodBase>().Any(m => m.Name == "TreasureSkipReceipt")
++        && skipReceiptBody.OfType<MethodBase>().Any(m => m.Name == "get_State" && m.DeclaringType == nativeGameAction)
++        && Operands(bridge.GetMethod("TreasureSkipReceipt", flags)!).OfType<string>().Contains("_singleplayerSkipped")
++        && CalledMethods("TreasureSkipReceipt").Any(m => m.Name == "TreasureIdentityCurrent") && CalledMethods("TreasureSkipReceipt").Any(m => m.Name == "TreasureRelicsCurrent")
++        && CalledMethods("TreasureSkipReceipt").All(m => m.Name != "Check" && m.Name != "RequireTreasureIdentity")
++        && CalledMethods("RequireTreasureIdentity").Any(m => m.Name == "Check") && CalledMethods("RequireTreasureIdentity").Any(m => m.Name == "TreasureIdentityCurrent")
++        && CalledInClosures("DispatchTreasurePick").All(m => m.Name != "RequireTreasureIdentity")
++        && CalledMethods("AddTreasureActions").Any(m => m.Name == "TreasureRelicsCurrent")
++        && CalledMethods("DispatchTreasurePick").Any(m => m.Name == "TreasureSkipReceipt") && Operands(bridge.GetMethod("DispatchTreasurePick", flags)!).OfType<FieldInfo>().Any(f => f.Name == "LocalSkip")
++        && CalledInClosures("DispatchTreasureOpen").Any(m => m.Name == "get_Primary"),
++        "compiled skip dispatch reads the native flag false before the click, admits the lane only from the exact pick's AfterFinished via BeginLocalSkip, and tracks Primary");
+     Check(CalledBy(nativeRestButton.GetMethod("get_Hotkeys", flags)!).Any(m => m.Name == "Empty" && m.DeclaringType == typeof(Array)),
+         "rest buttons have no hotkeys: the Ignore window is not a hotkey-accessible choice");
+     Check(NativeStateMachineCalls(nativeRestRoom, "AfterSelectingOptionAsync").Any(m => m.Name == "UpdateRestSiteOptions")

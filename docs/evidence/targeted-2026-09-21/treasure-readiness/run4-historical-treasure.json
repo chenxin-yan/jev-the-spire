@@ -1,0 +1,77 @@
+{
+  "source": "docs/evidence/autonomous-2026-09-20/run-4/run-4.jsonl",
+  "source_sha256": "fb5cddb021b6cb6907343d96d11b48deb6cd8979cf7d875d3463cd417d986b76",
+  "records": [
+    {
+      "type": "decision",
+      "ts": "2026-09-21T00:29:37.107Z",
+      "state_version": "43630b553cd442ecb688d074c3b832d1:273",
+      "state_type": "treasure",
+      "run": {
+        "act": 1,
+        "floor": 10,
+        "ascension": 0
+      },
+      "legal_actions": [
+        {
+          "label": "open_treasure",
+          "description": "Open visible chest"
+        }
+      ],
+      "source": "singleton_only",
+      "label": "open_treasure",
+      "probabilities": null,
+      "confidence": null,
+      "model_id": null
+    },
+    {
+      "type": "dispatch",
+      "ts": "2026-09-21T00:29:37.148Z",
+      "state_version": "43630b553cd442ecb688d074c3b832d1:273",
+      "label": "open_treasure",
+      "http_status": 202,
+      "body": {
+        "status": "dispatched",
+        "state_version": "43630b553cd442ecb688d074c3b832d1:273",
+        "label": "open_treasure"
+      },
+      "latency_ms": 41
+    },
+    {
+      "type": "decision",
+      "ts": "2026-09-21T00:29:38.315Z",
+      "state_version": "43630b553cd442ecb688d074c3b832d1:275",
+      "state_type": "treasure",
+      "run": {
+        "act": 1,
+        "floor": 10,
+        "ascension": 0
+      },
+      "legal_actions": [
+        {
+          "label": "claim_treasure_relic:0",
+          "description": "Take Regal Pillow"
+        }
+      ],
+      "source": "singleton_only",
+      "label": "claim_treasure_relic:0",
+      "probabilities": null,
+      "confidence": null,
+      "model_id": null
+    },
+    {
+      "type": "dispatch",
+      "ts": "2026-09-21T00:29:38.356Z",
+      "state_version": "43630b553cd442ecb688d074c3b832d1:275",
+      "label": "claim_treasure_relic:0",
+      "http_status": 202,
+      "body": {
+        "status": "dispatched",
+        "state_version": "43630b553cd442ecb688d074c3b832d1:275",
+        "label": "claim_treasure_relic:0"
+      },
+      "latency_ms": 41
+    }
+  ],
+  "qualification": "Run4 had no bridge halt but its RegalPillow claim was singleton_only, not a Jev inference. Later targetedQA proves the pre-Skip readiness window was marked complete. Preserve historical counts/rawlog; do not treat run4 as evidence that treasure choice completeness was correct."
+}
