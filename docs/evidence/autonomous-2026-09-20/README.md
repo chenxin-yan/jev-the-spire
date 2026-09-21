@@ -96,7 +96,17 @@ Final parent gates: warning-free native build, **2,831 actual-DLL checks**, **57
 
 After closing the game and verifying no process/listener, parent atomically installed candidate **`257294dd1be62a0b7ae85820ca5479a6d0d54bf9f76a764aaf50063fbaa0ab13`** at **2026-09-21 00:23:20.927933 UTC**, source `9fd5b40`, build revision `7b58630`. Native `sts2.dll` identity was unchanged. Prior installed `37157f73…` and candidate binaries are backed up under `/tmp/jev-autonomous-2026-09-20/installation-3/`; only the receipt, not binaries, is archived here.
 
-Parent launched through Steam, verified **Profile 2 / one mod**, and abandoned the previously failed run through the native menu (game records a loss; evidence retains the technical failure). Continue was not used. A fresh **Standard Ironclad A0** run initialized seed **`3GS28H63P9HY`**, epoch `43630b553cd442ecb688d074c3b832d1`, at Neow with 80/80 HP, 99 gold and 10 cards. `run-4/run-4-opening.json` preserves the complete opening choice. Unlimited Jev process `proc_b135` is running; all gameplay choices remain Jev-owned. No repaired live lifecycle is claimed until observed.
+Parent launched through Steam, verified **Profile 2 / one mod**, and abandoned the previously failed run through the native menu (game records a loss; evidence retains the technical failure). Continue was not used. A fresh **Standard Ironclad A0** run initialized seed **`3GS28H63P9HY`**, epoch `43630b553cd442ecb688d074c3b832d1`, at Neow with 80/80 HP, 99 gold and 10 cards. `run-4/run-4-opening.json` preserves the complete opening choice. Unlimited Jev process `proc_b135` subsequently completed; all gameplay choices remained Jev-owned (except complete singletons).
+
+## Run 4: clean autonomous terminal outcome through the Act 1 boss
+
+Process `proc_b135` exited **0** after **176 dispatches, 122 inference attempts (121 successful choices), 55 forced singletons**, **392,409 input / 10,389 output tokens**, **471,629 ms**. All 176 decisions matched exactly one accepted POST on distinct versions. One SDK-invalid answer did not select a highest-probability option; the existing single re-ask recovered. No bridge halt or uncertain mutation retry occurred.
+
+Jev died to **Vantom at floor 17**. Terminal readback `:543` says **Vanquished**, complete legal set, no actions and no pending mutation; screenshot shows **0/80 HP, 206 gold, 13 cards**. This is a genuine terminal defeat, not a claim of winning capability.
+
+Four Rest choices completed at floors **8, 11, 13 and 16**, each with both Rest and Smith initially offered, followed by Proceed and map travel. The floor-8 readiness sequence withheld inputs at `:186`, exposed both choices at `:187`, accepted Rest, then Proceed at `:190` and map at `:193`. Later rest descriptions included the native **+15 HP from Regal Pillow**. Treasure open/take-Regal-Pillow/proceed, ordinary events, Scroll Boxes, combat, map and the boss fight also completed. Headbutt appeared as an offered bundle alternative, **not a played/resumed card**, so that notification supplies no repaired-resume evidence. Smith and shared-event live coverage remain unconfirmed.
+
+Evidence: `run-4/`; run accounting: `python3 docs/evidence/autonomous-2026-09-20/audit-run.py 4`. The user then narrowed the objective to bridge correctness only, no Jev strategy/prompt optimization, and explicitly approved separately labeled **targeted legal-action QA** for the remaining boundaries instead of open-ended autonomous runs. Run 4 was finished before that QA began; those host-selected tests must not be counted as Jev inference or autonomous gameplay.
 
 ## Remaining live checks
 

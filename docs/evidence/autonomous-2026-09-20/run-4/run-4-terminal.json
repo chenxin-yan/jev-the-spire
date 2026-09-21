@@ -1,0 +1,10 @@
+{
+  "state_type": "game_over",
+  "terminal": true,
+  "visible_text": "Vanquished\nContinue\nView Run\nA nap sounds good.",
+  "seed": "3GS28H63P9HY",
+  "legal_actions_complete": true,
+  "legal_actions": [],
+  "state_version": "43630b553cd442ecb688d074c3b832d1:543",
+  "mutation_pending": false
+}
