@@ -1,0 +1,177 @@
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+MethodName
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+PropertyName
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+SignalName
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<>c
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<PlayUnlockCharacterAnimation>d__47
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<StartNewMultiplayerRun>d__56
+NESTED MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen+<StartNewSingleplayerRun>d__55
+TYPE MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen
+PROP MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby Lobby get=MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby get_Lobby()
+PROP System.Collections.Generic.IEnumerable`1[System.String] AssetPaths get=System.Collections.Generic.IEnumerable`1[System.String] get_AssetPaths()
+PROP Godot.Control InitialFocusedControl get=Godot.Control get_InitialFocusedControl()
+PROP Boolean ShouldShowActDropdown get=Boolean get_ShouldShowActDropdown()
+PROP Godot.Control DefaultFocusedControl get=Godot.Control get_DefaultFocusedControl()
+PROP Boolean ClipContents get=Boolean get_ClipContents()
+PROP Godot.Vector2 CustomMinimumSize get=Godot.Vector2 get_CustomMinimumSize()
+PROP LayoutDirectionEnum LayoutDirection get=LayoutDirectionEnum get_LayoutDirection()
+PROP Int32 LayoutMode get=Int32 get_LayoutMode()
+PROP Int32 AnchorsPreset get=Int32 get_AnchorsPreset()
+PROP Single AnchorLeft get=Single get_AnchorLeft()
+PROP Single AnchorTop get=Single get_AnchorTop()
+PROP Single AnchorRight get=Single get_AnchorRight()
+PROP Single AnchorBottom get=Single get_AnchorBottom()
+PROP Single OffsetLeft get=Single get_OffsetLeft()
+PROP Single OffsetTop get=Single get_OffsetTop()
+PROP Single OffsetRight get=Single get_OffsetRight()
+PROP Single OffsetBottom get=Single get_OffsetBottom()
+PROP GrowDirection GrowHorizontal get=GrowDirection get_GrowHorizontal()
+PROP GrowDirection GrowVertical get=GrowDirection get_GrowVertical()
+PROP Godot.Vector2 Size get=Godot.Vector2 get_Size()
+PROP Godot.Vector2 Position get=Godot.Vector2 get_Position()
+PROP Godot.Vector2 GlobalPosition get=Godot.Vector2 get_GlobalPosition()
+PROP Single Rotation get=Single get_Rotation()
+PROP Single RotationDegrees get=Single get_RotationDegrees()
+PROP Godot.Vector2 Scale get=Godot.Vector2 get_Scale()
+PROP Godot.Vector2 PivotOffset get=Godot.Vector2 get_PivotOffset()
+PROP SizeFlags SizeFlagsHorizontal get=SizeFlags get_SizeFlagsHorizontal()
+PROP SizeFlags SizeFlagsVertical get=SizeFlags get_SizeFlagsVertical()
+PROP Single SizeFlagsStretchRatio get=Single get_SizeFlagsStretchRatio()
+PROP Boolean LocalizeNumeralSystem get=Boolean get_LocalizeNumeralSystem()
+PROP Boolean AutoTranslate get=Boolean get_AutoTranslate()
+PROP System.String TooltipText get=System.String get_TooltipText()
+PROP AutoTranslateModeEnum TooltipAutoTranslateMode get=AutoTranslateModeEnum get_TooltipAutoTranslateMode()
+PROP Godot.NodePath FocusNeighborLeft get=Godot.NodePath get_FocusNeighborLeft()
+PROP Godot.NodePath FocusNeighborTop get=Godot.NodePath get_FocusNeighborTop()
+PROP Godot.NodePath FocusNeighborRight get=Godot.NodePath get_FocusNeighborRight()
+PROP Godot.NodePath FocusNeighborBottom get=Godot.NodePath get_FocusNeighborBottom()
+PROP Godot.NodePath FocusNext get=Godot.NodePath get_FocusNext()
+PROP Godot.NodePath FocusPrevious get=Godot.NodePath get_FocusPrevious()
+PROP FocusModeEnum FocusMode get=FocusModeEnum get_FocusMode()
+PROP FocusBehaviorRecursiveEnum FocusBehaviorRecursive get=FocusBehaviorRecursiveEnum get_FocusBehaviorRecursive()
+PROP MouseFilterEnum MouseFilter get=MouseFilterEnum get_MouseFilter()
+PROP MouseBehaviorRecursiveEnum MouseBehaviorRecursive get=MouseBehaviorRecursiveEnum get_MouseBehaviorRecursive()
+PROP Boolean MouseForcePassScrollEvents get=Boolean get_MouseForcePassScrollEvents()
+PROP CursorShape MouseDefaultCursorShape get=CursorShape get_MouseDefaultCursorShape()
+PROP Godot.Node ShortcutContext get=Godot.Node get_ShortcutContext()
+PROP System.String AccessibilityName get=System.String get_AccessibilityName()
+PROP System.String AccessibilityDescription get=System.String get_AccessibilityDescription()
+PROP AccessibilityLiveMode AccessibilityLive get=AccessibilityLiveMode get_AccessibilityLive()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityControlsNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityControlsNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityDescribedByNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityDescribedByNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityLabeledByNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityLabeledByNodes()
+PROP Godot.Collections.Array`1[Godot.NodePath] AccessibilityFlowToNodes get=Godot.Collections.Array`1[Godot.NodePath] get_AccessibilityFlowToNodes()
+PROP Godot.Theme Theme get=Godot.Theme get_Theme()
+PROP Godot.StringName ThemeTypeVariation get=Godot.StringName get_ThemeTypeVariation()
+PROP Boolean Visible get=Boolean get_Visible()
+PROP Godot.Color Modulate get=Godot.Color get_Modulate()
+PROP Godot.Color SelfModulate get=Godot.Color get_SelfModulate()
+PROP Boolean ShowBehindParent get=Boolean get_ShowBehindParent()
+PROP Boolean TopLevel get=Boolean get_TopLevel()
+PROP ClipChildrenMode ClipChildren get=ClipChildrenMode get_ClipChildren()
+PROP Int32 LightMask get=Int32 get_LightMask()
+PROP UInt32 VisibilityLayer get=UInt32 get_VisibilityLayer()
+PROP Int32 ZIndex get=Int32 get_ZIndex()
+PROP Boolean ZAsRelative get=Boolean get_ZAsRelative()
+PROP Boolean YSortEnabled get=Boolean get_YSortEnabled()
+PROP TextureFilterEnum TextureFilter get=TextureFilterEnum get_TextureFilter()
+PROP TextureRepeatEnum TextureRepeat get=TextureRepeatEnum get_TextureRepeat()
+PROP Godot.Material Material get=Godot.Material get_Material()
+PROP Boolean UseParentMaterial get=Boolean get_UseParentMaterial()
+PROP Godot.NodePath _ImportPath get=Godot.NodePath get__ImportPath()
+PROP Godot.StringName Name get=Godot.StringName get_Name()
+PROP Boolean UniqueNameInOwner get=Boolean get_UniqueNameInOwner()
+PROP System.String SceneFilePath get=System.String get_SceneFilePath()
+PROP Godot.Node Owner get=Godot.Node get_Owner()
+PROP Godot.MultiplayerApi Multiplayer get=Godot.MultiplayerApi get_Multiplayer()
+PROP ProcessModeEnum ProcessMode get=ProcessModeEnum get_ProcessMode()
+PROP Int32 ProcessPriority get=Int32 get_ProcessPriority()
+PROP Int32 ProcessPhysicsPriority get=Int32 get_ProcessPhysicsPriority()
+PROP ProcessThreadGroupEnum ProcessThreadGroup get=ProcessThreadGroupEnum get_ProcessThreadGroup()
+PROP Int32 ProcessThreadGroupOrder get=Int32 get_ProcessThreadGroupOrder()
+PROP ProcessThreadMessagesEnum ProcessThreadMessages get=ProcessThreadMessagesEnum get_ProcessThreadMessages()
+PROP PhysicsInterpolationModeEnum PhysicsInterpolationMode get=PhysicsInterpolationModeEnum get_PhysicsInterpolationMode()
+PROP AutoTranslateModeEnum AutoTranslateMode get=AutoTranslateModeEnum get_AutoTranslateMode()
+PROP System.String EditorDescription get=System.String get_EditorDescription()
+PROP IntPtr NativeInstance get=IntPtr get_NativeInstance()
+FIELD MegaCrit.Sts2.addons.mega_text.MegaLabel _name
+FIELD Godot.Control _infoPanel
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _description
+FIELD MegaCrit.Sts2.addons.mega_text.MegaLabel _hp
+FIELD MegaCrit.Sts2.addons.mega_text.MegaLabel _gold
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _relicTitle
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _relicDescription
+FIELD Godot.TextureRect _relicIcon
+FIELD Godot.TextureRect _relicIconOutline
+FIELD MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectButton _selectedButton
+FIELD Godot.Control _charButtonContainer
+FIELD Godot.Control _bgContainer
+FIELD Godot.Control _readyAndWaitingContainer
+FIELD MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _backButton
+FIELD MegaCrit.Sts2.Core.Nodes.CommonUi.NBackButton _unreadyButton
+FIELD MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton _embarkButton
+FIELD MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NAscensionPanel _ascensionPanel
+FIELD MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NActDropdown _actDropdown
+FIELD MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel _actDropdownLabel
+FIELD MegaCrit.Sts2.Core.Nodes.Multiplayer.NRemoteLobbyPlayerContainer _remotePlayerContainer
+FIELD Godot.Control _characterUnlockAnimationBackstop
+FIELD MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectButton _randomCharacterButton
+FIELD Godot.Tween _infoPanelTween
+FIELD Godot.Vector2 _infoPanelPosFinalVal
+FIELD Boolean _delayEmbarkForCharacterSelect
+FIELD Godot.PackedScene _charSelectButtonScene
+FIELD MegaCrit.Sts2.Core.Nodes.Debug.IBootstrapSettings _settings
+FIELD MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby _lobby
+FIELD System.String _scenePath
+FIELD System.String _sceneCharSelectButtonPath = res://scenes/screens/char_select/char_select_button.tscn
+FIELD MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NSubmenuStack _stack
+FIELD Godot.Control _lastFocusedControl
+FIELD IntPtr NativePtr
+METHOD MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby get_Lobby()
+METHOD System.Collections.Generic.IEnumerable`1[System.String] get_AssetPaths()
+METHOD Godot.Control get_InitialFocusedControl()
+METHOD MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectScreen Create()
+METHOD Void _Ready()
+METHOD Void InitializeMultiplayerAsHost(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, Int32)
+METHOD Void InitializeMultiplayerAsClient(MegaCrit.Sts2.Core.Multiplayer.Game.INetGameService, MegaCrit.Sts2.Core.Multiplayer.Messages.Lobby.ClientLobbyJoinResponseMessage)
+METHOD Void CheckForMultiplayerAscensionPopup()
+METHOD Void InitializeSingleplayer()
+METHOD Void InitCharacterButtons()
+METHOD Void UpdateRandomCharacterVisibility()
+METHOD Void _Input(Godot.InputEvent)
+METHOD Void DebugUnlockAllCharacters()
+METHOD Void OnSubmenuOpened()
+METHOD System.Threading.Tasks.Task PlayUnlockCharacterAnimation(MegaCrit.Sts2.Core.Models.ModelId)
+METHOD Boolean get_ShouldShowActDropdown()
+METHOD Void OnSubmenuClosed()
+METHOD Void OnEmbarkPressed(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+METHOD Void _Process(Double)
+METHOD Void CleanUpLobby(Boolean, MegaCrit.Sts2.Core.Entities.Multiplayer.NetError)
+METHOD Void OnLocalCharacterChangedForRandom(MegaCrit.Sts2.Core.Models.CharacterModel)
+METHOD System.Threading.Tasks.Task StartNewSingleplayerRun(System.String, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ActModel])
+METHOD System.Threading.Tasks.Task StartNewMultiplayerRun(System.String, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ActModel])
+METHOD Void RemoteClientFailedToConnectToLocalHost(UInt64, MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo)
+METHOD Void SelectCharacter(MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NCharacterSelectButton, MegaCrit.Sts2.Core.Models.CharacterModel)
+METHOD Void OnAscensionPanelLevelChanged()
+METHOD Void OnUnreadyPressed(MegaCrit.Sts2.Core.Nodes.GodotExtensions.NButton)
+METHOD Void UpdateRichPresence()
+METHOD Void MaxAscensionChanged()
+METHOD Void PlayerConnected(MegaCrit.Sts2.Core.Entities.Multiplayer.StartRunLobbyPlayer)
+METHOD Void PlayerChanged(MegaCrit.Sts2.Core.Entities.Multiplayer.StartRunLobbyPlayer, Boolean)
+METHOD Void RefreshButtonSelectionForPlayer(MegaCrit.Sts2.Core.Entities.Multiplayer.StartRunLobbyPlayer)
+METHOD Void AscensionChanged()
+METHOD Void SeedChanged()
+METHOD Void ModifiersChanged()
+METHOD Void RemotePlayerDisconnected(MegaCrit.Sts2.Core.Entities.Multiplayer.StartRunLobbyPlayer)
+METHOD Void BeginRun(System.String, System.Collections.Generic.List`1[MegaCrit.Sts2.Core.Models.ActModel], System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.ModifierModel])
+METHOD Void LocalPlayerDisconnected(MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo)
+METHOD Void AfterInitialized()
+METHOD System.Collections.Generic.List`1[Godot.Bridge.MethodInfo] GetGodotMethodList()
+METHOD Boolean InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant ByRef)
+METHOD Boolean InvokeGodotClassStaticMethod(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant ByRef)
+METHOD Boolean HasGodotClassMethod(Godot.NativeInterop.godot_string_name ByRef)
+METHOD Boolean SetGodotClassPropertyValue(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.godot_variant ByRef)
+METHOD Boolean GetGodotClassPropertyValue(Godot.NativeInterop.godot_string_name ByRef, Godot.NativeInterop.godot_variant ByRef)
+METHOD System.Collections.Generic.List`1[Godot.Bridge.PropertyInfo] GetGodotPropertyList()
+METHOD Void SaveGodotObjectData(Godot.Bridge.GodotSerializationInfo)
+METHOD Void RestoreGodotObjectData(Godot.Bridge.GodotSerializationInfo)
+METHOD Void <OnEmbarkPressed>b__51_0()

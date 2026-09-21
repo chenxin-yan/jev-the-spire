@@ -1,0 +1,6 @@
+pck 3 4 5 1 flags 2 base 112 count 12450
+== scenes/rooms/treasure_room.tscn 11456 0
+   [node name="ProceedButton" parent="." instance=ExtResource("42_byu4k")]
+   [node name="SkipMultiplayerVoteContainer" parent="ProceedButton" instance=ExtResource("4_gfpvi")]
+== scenes/rooms/treasure_room/chest.tscn 1236 0
+== scenes/ui/treasure_relic_holder.tscn 3286 0

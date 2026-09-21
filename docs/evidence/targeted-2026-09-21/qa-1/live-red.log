@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/jev-targeted-2026-09-21/check-halt.py", line 6, in <module>
+    assert not s.get('halt_reason'), f"bridge correctness failure at {s['state_version']}: {s['halt_reason']}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: bridge correctness failure at 162f86c6714243b59889a77c368f733a:298: treasure_proceed_identity_unverified

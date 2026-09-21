@@ -1,0 +1,21 @@
+ 5 | const s=await observe(url,signal);
+ 6 | assert(s.legal_actions_complete && s.legal_actions.length>0 && !s.mutation_pending);
+ 7 | for (const [version,label] of [[s.state_version,'qa_nonexistent_action'],['qa_stale_version',s.legal_actions[0]!.label]]) {
+ 8 |  const result=await dispatch(url,version!,label!,signal);
+ 9 |  appendFileSync('/tmp/jev-targeted-2026-09-21/journal.jsonl',JSON.stringify({ts:new Date().toISOString(),actor:'parent_targeted_qa',type:'expected_rejection',state_version:version,label,...result})+'\n');
+10 |  assert.equal(result.status,409);
+             ^
+AssertionError: Expected values to be strictly equal:
+
+422 !== 409
+
+ generatedMessage: true,
+     actual: 422,
+   expected: 409,
+   operator: "strictEqual",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /private/tmp/jev-targeted-2026-09-21/negative.ts:10:9
+
+Bun v1.4.2 (macOS arm64)

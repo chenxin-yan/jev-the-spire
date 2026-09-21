@@ -1,0 +1,1 @@
+$ bunx --no-env-file tsc --noEmit

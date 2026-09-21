@@ -1,0 +1,5 @@
+Unhandled exception. System.Exception: production Check accepts the receipted singleplayer skip whose pick finished with no awards (live treasure_gameplay_receipt_missing)
+   at Program.<>c__DisplayClass0_0.<<Main>$>g__Check|0(Boolean passed, String message) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.5K0EvSuNeQ/Program.cs:line 17
+   at Program.<>c__DisplayClass0_0.<<Main>$>g__CheckTreasureReceipts|4() in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.5K0EvSuNeQ/Program.cs:line 407
+   at Program.<Main>$(String[] args) in /private/var/folders/zv/53kwgrd93cq06zm8sm3rps7m0000gn/T/tmp.5K0EvSuNeQ/Program.cs:line 465
+   at Program.<Main>(String[] args)
