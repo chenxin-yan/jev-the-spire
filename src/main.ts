@@ -8,7 +8,7 @@ import { handler } from "@crustjs/effect";
 import { Effect } from "effect";
 import { BRIDGE_URL, dispatch, observe } from "./bridge.ts";
 import { JEV_MODEL_ID, makeJevDecider } from "./jev.ts";
-import { type LoopDeps, runLoop, type Summary } from "./loop.ts";
+import { runLoopEffect } from "./loop.ts";
 
 // Crust's `number` type accepts "", 0, negatives and floats; the bound needs a positive safe integer.
 const parsePositiveInteger = (raw: string): number => {
@@ -17,21 +17,6 @@ const parsePositiveInteger = (raw: string): number => {
     throw new Error(`expected a positive integer, got ${JSON.stringify(raw)}`);
   }
   return value;
-};
-
-// Crust supplies no process AbortSignal; retain Ctrl-C cancellation through pending I/O and inference.
-const runWithInterrupt = async (deps: Omit<LoopDeps, "signal">): Promise<Summary> => {
-  const controller = new AbortController();
-  const onSigint = () => {
-    console.error("\nCtrl-C: stopping; no further dispatch");
-    controller.abort(new Error("SIGINT"));
-  };
-  process.once("SIGINT", onSigint);
-  try {
-    return await runLoop({ ...deps, signal: controller.signal });
-  } finally {
-    process.removeListener("SIGINT", onSigint);
-  }
 };
 
 // Unknown/missing flags and positionals are rejected by Crust before this action runs (exit 1).
@@ -46,7 +31,7 @@ const app = new Crust("jev")
     { name: "bridge", type: "string", default: BRIDGE_URL },
   )
   .action(
-    handler(({ flags, rawArgs }) =>
+    handler(({ flags, rawArgs, signal }) =>
       Effect.gen(function* () {
         // No raw passthrough: anything after `--` is a mistake, refused before any log or bridge I/O.
         if (rawArgs.length > 0)
@@ -62,8 +47,12 @@ const app = new Crust("jev")
           `bridge=${bridgeUrl} model=${JEV_MODEL_ID} max-actions=${maxActions ?? "unlimited"} log=${logPath}`,
         );
 
-        const summary = yield* Effect.promise(() =>
-          runWithInterrupt({
+        // Crust aborts `signal` on the first Ctrl-C (a second one force-quits); the loop stops through
+        // pending I/O and inference and never dispatches afterwards.
+        const onAbort = () => console.error("\nCtrl-C: stopping; no further dispatch");
+        signal.addEventListener("abort", onAbort, { once: true });
+        const summary = yield* Effect.ensuring(
+          runLoopEffect({
             observe: (signal) => observe(bridgeUrl, signal),
             dispatch: (stateVersion, label, signal) =>
               dispatch(bridgeUrl, stateVersion, label, signal),
@@ -71,13 +60,15 @@ const app = new Crust("jev")
             // Synchronous append: a failed write throws before any dispatch.
             log: (record) => appendFileSync(logPath, JSON.stringify(record) + "\n"),
             print: (line) => console.log(line),
+            signal,
             maxActions,
           }),
+          Effect.sync(() => signal.removeEventListener("abort", onAbort)),
         );
         // The summary is already logged and printed; only the exit status is decided here.
         if (summary.outcome === "terminal" || summary.outcome === "max_actions") return summary;
         // Ctrl-C is Effect interruption, which Crust reports silently as exit 130.
-        if (summary.halt_reason === "SIGINT") return yield* Effect.interrupt;
+        if (summary.outcome === "aborted") return yield* Effect.interrupt;
         return yield* Effect.fail(new Error(`${summary.outcome}: ${summary.halt_reason}`));
       }),
     ),

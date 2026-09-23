@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@ai-sdk/gateway": "4.0.87",
-    "@crustjs/core": "0.3.3",
-    "@crustjs/effect": "0.1.0",
+    "@crustjs/core": "0.3.5",
+    "@crustjs/effect": "0.1.1",
     "ai": "7.0.107",
     "effect": "4.0.0-rc.116"
   },

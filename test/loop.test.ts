@@ -1,8 +1,9 @@
 import { describe, expect, test } from "bun:test";
+import { Cause, Effect, Exit } from "effect";
 import { AiError } from "effect/unstable/ai";
 import type { DispatchResult, Snapshot } from "../src/bridge.ts";
 import type { Decided } from "../src/jev.ts";
-import { contextOf, runLoop, type LoopDeps } from "../src/loop.ts";
+import { contextOf, runLoop, runLoopEffect, type LoopDeps } from "../src/loop.ts";
 
 const EPOCH = "c8a9facc8e01492790c35b596ab1970a";
 const v = (revision: number) => `${EPOCH}:${revision}`;
@@ -441,5 +442,39 @@ describe("runLoop", () => {
       model_calls: 1,
     });
     expect(h.posts.map((p) => p.stateVersion)).toEqual([v(1), v(2)]);
+  });
+});
+
+describe("runLoopEffect", () => {
+  // Run exactly as @crustjs/effect's handler does: Crust's signal interrupts the fiber via runPromiseExit.
+  test("an in-flight dispatch aborted by Crust's signal logs its uncertain record and the summary before the fiber settles", async () => {
+    const dispatchStarted = Promise.withResolvers<void>();
+    const h = harness([snap(4), snap(4)], {
+      dispatch: (_stateVersion, _label, signal) =>
+        new Promise<DispatchResult>((_, reject) => {
+          // Like an aborted fetch, the rejection lands later than the abort itself.
+          signal.addEventListener("abort", () => setTimeout(() => reject(signal.reason), 20), {
+            once: true,
+          });
+          dispatchStarted.resolve();
+        }),
+    });
+    const exit = Effect.runPromiseExit(runLoopEffect(h.deps), { signal: h.controller.signal });
+    await dispatchStarted.promise;
+    h.controller.abort(new DOMException("Interrupted by SIGINT.", "AbortError"));
+    const settled = await exit;
+    expect(Exit.isFailure(settled) && Cause.hasInterruptsOnly(settled.cause)).toBe(true);
+    expect(ofType(h.logs, "dispatch")).toMatchObject([{ uncertain: true }]);
+    expect(h.logs.at(-1)).toMatchObject({
+      type: "summary",
+      outcome: "aborted",
+      halt_reason: "Interrupted by SIGINT.",
+    });
+  });
+
+  test("without cancellation the summary is the fiber's success value", async () => {
+    const h = harness([gameOver(1)]);
+    const summary = await Effect.runPromise(runLoopEffect(h.deps));
+    expect(summary.outcome).toBe("terminal");
   });
 });

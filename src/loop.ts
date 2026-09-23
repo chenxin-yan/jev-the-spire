@@ -1,5 +1,5 @@
 // Sequential observe -> decide -> validate -> dispatch -> re-observe loop with an optional action bound.
-import type { Schema } from "effect";
+import { Effect, type Schema } from "effect";
 import type { DispatchResult, LegalAction, Snapshot } from "./bridge.ts";
 import { isInvalidAnswer, type Decided, type Decider } from "./jev.ts";
 
@@ -100,6 +100,13 @@ type Choice =
       readonly decided: Decided;
     }
   | { readonly source: "singleton_only"; readonly label: string };
+
+// Uninterruptible on purpose: Effect interruption never awaits a pending Effect.promise, so an
+// interruptible loop would let Crust clean up and exit before the summary and any uncertain-mutation
+// record are logged. Cancellation reaches the loop through `deps.signal`; a pending interruption fires
+// once the loop has returned.
+export const runLoopEffect = (deps: LoopDeps): Effect.Effect<Summary> =>
+  Effect.uninterruptible(Effect.promise(() => runLoop(deps)));
 
 export const runLoop = async (deps: LoopDeps): Promise<Summary> => {
   const { signal, log, print } = deps;

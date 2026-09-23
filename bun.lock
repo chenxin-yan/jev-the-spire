@@ -6,8 +6,8 @@
       "name": "jev-slay-the-spire-2",
       "dependencies": {
         "@ai-sdk/gateway": "4.0.87",
-        "@crustjs/core": "0.3.3",
-        "@crustjs/effect": "0.1.0",
+        "@crustjs/core": "0.3.5",
+        "@crustjs/effect": "0.1.1",
         "ai": "7.0.107",
         "effect": "4.0.0-rc.116",
       },
@@ -27,9 +27,9 @@
 
     "@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@5.0.45", "", { "dependencies": { "@ai-sdk/provider": "4.0.17", "@standard-schema/spec": "^1.1.0", "@workflow/serde": "4.1.0", "eventsource-parser": "^3.0.8", "undici": "^7.29.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-gLuaCups8OCIRz3eO6WWz5op7VLYNNtFzyH0sWUr0FE9v7cTxR0qxDpQdrKnGcql+9WWttobjnZsJVsuEbsPQQ=="],
 
-    "@crustjs/core": ["@crustjs/core@0.3.3", "", { "dependencies": { "@crustjs/utils": "^0.1.0" }, "peerDependencies": { "typescript": "^7.0.0" }, "optionalPeers": ["typescript"] }, "sha512-PBf6aMEkPPKO3X46fchicpNn4vU6stiNvRu6R0n2mO2FVHau+mNMMejSJeolQwWh5jd8jlEMMpVuUnOgCROi8w=="],
+    "@crustjs/core": ["@crustjs/core@0.3.5", "", { "dependencies": { "@crustjs/utils": "^0.1.0" }, "peerDependencies": { "typescript": "^7.0.0" }, "optionalPeers": ["typescript"] }, "sha512-8o/LRP5sOpIxNPrv4IEWHi+Hmq9yl6blL43ZD3x10LA5PUerOuxeUTrO6BNPUujLTl2bBmbzQFtIsQ+0He6Z6w=="],
 
-    "@crustjs/effect": ["@crustjs/effect@0.1.0", "", { "peerDependencies": { "@crustjs/core": "^0.3.0", "effect": "^4.0.0-rc.115", "typescript": "^7.0.0" }, "optionalPeers": ["typescript"] }, "sha512-vE0EOGDNEJkpK6o1ahaFVAcLdjtM6kszE300dnFCTRBZa6i+kLpjV7IAyN9HJGlRcEY+8nwC+VAJIq904dXH3Q=="],
+    "@crustjs/effect": ["@crustjs/effect@0.1.1", "", { "peerDependencies": { "@crustjs/core": "^0.3.4", "effect": "^4.0.0-rc.115", "typescript": "^7.0.0" }, "optionalPeers": ["typescript"] }, "sha512-I0OkIWUXdmwwU5oBeF9VPGLy7990Ol6o6GERgpAxJsNtaQMO2rcDz4q3yjErh9QfCUQb7HqwcddtdM5ysLBGpg=="],
 
     "@crustjs/utils": ["@crustjs/utils@0.1.0", "", {}, "sha512-ZaXOk77fUogEtjoboQOb/sXGwWl+DWDGl3dZcZ9il9BN1NJ56hTe83CvxazM+9LsfDzgvllufTH71rYTW2SxNQ=="],
 

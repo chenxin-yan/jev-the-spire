@@ -187,11 +187,13 @@ describe("main CLI exit status", () => {
     expect(result.code).toBe(130);
     expect(result.gets).toBe(1);
     expect(result.posts).toBe(0);
+    // Crust aborts the invocation signal with its own AbortError; the loop reports that reason verbatim.
     expect(result.log?.at(-1)).toMatchObject({
       type: "summary",
       outcome: "aborted",
-      halt_reason: "SIGINT",
+      halt_reason: "Interrupted by SIGINT.",
     });
+    expect(result.stdout).toContain('"outcome":"aborted"');
     expect(result.stderr).toContain("Ctrl-C: stopping; no further dispatch");
     expect(result.stderr).not.toContain("Error:");
   });
